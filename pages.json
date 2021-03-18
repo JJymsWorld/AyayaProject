@@ -1,0 +1,87 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	    {
+	        "path" : "pages/Index_Recommend/Index_Hot",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false
+	        }
+	        
+	    }
+		,{
+            "path" : "pages/DynamicPage/DynamicPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/MessageCenter/MessageCenter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/MyPage/MyPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/ContentReleasePage/ContentReleasePage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color":"#101010",
+		"selectedColor":"#F85D9F",
+		"backgroundColor":"#FFFFFF",
+		"list":[{
+			"pagePath":"pages/Index_Recommend/Index_Hot",
+			"text":"首页",
+			"iconPath":"static/tabbar/index.png",
+			"selectedIconPath":"static/tabbar/indexed.png"
+		},{
+			"pagePath":"pages/DynamicPage/DynamicPage",
+			"text":"动态",
+			"iconPath":"static/tabbar/dynamic.png",
+			"selectedIconPath":"static/tabbar/dynamiced.png"
+		},{
+			"pagePath":"pages/MessageCenter/MessageCenter",
+			"text":"消息",
+			"iconPath":"static/tabbar/message.png",
+			"selectedIconPath":"static/tabbar/messaged.png"
+		},{
+			"pagePath":"pages/MyPage/MyPage",
+			"text":"我的",
+			"iconPath":"static/tabbar/my.png",
+			"selectedIconPath":"static/tabbar/myed.png"
+		}
+		],
+		"midButton":{
+			"iconPath":"static/tabbar/released.png",
+			"height":"70px",
+			"iconWidth":"50px"
+		}
+	}
+}
