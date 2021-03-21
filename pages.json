@@ -1,6 +1,74 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	    {
+	        "path" : "pages/login/retrievepw",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3",
+	    		"app-plus":{
+	    			"titleNView":{
+	    				"buttons":[{
+	    					"type":"back",
+	    					"float":"left"
+	    				}]
+	    			}
+	    		}
+	        }
+	    }
+		,{
+	        "path" : "pages/login/register",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3",
+	    		"app-plus":{
+	    			"titleNView":{
+	    				"buttons":[{
+	    					"type":"back",
+	    					"float":"left"
+	    				}]
+	    			}
+	    		}
+	        }
+	    }
+		,{
+	        "path" : "pages/login/fogotpw",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3",
+	    		"app-plus":{
+	    			"titleNView":{
+	    				"buttons":[{
+	    					"type":"back",
+	    					"float":"left"
+	    				}]
+	    			}
+	    		}
+	        }
+	    }
+		,{
+	        "path" : "pages/login/login",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#F2A3C3",
+				"app-plus":{
+					"titleNView":{
+						"buttons":[{
+							"type":"back",
+							"float":"left"
+						}]
+					}
+				}
+	        }
+	    }
+		,{
 	        "path" : "pages/Index_Recommend/Index_Hot",
 	        "style" :                                                                                    
 	        {
@@ -27,15 +95,6 @@
             }
             
         }
-        ,{
-            "path" : "pages/MyPage/MyPage",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
 		,{
 		    "path" : "pages/ContentReleasePage/ContentReleasePage",
 		    "style" :                                                                                    
@@ -45,12 +104,57 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/MyPage/MyPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/fogotpw",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/register",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/retrievepw",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#00ff00"
 	},
 	"tabBar": {
 		"color":"#101010",
