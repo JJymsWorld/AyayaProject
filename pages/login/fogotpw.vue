@@ -26,7 +26,9 @@
 		
 		<view class="content">
 			<view class="row-box">
-				<button class="btn" @click="getData">下一步</button>
+				<navigator url="./retrievepw">
+					<button class="btn" @click="">下一步</button>
+				</navigator>	
 			</view>
 		</view>
 		
@@ -42,22 +44,6 @@
 			}
 		},
 		methods: {
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
-			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
 			},

@@ -1,20 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	    {
-	        "path" : "pages/login/retrievepw",
+	        "path" : "pages/login/login",
 	        "style" :                                                                                    
 	        {
 	            "navigationBarTitleText": "",
 	            "enablePullDownRefresh": false,
-	    		"navigationBarBackgroundColor":"#F2A3C3",
-	    		"app-plus":{
-	    			"titleNView":{
-	    				"buttons":[{
-	    					"type":"back",
-	    					"float":"left"
-	    				}]
-	    			}
-	    		}
+	    		"navigationBarBackgroundColor":"#F2A3C3"
 	        }
 	    }
 		,{
@@ -23,15 +15,7 @@
 	        {
 	            "navigationBarTitleText": "",
 	            "enablePullDownRefresh": false,
-	    		"navigationBarBackgroundColor":"#F2A3C3",
-	    		"app-plus":{
-	    			"titleNView":{
-	    				"buttons":[{
-	    					"type":"back",
-	    					"float":"left"
-	    				}]
-	    			}
-	    		}
+	    		"navigationBarBackgroundColor":"#F2A3C3"
 	        }
 	    }
 		,{
@@ -40,34 +24,18 @@
 	        {
 	            "navigationBarTitleText": "",
 	            "enablePullDownRefresh": false,
-	    		"navigationBarBackgroundColor":"#F2A3C3",
-	    		"app-plus":{
-	    			"titleNView":{
-	    				"buttons":[{
-	    					"type":"back",
-	    					"float":"left"
-	    				}]
-	    			}
-	    		}
+	    		"navigationBarBackgroundColor":"#F2A3C3"
 	        }
 	    }
 		,{
-	        "path" : "pages/login/login",
-	        "style" :                                                                                    
-	        {
-	            "navigationBarTitleText": "",
-	            "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#F2A3C3",
-				"app-plus":{
-					"titleNView":{
-						"buttons":[{
-							"type":"back",
-							"float":"left"
-						}]
-					}
-				}
-	        }
-	    }
+		    "path" : "pages/login/retrievepw",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#F2A3C3"
+		    }
+		}
 		,{
 	        "path" : "pages/Index_Recommend/Index_Hot",
 	        "style" :                                                                                    
@@ -105,15 +73,6 @@
 		    
 		}
         ,{
-            "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/MyPage/MyPage",
             "style" :                                                                                    
             {
@@ -123,29 +82,22 @@
             
         }
         ,{
-            "path" : "pages/login/fogotpw",
+            "path" : "pages/search/search",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
             }
             
         }
         ,{
-            "path" : "pages/login/register",
+            "path" : "pages/search/searchRes",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/login/retrievepw",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
             }
             
         }

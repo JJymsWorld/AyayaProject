@@ -28,7 +28,7 @@
 						<checkbox class="rempwd-check" value="rempwd"/><text class="login-text login-text1">记住密码</text>
 					</label>
 				</checkbox-group>
-				<text class="login-text login-text2">忘记密码?</text>
+				<text class="login-text login-text2" @click="gotoFogotpw">忘记密码?</text>
 			</view>
 		</view>
 		<view class="content">
@@ -38,7 +38,7 @@
 		</view>
 		<view class="content">
 			<view class="row-box">
-				<text class="login-text login-text2">立即注册</text>
+				<text class="login-text login-text2" @click="gotoRegister">立即注册</text>
 			</view>
 		</view>
 	</view>
@@ -49,26 +49,38 @@
 		data() {
 			return {
 				account:"",
-				password:"",
+				password:"123456",
+				userId:0,
+				realPW:"123456",
 				showPassword: true,
 			}
 		},
 		methods: {
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
+			async getData(){
+				console.log(this.account)
+				console.log(this.password)
+				const res = await this.$myRequest({
+					url:'/Login/login',
+					data:{
+						account:1812190507
+					}
+				})
+				// 获取密码和用户ID
+				console.log(res)
+				this.realPW = res.data[0].password
+				this.userId = res.data[0].user_id
+				console.log(this.realPW)
+				console.log(this.password)
+				console.log(this.userId)
+				// 账号密码正确跳转
+				if(this.password === this.realPW){
+					uni.switchTab({
+						url:"../MyPage/MyPage"
+					})
+				}
+				// 判断账号不存在
+				
+				// 判断密码错误
 			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
@@ -87,6 +99,16 @@
 				else{
 					// 仅在本地存入账号
 				}
+			},
+			gotoRegister: function(){
+				uni.navigateTo({
+					url:'./register'
+				})
+			},
+			gotoFogotpw: function(){
+				uni.navigateTo({
+					url:'./fogotpw'
+				})
 			}
 		}
 	}
