@@ -59,19 +59,19 @@
 			async getData(){
 				console.log(this.account)
 				console.log(this.password)
-				const res = await this.$myRequest({
-					url:'/Login/login',
-					data:{
-						account:1812190507
-					}
-				})
-				// 获取密码和用户ID
-				console.log(res)
-				this.realPW = res.data[0].password
-				this.userId = res.data[0].user_id
-				console.log(this.realPW)
-				console.log(this.password)
-				console.log(this.userId)
+				// const res = await this.$myRequest({
+				// 	url:'/Login/login',
+				// 	data:{
+				// 		account:1812190507
+				// 	}
+				// })
+				// // 获取密码和用户ID
+				// console.log(res)
+				// this.realPW = res.data[0].password
+				// this.userId = res.data[0].user_id
+				// console.log(this.realPW)
+				// console.log(this.password)
+				// console.log(this.userId)
 				// 账号密码正确跳转
 				if(this.password === this.realPW){
 					uni.switchTab({

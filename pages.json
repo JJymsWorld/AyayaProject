@@ -68,7 +68,11 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"backgroundColor": "transparent", // 防止ios不透明 
+				"app-plus": {
+					"titleNView": false
+					}
 		    }
 		    
 		}
@@ -101,6 +105,45 @@
             }
             
         }
+        ,{
+            "path" : "pages/ContentReleasePage/postDynamic",
+            "style" :
+            {
+                "navigationBarTitleText": "动态",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+            	"app-plus":{
+            		"titleNView":{
+            			"titleSize":"20px",
+            			"buttons":[{
+            				"float":"right",
+            				"text": "发布",
+            				"fontSize":"16px"
+            			}]
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/ContentReleasePage/postWorks",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "作品",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "发布",
+							"fontSize":"16px"
+						}]
+					}
+				}
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

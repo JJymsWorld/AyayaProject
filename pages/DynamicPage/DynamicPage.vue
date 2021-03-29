@@ -1,6 +1,6 @@
 <template>
 	<view>
-		动态页
+		动态页面
 	</view>
 </template>
 
@@ -18,5 +18,9 @@
 </script>
 
 <style>
-
+	@import url("../../static/css/login.css");
+	.row-box{
+		margin-top: 750rpx;
+	}
+	
 </style>
