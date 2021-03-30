@@ -108,6 +108,17 @@
 				"navigationBarTitleText":""
 			}
 		}
+        ,{
+            "path" : "pages/PopCoser/PopCoser",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "人气Cos榜",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
