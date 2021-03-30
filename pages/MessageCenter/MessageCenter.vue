@@ -2,19 +2,19 @@
 	<view>
 		<!-- 顶部导航栏 -->
 		<view class="row-box icon-box">
-			<view class="icon-item">
+			<view class="icon-item" @click="onCollectMsg">
 				<view class="icon-image">
 					<image src="../../static/messagecenter/collect.png" mode="widthFix"></image>
 				</view>
 				赞和收藏
 			</view>
-			<view class="icon-item">
+			<view class="icon-item" @click="onNewAttentionMsg">
 				<view class="icon-image">
 					<image src="../../static/messagecenter/attention.png" mode="widthFix"></image>
 				</view>
 				新增关注
 			</view>
-			<view class="icon-item">
+			<view class="icon-item" @click="onCommitMsg">
 				<view class="icon-image">
 					<image src="../../static/messagecenter/comment.png" mode="widthFix"></image>
 				</view>
@@ -57,7 +57,21 @@
 			}
 		},
 		methods: {
-			
+			onCollectMsg: function(){
+				uni.navigateTo({
+					url:'./collectmsg'
+				})
+			},
+			onNewAttentionMsg: function(){
+				uni.navigateTo({
+					url:'./newattentionmsg'
+				})
+			},
+			onCommitMsg: function(){
+				uni.navigateTo({
+					url:'./commitandat'
+				})
+			}
 		}
 	}
 </script>
@@ -87,6 +101,7 @@
 	}
 	.message-item image{
 		width: 12%;
+		border-radius: 50%;
 	}
 	.message-item-rbox{
 		float: right;

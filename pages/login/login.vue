@@ -75,7 +75,7 @@
 				// 账号密码正确跳转
 				if(this.password === this.realPW){
 					uni.switchTab({
-						url:"../MyPage/MyPage"
+						url:"../Mypage/mypage"
 					})
 				}
 				// 判断账号不存在

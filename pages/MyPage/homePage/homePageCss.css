@@ -1,0 +1,132 @@
+ul,li{
+	display: inline-block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.back{
+	position: absolute;
+	top: 10rpx;
+	left: 20rpx;
+	font-size: 18pt;
+	color: #6A6A6A;
+}
+.backbox{
+	position: relative;
+	top: 0rpx;
+	left: 0rpx;
+	width: 100%;
+	height: 524rpx;
+	background-image: url(../../../static/iconn/back.png);
+}
+.backBoxButtom{
+	position: absolute;
+	top: 360rpx;
+	left: 0rpx;
+	width: 100%;
+	height: 195rpx;
+	background-color: #FFFFFF;
+	border-top-left-radius: 100rpx;
+	border-top-right-radius: 100rpx;
+}
+.backBoxMain{
+	position: absolute;
+	bottom: 0rpx;
+	left: 40rpx;
+	width: 670rpx;
+	height: 337rpx;
+	background-color: #FFFFFF;
+	border-radius: 30rpx;
+	box-shadow:4px 4px 4px 4px rgba(199, 199, 199, 0.1);
+}
+.backBoxMain image{
+	position: absolute;
+	top: -68rpx;
+	left:40rpx;
+	width: 140rpx;
+	height: 140rpx;
+	border: 10rpx solid #FFFFFF;
+	border-radius: 90rpx;
+}
+.backBoxUsername{
+	position: absolute;
+	top: 96rpx;
+	left: 66rpx;
+	font-size: 15pt;
+	font-weight: bold;
+	color: #201E1E;
+}
+.backBoxSign{
+	position: absolute;
+	top: 153rpx;
+	left: 62rpx;
+	font-size: 9pt;
+	color: #B1B1B1;
+}
+.backBoxTable{
+	position: absolute;
+	top:200rpx;
+	left: 62rpx;
+	width: 550rpx;
+}
+.backBoxTable tr td{
+	width: 183rpx;
+}
+.boxTableNum{
+	font-size: 15pt;
+	font-weight: bold;
+	text-align: center;
+}
+.boxTableText{
+	font-size: 9pt;
+	text-align: center;
+	line-height: 45rpx;
+	color: #9C9C9C;
+}
+.backBoxEdit{
+	position: absolute;
+	top:25rpx;
+	right: 25rpx;
+	width: 145rpx;
+	height: 48rpx;
+	border: 5rpx solid #D4D4D4;
+	border-radius: 9rpx;
+}
+.backBoxEdit text{
+	font-size: 9pt;
+	color: #BBBBBB;
+	line-height: 48rpx;
+	padding-left: 28rpx;
+}
+.backBoxCos{
+	position: absolute;
+	top:100rpx;
+	right: 25rpx;
+	width: 85rpx;
+	height: 85rpx;
+	border: 5rpx solid #FFDDE9;
+	border-radius: 58rpx;
+	background-color: #FF82AF;
+}
+.backBoxCos text{
+	font-size: 8pt;
+	color: #FFFFFF;
+	line-height: 105rpx;
+	padding-left: 20rpx;
+}
+.navigateUl{
+	width: 400rpx;
+	height: 60rpx;
+	margin: 50rpx auto;
+	padding-bottom: 20rpx;
+}
+.navigateUl li{
+	margin-left: 50rpx;
+	font-size: 12pt;
+}
+.navigateUl li:hover{
+	font-size: 17pt;
+	font-weight: bold;
+	padding-bottom: 13rpx;
+	border-bottom: 7rpx solid #F2A3C3;
+}
