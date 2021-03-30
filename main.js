@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import { myRequest } from './util/request.js'
-
-Vue.prototype.$myRequest = myRequest
+import Mypage from './pages/Mypage/mypage.vue'
 
 Vue.config.productionTip = false
 

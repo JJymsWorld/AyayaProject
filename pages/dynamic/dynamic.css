@@ -1,0 +1,134 @@
+.body{
+	width: 100%;
+	height: 2000rpx;
+	background-color: #FBFBFB;
+}
+.searchBox{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 105rpx;
+	background-color: #FFFFFF;
+}
+.searchIcon{
+	position: absolute;
+	top: 35rpx;
+	left: 40rpx;
+	z-index: 1;
+	width: 25rpx;
+	height: 25rpx;
+	padding-left: 20rpx;
+}
+.searchiInput{
+	position: absolute;
+    top: 23rpx;
+	left: 30rpx;
+	display: inline-block;
+	width: 680rpx;
+	height: 50rpx;
+	color: #ACACAC;
+	background-color: #F6F6F6;
+	border-radius: 80rpx;
+}
+.searchiInput input{
+	padding-left: 90rpx;
+	padding-top: 5rpx;
+	font-size: 10pt;
+	color: #ACACAC;
+}
+.recentBox{
+	width: 100%;
+	height: 200rpx;
+	background-color: #FFFFFF;
+	margin-top: 8rpx;
+}
+.recentTable{
+	margin-left: 25rpx;
+	padding-top: 25rpx;
+}
+.recentTable tr td{
+	width: 130rpx;
+}
+.recentTable tr td image{
+	width: 95rpx;
+	height: 95rpx;
+	margin-left: 17rpx;
+	border-radius: 95rpx;
+}
+.recentTable tr td view{
+	font-size: 9pt;
+	text-align: center;
+	line-height: 50rpx;
+	color: #ACACAC;
+}
+.dynamicIt{
+	width: 100%;
+	height: 680rpx;
+	background-color: #FFFFFF;
+	margin-top: 15rpx;
+}
+.dynamnicHead{
+	position: relative;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 130rpx;
+}
+.dynamicAvatar{
+	position: absolute;
+	top: 25rpx;
+	left: 38rpx;
+	width: 90rpx;
+	height: 90rpx;
+	border-radius: 95rpx;
+}
+.dynamicUserDate{
+	position: absolute;
+	top:40rpx;
+	left:140rpx;
+}
+.dynamicUsername{
+	font-size: 11pt;
+	font-weight: bold;
+}
+.dynamicDate{
+	font-size: 5pt;
+	color: #ACACAC;
+	line-height: 35rpx;
+}
+.dynamicText{
+	font-size: 11pt;
+	padding-left: 40rpx;
+}
+.dynamicImage{
+	width: 670rpx;
+	height: 340rpx;
+	border-radius: 20rpx;
+	margin-top: 20rpx;
+	margin-left: 40rpx;
+}
+.dynamicTitle{
+	font-size: 12pt;
+	font-weight: bold;
+	padding-left: 42rpx;
+	line-height: 58rpx;
+}
+.littleIconTable{
+	margin-left: 85rpx;
+	margin-top: 10rpx;
+}
+.littleIconTable tr td{
+	width: 240rpx;
+}
+.littleIcon{
+	width: 40rpx;
+	height: 38rpx;
+	opacity: 0.4;
+	vertical-align: middle;
+}
+.number{
+	font-size: 10pt;
+	color: #ACACAC;
+	padding-left: 6rpx;
+}
