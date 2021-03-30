@@ -426,6 +426,7 @@
 	.CoserListbox-down-footer-popNum {
 		font-size: 30rpx;
 		color: #F59A23;
+		margin-left: 10rpx;
 	}
 
 	.CoserListbox-down-body-name {
