@@ -80,6 +80,7 @@
 							</view>
 						</uni-list-item>
 					</uni-list>
+					<uni-load-more status="noMore"></uni-load-more>
 				</view>
 			</view>
 		</view>
