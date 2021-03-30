@@ -118,7 +118,95 @@
 				"navigationBarTextStyle":"white"
             }
             
+        },{
+            "path" : "pages/PopCoser/StayInCoserList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/PhotoSquare/AppoinentRecommend",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "约拍广场",
+				
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/PhotoSquare/PhotographerList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
         }
+        ,{
+            "path" : "pages/CostumeAndMakeup/CostumeAndMakeup",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "服妆",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#F2A3C3",
+				"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/HotActivities/EventsPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "热门活动",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/HotActivities/EventDetailPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/HotActivities/CosCollectionsPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "热门活动",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/HotActivities/CoserHirePage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/HotActivities/CollectionContentPage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
