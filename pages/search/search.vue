@@ -1,7 +1,7 @@
 <template>
 	<view class="box">
 		<view class="search-box">
-			<uni-search-bar @confirm="onSearch" :radius="30" ></uni-search-bar>
+			<uni-search-bar @confirm="onSearch" @cancel="onGoBack" :radius="30" ></uni-search-bar>
 		</view>
 		<view class="row-box">
 			<view class="hot-topic">
@@ -27,9 +27,7 @@
 	
 </template>
 
-
 <script>
-	
 	export default {
 		data() {
 			return {
@@ -50,6 +48,13 @@
 			// 清空搜索历史
 			delHsty: function(){
 				console.log('清空搜索历史')
+			},
+			// 返回前一页面
+			onGoBack: function(){
+				console.log('cancel')
+				uni.switchTab({
+					url: '../Index_Recommend/Index_Hot'
+				})
 			}
 		}
 	}

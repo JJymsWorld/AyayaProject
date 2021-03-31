@@ -1,7 +1,69 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/Mypage/mypage",
+	    {
+	        "path" : "pages/login/login",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3"
+	        }
+	    }
+		,{
+	        "path" : "pages/login/register",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3"
+	        }
+	    }
+		,{
+	        "path" : "pages/login/fogotpw",
+	        "style" :                                                                                    
+	        {
+	            "navigationBarTitleText": "",
+	            "enablePullDownRefresh": false,
+	    		"navigationBarBackgroundColor":"#F2A3C3"
+	        }
+	    }
+		,{
+		    "path" : "pages/login/retrievepw",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#F2A3C3"
+		    }
+		}
+		,{
+	        "path" : "pages/Index_Recommend/Index_Hot",
+	        "style" :                                                                                    
+	        {
+            "navigationStyle":"custom"
+	        }
+	        
+	    }
+		,{
+            "path" : "pages/DynamicPage/dynamic",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的关注",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/MessageCenter/MessageCenter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "消息中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+			"path":"pages/Mypage/mypage",
 			"style": {
 				"navigationStyle":"custom",
 				"app-plus":
@@ -51,204 +113,225 @@
 					}
 				
 			}
-		},
-	{
-		"path":"pages/Mypage/myPic/myPic",
-		"style":{
-			// "navigationStyle":"custom",
-			"app-plus":
-				{
-					"titleNView":{
-						"searchInput":{
-							"placeholder":"搜索我的订单",
-							"disabled":"true",
-							"borderRadius": "90rpx", //输入框圆角
-						    "backgroundColor":"#F9F9F9"
+		},	
+		{
+			"path":"pages/Mypage/myPic/myPic",
+			"style":{
+				// "navigationStyle":"custom",
+				"app-plus":
+					{
+						"titleNView":{
+							"searchInput":{
+								"placeholder":"搜索我的订单",
+								"disabled":"true",
+								"borderRadius": "90rpx", //输入框圆角
+							    "backgroundColor":"#F9F9F9"
+							}
 						}
 					}
+				
+			}
+		},
+		{
+			"path":"pages/Mypage/reset/reset",
+			"style":{
+				"navigationBarTitleText":"设置",
+				"navigationBarBackgroundColor":"#FFFFFF"
+			}
+		},
+		{
+			"path":"pages/Mypage/homePage/homePage",
+			"style":{
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path":"pages/DynamicPage/dynamic",
+			"style":{
+				"navigationBarTitleText":"我的关注"
+			}
+		},
+		{
+			"path":"pages/Mypage/myWishList/myWishList",
+			"style":{
+				"navigationBarTitleText":"我的心愿"
+			}
+		},
+		{
+			"path":"pages/works/myWish",
+			"style":{
+				"navigationBarTitleText":"我的心愿"
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/ContentReleasePage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"backgroundColor": "transparent", // 防止ios不透明 
+				"app-plus": {
+					"titleNView": false
+					}
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/search/searchRes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/ContentReleasePage/postDynamic",
+            "style" :
+            {
+                "navigationBarTitleText": "动态",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+            	"app-plus":{
+            		"titleNView":{
+            			"titleSize":"20px",
+            			"buttons":[{
+            				"float":"right",
+            				"text": "发布",
+            				"fontSize":"16px"
+            			}]
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/ContentReleasePage/postWorks",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "作品",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "发布",
+							"fontSize":"16px"
+						}]
+					}
 				}
-			
+			}
 		}
-	},
-	{
-		"path":"pages/Mypage/reset/reset",
-		"style":{
-			"navigationBarTitleText":"设置",
-			"navigationBarBackgroundColor":"#FFFFFF"
+        ,{
+            "path" : "pages/MessageCenter/collectmsg",
+            "style" :
+            {
+                "navigationBarTitleText": "赞和收藏",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+            	"app-plus":{
+            		"titleNView":{
+            			"titleSize":"20px"
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/MessageCenter/newattentionmsg",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新增关注",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+            	"app-plus":{
+            		"titleNView":{
+            			"titleSize":"20px"
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/MessageCenter/commitandat",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "评论和@",
+                "enablePullDownRefresh": false,
+            	"navigationBarBackgroundColor":"#F2A3C3",
+            	"app-plus":{
+            		"titleNView":{
+            			"titleSize":"20px"
+            		}
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/pictureOrder/addorder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+			"path":"pages/PopCoser/PopCoser",
+			"style":{
+				"navigationBarTitleText":"人气Cos榜"
+			}
 		}
-	},
-	{
-		"path":"pages/Mypage/homePage/homePage",
-		"style":{
-			"navigationStyle":"custom"
-		}
-	},
-	{
-		"path":"pages/dynamic/dynamic",
-		"style":{
-			"navigationBarTitleText":"我的关注"
-		}
-	},
-	{
-		"path":"pages/Mypage/myWishList/myWishList",
-		"style":{
-			"navigationBarTitleText":"我的心愿"
-		}
-	},
-	{
-		"path":"pages/works/myWish",
-		"style":{
-			"navigationBarTitleText":"我的心愿"
-		}
-	},
-	{
-	    "path" : "pages/login/login",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationBarBackgroundColor":"#F2A3C3"
-	    }
-	}
-	,{
-	    "path" : "pages/login/register",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationBarBackgroundColor":"#F2A3C3"
-	    }
-	}
-	,{
-	    "path" : "pages/login/fogotpw",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationBarBackgroundColor":"#F2A3C3"
-	    }
-	}
-	,{
-	    "path" : "pages/login/retrievepw",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationBarBackgroundColor":"#F2A3C3"
-	    }
-	}
-	,{
-	    "path" : "pages/Index_Recommend/Index_Hot",
-	    "style" :                                                                                    
-	    {
-	        "navigationStyle":"custom"
-	    }
-	    
-	}
-	,{
-	    "path" : "pages/DynamicPage/DynamicPage",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	}
-	,{
-	    "path" : "pages/MessageCenter/MessageCenter",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	}
-	,{
-	    "path" : "pages/ContentReleasePage/ContentReleasePage",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false
-	    }
-	    
-	}
-	,{
-	    "path" : "pages/search/search",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationStyle":"custom"
-	    }
-	    
-	}
-	,{
-	    "path" : "pages/search/searchRes",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false,
-			"navigationStyle":"custom"
-	    }
-	    
-	},{
-		"path":"pages/Index_Recommend/Index_part",
-		"style":{
-			"navigationStyle":"custom",
-			"enablePullDownRefresh":false,
-			"navigationBarTitleText":""
-		}
-	}
-	,{
-	    "path" : "pages/PopCoser/PopCoser",
-	    "style" :                                                                                    
-	    {
-	        "navigationBarTitleText": "人气Cos榜",
-			"navigationBarBackgroundColor":"#F2A3C3",
-	        "enablePullDownRefresh": false,
-			"navigationBarTextStyle":"white"
-	    }
-	    
-	}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarBackgroundColor": "#F2A3C3"
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F2A3C3",
+		"backgroundColor": "#00ff00"
 	},
-	"tabBar":{
-		"list":[
-			{
-				"text":"首页",
-				"pagePath":"pages/Index_Recommend/Index_Hot",
-				"iconPath":"static/icon/首页.png",
-				"selectedIconPath":"static/icon/首页%20(1).png"
-			},
-			{
-				"text":"动态",
-				"pagePath":"pages/dynamic/dynamic",
-				"iconPath":"static/icon/动态（未选中）.png",
-				"selectedIconPath":"static/icon/动态（选中）.png"
-			},
-			{
-				"text":"消息",
-				"pagePath":"pages/MessageCenter/MessageCenter",
-				"iconPath":"static/icon/消息.png",
-				"selectedIconPath":"./static/icon/消息（选中）.png"
-			},
-			{
-				"text":"我的",
-				"pagePath":"pages/Mypage/mypage",
-				"iconPath":"static/icon/我的.png",
-				"selectedIconPath":"static/icon/我的（选中）.png"
-			}
-		],
+	"tabBar": {
 		"color":"#737373",
 		"selectedColor":"#F85D9F",
 		"iconWidth":"22px",
 		"backgroundColor":"#FFFFFF",
 		"borderStyle":"white",
+		"list":[{
+			"pagePath":"pages/Index_Recommend/Index_Hot",
+			"text":"首页",
+			"iconPath":"static/tabbar/index.png",
+			"selectedIconPath":"static/tabbar/indexed.png"
+		},{
+			"pagePath":"pages/DynamicPage/dynamic",
+			"text":"动态",
+			"iconPath":"static/tabbar/dynamic.png",
+			"selectedIconPath":"static/tabbar/dynamiced.png"
+		},{
+			"pagePath":"pages/MessageCenter/MessageCenter",
+			"text":"消息",
+			"iconPath":"static/tabbar/message.png",
+			"selectedIconPath":"static/tabbar/messaged.png"
+		},{
+			"pagePath":"pages/Mypage/mypage",
+			"text":"我的",
+			"iconPath":"static/tabbar/my.png",
+			"selectedIconPath":"static/tabbar/myed.png"
+		}
+		],
 		"midButton":{
-			"iconPath":"static/icon/发布.png",
+			"iconPath":"static/tabbar/released.png",
+			// "iconPath":"static/icon/发布.png",
 			"width":"90px",
 			"height":"56px",
 			"iconWidth":"35px"

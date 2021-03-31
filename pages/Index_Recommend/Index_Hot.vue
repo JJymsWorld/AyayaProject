@@ -24,7 +24,7 @@
 		<view class="recommend-part" v-if="tabIndex == 0">
 			<view class="index-buttonBars">
 				<view class="button-box">
-					<view class="button-item">
+					<view class="button-item" @click="onGotoPopCoser">
 						<button class="button-img"
 							style="background-image: url(../../static/buttonIcon/人气Cos榜.jpeg);"></button>
 						<!-- <image class="button-img" src="../../static/buttonIcon/人气Cos榜.jpeg" mode="widthFix"></image> -->
@@ -284,6 +284,11 @@
 			indexSeach() {
 				uni.navigateTo({
 					url: '../search/search'
+				})
+			},
+			onGotoPopCoser(){
+				uni.navigateTo({
+					url: '../PopCoser/PopCoser'
 				})
 			}
 		}

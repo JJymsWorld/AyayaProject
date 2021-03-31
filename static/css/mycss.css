@@ -1,0 +1,53 @@
+
+.demand-box text{
+	display: block;
+	width: 85%;
+	margin: 0 auto;
+	font-size: 17px;
+	font-family: 'PingFang SC';
+	font-weight: 700;
+	padding-bottom: 2%;
+}
+.textarea-box{
+	background-color: #F7F7F7;
+	border-radius: 50rpx;
+	padding: 50rpx 0;
+}
+.textarea-box textarea{
+	background-color: #F7F7F7;
+	width: 80%;
+	height: 200rpx;
+	margin: 0 auto;
+	font-family: 'PingFang SC';
+	font-size: 14px;
+}
+.picker-box{
+	padding: 20rpx 0;
+	background-color: #F7F7F7;
+	border-radius: 20rpx;
+	margin-bottom: 30rpx;
+}
+.picker-box-content{
+	width: 85%;
+	margin: 0 auto;
+	font-size: 15px;
+	font-family: 'PingFang SC';
+	color: #333333;
+	font-weight: 700;
+}
+.picker-box picker{
+	color: #AAAAAA;
+	float: left;
+	margin-right: 20rpx;
+}
+.picker-box .picker-item{
+	float: right;
+}
+.picker-icon{
+	margin: auto 0;
+	float: right;
+}
+.picker-box image{
+	height: 11px;
+	vertical-align: auto;
+}
