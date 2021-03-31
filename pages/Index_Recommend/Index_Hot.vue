@@ -55,7 +55,7 @@
 			</view>
 			<view class="content-box">
 				<waterfallsFlow :list="contentList">
-					<template v-slot:default="item">
+					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
@@ -70,7 +70,7 @@
 			</view>
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
-			<uni-list :border="false">
+			<uni-list :border="false" class="Hotcontent-list-list">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id" :title="item.text">
 					<template v-slot:body>
 						<view class="List-text">{{item.text}}</view>
@@ -401,7 +401,12 @@
 		font-size: 25rpx;
 		margin-top: 20rpx;
 	}
-
+	.content-box{
+		
+	}
+	.content-box-item{
+		
+	}
 	.topic-box {
 		display: flex;
 		flex-direction: row;
@@ -437,7 +442,7 @@
 	.sort-icon {
 		margin: auto;
 	}
-
+	
 	.title {
 		text-align: left;
 		margin-top: 20rpx;
@@ -464,7 +469,7 @@
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
-		margin-right: 120rpx;
+		margin-right: auto;
 	}
 
 	.view-num {
