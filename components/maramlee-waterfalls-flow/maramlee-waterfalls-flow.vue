@@ -146,7 +146,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 // 这里可以自行配置
-$border-radius: 6px;
+$border-radius: 8px;
 
 .waterfalls-box {
   position: relative;
@@ -159,6 +159,7 @@ $border-radius: 6px;
     border-radius: $border-radius;
     // 防止刚开始渲染时堆叠在第一幅图的地方
     left: calc(-50% - var(--offset));
+	box-shadow: 2px 2px 5px  rgba(140,140,140,0.2);
     .waterfalls-list-image {
       width: 100%;
       will-change: transform;

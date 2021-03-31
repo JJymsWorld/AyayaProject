@@ -16,7 +16,7 @@
 			<view class="swiper-box">
 				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000">
 					<swiper-item v-for="(img,index) in swiperimgs" :key="index">
-						<image :src="img.url" mode="scaleToFill" class="swiper-item"></image>
+						<image :src="img.url" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -25,24 +25,19 @@
 			<view class="index-buttonBars">
 				<view class="button-box">
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/人气Cos榜.jpeg);"></button>
-						<!-- <image class="button-img" src="../../static/buttonIcon/人气Cos榜.jpeg" mode="widthFix"></image> -->
+						<image class="button-img" src="../../static/buttonIcon/CosList.jpeg" mode="aspectFill" @click="CosListButtonClick"></image>
 						<view class="button-title">人气Cos榜</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/约拍广场.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/PhotoSquare.jpeg" mode="aspectFill"></image>
 						<view class="button-title">约拍广场</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/服饰妆容.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/ClothMakeup.jpeg" mode="aspectFill"></image>
 						<view class="button-title">服饰妆容</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/热门活动.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/HotActivities.jpeg" mode="aspectFill"></image>
 						<view class="button-title">热门活动</view>
 					</view>
 				</view>
@@ -59,7 +54,7 @@
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
-								<image class="user-head-img" :src="item.headImg" mode="widthFix"></image>
+								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
 								<view class="user-name">{{item.userName}}</view>
 								<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.viewNum}}
 								</view>
@@ -67,6 +62,7 @@
 						</view>
 					</template>
 				</waterfallsFlow>
+				<uni-load-more status="noMore"></uni-load-more>
 			</view>
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
@@ -82,6 +78,7 @@
 					</template>
 				</uni-list-item>
 			</uni-list>
+			<uni-load-more status="noMore"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -107,7 +104,7 @@
 					}
 				],
 				topicType: "约拍广场",
-				topicContent: "谁知江南无醉意，笑看春风",
+				topicContent: "谁知江南无醉意，笑看春风。",
 				contentList: [{
 						id: 1,
 						image_url: "../../static/contentImg/1.jpg",
@@ -285,10 +282,27 @@
 				uni.navigateTo({
 					url: '../search/search'
 				})
+			},
+			CosListButtonClick() {
+				uni.navigateTo({
+					url:'../PopCoser/PopCoser'
+				})
 			}
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	.content-box{
+		width: 95%;
+		margin-left: auto;
+		margin-right: auto;
+		.cnt{
+			padding: 10rpx;
+		}
+	}
+	
+</style>
 
 <style>
 	@import url("../../static/css/login.css");
@@ -352,12 +366,15 @@
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 20rpx;
+		box-shadow: 2px 2px 10px rgba(134,134,134,0.6);
+		border-style: none;
+		border-radius: 20rpx;
 	}
 
 	.swiper-item {
 		display: block;
 		height: 300rpx;
-		width: 95%;
+		width: 100%;
 		margin-left: auto;
 		margin-right: auto;
 		border-style: none;
@@ -381,31 +398,26 @@
 	}
 
 	.button-item {
+		display: flex;
+		flex-direction: column;
 		width: 120rpx;
 		height: 160rpx;
 		margin: auto;
-
+		align-items: center;
 	}
 
 	.button-img {
-		width: 100rpx;
-		height: 100rpx;
-		border-radius: 100rpx;
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 40rpx;
 		border-style: none;
-		background-size: cover;
-		margin: auto;
+		/* background-size: contain; */
 	}
 
 	.button-title {
 		text-align: center;
 		font-size: 25rpx;
 		margin-top: 20rpx;
-	}
-	.content-box{
-		
-	}
-	.content-box-item{
-		
 	}
 	.topic-box {
 		display: flex;
@@ -418,7 +430,7 @@
 	}
 
 	.topic-title {
-		font-size: 20rpx;
+		font-size: 25rpx;
 		border-style: none;
 		border-radius: 10rpx;
 		background-color: #FFA7C7;
@@ -428,13 +440,13 @@
 	}
 
 	.topic-type {
-		font-size: 20rpx;
+		font-size: 25rpx;
 		color: #428BFF;
 		margin: auto;
 	}
 
 	.topic-content {
-		font-size: 20rpx;
+		font-size: 25rpx;
 		color: #797979;
 		margin: auto;
 	}
@@ -462,6 +474,7 @@
 		border-style: none;
 		border-radius: 25rpx;
 		margin-right: 10rpx;
+		margin-left: 5rpx;
 	}
 
 	.user-name {
