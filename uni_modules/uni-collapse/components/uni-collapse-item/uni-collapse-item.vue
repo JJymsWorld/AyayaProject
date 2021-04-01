@@ -112,6 +112,8 @@
 </script>
 
 <style lang="scss" scoped>
+	
+	$uni-bg-color-hover: white;
 	.uni-collapse-cell {
 		flex-direction: column;
 		border-color: $uni-border-color;
@@ -138,7 +140,7 @@
 
 
 	.uni-collapse-cell--hide {
-		height: 48px;
+		height: 10px;
 	}
 
 	.uni-collapse-cell--animation {
@@ -156,7 +158,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		/* #endif */
-		height: 48px;
+		height: 10px;
 		line-height: 24px;
 		flex-direction: row;
 		justify-content: space-between;
@@ -179,13 +181,13 @@
 	.uni-collapse-cell__title-arrow {
 		width: 20px;
 		height: 20px;
-		transform: rotate(0deg);
+		transform: rotate(90deg);
 		transform-origin: center center;
 
 	}
 
 	.uni-collapse-cell__title-arrow-active {
-		transform: rotate(180deg);
+		transform: rotate(0deg);
 	}
 
 	.uni-collapse-cell__title-text {

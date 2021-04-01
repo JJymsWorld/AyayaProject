@@ -13,7 +13,7 @@
 </script>
 
 <style>
-	@import url("https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.min.css");
+	@import url("https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.3/css/all.css");
 	/*每个页面公共css */
 	@import url("./common/uni.css");
 	/* 动画库 */

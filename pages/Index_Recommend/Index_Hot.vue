@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="status_bar">
+		            <!-- 这里是状态栏 -->
+		</view>
 		<view class="index-halfpadding">
 			<view class="index-header">
 				<view class="row-box">
@@ -306,7 +309,12 @@
 
 <style>
 	@import url("../../static/css/login.css");
-
+	
+	.status_bar{
+		height: var(--status-bar-height);
+		width: 100%;
+		background-color: #F2A3C3;
+	}
 	.row-box {
 		display: flex;
 		width: 85%;

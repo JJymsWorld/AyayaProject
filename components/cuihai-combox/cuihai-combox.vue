@@ -7,7 +7,7 @@
 			<input class="uni-combox__input" type="text" :placeholder="placeholder" :disabled="isDisabled" v-model="inputVal"
 			 @input="onInput" @focus="onFocus" @blur="onBlur" />
 			<icon type="clear" size="16" @tap="clearInputValue" v-if="!isDisabled" />
-			<image class="uni-combox__input-arrow" src="../../static/cuihai-combox/arrow_down.png" style="width: 30rpx;height: 30rpx;" @click="toggleSelector"></image>
+			<image class="uni-combox__input-arrow" src="../../static/cuihai-combox/arrow_down.png" mode="aspectFit" style="width: 20rpx;height: 20rpx;" @click="toggleSelector"></image>
 			<!-- <uni-icons class="uni-combox__input-arrow" type="arrowdown" size="14" @click="toggleSelector"></uni-icons> -->
 			<view class="uni-combox__selector" v-if="showSelector">
 				<scroll-view scroll-y="true" class="uni-combox__selector-scroll">
@@ -302,7 +302,7 @@
 	}
 
 	.uni-combox__input-arrow {
-		padding: 10px;
+		padding: 2px;
 	}
 
 	.uni-combox__selector {
