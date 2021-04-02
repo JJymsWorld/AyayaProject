@@ -19,23 +19,24 @@
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
 									<text>{{item.Coser_name}}</text>
-									<view>
+									<view class="StayInCoser-item-likenum">
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
 										<text>{{item.Coser_likeNum}}</text>
 									</view>
+									<view class="StayInCoser-item-likebutton">
+										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
+										<uni-fav class="StayInCoser-item-likebutton-like" circle="true" :checked="item.checked" star="false" :contentText="contentText" bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
+										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98"></uni-fav>
+									</view>
 								</view>
 								<view class="StayInCoser-item-position">
-									<uni-icons type="location-filled"></uni-icons>
+									<uni-icons type="location-filled" size="14"></uni-icons>
 									<text>{{item.Coser_city}}</text>
 								</view>
 								<text class="StayInCoser-item-intro">个人介绍:{{item.Coser_intro}}</text>
 							</view>
-							<view class="StayInCoser-item-likebutton">
-								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
-								<uni-fav circle="true" :checked="item.checked" star="false" :contentText="contentText" bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
-								<uni-fav star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98"></uni-fav>
-							</view>
+							
 						</view>
 						<view slot="body" class="StayInCoser-item-body">
 							<uni-collapse :accordion="true">
@@ -109,7 +110,10 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+	/deep/ .uni-fav-text {
+		font-size: 24rpx;
+	}
 	
 </style>
 <style>

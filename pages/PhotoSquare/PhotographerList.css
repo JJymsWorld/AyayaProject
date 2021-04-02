@@ -35,7 +35,7 @@
 .StayInCoser-item{
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 }
 .StayInCoser-item-avatar{
 	width: 120rpx;
@@ -46,6 +46,8 @@
 .StayInCoser-item-info{
 	display: flex;
 	flex-direction: column;
+	margin-left: 30rpx;
+	width: 80%;
 }
 .StayInCoser-item-nameandlikenum{
 	display: flex;
@@ -55,6 +57,7 @@
 	margin-top: auto;
 	margin-bottom: auto;
 	justify-content: space-between;
+	align-items: center;
 }
 .StayInCoser-item-position{
 	font-size: 24rpx;
@@ -68,11 +71,27 @@
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.StayInCoser-item-likenum{
+	/* margin-left: auto; */
+	/* margin-left: 100rpx; */
+}
 .StayInCoser-item-likebutton{
-	display: flex;
+	/* display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: space-around; */
+	display: flex;
+	flex-direction: row;
+	/* margin-left: auto; */
+}
+.StayInCoser-item-likebutton-like{
+	width: 100rpx;
+	height: 40rpx;
+	margin-right: 10rpx;
+}
+.StayInCoser-item-likebutton-appoint{
+	width: 100rpx;
+	height: 40rpx;
 }
 .collapse-item-wrapper{
 	background-color: white;
