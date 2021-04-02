@@ -24,7 +24,7 @@
 						<text class="user-info-box-name">{{item.username}}</text>
 					</view>
 					<view class="view-more-Coser">
-						<view class="moreCoser-Icon">. . .</view>
+						<view class="moreCoser-Icon">· · ·</view>
 						<text class="user-info-box-name">查看更多</text>
 					</view>
 				</view>
@@ -317,7 +317,10 @@
 		border-style: none;
 		border-radius: 40rpx;
 		background-color: #F2A3C3;
-		text-align: center;
+		/* text-align: center;*/
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin: auto;
 		font-size: 30rpx;
 	}
