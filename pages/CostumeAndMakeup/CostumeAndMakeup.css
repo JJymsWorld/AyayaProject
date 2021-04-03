@@ -1,0 +1,56 @@
+.top-tab-bar{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #F2A3C3;
+}
+
+.top-tab-bar-item{
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+}
+
+.top-tab-bar-title{
+    font-size: 30rpx;
+    color: #333;
+}
+
+.top-tab-bar-active{
+    font-size: 36rpx;
+    color: #797979;
+    border-bottom-style: solid;
+    border-bottom-color: #797979;
+}
+
+.Costume-wrapper{
+    display: flex;
+    flex-direction: column;
+    /* margin-top: 30rpx;
+    background-color: white;
+    border-style: none;
+    border-top-right-radius: 300rpx;
+    border-top-left-radius: 300rpx; */
+}
+
+.CostumeOrMakeup-swiper {
+    height: 320rpx;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30rpx;
+    box-shadow:0 0 4rpx 4rpx rgba(199, 199, 199, 0.35);
+    background-repeat: no-repeat;
+}
+/* .swiper-item{
+    display: block;
+    height: 320rpx;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: none;
+    border-radius: 20rpx;
+} */
