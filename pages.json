@@ -202,9 +202,10 @@
 		    "path" : "pages/HotActivities/CollectionContentPage",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "热门活动",
 				"navigationBarBackgroundColor":"#F2A3C3",
-		        "enablePullDownRefresh": false
+		        "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
 		    }
 		}
 		,{

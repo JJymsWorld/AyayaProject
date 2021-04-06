@@ -3,7 +3,7 @@
 		<view class="EventsPage-wrapper">
 			<view class="tab-top-bar">
 				<view class="tab-top-bar-left">活动</view>
-				<view class="tab-top-bar-right">季番合集</view>
+				<view class="tab-top-bar-right" @click="JumpToCollectionContentPage">季番合集</view>
 			</view>
 			<view class="top-function-bar">
 				<view class="top-function-bar-left">
@@ -72,6 +72,13 @@
 						AttendentNum:1920
 					}
 				]
+			}
+		},
+		methods:{
+			JumpToCollectionContentPage() {
+				uni.redirectTo({
+					url:'CollectionContentPage'
+				})
 			}
 		}
 	}
