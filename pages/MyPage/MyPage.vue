@@ -88,7 +88,7 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;padding-left: 15rpx;">我的约拍</text>
-				<text style="font-size: 9pt;font-weight:500;padding-left: 320rpx;color: #C0C0C0;">查看全部订单 ></text>
+				<text @click="gotoMyOrder" style="font-size: 9pt;font-weight:500;padding-left: 320rpx;color: #C0C0C0;">查看全部订单 ></text>
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
@@ -111,6 +111,15 @@
 </template>
 
 <script>
+	export default{
+		methods: {
+			gotoMyOrder(){
+				uni.navigateTo({
+					url:'../pictureOrder/coser/myorder'
+				})
+			}
+		}
+	}
 	
 </script>
 

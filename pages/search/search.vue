@@ -52,8 +52,8 @@
 			// 返回前一页面
 			onGoBack: function(){
 				console.log('cancel')
-				uni.switchTab({
-					url: '../Index_Recommend/Index_Hot'
+				uni.navigateBack({
+					
 				})
 			}
 		}
