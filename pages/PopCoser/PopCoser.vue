@@ -16,15 +16,15 @@
 						</image>
 						<text class="Infobox-leftFont">入驻Coser</text>
 					</view>
-					<view class="Infobox-head-right">成为入驻Coser</view>
+					<view class="Infobox-head-right" @click="gotoCoserIdenticate">成为入驻Coser</view>
 				</view>
 				<view class="Infobox-down">
 					<view class="user-info-box" v-for="(item,index) in showThree" :key="index">
 						<image class="user-info-box-headimg" :src="item.headimg_url" mode="aspectFill"></image>
 						<text class="user-info-box-name">{{item.username}}</text>
 					</view>
-					<view class="view-more-Coser">
-						<view class="moreCoser-Icon">. . .</view>
+					<view class="view-more-Coser" @click="gotoStayInCoserList">
+						<view class="moreCoser-Icon">· · ·</view>
 						<text class="user-info-box-name">查看更多</text>
 					</view>
 				</view>
@@ -159,6 +159,16 @@
 			tabTap(e) {
 				console.log(e.currentTarget.id)
 				this.tabIndex = e.currentTarget.id
+			},
+			gotoStayInCoserList() {
+				uni.navigateTo({
+					url: './StayInCoserList'
+				})
+			},
+			gotoCoserIdenticate() {
+				uni.navigateTo({
+					url: '../Mypage/identificationPage/coserIdenticate'
+				})
 			}
 		},
 		computed: {
@@ -317,7 +327,10 @@
 		border-style: none;
 		border-radius: 40rpx;
 		background-color: #F2A3C3;
-		text-align: center;
+		/* text-align: center;*/
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin: auto;
 		font-size: 30rpx;
 	}

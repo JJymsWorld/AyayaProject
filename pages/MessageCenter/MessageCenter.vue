@@ -37,7 +37,7 @@
 			</view>
 			<view class="message-item">
 				<image src="../../static/image1.png" mode="widthFix"></image>
-				<view class="message-item-rbox">
+				<view class="message-item-rbox" @click="gotoDialogPage">
 					<view class="">
 						<text class="text1">机智的党妹</text>
 						<text class="text2">2020-12-08</text>
@@ -57,19 +57,28 @@
 			}
 		},
 		methods: {
+			// 跳转至赞和收藏页面
 			onCollectMsg: function(){
 				uni.navigateTo({
 					url:'./collectmsg'
 				})
 			},
+			// 跳转至新增关注页面
 			onNewAttentionMsg: function(){
 				uni.navigateTo({
 					url:'./newattentionmsg'
 				})
 			},
+			// 跳转至评论和@页面
 			onCommitMsg: function(){
 				uni.navigateTo({
 					url:'./commitandat'
+				})
+			},
+			// 跳转至对话框页面
+			gotoDialogPage: function(){
+				uni.navigateTo({
+					url: './dialogpage'
 				})
 			}
 		}

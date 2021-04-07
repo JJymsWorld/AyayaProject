@@ -1,7 +1,10 @@
 <template>
 	<view class="box">
+		<view class="navigate-box">
+					
+		</view>
 		<view class="search-box">
-			<uni-search-bar @confirm="onSearch" :radius="30" :value="value"></uni-search-bar>
+			<uni-search-bar @confirm="onSearch" :radius="30" @cancel="onGoBack" :value="value"></uni-search-bar>
 		</view>
 		<view class="row-box">
 			<view v-for="(tab,index) in tabBars" :key="index" :id='index' class='uni-tab-item' @click="ontabtap">
@@ -86,6 +89,13 @@
 			ontabtap: function(e){
 				console.log(e.currentTarget.id)
 				this.tabIndex = e.currentTarget.id
+			},
+			// 返回前一页面
+			onGoBack: function(){
+				console.log('cancel')
+				uni.navigateBack({
+					
+				})
 			}
 		}
 	}
@@ -93,6 +103,10 @@
 
 <style>
 	@import url("../../static/css/login.css");
+	.navigate-box{
+			width: 100%;
+			height: 70rpx;
+	}
 	.row-box{
 		width: 90%;
 		padding: 0;

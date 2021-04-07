@@ -1,7 +1,7 @@
 <template>
 	<view class="backBox">
 		<view class="linkStyle">原作品链接:</view>
-		<view class="workBox">
+		<view class="workBox" @click="workNavi()">
 		    <image :src="work.covers" mode="aspectFill"></image>
 		    <text>{{work.head}}</text>
 		</view>
@@ -59,7 +59,7 @@
 			<view class="other">其他标签:</view>
 			<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill"></image>
 	</view>
-	<view class="finalButton"><text>发布作品</text></view>
+	<view class="finalButton" @click="releaseWork()"><text>发布作品</text></view>
   </view>
 	
 </template>
@@ -75,6 +75,18 @@
 						head:"江南美人图|奇迹党党环游中华之江南"
 					}
 				
+			}
+		},
+		methods:{
+			workNavi(){
+				uni.navigateTo({
+					url:'works'
+				})
+			},
+			releaseWork(){
+				uni.navigateTo({
+					url:'../ContentReleasePage/postDynamic'
+				})
 			}
 		}
 	}

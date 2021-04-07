@@ -42,7 +42,45 @@
 	height: 200rpx;
 	background-color: #FFFFFF;
 	margin-top: 8rpx;
+	overflow: hidden;
+	white-space: nowrap;
 }
+
+
+
+.recentBox span{
+	display: inline-block;
+	margin-left: 45rpx;
+	margin-top: 30rpx;
+	/* width: 190rpx; */
+	overflow: hidden;
+	
+}
+.recentBox span image{
+	width: 95rpx;
+	height: 95rpx;
+	border-radius: 95rpx;
+}
+.recentBox span view{
+	/* width: 190rpx; */
+	font-size: 22rpx;
+	color: #ACACAC;
+	line-height: 50rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
 .recentTable{
 	margin-left: 25rpx;
 	padding-top: 25rpx;
@@ -62,11 +100,13 @@
 	line-height: 50rpx;
 	color: #ACACAC;
 }
+.dynamicBox{
+	margin-top: 4rpx;
+}
 .dynamicIt{
 	width: 100%;
-	height: 680rpx;
 	background-color: #FFFFFF;
-	margin-top: 15rpx;
+	margin: 0rpx auto;
 }
 .dynamnicHead{
 	position: relative;
@@ -98,17 +138,21 @@
 	line-height: 35rpx;
 }
 .dynamicText{
+	width: 90%;
 	font-size: 11pt;
-	padding-left: 40rpx;
+	padding-left: 46rpx;
 }
 .dynamicImage{
-	width: 670rpx;
+	/* width: 670rpx; */
+	width: 90%;
 	height: 340rpx;
 	border-radius: 20rpx;
 	margin-top: 20rpx;
-	margin-left: 40rpx;
+	margin-left: 5%;
+	/* margin-left: 2rpx; */
 }
 .dynamicTitle{
+	width: 80%;
 	font-size: 12pt;
 	font-weight: bold;
 	padding-left: 42rpx;
@@ -117,6 +161,7 @@
 .littleIconTable{
 	margin-left: 85rpx;
 	margin-top: 10rpx;
+	margin-bottom: 20rpx;
 }
 .littleIconTable tr td{
 	width: 240rpx;
@@ -127,8 +172,24 @@
 	opacity: 0.4;
 	vertical-align: middle;
 }
+.littleIcon2{
+	width: 30rpx;
+	height: 30rpx;
+	opacity: 0.3;
+	vertical-align: middle;
+}
 .number{
 	font-size: 10pt;
 	color: #ACACAC;
 	padding-left: 6rpx;
 }
+.lastBlank{
+	width: 100%;
+	height: 100rpx;
+}
+.uni-list::before{
+		display: none;
+	}
+.uni-list::after{
+	    display: none;
+	}

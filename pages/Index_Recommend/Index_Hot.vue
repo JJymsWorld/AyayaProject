@@ -1,20 +1,21 @@
 <template>
 	<view>
+
 		<view class="index-halfpadding">
 			<view class="index-header">
 				<view class="row-box">
 					<view v-for="(item,index) in index_tabs" :key='index' :id="index" class="uni-tab-item"
 						@click="tabTap">
-						<view class="uni-tab-item-title"
-							:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{item}}</view>
+						<text class="uni-tab-item-title"
+							:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{item}}</text>
 					</view>
 					<view class="index-searchbox" @click="indexSeach">
-						<input style="font-size: 10pt;color: rgba(127,127,127,0.6);line-height: 49rpx;" disabled="true" value="2021年征集计划">
+						<input style="font-size: 10pt;color: rgba(127,127,127,0.6);line-height: 49rpx;" disabled="true" value="2021年征集计划"/>
 					</view>
 				</view>
 			</view>
 			<view class="swiper-box">
-				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000"style="height: 355rpx;">
+				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000" style="height: 355rpx;">
 					<swiper-item v-for="(img,index) in swiperimgs" :key="index">
 						<image :src="img.url" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
@@ -24,25 +25,20 @@
 		<view class="recommend-part" v-if="tabIndex == 0">
 			<view class="index-buttonBars">
 				<view class="button-box">
-					<view class="button-item" @click="onGotoPopCoser">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/人气Cos榜.jpeg);"></button>
-						<!-- <image class="button-img" src="../../static/buttonIcon/人气Cos榜.jpeg" mode="widthFix"></image> -->
+					<view class="button-item">
+						<image class="button-img" src="../../static/buttonIcon/CosList.jpeg" mode="aspectFill" @click="CosListButtonClick"></image>
 						<view class="button-title">人气Cos榜</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/约拍广场.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/PhotoSquare.jpeg" mode="aspectFill" @click="PhotoSquareButtonClick"></image>
 						<view class="button-title">约拍广场</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/服饰妆容.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/ClothMakeup.jpeg" mode="aspectFill" @click="ClothMakeupButtonClick"></image>
 						<view class="button-title">服饰妆容</view>
 					</view>
 					<view class="button-item">
-						<button class="button-img"
-							style="background-image: url(../../static/buttonIcon/热门活动.jpeg);"></button>
+						<image class="button-img" src="../../static/buttonIcon/HotActivities.jpeg" mode="aspectFill" @click="HotActivitiesButtonClick"></image>
 						<view class="button-title">热门活动</view>
 					</view>
 				</view>
@@ -54,9 +50,9 @@
 				<view :class="['fas','fa-bars']" class="sort-icon" />
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" class="waterfallstyle">
-					<template v-slot:default="item"  class="waterfalls">
-						<view class="cnt">
+				<waterfallsFlow :list="contentList">
+					<template v-slot:default="item" class="content-box-item">
+						<view class="cnt" @click="workNavigate(item.id)">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
 								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
@@ -67,10 +63,11 @@
 						</view>
 					</template>
 				</waterfallsFlow>
+				<uni-load-more status="noMore"></uni-load-more>
 			</view>
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
-			<uni-list :border="false">
+			<uni-list :border="false" class="Hotcontent-list-list">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id" :title="item.text">
 					<template v-slot:body>
 						<view class="List-text">{{item.text}}</view>
@@ -82,6 +79,7 @@
 					</template>
 				</uni-list-item>
 			</uni-list>
+			<uni-load-more status="noMore"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -107,28 +105,28 @@
 					}
 				],
 				topicType: "约拍广场",
-				topicContent: "谁知江南无醉意，笑看春风",
+				topicContent: "谁知江南无醉意，笑看春风。",
 				contentList: [{
 						id: 1,
-						image_url: "../../static/contentImg/1.jpg",
+						// image_url: "../../static/contentImg/1.jpg",
+						image_url:"../../static/contentImg/1.jpg",
 						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 3,
-						image_url: "../../static/contentImg/3.jpg",
-						title: '【汉服】西域美人',
-						headImg: '../../static/contentImg/1.jpg',
+						headImg: '../../static/contentImg/headimg1.jpg',
 						userName: 'CN清风',
 						viewNum: 2206
 					},
 					{
 						id: 2,
+						image_url: "../../static/contentImg/3.jpg",
+						title: '【汉服】西域美人',
+						headImg: '../../static/contentImg/headimg1.jpg',
+						userName: 'CN清风',
+						viewNum: 2206
+					},{
+						id: 3,
 						image_url: "../../static/contentImg/2.jpg",
 						title: '【Cos正品】楼兰',
-						headImg: '../../static/contentImg/1.jpg',
+						headImg: '../../static/contentImg/headimg1.jpg',
 						userName: 'CN清风',
 						viewNum: 2206
 					},
@@ -286,38 +284,78 @@
 					url: '../search/search'
 				})
 			},
-			onGotoPopCoser(){
+			CosListButtonClick() {
 				uni.navigateTo({
-					url: '../PopCoser/PopCoser'
+					url:'../PopCoser/PopCoser'
+				})
+			},
+			PhotoSquareButtonClick() {
+				uni.navigateTo({
+					url:'../PhotoSquare/AppoinentRecommend'
+				})
+			},
+			ClothMakeupButtonClick() {
+				uni.navigateTo({
+					url:'../CostumeAndMakeup/CostumePage'
+				})
+			},
+			HotActivitiesButtonClick() {
+				uni.navigateTo({
+					url: '../HotActivities/EventsPage?'
+				})
+			},
+			workNavigate(i) {
+				uni.navigateTo({
+					url:'../works/works?id='+i
 				})
 			}
+			
 		}
 	}
 </script>
 
+<style lang="scss" scoped>
+	.content-box{
+		width: 88%;
+		margin: 40rpx auto;
+		.cnt{
+			padding: 10rpx;
+		}
+	}
+	
+</style>
+
 <style>
 	@import url("../../static/css/login.css");
-
+	
+	.status_bar{
+		height: var(--status-bar-height);
+		width: 100%;
+		background-color: #F2A3C3;
+	}
 	.row-box {
 		display: flex;
-		width: 90%;
+		width: 85%;
 		padding: 0;
 	}
 
 	.uni-tab-item {
 		/* #ifndef APP-PLUS */
+		width: 100rpx;
 		display: inline-block;
 		/* #endif */
 		flex-wrap: nowrap;
-		/* padding-left: 10rpx; */
+		padding-left: 10rpx;
 		padding-right: 10rpx;
+		text-align: center;
+		
 	}
 
 	.uni-tab-item-title {
 		color: #000000;
 		font-size: 30rpx;
 		height: 80rpx;
-		margin-left: 30rpx;
+		/* margin-left: 25rpx; */
 		line-height: 80rpx;
 		flex-wrap: nowrap;
 		/* #ifndef APP-PLUS */
@@ -327,7 +365,7 @@
 	}
 
 	.uni-tab-item-title-active {
-		height: 75rpx;
+
 		color: #797979;
 		font-size: 40rpx;
 		border-bottom:8rpx solid #797979;
@@ -335,13 +373,11 @@
 
 	.index-searchbox {
 		display: inline-block;
-		border-radius: 40rpx;
+		border-radius: 20rpx;
 		text-align: center;
-		width: 100%;
-		height: 47rpx;
+		width: 65%;
 		background-color: rgba(242,242,242,0.3);
-		margin-left: 35rpx;
-		margin-right: 10rpx;
+		margin-left: 40rpx;
 		margin-top: 20rpx;
 		margin-bottom: 20rpx;
 	}
@@ -356,13 +392,16 @@
 		height: 305rpx;
 		align-items: center;
 		width: 86%;
-		margin: 35rpx auto;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 35rpx;
+		box-shadow: 2px 2px 10px 0px rgba(134,134,134,0.6);
+		border-style: none;
 		border-radius: 20rpx;
-		box-shadow: 2px 2px 10px rgba(134,134,134,0.6);
-		/* box-shadow: 0px 0px 4px 4px rgba(134,134,134,0.3); */
 	}
 
 	.swiper-item {
+		display: block;
 		height: 305rpx;
 		width: 100%;
 		margin-left: auto;
@@ -372,29 +411,33 @@
 	}
 
 	.index-halfpadding {
-		width: 100%;
-		height: 410rpx;
+		height: 470rpx;
+		border-style: none;
 		background-color: #F2A3C3;
 		border-bottom-left-radius: 200rpx;
 		border-bottom-right-radius: 200rpx;
-		box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+		margin-top: 0rpx;
+		/* box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.2); */
+		box-shadow: 2px 2px 10px rgba(140,140,140,1);
 	}
 
-	.button-box {
+	.button-box {	
 		display: flex;
 		flex-direction: row;
-		margin-top: 30rpx;
+		margin-top: 50rpx;
 		width: 90%;
-		height: 165rpx;
+		height: 135rpx;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
 	.button-item {
+		display: flex;
+		flex-direction: column;
 		width: 120rpx;
 		height: 160rpx;
-		margin: 33rpx auto;
-
+		margin: auto;
+		align-items: center;
 	}
 
 	.button-img {
@@ -402,8 +445,7 @@
 		height: 75rpx;
 		border-radius: 100rpx;
 		border-style: none;
-		background-size: cover;
-		margin: auto;
+		/* background-size: contain; */
 	}
 
 	.button-title {
@@ -411,10 +453,13 @@
 		font-size: 25rpx;
 		margin-top: 20rpx;
 	}
-
 	.topic-box {
+		display: flex;
 		flex-direction: row;
-		margin: 20rpx auto;
+		margin-top: 20rpx;
+		margin-bottom: 20rpx;
+		margin-left: auto;
+		margin-right: auto;
 		width: 90%;
 	}
 
@@ -433,6 +478,7 @@
 		color: #428BFF;
 		opacity: 0.5;
 		margin-left: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.topic-content {
@@ -440,18 +486,19 @@
 		color: #797979;
 		opacity: 0.6;
 		margin-left: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.sort-icon {
 		margin: auto;
 	}
-
+	
 	.title {
 		text-align: left;
 		margin-top: 10rpx;
-		margin-bottom: 10rpx;
-		font-size: 9pt;
-		padding-left: 44rpx;
+		margin-left: 44rpx;
+		margin-bottom: 20rpx;
+		font-size: 25rpx;
 	}
 
 	.user-info-box {
@@ -466,6 +513,7 @@
 		border-style: none;
 		border-radius: 25rpx;
 		margin-right: 10rpx;
+		margin-left: 5rpx;
 	}
 
 	.user-name {
@@ -473,7 +521,7 @@
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
-		margin-right: 120rpx;
+		margin-right: auto;
 	}
 
 	.view-num {
@@ -484,14 +532,15 @@
 	}
 	
 	.Hotcontent-list-box{
-		box-shadow: 2px 2px 10px rgba(134,134,134,0.2);
+		box-shadow:2rpx 2rpx 10rpx 10rpx rgb(215,215,215,0.1);
 		border-radius: 30rpx 30rpx 0 0;
 		width:90%;
 		margin-left: auto;
 		margin-right: auto;
-		margin-top: 50rpx;
+		margin-top: 60rpx;
 		box-sizing: border-box;
 		padding: 10rpx;
+		background-color: #FFFFFF;
 	}
 	.List-text{
 		font-size: 26rpx;
@@ -516,15 +565,10 @@
 	.uni-list::after{
 		display: none;
 	}
-	.content-box{
-		width: 87%;
-		margin:30rpx auto
+	.index-header{
+		padding-top: 70rpx;
 	}
-	.waterfallstyle{
-	}
-	.waterfalls{
-		width: 200rpx;
-		box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.2);
-	}
-
 </style>
+
+
+

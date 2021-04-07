@@ -77,4 +77,8 @@
 	.cancel-image-box image{
 		width: 100%;
 	}
+	page{
+			background-color: rgba(240, 240, 240, 1);
+			background: rgba(240, 240, 240, 1);
+		}
 </style>
