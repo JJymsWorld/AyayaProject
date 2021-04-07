@@ -15,10 +15,10 @@
 			</view>
 			<view class="CosCollections-list">
 				<view class="CosCollections-taptab">
-					<view class="CosCollections-taptab-left" :class="tabIndex == 0 ?'CosCollections-taptab-left-active':''">征集角色</view>
-					<view class="CosCollections-taptab-right" :class="tabIndex == 1 ?'CosCollections-taptab-right-active':''">活动说明</view>
+					<view class="CosCollections-taptab-left" :class="tabIndex == 0 ?'CosCollections-taptab-left-active':''" @click="tabChangeToZero">征集角色</view>
+					<view class="CosCollections-taptab-right" :class="tabIndex == 1 ?'CosCollections-taptab-right-active':''" @click="tabChangeToOne">活动说明</view>
 				</view>
-				<view class="CosCollections-list-content">
+				<view class="CosCollections-list-content" v-if="tabIndex==0">
 					<uni-list class="CosCollections-list-content-unilist" :border="false">
 						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row">
 							<view slot="header" class="CosCollections-list-content-item-header">
@@ -34,8 +34,8 @@
 					</uni-list>
 				</view>
 			</view>
-			<view class="CosCollections-allButton">
-				<view class="CosCollections-Button">查看合集活动</view>
+			<view class="CosCollections-allButton" :class="isallButtonStatus == true ?'CosCollections-allButton-active':''">
+				<view class="CosCollections-Button" :class="isallButtonStatus == true ?'CosCollections-Button-active':''">查看合集活动</view>
 			</view>
 		</view>
 	</view>
@@ -91,10 +91,22 @@
 			}
 		},
 		methods: {
-
+			tabChangeToZero() {
+				this.tabIndex = 0;
+			},
+			tabChangeToOne() {
+				this.tabIndex = 1;
+			}
 		},
 		computed: {
-
+			isallButtonStatus(){
+				for(let i in this.CoserCollectionList){
+					if (this.CoserCollectionList[i].isActive == true){
+						return false
+					}
+				}
+				return true
+			}
 		}
 	}
 </script>
