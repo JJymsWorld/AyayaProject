@@ -53,8 +53,8 @@
 			</view>
 			<view class="content-box">
 				<waterfallsFlow :list="contentList">
-					<template v-slot:default="item" class="content-box-item">
-						<view class="cnt">
+					<template v-slot:default="item" class="content-box-item" >
+						<view class="cnt" @click="jumpto">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
 								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
@@ -289,6 +289,11 @@
 			CosListButtonClick() {
 				uni.navigateTo({
 					url:'../PopCoser/PopCoser'
+				})
+			},
+			jumpto(){
+				uni.navigateTo({
+					url:'../HotActivities/CollectionContentPage'
 				})
 			}
 		}

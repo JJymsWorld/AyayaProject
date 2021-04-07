@@ -1,3 +1,5 @@
+/* EventsPage.css */
+
 .tab-top-bar{
     margin-top: 30rpx;
     display: flex;
@@ -137,4 +139,143 @@
 }
 .Events-list-item-footer-right-icon{
     margin-right: 8rpx;
+}
+
+
+/* CosCollectionsPage.css */
+.CosCollections-top-imgwrapper{
+    width: 100%;
+}
+.CosCollections-top-image{
+    width: 100%;
+}
+.CosCollections-top-title{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40rpx;
+    font-weight: bold;
+    font-size: 34rpx;
+}
+.CosCollections-top-themeandtime{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 32rpx;
+    margin-bottom: 40rpx;
+}
+.CosCollections-taptab{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 95rpx;
+    background-color: rgba(242, 163, 195, 0.6);
+}
+
+.CosCollections-taptab-left{
+    margin-right: 100rpx;
+    color: white;
+    font-size: 32rpx;
+}
+.CosCollections-taptab-left-active{
+    margin-right: 100rpx;
+    color: white;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(236, 128, 141, 0.7);
+    border-bottom-width: 8rpx;
+    font-size: 32rpx;
+}
+.CosCollections-taptab-right{
+    margin-left: 100rpx;
+    color: white;
+    font-size: 32rpx;
+}
+.CosCollections-taptab-right-active{
+    margin-left: 100rpx;
+    color: white;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(236, 128, 141, 0.7);
+    border-bottom-width: 8rpx;
+    font-size: 32rpx;
+}
+
+.CosCollections-list-content-item-header{
+    width: 175rpx;
+    height: 250rpx;
+}
+
+.CosCollections-list-content-item-image{
+    width: 175rpx;
+    height: 250rpx;
+}
+
+.CosCollections-list-content-item-header{
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+}
+
+.CosCollections-list-content-item-body{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.CosCollections-list-content-item-body-title{
+    font-size: 32rpx;
+}
+.CosCollections-list-content-item-body-character{
+    font-size: 32rpx;
+    margin-left: 16rpx;
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+}
+.CosCollections-list-content-item-body-character-text{
+    font-weight: bold;
+}
+.CosCollections-list-content-item-body-activeStatus{
+    font-size: 24rpx;
+    margin-left: 16rpx;
+    width: 130rpx;
+    height: 40rpx;
+    background-color: rgba(236, 128, 141, 0.3);
+    color: #D9001B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    border-radius: 20rpx;
+}
+.CosCollections-list-content-item-body-notactiveStatus{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+    margin-left: 16rpx;
+    width: 130rpx;
+    height: 40rpx;
+    background-color: rgba(51, 51, 51, 0.3);
+    color: #7F7F7F;
+    text-align: center;
+    border-style: none;
+    border-radius: 20rpx;
+}
+
+.CosCollections-allButton{
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+    width: 40%;
+    height: 80rpx;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(121, 121, 121, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    border-radius: 30rpx;
+}
+.CosCollections-Button{
+    color: #FFFFFF;
 }

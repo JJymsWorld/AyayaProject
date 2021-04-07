@@ -182,10 +182,9 @@
             "path" : "pages/HotActivities/CosCollectionsPage",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "热门活动",
+                "navigationBarTitleText": "",
 				"navigationBarBackgroundColor":"#F2A3C3",
-                "enablePullDownRefresh": false,
-				"navigationBarTextStyle":"white"
+                "enablePullDownRefresh": false
             }
             
         },{
