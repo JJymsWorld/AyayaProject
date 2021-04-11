@@ -12,7 +12,7 @@
 
 .goback-box {
 	float: left;
-	margin: 40rpx 0;
+	margin-top: 80rpx;
 }
 
 .goback-box image {
@@ -27,7 +27,7 @@
 	border-radius: 40rpx;
 	border: 1px solid #EC808D;
 	background-color: #FFFFFF;
-	margin: 30rpx 0;
+	margin-top: 70rpx;
 }
 
 .search-box input {

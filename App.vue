@@ -1,5 +1,8 @@
 <script>
 	export default {
+		globalData:{
+			global_userId: 0
+		},
 		onLaunch: function() {
 			uni.onTabBarMidButtonTap(()=>{
 					console.log("点击了");
@@ -33,7 +36,7 @@
 	/* 自定义图标库 */
 	@import url("./common/iconfont.css");
 	page{
-		background-color: rgba(240, 240, 240, 0.4);
-		background: rgba(240, 240, 240, 0.4);;
+		background-color: #FBFBFB;
+		background: #FFFFFF;
 	}
 </style>

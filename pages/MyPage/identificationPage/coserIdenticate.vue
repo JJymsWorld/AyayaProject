@@ -17,9 +17,9 @@
 		<view style="font-size: 13pt;padding-left: 66rpx;padding-top: 55rpx;">上传照片</view>
 		<table class="tablestyle2">
 			<tr>
-				<td style="width: 170rpx;"><image src="../../../static/icon/添加图片.png" class="addpic" mode="aspectFill"></image></td>
-				<td style="width: 170rpx;"><image src="../../../static/icon/添加图片.png" class="addpic" mode="aspectFill"></image></td>
-				<td style="width: 170rpx;"><image src="../../../static/icon/添加图片.png" class="addpic" mode="aspectFill"></image></td>
+				<td style="width: 170rpx;"><image src="../../../static/icon/addpic.png" class="addpic" mode="aspectFill"></image></td>
+				<td style="width: 170rpx;"><image src="../../../static/icon/addpic.png" class="addpic" mode="aspectFill"></image></td>
+				<td style="width: 170rpx;"><image src="../../../static/icon/addpic.png" class="addpic" mode="aspectFill"></image></td>
 			</tr>
 			<tr>
 				<td><view class="picword">定妆照1</view></td>
@@ -27,7 +27,7 @@
 				<td><view class="picword">社交平台主页</view></td>
 			</tr>
 		</table>
-		<view><image src="../../../static/icon/提交申请.png" style="width: 370rpx;height: 80rpx;margin-left: 190rpx;margin-top: 85rpx;border-radius: 13rpx;" mode="aspectFill"></image></view>
+		<view class="buttonBox"><text>提交申请</text></view>
 	</view>
 </template>
 
@@ -35,6 +35,9 @@
 </script>
 
 <style>
+	text{
+		font-family: '黑体';
+	}
 	.tablestyle{
 		margin-left: 66rpx;
 		margin-top: 120rpx;
@@ -66,5 +69,21 @@
 		font-size: 10pt;
 		color: #333333;
 		text-align: center;
+		vertical-align: top;
+	}
+	.buttonBox{
+		width: 370rpx;
+		height: 80rpx;
+		background-color: #F2A3C3;
+		border-radius: 15rpx;
+		text-align: center;
+		margin: 100rpx auto;
+		
+	}
+	.buttonBox text{
+		font-weight: bold;
+		font-family: '黑体';
+		color: #FFFFFF;
+		line-height: 80rpx;
 	}
 </style>

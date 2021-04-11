@@ -9,12 +9,12 @@
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">账号</text>
-				<input type="text" @input="onAccountInput" class="login-input"/>
+				<input type="text" @input="onAccountInput" class="login-input" :value="account"/>
 			</view>
 		</view>
 		<view class="content">
 			<view class="row-box">
-				<text class="login-text">密码</text>
+				<text class="login-text" :value='password'>密码</text>
 				<view class="login-input">
 					<input :password="showPassword" @input="onPwdInput" class="login-input pwd-input"/>
 					<text class="uni-icon" :class="[!showPassword ? 'uni-eye-active' : '']" @click="changePassword">&#xe568;</text>
@@ -48,42 +48,78 @@
 	export default {
 		data() {
 			return {
-				account:"",
-				password:"123456",
-				userId:0,
-				realPW:"123456",
+				account:"",	//	测试账号13757269040
+				password:"",
+				userId: 0,
+				realPW:"",
 				showPassword: true,
+				ifremPwd: false
 			}
 		},
 		methods: {
 			async getData(){
 				console.log(this.account)
 				console.log(this.password)
-				// const res = await this.$myRequest({
-				// 	url:'/Login/login',
-				// 	data:{
-				// 		account:1812190507
-				// 	}
-				// })
-				// // 获取密码和用户ID
-				// console.log(res)
-				// this.realPW = res.data[0].password
-				// this.userId = res.data[0].user_id
-				// console.log(this.realPW)
-				// console.log(this.password)
-				// console.log(this.userId)
+				const res = await this.$myRequest({
+					url:'/Login/login',
+					data:{
+						account: this.account
+					}
+				})
+				// 获取密码和用户ID
+				this.realPW = res.data[0].password
+				this.userId = res.data[0].user_id
+				console.log(this.userId)
+				console.log(this.realPW)
+				console.log(this.password)
+				// 判断账号不存在
+				if(this.userId == 0){
+					console.log('账号不存在')
+				}
 				// 账号密码正确跳转
-				if(this.password === this.realPW){
+				else if(this.password === this.realPW){
+					// 本地存入密码
+					if(this.ifremPwd){
+						// 本地存入密码
+						uni.setStorage({
+						    key: 'userPassWord',
+						    data: this.realPW,
+						    success: function () {
+						        console.log('success');
+						    }
+						});
+					}
+					//清空原本地密码中的内容
+					else{
+						uni.setStorage({
+						    key: 'userPassWord',
+						    data: '',
+						    success: function () {
+						        console.log('success');
+						    }
+						});
+					}
+					// 本地存入账号
+					uni.setStorage({
+					    key: 'userId',
+					    data: this.account,
+					    success: function () {
+					        console.log('success');
+					    }
+					});
+					//将用户ID存入全局变量
+					getApp().globalData.global_userId = this.userId
 					uni.switchTab({
 						url:"../Mypage/mypage"
 					})
 				}
-				// 判断账号不存在
-				
 				// 判断密码错误
+				else
+					console.log('密码错误')
 			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
+				console.log(this.account)
 			},
 			onPwdInput:function(event){
 				this.password = event.target.value;
@@ -93,11 +129,14 @@
 			},
 			localStorage: function(e){
 				var valid = e.detail.value;
+				console.log(valid)
 				if(valid[0] == 'rempwd'){
 					// 本地存入账号和密码
+					this.ifremPwd = true
 				}
 				else{
 					// 仅在本地存入账号
+					this.ifremPwd = false
 				}
 			},
 			gotoRegister: function(){
@@ -110,6 +149,23 @@
 					url:'./fogotpw'
 				})
 			}
+		},
+		onLoad(){
+			uni.getStorage({
+			    key: 'userId',
+			    success: res=> {
+			        console.log(res.data);
+					this.account = res.data
+			    }
+			});
+			uni.getStorage({
+			    key: 'userPassWord',
+			    success: res=> {
+			        console.log(res.data);
+					this.password = res.data
+			    }
+			});
+			console.log(getApp().globalData.global_userId)
 		}
 	}
 </script>

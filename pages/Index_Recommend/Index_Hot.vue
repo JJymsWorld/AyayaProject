@@ -1,8 +1,6 @@
 <template>
 	<view>
-		<view class="status_bar">
-		            <!-- 这里是状态栏 -->
-		</view>
+
 		<view class="index-halfpadding">
 			<view class="index-header">
 				<view class="row-box">
@@ -12,12 +10,13 @@
 							:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{item}}</text>
 					</view>
 					<view class="index-searchbox" @click="indexSeach">
-						<input disabled="true" placeholder="请输入搜索内容" placeholder-class="placeholder-style" />
+						<input style="font-size: 10pt;color: rgba(127,127,127,0.6);line-height: 49rpx;" disabled="true"
+							value="2021年征集计划" />
 					</view>
 				</view>
 			</view>
 			<view class="swiper-box">
-				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000">
+				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000" style="height: 355rpx;">
 					<swiper-item v-for="(img,index) in swiperimgs" :key="index">
 						<image :src="img.url" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
@@ -28,19 +27,23 @@
 			<view class="index-buttonBars">
 				<view class="button-box">
 					<view class="button-item">
-						<image class="button-img" src="../../static/buttonIcon/CosList.jpeg" mode="aspectFill" @click="CosListButtonClick"></image>
+						<image class="button-img" src="../../static/buttonIcon/CosList.jpeg" mode="aspectFill"
+							@click="CosListButtonClick"></image>
 						<view class="button-title">人气Cos榜</view>
 					</view>
 					<view class="button-item">
-						<image class="button-img" src="../../static/buttonIcon/PhotoSquare.jpeg" mode="aspectFill" @click="PhotoSquareButtonClick"></image>
+						<image class="button-img" src="../../static/buttonIcon/PhotoSquare.jpeg" mode="aspectFill"
+							@click="PhotoSquareButtonClick"></image>
 						<view class="button-title">约拍广场</view>
 					</view>
 					<view class="button-item">
-						<image class="button-img" src="../../static/buttonIcon/ClothMakeup.jpeg" mode="aspectFill" @click="ClothMakeupButtonClick"></image>
+						<image class="button-img" src="../../static/buttonIcon/ClothMakeup.jpeg" mode="aspectFill"
+							@click="ClothMakeupButtonClick"></image>
 						<view class="button-title">服饰妆容</view>
 					</view>
 					<view class="button-item">
-						<image class="button-img" src="../../static/buttonIcon/HotActivities.jpeg" mode="aspectFill" @click="HotActivitiesButtonClick"></image>
+						<image class="button-img" src="../../static/buttonIcon/HotActivities.jpeg" mode="aspectFill"
+							@click="HotActivitiesButtonClick"></image>
 						<view class="button-title">热门活动</view>
 					</view>
 				</view>
@@ -54,7 +57,7 @@
 			<view class="content-box">
 				<waterfallsFlow :list="contentList">
 					<template v-slot:default="item" class="content-box-item">
-						<view class="cnt">
+						<view class="cnt" @click="jumpto">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
 								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
@@ -70,7 +73,8 @@
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
 			<uni-list :border="false" class="Hotcontent-list-list">
-				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id" :title="item.text">
+				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id"
+					:title="item.text">
 					<template v-slot:body>
 						<view class="List-text">{{item.text}}</view>
 					</template>
@@ -99,7 +103,7 @@
 				tabIndex: 0,
 				swiperimgs: [{
 						imgId: 0,
-						url: "../../static/swiperImg/1.jpg"
+						url: "../../static/swiperImg/2.jpg"
 					},
 					{
 						imgId: 1,
@@ -110,6 +114,7 @@
 				topicContent: "谁知江南无醉意，笑看春风。",
 				contentList: [{
 						id: 1,
+						// image_url: "../../static/contentImg/1.jpg",
 						image_url: "../../static/contentImg/1.jpg",
 						title: '鬼灭之刃',
 						headImg: '../../static/contentImg/headimg1.jpg',
@@ -118,16 +123,15 @@
 					},
 					{
 						id: 2,
-						image_url: "../../static/contentImg/2.jpg",
-						title: '【Cos正品】楼兰',
+						image_url: "../../static/contentImg/3.jpg",
+						title: '【汉服】西域美人',
 						headImg: '../../static/contentImg/headimg1.jpg',
 						userName: 'CN清风',
 						viewNum: 2206
-					},
-					{
+					}, {
 						id: 3,
-						image_url: "../../static/contentImg/3.jpg",
-						title: '【汉服】西域美人',
+						image_url: "../../static/contentImg/2.jpg",
+						title: '【Cos正品】楼兰',
 						headImg: '../../static/contentImg/headimg1.jpg',
 						userName: 'CN清风',
 						viewNum: 2206
@@ -205,66 +209,65 @@
 						viewNum: 2206
 					}
 				],
-				HotList:[
-					{
-						id:1,
-						image_url:'../../static/HotListImg/1.jpg',
-						text:'蜜瓜JK妆!毕业要和姐妹去迪斯尼拍照呀!'
+				HotList: [{
+						id: 1,
+						image_url: '../../static/HotListImg/1.jpg',
+						text: '蜜瓜JK妆!毕业要和姐妹去迪斯尼拍照呀!'
 					},
 					{
-						id:2,
-						image_url:'../../static/HotListImg/2.jpg',
-						text:'江南美人图|奇迹团团环游中华之乌镇'
+						id: 2,
+						image_url: '../../static/HotListImg/2.jpg',
+						text: '江南美人图|奇迹团团环游中华之乌镇'
 					},
 					{
-						id:3,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 3,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					},
 					{
-						id:4,
-						image_url:'../../static/HotListImg/4.jpg',
-						text:'一梦 蜃影|奇迹党党环游中华之丝绸之路'
+						id: 4,
+						image_url: '../../static/HotListImg/4.jpg',
+						text: '一梦 蜃影|奇迹党党环游中华之丝绸之路'
 					},
 					{
-						id:5,
-						image_url:'../../static/HotListImg/5.jpg',
-						text:'一梦 蜃影|奇迹党党环游中华之丝绸之路'
+						id: 5,
+						image_url: '../../static/HotListImg/5.jpg',
+						text: '一梦 蜃影|奇迹党党环游中华之丝绸之路'
 					},
 					{
-						id:6,
-						image_url:'../../static/HotListImg/6.jpg',
-						text:'一梦 蜃影|奇迹党党环游中华之丝绸之路'
+						id: 6,
+						image_url: '../../static/HotListImg/6.jpg',
+						text: '一梦 蜃影|奇迹党党环游中华之丝绸之路'
 					},
 					{
-						id:7,
-						image_url:'../../static/HotListImg/7.jpg',
-						text:'一梦 蜃影|奇迹党党环游中华之丝绸之路'
+						id: 7,
+						image_url: '../../static/HotListImg/7.jpg',
+						text: '一梦 蜃影|奇迹党党环游中华之丝绸之路'
 					},
 					{
-						id:8,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 8,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					},
 					{
-						id:9,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 9,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					},
 					{
-						id:10,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 10,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					},
 					{
-						id:11,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 11,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					},
 					{
-						id:12,
-						image_url:'../../static/HotListImg/3.jpg',
-						text:'"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
+						id: 12,
+						image_url: '../../static/HotListImg/3.jpg',
+						text: '"最是人间留不住·朱颜辞镜花辞树"黑塔利亚Cos'
 					}
 				]
 			}
@@ -288,22 +291,32 @@
 			},
 			CosListButtonClick() {
 				uni.navigateTo({
-					url:'../PopCoser/PopCoser'
+					url: '../PopCoser/PopCoser'
 				})
 			},
 			PhotoSquareButtonClick() {
 				uni.navigateTo({
-					url:'../PhotoSquare/AppoinentRecommend'
+					url: '../PhotoSquare/AppoinentRecommend'
 				})
 			},
 			ClothMakeupButtonClick() {
 				uni.navigateTo({
-					url:'../CostumeAndMakeup/CostumePage'
+					url: '../CostumeAndMakeup/CostumePage'
 				})
 			},
 			HotActivitiesButtonClick() {
 				uni.navigateTo({
-					url: '../HotActivities/EventsPage'
+					url: '../HotActivities/EventsPage?'
+				})
+			},
+			workNavigate(i) {
+				uni.navigateTo({
+					url: '../works/works?id=' + i
+				})
+			},
+			jumpto() {
+				uni.navigateTo({
+					url: '../HotActivities/CollectionContentPage'
 				})
 			}
 		}
@@ -311,25 +324,25 @@
 </script>
 
 <style lang="scss" scoped>
-	.content-box{
-		width: 95%;
-		margin-left: auto;
-		margin-right: auto;
-		.cnt{
+	.content-box {
+		width: 88%;
+		margin: 40rpx auto;
+
+		.cnt {
 			padding: 10rpx;
 		}
 	}
-	
 </style>
 
 <style>
 	@import url("../../static/css/login.css");
-	
-	.status_bar{
+
+	.status_bar {
 		height: var(--status-bar-height);
 		width: 100%;
 		background-color: #F2A3C3;
 	}
+
 	.row-box {
 		display: flex;
 		width: 85%;
@@ -338,17 +351,21 @@
 
 	.uni-tab-item {
 		/* #ifndef APP-PLUS */
+		width: 100rpx;
 		display: inline-block;
 		/* #endif */
 		flex-wrap: nowrap;
 		padding-left: 10rpx;
 		padding-right: 10rpx;
+		text-align: center;
+
 	}
 
 	.uni-tab-item-title {
 		color: #000000;
 		font-size: 30rpx;
 		height: 80rpx;
+		/* margin-left: 25rpx; */
 		line-height: 80rpx;
 		flex-wrap: nowrap;
 		/* #ifndef APP-PLUS */
@@ -358,19 +375,18 @@
 	}
 
 	.uni-tab-item-title-active {
+
 		color: #797979;
 		font-size: 40rpx;
-		border-bottom: solid #797979;
+		border-bottom: 8rpx solid #797979;
 	}
 
 	.index-searchbox {
 		display: inline-block;
-		border-style: solid;
-		border-color: #797979;
-		border-width: 2rpx;
 		border-radius: 20rpx;
 		text-align: center;
 		width: 65%;
+		background-color: rgba(242, 242, 242, 0.3);
 		margin-left: 40rpx;
 		margin-top: 20rpx;
 		margin-bottom: 20rpx;
@@ -383,20 +399,20 @@
 	}
 
 	.swiper-box {
-		height: 300rpx;
+		height: 305rpx;
 		align-items: center;
-		width: 90%;
+		width: 86%;
 		margin-left: auto;
 		margin-right: auto;
-		margin-top: 20rpx;
-		box-shadow: 2px 2px 10px rgba(134,134,134,0.6);
+		margin-top: 35rpx;
+		box-shadow: 2px 2px 10px 0px rgba(134, 134, 134, 0.6);
 		border-style: none;
 		border-radius: 20rpx;
 	}
 
 	.swiper-item {
 		display: block;
-		height: 300rpx;
+		height: 305rpx;
 		width: 100%;
 		margin-left: auto;
 		margin-right: auto;
@@ -405,17 +421,22 @@
 	}
 
 	.index-halfpadding {
+		height: 470rpx;
 		border-style: none;
 		background-color: #F2A3C3;
 		border-bottom-left-radius: 200rpx;
 		border-bottom-right-radius: 200rpx;
+		margin-top: 0rpx;
+		/* box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.2); */
+		box-shadow: 2px 2px 10px rgba(140, 140, 140, 1);
 	}
 
 	.button-box {
 		display: flex;
 		flex-direction: row;
-		margin-top: 30rpx;
+		margin-top: 50rpx;
 		width: 90%;
+		height: 135rpx;
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -430,9 +451,9 @@
 	}
 
 	.button-img {
-		width: 80rpx;
-		height: 80rpx;
-		border-radius: 40rpx;
+		width: 75rpx;
+		height: 75rpx;
+		border-radius: 100rpx;
 		border-style: none;
 		/* background-size: contain; */
 	}
@@ -442,6 +463,7 @@
 		font-size: 25rpx;
 		margin-top: 20rpx;
 	}
+
 	.topic-box {
 		display: flex;
 		flex-direction: row;
@@ -453,36 +475,41 @@
 	}
 
 	.topic-title {
-		font-size: 25rpx;
+		font-size: 20rpx;
 		border-style: none;
 		border-radius: 10rpx;
 		background-color: #FFA7C7;
-		margin: auto;
+		margin-left: 50rpx;
 		padding: 10rpx 20rpx 10rpx 20rpx;
 		color: #F1F1F1;
 	}
 
 	.topic-type {
-		font-size: 25rpx;
+		font-size: 20rpx;
 		color: #428BFF;
-		margin: auto;
+		opacity: 0.5;
+		margin-left: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.topic-content {
-		font-size: 25rpx;
+		font-size: 8pt;
 		color: #797979;
-		margin: auto;
+		opacity: 0.6;
+		margin-left: 20rpx;
+		margin-top: 10rpx;
 	}
 
 	.sort-icon {
 		margin: auto;
 	}
-	
+
 	.title {
 		text-align: left;
-		margin-top: 20rpx;
+		margin-top: 10rpx;
+		margin-left: 44rpx;
 		margin-bottom: 20rpx;
-		font-size: 36rpx;
+		font-size: 25rpx;
 	}
 
 	.user-info-box {
@@ -492,8 +519,8 @@
 	}
 
 	.user-head-img {
-		width: 50rpx;
-		height: 50rpx;
+		width: 35rpx;
+		height: 35rpx;
 		border-style: none;
 		border-radius: 25rpx;
 		margin-right: 10rpx;
@@ -501,7 +528,7 @@
 	}
 
 	.user-name {
-		font-size: 25rpx;
+		font-size: 8pt;
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
@@ -512,40 +539,50 @@
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
-		font-size: 25rpx;
+		font-size: 8pt;
 	}
-	
-	.Hotcontent-list-box{
-		box-shadow:0 0 4rpx 4rpx rgb(215,215,215);
+
+	.Hotcontent-list-box {
+		box-shadow: 2rpx 2rpx 10rpx 10rpx rgb(215, 215, 215, 0.1);
 		border-radius: 30rpx 30rpx 0 0;
-		width:90%;
+		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
-		margin-top: 50rpx;
+		margin-top: 60rpx;
 		box-sizing: border-box;
 		padding: 10rpx;
+		background-color: #FFFFFF;
 	}
-	.List-text{
+
+	.List-text {
 		font-size: 26rpx;
 		text-align: left;
 		margin-top: auto;
 		margin-bottom: auto;
 		margin-right: 30rpx;
 	}
-	.Img-In-List{
+
+	.Img-In-List {
 		width: 200rpx;
 		height: 120rpx;
 	}
-	.ListImg-Style{
+
+	.ListImg-Style {
 		width: 200rpx;
 		height: 120rpx;
 		border-style: none;
 		border-radius: 15rpx;
 	}
-	.uni-list::before{
+
+	.uni-list::before {
 		display: none;
 	}
-	.uni-list::after{
+
+	.uni-list::after {
 		display: none;
+	}
+
+	.index-header {
+		padding-top: 70rpx;
 	}
 </style>

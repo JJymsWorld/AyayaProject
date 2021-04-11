@@ -6,8 +6,8 @@ ul,li{
 }
 .back{
 	position: absolute;
-	top: 10rpx;
-	left: 20rpx;
+	top: 40rpx;
+	left: 30rpx;
 	font-size: 18pt;
 	color: #6A6A6A;
 }
@@ -16,7 +16,7 @@ ul,li{
 	top: 0rpx;
 	left: 0rpx;
 	width: 100%;
-	height: 524rpx;
+	height: 580rpx;
 	background-image: url(../../../static/iconn/back.png);
 }
 .backBoxButtom{
@@ -24,7 +24,7 @@ ul,li{
 	top: 360rpx;
 	left: 0rpx;
 	width: 100%;
-	height: 195rpx;
+	height: 250rpx;
 	background-color: #FFFFFF;
 	border-top-left-radius: 100rpx;
 	border-top-right-radius: 100rpx;
@@ -58,9 +58,9 @@ ul,li{
 }
 .backBoxSign{
 	position: absolute;
-	top: 153rpx;
+	top: 163rpx;
 	left: 62rpx;
-	font-size: 9pt;
+	font-size: 8pt;
 	color: #B1B1B1;
 }
 .backBoxTable{
@@ -91,12 +91,14 @@ ul,li{
 	height: 48rpx;
 	border: 5rpx solid #D4D4D4;
 	border-radius: 9rpx;
+	line-height: 40rpx;
+	text-align: center;
 }
 .backBoxEdit text{
 	font-size: 9pt;
 	color: #BBBBBB;
-	line-height: 48rpx;
-	padding-left: 28rpx;
+	line-height: 40rpx;
+	
 }
 .backBoxCos{
 	position: absolute;
@@ -107,26 +109,207 @@ ul,li{
 	border: 5rpx solid #FFDDE9;
 	border-radius: 58rpx;
 	background-color: #FF82AF;
+	text-align: center;
 }
 .backBoxCos text{
 	font-size: 8pt;
 	color: #FFFFFF;
 	line-height: 105rpx;
-	padding-left: 20rpx;
+	padding-left: 0rpx;
+}
+.naviBox{
+	
+	margin: 50rpx auto;
+	width: 55%;
+	/* #ifndef APP-PLUS */
+	white-space: nowrap;
+	 /*  #endif  */
+	
 }
 .navigateUl{
-	width: 400rpx;
+	width: 30%;
 	height: 60rpx;
-	margin: 50rpx auto;
+	/* margin: 50rpx auto; */
 	padding-bottom: 20rpx;
+	/* #ifndef APP-PLUS */
+	white-space: nowrap;
+	 /*  #endif  */
 }
-.navigateUl li{
+.navi{
+	display: inline-block;
+	font-size: 15pt;
+	font-weight: bold;
+	padding-bottom: 13rpx;
+	margin-left: 10rpx;
+	margin-right: 10rpx;
+	text-align: center;
+	border-bottom: 7rpx solid #F2A3C3;
+}
+.navino{
+	display: inline-block;
+	/* margin-left: 50rpx; */
+	font-size: 12pt;
+	width: 100rpx;
+	margin-left: 15rpx;
+	margin-right: 15rpx;
+	text-align: center;
+}
+
+
+
+.navigateUl ul{
+	position: absolute;
+	top: 0;
+	left: 15%;
+	width: 550rpx;
+}
+.navigateUl ul li {
 	margin-left: 50rpx;
 	font-size: 12pt;
+	width: 90rpx;
+	text-align: center;
 }
-.navigateUl li:hover{
-	font-size: 17pt;
+.navigateUl ul li:last-child{
+	margin-left: 50rpx;
+	font-size: 12pt;
+	width: 135rpx;
+}
+/* .navigateUl li:hover{
+	font-size: 15pt;
 	font-weight: bold;
 	padding-bottom: 13rpx;
 	border-bottom: 7rpx solid #F2A3C3;
+} */
+
+
+.dynamicBox{
+	margin-top: 10rpx;
 }
+.dynamicIt{
+	width: 100%;
+	background-color: #FFFFFF;
+	margin: 0rpx auto;
+}
+.dynamnicHead{
+	position: relative;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 130rpx;
+}
+.dynamicAvatar{
+	position: absolute;
+	top: 25rpx;
+	left: 38rpx;
+	width: 90rpx;
+	height: 90rpx;
+	border-radius: 95rpx;
+}
+.dynamicUserDate{
+	position: absolute;
+	top:40rpx;
+	left:140rpx;
+}
+.dynamicUsername{
+	font-size: 11pt;
+	font-weight: bold;
+}
+.dynamicDate{
+	font-size: 5pt;
+	color: #ACACAC;
+	line-height: 35rpx;
+}
+.dynamicText{
+	width: 90%;
+	font-size: 11pt;
+	padding-left: 46rpx;
+}
+.dynamicImage{
+	/* width: 670rpx; */
+	width: 90%;
+	height: 340rpx;
+	border-radius: 20rpx;
+	margin-top: 20rpx;
+	margin-left: 5%;
+	/* margin-left: 2rpx; */
+}
+.dynamicTitle{
+	width: 80%;
+	font-size: 12pt;
+	font-weight: bold;
+	padding-left: 42rpx;
+	line-height: 58rpx;
+}
+.littleIconTable{
+	margin-left: 85rpx;
+	margin-top: 10rpx;
+	margin-bottom: 20rpx;
+}
+.littleIconTable tr td{
+	width: 240rpx;
+}
+.littleIcon{
+	width: 40rpx;
+	height: 38rpx;
+	opacity: 0.4;
+	vertical-align: middle;
+}
+.littleIcon2{
+	width: 30rpx;
+	height: 30rpx;
+	opacity: 0.3;
+	vertical-align: middle;
+}
+.number{
+	font-size: 10pt;
+	color: #ACACAC;
+	padding-left: 6rpx;
+}
+
+
+@font-face {
+  font-family: 'iconfont';
+  
+  src: url('../../../iconClass/iconfont.eot');
+  src: url('../../../iconClass/iconfont.eot?#iefix') format('embedded-opentype'),
+      url('../../../iconClass/iconfont.woff2') format('woff2'),
+      url('../../../iconClass/iconfont.woff') format('woff'),
+      url('../../../iconClass/iconfont.ttf') format('truetype'),
+      url('../../../iconClass/iconfont.svg#iconfont') format('svg');
+}
+
+.cnt{
+	width: 90%;
+	margin: 10rpx auto;
+}
+
+.title{
+	font-size: 25rpx;
+	padding-left: 0rpx;
+}
+
+
+
+
+
+
+.iconfont {
+  position: absolute;
+  top: 69rpx;
+  left: 32rpx;
+  opacity: 0.5;
+   z-index: 1;
+  font-family: "iconfont" !important;
+  font-weight: bold;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.uni-list::before{
+		display: none;
+	}
+	.uni-list::after{
+		display: none;
+	}

@@ -1,5 +1,8 @@
 <template>
 	<view class="box">
+		<view class="navigate-box">
+			
+		</view>
 		<view class="search-box">
 			<uni-search-bar @confirm="onSearch" @cancel="onGoBack" :radius="30" ></uni-search-bar>
 		</view>
@@ -8,7 +11,7 @@
 				<text class="search-text">热门话题</text>
 			</view>
 			<view class="hot-topic">
-				<button class="topic-btn" v-for='(item,index) in hotTopic' :key='index'>{{item}}</button>
+				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index'>{{item}}</view>
 			</view>
 		</view>
 		<view class="row-box">
@@ -20,7 +23,7 @@
 				</view>
 			</view>
 			<view class="search-hsty">
-				<button class="hsty-btn" v-for='(item,index) in searchHsty' :key='index'>{{item}}</button>
+				<view class="hsty-btn" v-for='(item,index) in searchHsty' :key='index'>{{item}}</view>
 			</view>
 		</view>
 	</view>
@@ -62,35 +65,46 @@
 
 <style>
 	@import url("../../static/css/login.css");
+	.navigate-box{
+		width: 100%;
+		height: 70rpx;
+	}
 	.row-box{
 		width: 90%;
 	}
 	.search-text{
-		font-size: 16px;
+		font-size: 32rpx;
 		font-family: 'Courier New';
 	}
 	.topic-btn,.hsty-btn{
 		float: left;
-		margin: 8px;
+		margin-top: 40rpx;
+		margin-right: 25rpx;
+		padding: 0 30rpx;
 		background-color: #FFF2F6;
 		color: rgba(255,110,162,0.7);
+		border: 1rpx solid #FFF2F6;
 		font-weight: 700;
-		font-size: 12px;
-		line-height: 28px;
-		border-radius: 5px;
+		font-size: 24rpx;
+		line-height: 45rpx;
+		border-radius: 35rpx;
 	}
 	.hsty-btn{
 		background-color: #F2F2F2;
+		border: 1rpx solid #F2F2F2;
 		color: #323233;
 	}
 	.delete-icon{
 		
 	}
 	.delete-text{
-		padding: 5px;
-		font-size: 12px;
+		padding: 10rpx;
+		font-size: 24rpx;
 	}
 	.delete-hsty{
 		float: right;
+	}
+	page{
+		background: #FFFFFF;
 	}
 </style>

@@ -389,9 +389,9 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "热门活动",
-        		"navigationBarBackgroundColor":"#F2A3C3",
+				"navigationBarBackgroundColor":"#F2A3C3",
                 "enablePullDownRefresh": false,
-        		"navigationBarTextStyle":"white"
+				"navigationBarTextStyle":"white"
             }
             
         },{
@@ -399,7 +399,7 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-        		"navigationBarBackgroundColor":"#F2A3C3",
+				"navigationBarBackgroundColor":"#F2A3C3",
                 "enablePullDownRefresh": false
             }
             
@@ -407,10 +407,9 @@
             "path" : "pages/HotActivities/CosCollectionsPage",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "热门活动",
-        		"navigationBarBackgroundColor":"#F2A3C3",
-                "enablePullDownRefresh": false,
-        		"navigationBarTextStyle":"white"
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
             }
             
         },{
@@ -418,21 +417,21 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
-        		"navigationBarBackgroundColor":"#F2A3C3",
+				"navigationBarBackgroundColor":"#F2A3C3",
                 "enablePullDownRefresh": false
             }
             
         },
-        {
-            "path" : "pages/HotActivities/CollectionContentPage",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "热门活动",
-        		"navigationBarBackgroundColor":"#F2A3C3",
-                "enablePullDownRefresh": false,
-        		"navigationBarTextStyle":"white"
-            }
-        }
+		{
+		    "path" : "pages/HotActivities/CollectionContentPage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "热门活动",
+				"navigationBarBackgroundColor":"#F2A3C3",
+		        "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+		    }
+		}
         ,{
             "path" : "pages/CostumeAndMakeup/MakeUpPage",
             "style" :                                                                                    
@@ -443,7 +442,13 @@
         		"navigationBarTextStyle":"white"
             }
             
-        }
+        },
+		{
+			"path":"pages/works/works",
+			"style":{
+				"navigationStyle":"custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

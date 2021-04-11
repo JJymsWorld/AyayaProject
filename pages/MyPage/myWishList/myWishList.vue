@@ -6,10 +6,8 @@
 			    <text>{{item.head}}</text>
 			</navigator>
 			
-			<view class="edit">
-				<navigator url="../../works/myWish" open-type="navigate">
+			<view class="edit" @click="myWishItemNavi()">
 					<view>编辑</view>
-				</navigator>
 			</view>
 		</view>
 	</view>
@@ -26,6 +24,13 @@
 						head:"江南美人图|奇迹党党环游中华之江南"
 					}
 				]
+			}
+		},
+		methods:{
+			myWishItemNavi(){
+				uni.navigateTo({
+					url:'../../works/myWish'
+				})
 			}
 		}
 	}
