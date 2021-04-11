@@ -39,7 +39,7 @@ ul,li{
 	position: absolute;
 	top:60rpx;
 	left: 220rpx;
-	font-size: 12pt;
+	font-size: 30rpx;
 	font-weight: bold;
 	font-family: '黑体';
     width: 420rpx;
@@ -47,7 +47,7 @@ ul,li{
 }
 .contenPart{
 	width: 694rpx;
-	height: 606rpx;
+	/* height: 606rpx; */
 	margin-top: 50rpx;
 	margin-left: 28rpx;
 	background-color: #FFFFFF;
@@ -59,7 +59,7 @@ ul,li{
 	padding-left: 30rpx;
 }
 .contenTableLeft{
-	font-size: 12pt;
+	font-size: 30rpx;
 }
 .contenViewT{
 	width: 536rpx;
@@ -75,14 +75,21 @@ ul,li{
 }
 .contenViewT text{
 	font-size: 8pt;
-	padding-left: 60rpx;
-	line-height: 59rpx;
+	padding-left: 30rpx;
+	line-height: 30rpx;
+	color: #C3C3C3;
+}
+.contenViewT view{
+	display: inline-block;
+	font-size: 8pt;
+	padding-left: 10rpx;
+	line-height: 20rpx;
 	color: #C3C3C3;
 }
 .contentMore{
 	display: inline-block;
 	height: 70rpx;
-	font-size: 9pt;
+	font-size: 22rpx;
 	padding-left: 20rpx;
 	color: #EC808D;
 }
@@ -92,12 +99,14 @@ ul,li{
 	padding-left: 60rpx;
 }
 .other{
+	font-size: 28rpx;
 	display: inline-block;
-	padding-left: 30rpx;
+	padding-left: 35rpx;
+	padding-bottom: 50rpx;
 }
 .otherIcon{
-	width: 20rpx;
-	height: 25rpx;
+	width: 16rpx;
+	height: 22rpx;
 	padding-left: 30rpx;
 }
 .finalButton{

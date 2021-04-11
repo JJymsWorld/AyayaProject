@@ -87,7 +87,7 @@ export default {
 	height: 1px;
 	-webkit-transform: scaleY(0.5);
 	transform: scaleY(0.5);
-	background-color: $uni-border-color;
+	// background-color: $uni-border-color;
 	z-index: 1;
 }
 
@@ -99,7 +99,7 @@ export default {
 	height: 1px;
 	-webkit-transform: scaleY(0.5);
 	transform: scaleY(0.5);
-	background-color: $uni-border-color;
+	// background-color: $uni-border-color;
 }
 
 /* #endif */

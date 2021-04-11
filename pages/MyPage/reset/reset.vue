@@ -1,20 +1,5 @@
 <template>
 	<view style="background-color: #FBFBFB;height: 1500rpx;">
-		<!-- <table style="background-color: #FFFFFF;width: 100%;height:210rpx;">
-			<tr>
-				<td><image class="avatar" src="../../../static/iconn/2.jpg" mode="aspectFill" ></image></td>
-				<td style="vertical-align: top;width: 250rpx;">
-					<view style="width: 300rpx;">
-						<text class="username">jennie</text>
-						<view style="font-size: 9pt;line-height: 12rpx;color: #AAAAAA;">账号:{{account}}</view>
-					</view>
-					</td>
-				<td style="vertical-align: top;">
-					<view style="font-size: 9pt;border: 3rpx solid #EC808D;border-radius: 9rpx;width: 70rpx;height: 30rpx;margin-left: 100rpx;margin-top: 45rpx;">
-						<text style="line-height: 32rpx;padding-left: 13rpx;color: #EC808D;font-size: 9pt;">编辑</text></view>
-				</td>
-			</tr>
-		</table> -->
 		<view class="headbox">
 			<image :src='avatarr'></image>
 			<view class="text">
@@ -23,7 +8,7 @@
 			</view>
 			<view class="edit"><text>编辑</text></view>
 		</view>
-		<table style="width: 100%;background-color: #FFFFFF;">
+		<table style="width: 100%;background-color: #FFFFFF;margin-top: 10rpx;">
 			<tr class="blanktd">
 				<td style="width: 680rpx;"><text class="word">账户与安全</text></td>
 				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
@@ -78,12 +63,12 @@
 		position: relative;
 		top: 0rpx;
 		left:0rpx;
-		height: 180rpx;
+		height: 250rpx;
 		background-color: #FFFFFF;
 	}
 	.headbox image{
 		position: absolute;
-		top:20rpx;
+		top:75rpx;
 		left:45rpx;
 		width: 110rpx;
 		height: 110rpx;
@@ -91,8 +76,8 @@
 	}
 	 .text{
 		position: absolute;
-		top: 35rpx;
-		left: 200rpx;
+		top: 80rpx;
+		left: 188rpx;
 	}
 	.text1{
 		/* line-height: 95rpx; */
@@ -106,21 +91,19 @@
 	}
 	 .edit {
 		position: absolute;
-		top: 50rpx;
+		top: 95rpx;
 		right: 56rpx;
 		width: 70rpx;
 		height: 32rpx;
 		border: 3rpx solid #EC808D;
-		border-radius: 9rpx;/*        line-height: 32rpx; */
+		border-radius: 9rpx;
+		text-align: center;
+		line-height: 23rpx;
 	}
 	.edit text{
-		position: absolute;
-		top: 11rpx;
-		right: 13rpx;
-		font-size: 9pt;
+		font-size: 23rpx;
 		color: #EC808D;
-		line-height: 10rpx;
-		padding-left: 13rpx;
+
 	}
 	.avatar {
 		width: 110rpx;
@@ -145,11 +128,12 @@
 	.word{
 		font-size: 11pt;
 		color: #333333;
-		padding-left: 46rpx;
+		padding-left: 48rpx;
 	}
 	.blanktd{
-		height: 80rpx;
+		height: 95rpx;
 		background-color: #FFFFFF;
+		
 	}
 	.loginAndExit{
 		list-style: none;

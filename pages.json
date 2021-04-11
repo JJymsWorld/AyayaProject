@@ -37,19 +37,20 @@
 		    }
 		}
 		,{
-	        "path" : "pages/Index_Recommend/Index_Hot",
-	        "style" :                                                                                    
-	        {
-	            "navigationBarTitleText": "",
-	            "enablePullDownRefresh": false
-	        }
-	        
-	    }
+		    "path" : "pages/Index_Recommend/Index_Hot",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+				"navigationStyle":"custom",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
 		,{
             "path" : "pages/DynamicPage/dynamic",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的关注",
                 "enablePullDownRefresh": false
             }
             
@@ -58,7 +59,7 @@
             "path" : "pages/MessageCenter/MessageCenter",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消息中心",
                 "enablePullDownRefresh": false
             }
             
@@ -289,18 +290,178 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+			"path":"pages/PopCoser/PopCoser",
+			"style":{
+				"navigationBarTitleText":"人气Cos榜"
+			}
+		}
+        ,{
+            "path" : "pages/MessageCenter/dialogpage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
         }
+        ,{
+            "path" : "pages/MessageCenter/cos-dialog-ordermsg",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/pictureOrder/coser/cosorder",
+		    "style" :                                                                                    
+		    {
+		        "navigationStyle": "custom",
+				"app-plus":{
+					"background": "rgba(240, 240, 240, 0.4)"
+				}
+			}	
+		}
+		,{
+		    "path" : "pages/pictureOrder/photographer/phorder",
+		    "style" :                                                                                    
+		    {
+		        "navigationStyle": "custom",
+				"app-plus":{
+					"background": "rgba(240, 240, 240, 0.4)"
+				}
+			}	
+		}
+        ,{
+            "path" : "pages/PopCoser/PopCoser",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "人气Cos榜",
+        		"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+        		"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/PopCoser/StayInCoserList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+        		"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/PhotoSquare/AppoinentRecommend",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "约拍广场",
+        		
+        		"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+        		"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/PhotoSquare/PhotographerList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+        		"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/CostumeAndMakeup/CostumePage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "服妆",
+                "enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor":"#F2A3C3",
+        		"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/HotActivities/EventsPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "热门活动",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+            }
+            
+        },{
+            "path" : "pages/HotActivities/EventDetailPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/HotActivities/CosCollectionsPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/HotActivities/CoserHirePage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#F2A3C3",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/HotActivities/CollectionContentPage",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "热门活动",
+				"navigationBarBackgroundColor":"#F2A3C3",
+		        "enablePullDownRefresh": false,
+				"navigationBarTextStyle":"white"
+		    }
+		}
+        ,{
+            "path" : "pages/CostumeAndMakeup/MakeUpPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "服妆",
+                "enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor":"#F2A3C3",
+        		"navigationBarTextStyle":"white"
+            }
+            
+        },
+		{
+			"path":"pages/works/works",
+			"style":{
+				"navigationStyle":"custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#00ff00"
+		"navigationBarBackgroundColor": "#F2A3C3",
+		"backgroundColor": "rgba(240, 240, 240, 0.4)"
 	},
 	"tabBar": {
-		"color":"#101010",
+		"color":"#737373",
 		"selectedColor":"#F85D9F",
+		"iconWidth":"22px",
 		"backgroundColor":"#FFFFFF",
+		"borderStyle":"white",
 		"list":[{
 			"pagePath":"pages/Index_Recommend/Index_Hot",
 			"text":"首页",
@@ -325,8 +486,10 @@
 		],
 		"midButton":{
 			"iconPath":"static/tabbar/released.png",
-			"height":"70px",
-			"iconWidth":"50px"
+			// "iconPath":"static/icon/发布.png",
+			"width":"90px",
+			"height":"56px",
+			"iconWidth":"35px"
 		}
 	}
 }

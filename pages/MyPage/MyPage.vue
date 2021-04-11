@@ -1,25 +1,26 @@
 <template>
 	<view>
-		<view style="height: 70rpx;">
+<!-- 		<view style="height: 70rpx;">
 			<navigator url="reset/reset" open-type="navigate">
-				<image src="../../static/icon/设置.png"style="width: 39rpx;height: 39rpx;margin-left: 680rpx;margin-top: 40rpx;opacity: 0.5;"mode="aspectFill"></image>
+				<image src="../../static/icon/设置.png"style="width: 39rpx;height: 39rpx;margin-left:0rpx;margin-top: 40rpx;opacity: 0.5;"mode="aspectFill"></image>
 			</navigator>
-		</view>
+		</view> -->
         <!-- 第一模块：头像、昵称等 -->
+		<view class="head" >
+			<span class="iconfont" @click='resetNavi()'>&#xe60a;</span>
+		</view>
 		<table>
 			<tr>
 				<td><image class="avatar" src="../../static/iconn/2.jpg" mode="aspectFill" ></image></td>
 				<td style="vertical-align: top;"><text class="username">jennie</text></td>
 				<td style="vertical-align: top;">
-					<navigator url="homePage/homePage" open-type="navigate">
-						<view style="font-size: 9pt;border: 3rpx solid #797979;border-radius: 9rpx;width: 120rpx;height: 46rpx;margin-left: 265rpx;margin-top: 30rpx;">
-						<text style="line-height: 46rpx;padding-left: 13rpx;color: #797979;">个人主页</text></view>
-					</navigator>
+						<view @click="homePageNavi()" style="font-size: 9pt;border: 3rpx solid #797979;opacity: 0.7; border-radius: 9rpx;width: 120rpx;height: 46rpx;margin-left: 245rpx;margin-top: 30rpx;">
+						<text style="line-height: 46rpx;padding-left: 11rpx;color: #797979;">个人主页</text></view>
 				</td>
 			</tr>
 		</table>
 		<view style="font-size: 10pt;font-family: Arial;height: 66rpx;">
-			<text style="padding-left: 100rpx;line-height: 66rpx;">你还没有个性签名哦！</text>
+			<text style="padding-left: 100rpx;line-height: 66rpx;font-size: 9pt;">你还没有个性签名哦！</text>
 		</view>
 		<!-- 第二模块：关注、粉丝、获应援、获赞与收藏 -->
 		<view>
@@ -44,22 +45,18 @@
 		</table>
 		</view>
 		<!-- 第三模块：粉色边框按钮 -->
-		<view style="padding-left: 33rpx;height: 150rpx;">
+		<view style="padding-left: 33rpx;height: 150rpx;margin: 10rpx auto;width: 700rpx;">
 			<span class="forthline">
-				<image src="../../static/icon/钱包.png" mode="aspectFill"></image> 
+				<image src="../../static/icon/moneyBag.png" mode="aspectFill"style="vertical-align: top;"></image> 
 			    <text>我的钱包</text>
 		    </span>
-			<span class="forthline">
-				<navigator url="myWishList/myWishList" open-type="navigate">
-					<image src="../../static/icon/xinyuan.jpg" mode="aspectFill"></image> 
+			<span class="forthline" @click='myWishNavi()'>
+					<image src="../../static/icon/xinyuan.jpg" mode="aspectFill"style="vertical-align: top;"></image> 
 				<text>我的心愿</text>
-				</navigator>
 			</span>
-			<span class="forthline">
-				<navigator url="myStarList/myStarList" open-type="navigate">
-				<image src="../../static/icon/收藏夹.png" mode="aspectFill"></image>
+			<span class="forthline" @click='myCollectionNavi()'>
+				<image src="../../static/icon/shoucangjia.png" mode="aspectFill"style="vertical-align: top;"></image>
 				<text>我的收藏</text>
-				</navigator>
 			</span>
 		</view>
 		<!-- 第四模块：认证、勋章成就、活动、历史记录 -->
@@ -70,11 +67,11 @@
 		<table style="padding-left: 80rpx;width: 750rpx;padding-top: 28rpx;">
 			<tr>
 				<td>
-					<navigator url="identificationPage/identification" open-type="navigate"><image class="sixlinepic"src="../../static/icon/认证re.jpg"></image></navigator>
+					<image class="sixlinepic"src="../../static/icon/re.jpg" @click="identivateNavi()"></image>
 				</td>
-				<td><image class="sixlinepic"src="../../static/icon/勋章成就11.jpg"></image></td>
-				<td><image class="sixlinepic"src="../../static/icon/活动11.jpg"></image></td>
-				<td><image class="sixlinepic"src="../../static/icon/历史记录11.jpg"></image></td>
+				<td><image class="sixlinepic"src="../../static/icon/attainment.jpg"></image></td>
+				<td><image class="sixlinepic"src="../../static/icon/entertainment.jpg"></image></td>
+				<td><image class="sixlinepic"src="../../static/icon/onrecord.jpg"></image></td>
 			</tr>
 			<tr style="height: 50rpx;">
 				<td style="font-size: 9pt;"> 身份认证</td>
@@ -86,24 +83,24 @@
 		<!-- 第五模块：我的约拍 -->
 		<view class="finalbox">
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
-				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;"></span>
-				<text style="font-size: 13pt;font-weight:500;padding-left: 15rpx;">我的约拍</text>
-				<text style="font-size: 9pt;font-weight:500;padding-left: 320rpx;color: #C0C0C0;">查看全部订单 ></text>
+				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
+				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
+				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
 					<td>
 						<navigator url="myPic/myPic" open-type="navigate">
-							<image class="sevenlinepic" src="../../static/icon/待处理.png"></image>
+							<image class="sevenlinepic" src="../../static/icon/waiting.png"></image>
 						</navigator>
 					</td>
-					<td><image class="sevenlinepic" src="../../static/icon/进行中.png"></image></td>
-					<td><image class="sevenlinepic" src="../../static/icon/完成.png"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/doing.png"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/complete.png"></image></td>
 				</tr>
 				<tr>
-					<td style="font-size: 9pt;">待处理</td>
-					<td style="font-size: 9pt;">进行中</td>
-					<td style="font-size: 9pt;">已完成</td>
+					<td style="font-size: 8pt;line-height: 30rpx;">待处理</td>
+					<td style="font-size: 8pt;line-height: 30rpx;">进行中</td>
+					<td style="font-size: 8pt;line-height: 30rpx;">已完成</td>
 				</tr>
 			</table>
 		</view>
@@ -111,12 +108,51 @@
 </template>
 
 <script>
-	
+	export default{
+		data(){
+			
+		},
+		methods:{
+			resetNavi(){
+				uni.navigateTo({
+					url:'reset/reset'
+				})
+			},
+			identivateNavi(){
+				uni.navigateTo({
+					url:'identificationPage/identification'
+				})
+			},
+			homePageNavi(){
+				uni.navigateTo({
+					url:'homePage/homePage'
+				})
+			},
+			myCollectionNavi(){
+				uni.navigateTo({
+					url:'./myStarList/myStarList'
+				})
+			},
+			myWishNavi(){
+				uni.navigateTo({
+					url:'myWishList/myWishList'
+				})
+			}
+		}
+	}
 </script>
 
 <style>
+	@import url("icon.css");
 	page {
 	background-color:#FBFBFB;
+	}
+	.head{
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
 	}
 	.avatar {
 		width: 140rpx;
@@ -134,12 +170,12 @@
 	}
 	.forthline {
 		display: inline-block;
-		width: 200rpx;
+		width: 190rpx;
 		height: 80rpx;
 		border: #F2A3C3;
 		border-radius: 18rpx;
-		border-style: dashed;
-		border-width: 4rpx;
+		border-style:dashed;
+		border-width: 5rpx;
 		margin-left: 21rpx;
 		margin-top: 25rpx;
 	}
@@ -147,22 +183,23 @@
 		font-weight: bold;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 15pt;
+		line-height: 60rpx;
 	}
 	.word {
 		font-weight: 100;
-		font-family: Verdana, Geneva, Tahoma, sans-serif;
+		font-family: 'Arial';
 		color: #999999;
-		font-size: 10pt;
+		font-size: 9pt;
 	}
 	.forthline image {
 		width: 47rpx;
 		height: 47rpx;
-		padding-left: 20rpx;
+		padding-left: 15rpx;
 		padding-top: 15rpx;
 	}
 	.forthline text {
-		vertical-align: top;
-		font-size: 10pt;
+		font-size: 9pt;
+		font-family: 'Arial';
 		line-height: 80rpx;
 		padding-left: 9rpx;
 	}
@@ -178,11 +215,12 @@
 		padding-left: 8rpx;
 	}
 	.finalbox {
+		position: relative;
+		top: 40rpx;
+		left: 40rpx;
 		width: 670rpx;
 		height: 250rpx;
 		/* background-color: #999999; */
-		margin-left: 40rpx;
-		margin-top: 40rpx;
 		box-shadow:4px 4px 10px 10px rgba(221, 221, 221, 0.1);
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
