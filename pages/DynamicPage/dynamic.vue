@@ -48,11 +48,17 @@
 						<table class="littleIconTable">
 							<tr>
 								<td>
-									<image class='littleIcon'src='../../static/icon/like.png' @click="addLike(index)"></image>
+									<view v-if="item.isInterest==0" style="width: 50rpx;height: 50rpx;">
+									<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
 									<text class="number">{{item.interestNum}}</text>
+									</view>
+									<view v-if="item.isInterest==1" style="width: 50rpx;height: 50rpx;">
+									<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
+									<text class="number1">{{item.interestNum}}</text>
+									</view>
 								</td>
 								<td>
-								    <image class='littleIcon' src="../../static/icon/chat.png"></image>
+								    <image class='littleIcon' src="../../static/icon/chat.png" @click="recommend(item.id)"></image>
 								    <text class="number">{{item.commentNum}}</text>
 								</td>
 								<td>
@@ -67,10 +73,33 @@
 				
 			</uni-list-item>
 		</uni-list>
+		
 		<uni-load-more status="noMore"></uni-load-more>
 		</view>
-	
 		
+		 <view v-if="recommendTag==1" class="recommendBox">
+			 <view class="recommendHead">10 条评论
+			 <span class="iconfont1" @click='recoomendExit'>&#xe623;</span>
+			 </view>
+			 
+			 <view>
+				 <view>
+                <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+                @scroll="scroll" >
+                    <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
+						<image :src="item.avatarR" mode="aspectFill"></image>
+						<view class="recomendItemT">
+						<view>{{item.usernameR}}</view>
+						<view>{{item.text}}</view>
+						<view>{{item.date}}</view>
+						
+						</view>
+						<span :class="item.recLike==1?'iconfont2':'iconfont'" @click='recomendLike(index)'>&#xe608;</span>
+					</view>
+                </scroll-view>
+            </view>
+			 </view>
+		 </view>
 		
 
    <view class="lastBlank"></view>
@@ -89,6 +118,7 @@
 		// }
 		data(){
 			return{
+				recommendTag:0,
 				scrollTop: 0,
 				old: {
 				    scrollTop: 0
@@ -126,6 +156,7 @@
 				dynamicItem:[
 					{
 						Id:'1',
+						userId:'',
 						avatarD:'../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -133,11 +164,13 @@
 						imageD:'../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+						isInterest:'0',
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
 						Id:'2',
+						userId:'',
 						avatarD:'../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -145,11 +178,13 @@
 						imageD:'../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+						isInterest:'0',
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
 						Id:'3',
+						userId:'',
 						avatarD:'../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -157,15 +192,83 @@
 						imageD:'../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+						isInterest:'0',
 						commentNum:'2145',
 						relayNum:'1141'
+					}
+				],
+			    recomendList:[
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:0
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
 					}
 				]
 			}
 		},
 		methods:{
 			addLike(i){
-				this.$data.dynamicItem[i].interestNum++;
+				var t=this.$data.dynamicItem[i].isInterest;
+				if(t==0){
+					this.$data.dynamicItem[i].interestNum++;
+					this.$data.dynamicItem[i].isInterest=1;
+				}
+				else{
+					this.$data.dynamicItem[i].interestNum--;
+					this.$data.dynamicItem[i].isInterest=0;
+				}
+				
 			},
 			scroll: function(e) {
 			    console.log(e)
@@ -173,8 +276,27 @@
 			},
 			backlast: function() {
 				uni.navigateBack()
+			},
+			recommend(i){
+			this.recommendTag=1;
+			},
+			recoomendExit(){
+			this.recommendTag=0;	
+			},
+			 upper: function(e) {
+			            console.log(e)
+			        },
+			        lower: function(e) {
+			            console.log(e)
+			        },
+			recomendLike(i){
+				if(this.recomendList[i].recLike==0){
+					this.recomendList[i].recLike=1;
+				}
+				else{
+					this.recomendList[i].recLike=0;
+				}
 			}
-			
 		}
 		
 	}

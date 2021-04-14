@@ -9,37 +9,38 @@
 		<view class="head" >
 			<span class="iconfont" @click='resetNavi()'>&#xe60a;</span>
 		</view>
+		<view class="head1">
 		<table>
 			<tr>
-				<td><image class="avatar" src="../../static/iconn/2.jpg" mode="aspectFill" ></image></td>
-				<td style="vertical-align: top;"><text class="username">jennie</text></td>
-				<td style="vertical-align: top;">
-						<view @click="homePageNavi()" style="font-size: 9pt;border: 3rpx solid #797979;opacity: 0.7; border-radius: 9rpx;width: 120rpx;height: 46rpx;margin-left: 245rpx;margin-top: 30rpx;">
-						<text style="line-height: 46rpx;padding-left: 11rpx;color: #797979;">个人主页</text></view>
-				</td>
+				<td><image class="avatar" :src="avatar" mode="aspectFill" ></image></td>
+				<td style="vertical-align: top;"><text class="username">{{userName}}</text></td>
 			</tr>
-		</table>
-		<view style="font-size: 10pt;font-family: Arial;height: 66rpx;">
-			<text style="padding-left: 100rpx;line-height: 66rpx;font-size: 9pt;">你还没有个性签名哦！</text>
+		</table>	
+		<view @click="homePageNavi()" style="font-size: 9pt;border: 3rpx solid #797979;opacity: 0.7; border-radius: 9rpx;width: 120rpx;height: 46rpx;position: absolute;top: 30rpx;right: 60rpx;">
+		<text style="line-height: 46rpx;padding-left: 11rpx;color: #797979;">个人主页</text></view>
+		</view>
+		
+		<view style="font-size: 10pt;font-family: Arial;width: 75%;padding-left: 100rpx;margin-top: 20rpx;">
+			<text style="line-height: 36rpx;font-size: 9pt;">{{signature}}</text>
 		</view>
 		<!-- 第二模块：关注、粉丝、获应援、获赞与收藏 -->
-		<view>
+		<view style="margin-top: 30rpx;">
 			<table style="padding-left: 40rpx;height: 100rpx;">
 			<tr>
-				<td style="width: 130rpx;text-align: center;height: 30rpx;">
-					<view class="number">2</view><view class="word">关注</view>
+				<td style="width: 130rpx;text-align: center;height: 30rpx;" @click="focusNavi(userId)">
+					<view class="number">{{interestN}}</view><view class="word">关注</view>
+				</td>
+				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
+				<td style="width: 150rpx;text-align: center;"@click="fanNavi(userId)">
+					<view class="number">{{fanN}}</view><view class="word">粉丝</view>
 				</td>
 				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
 				<td style="width: 150rpx;text-align: center;">
-					<view class="number">0</view><view class="word">粉丝</view>
-				</td>
-				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
-				<td style="width: 150rpx;text-align: center;">
-					<view class="number">0</view><view class="word">获应援</view>
+					<view class="number">{{starN}}</view><view class="word">获应援</view>
 				</td>
 				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
 				<td style="width: 170rpx;text-align: center;">
-					<view class="number">20</view><view class="word">获赞与收藏</view>
+					<view class="number">{{praiseN}}</view><view class="word">获赞与收藏</view>
 				</td>
 			</tr>
 		</table>
@@ -110,9 +111,37 @@
 <script>
 	export default{
 		data(){
-			
+			// userId:'';
+			// userName:'';
+			// avatar:'../../static/iconn/2.jpg';
+			// signature:'你还没有个性签名哦！';
+			// interestN:'2';
+			// fanN:'0';
+			// starN:'0';
+			// praiseN:'23'
+			return{
+				userId:'1234',
+				userName:'jenniee',
+				avatar:'../../static/iconn/2.jpg',
+				signature:'你还没有个性签名哦！',
+				interestN:'2',
+				fanN:'0',
+				starN:'0',
+				praiseN:'33'
+			}
+
 		},
 		methods:{
+			focusNavi(i){
+				uni.navigateTo({
+					url:'foucsAndFan/focus?userId='+i
+				})
+			},
+			fanNavi(i){
+				uni.navigateTo({
+					url:'foucsAndFan/fan?userId='+i
+				})
+			},
 			resetNavi(){
 				uni.navigateTo({
 					url:'reset/reset'
@@ -125,7 +154,7 @@
 			},
 			homePageNavi(){
 				uni.navigateTo({
-					url:'homePage/homePage'
+					url:'homePage/homePage?userId='+this.userId+'&userId2='+this.userId
 				})
 			},
 			myCollectionNavi(){
@@ -153,6 +182,12 @@
 		left: 0;
 		width: 100%;
 		height: 70px;
+	}
+	.head1{
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
 	}
 	.avatar {
 		width: 140rpx;

@@ -43,6 +43,11 @@
 	padding-left: 26rpx;
 	/* line-height: 0rpx; */
 }
+.clothingTab{
+	position: relative;
+	top: 0;
+	left: 0;
+}
 .picbox{
 	width: 100%;
 }
@@ -76,26 +81,31 @@ ul,li{
 	background-color: #FF6EA2;
 }
 .contentBox{
-	position: relative;
-	top: 10rpx;
+	/* position: relative;
+	top: 30rpx;
 	left: 0;
 	width: 100%;
-	height: 230rpx;
+	height: 230rpx; */
 /* 	background-color: #07C160; */
+    width: 100%;
+	margin-top: 30rpx;
 }
 .contentBox view:nth-child(1){
-	position: absolute;
+	/* position: absolute;
 	top: 0;
-	left: 70rpx;
+	left: 70rpx; */
+	padding-left: 70rpx;
 	font-size: 32rpx;
 	font-weight: bold;
 	font-family: '黑体';
 	letter-spacing: 3rpx;
 }
 .contentBox table{
-	position: absolute;
+	/* position: absolute;
 	top: 65rpx;
-	left:50rpx;
+	left:50rpx; */
+	margin-left: 50rpx;
+	margin-top: 30rpx;
 	font-size: 10pt;
 }
 .contentBox view:nth-child(3){
@@ -105,7 +115,7 @@ ul,li{
 	font-size: 10pt;
 	color: #62A1EC;
 }
-.contentBox table a{
+.contentBox table text{
 	color: #62A1EC;
 }
 .contentBox view:nth-child(4){
@@ -145,7 +155,7 @@ ul,li{
 	font-size: 10pt;
 	font-family: 'Verdana';
 	line-height: 40rpx;
-	margin: 0 auto;
+	margin: 20rpx auto;
 }
 .timeAread{
 	font-size: 7pt;
@@ -221,8 +231,11 @@ ul,li{
 	font-family: '黑体';
 }
 .commentBox{
+	padding-top: 20rpx;
+	background-color: #FFFFFF;
+}
+.commentboxFirst{
 	margin-top: 20rpx;
-/* 	background-color: #0077AA; */
 }
 .commentBox view:first-child image{
 	width: 62rpx;
@@ -257,18 +270,37 @@ ul,li{
 }
 .commentedBox{
 	width: 550rpx;
-	height: 120rpx;
+	
 	background-color: #F7F7F7;
 	margin-left: 100rpx;
 	margin-top: 25rpx;
+	margin-bottom: 20rpx;
 	border-radius: 15rpx;
 }
-.commentedBox view a{
-	font-size: 10pt;
+.commentedBoxv1{
+	margin-left: 35rpx;
+	padding-top: 25rpx;
+	width: 90%;
+	font-size: 20rpx;
+	color: #101010;
+	
+}
+.commentedBoxv1 text{
+	color: #62A1EC;
+}
+.commentBoxv2{
+	padding-top: 10rpx;
+	margin-left: 35rpx;
+	padding-bottom: 25rpx;
+	font-size: 18rpx;
+	color: #62A1EC;
+}
+/* .commentedBox view a{
+	font-size: 20rpx;
 	color: #62A1EC;
 }
 .commentedBox view .commendedtext{
-	font-size: 10pt;
+	font-size: 18rpx;
 	color: #101010;
 }
 .commentedBox view:first-child{
@@ -281,7 +313,7 @@ ul,li{
 	margin-left: 30rpx;
 	padding-top: 18rpx;
 	color: #62A1EC;
-}
+} */
 .lastBox{
 	width: 100%;
 	height: 100rpx;
@@ -327,9 +359,9 @@ ul,li{
 .uni-list::before{
 		display: none;
 	}
-	.uni-list::after{
-		display: none;
-	}
+.uni-list::after{
+	display: none;
+}
 	
 	
 .myswiper{
