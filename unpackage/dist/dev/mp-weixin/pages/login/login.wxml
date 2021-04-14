@@ -1,1 +1,0 @@
-<view class="box"><image class="login-img" src="../../static/login.png" mode="heightFix"></image><view class="account">账号</view><view class="pwd">密码</view><view class="box-btn"><button class="btn">登录</button></view></view>
