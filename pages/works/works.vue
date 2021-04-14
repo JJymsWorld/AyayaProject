@@ -14,9 +14,9 @@
 		<view>
 		            <view class="page-section swiper">
 		                <view class="page-section-spacing">
-		                    <swiper class="myswiper" :indicator-dots="false" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
+		                    <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
 								<swiper-item v-for="(item,index) in pic" >
-									<image :src="item" mode="aspectFit"></image>
+										<image :src="item" mode="aspectFit"></image>
 								</swiper-item>
 		                    </swiper>
 		                </view>
@@ -24,23 +24,26 @@
 		        </view>
 				
 	</view>
-	<ul class="ull">
+<!-- 	<ul class="ull">
 					<li></li>
 					<li></li>
 					<li></li>
 					<li></li>
-				</ul>
+				</ul> -->
 	<view class="contentBox">
 		<view>{{title}}</view>
 		<table>
 			<tr>
-				<td>出境：<a>@{{model}}</a></td>
+				<td>出境：<text>@{{model}}</text></td>
 			</tr>
 			<tr>
-				<td>摄影：<a>@{{photography}}</a></td>
+				<td>摄影：<text>@{{photography}}</text></td>
 			</tr>
 			<tr>
-				<td>妆容：<a>#{{makeupLook}}#</a></td>
+				<td>妆容：<text>#{{makeupLook}}#</text></td>
+			</tr>
+			<tr>
+				<td>服饰：<text @click="clothingClick(clothingLink)">#{{clothingName}}#</text></td>
 			</tr>
 		</table>
 	</view>
@@ -77,52 +80,62 @@
 	<view class="commendbigBox">
 		<view class="commendT">全部评论</view>
 		<!-- 每一条评论 -->
-		<view class="commentBox" v-for="(item,index) in comment" :key='index'>
-			<view>
-				<image :src="item.avatarC"></image>
-				<span>
-					<view>{{item.usernameC}}</view>
-					<view class="commentTime">{{item.timeC}}</view>
-				</span>
-			</view>
-			<view class="commentTextC">{{item.textC}}</view>
-			<view class="commentIconBox">
-			<span class="iconfont1">&#xe60b;</span>
-			<span class="iconfont3">&#xe659;</span>
-			<span class="iconfont1">&#xe6b3;</span>
-			</view>
-			<view class="commentedBox">
-				<view>
-					<a>国际巨星：</a>
-					<span class="commendedtext">少女的恬静 夫人的端庄 书生的洒脱</span>
-				</view>
-				<view>共{{item.commentN}}条回复 ></view>
-			</view>
-			
-		</view>
+		
+		<uni-list :border="false" >
+		    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.commentId'>
+		        <template slot="body" class="slot-box slot-text">
+					<view class="commentBox">
+						<view class="commentboxFirst">
+							<image :src="item.avatarC"></image>
+							<span>
+								<view>{{item.usernameC}}</view>
+								<view class="commentTime">{{item.timeC}}</view>
+							</span>
+						</view>
+						<view class="commentTextC">{{item.textC}}</view>
+						<view class="commentIconBox">
+						<span class="iconfont1">&#xe60b;</span>
+						<span class="iconfont3">&#xe659;</span>
+						<span class="iconfont1">&#xe6b3;</span>
+						</view>
+						<view class="commentedBox">
+							<view class="commentedBoxv1">
+								<text>国际巨星：</text>
+								少女的恬静 夫人的端庄 书生的洒脱少女的恬静 夫人的端庄 书生的洒脱
+							</view>
+							<view class="commentBoxv2">共{{item.commentN}}条回复 ></view>
+						</view>
+						
+					</view>
+				</template>
+		        
+		    </uni-list-item>
+		</uni-list>
+		
+		
 	</view>
 	<view class="lastBox">
 		<ul>
 			<li><input value="说点啥..."> </li>
 			<li>
 				<span class="iconfont2">&#xe785;</span>
-				<span>2310</span>
+				<span>{{interestNum}}</span>
 			</li>
 			<li>
 				<span class="iconfont2">&#xe609;</span>
-				<span >2310</span>
+				<span >{{collectNum}}</span>
 			</li>
 			<li>
 				<span class="iconfont2">&#xe600;</span>
-				<span>2310</span>
+				<span>{{commentNum}}</span>
 			</li>
 			<li>
 				<span class="iconfont2">&#xe65f;</span>
-				<span>2310</span>
+				<span>{{relayNum}}</span>
 			</li>
 			<li>
 				<span class="iconfont2">&#xe615;</span>
-				<span>2310</span>
+				<span>{{starNum}}</span>
 			</li>
 		</ul>
 	</view>
@@ -138,6 +151,13 @@
 				userid:'',
 				avertar:'../../static/CoserlistSource/userheadimg7.jpg',
 				username:'国际巨星',
+				interestNum:'2310',
+				isInterest:'0',
+				collectNum:'2310',
+				isCollect:'0',
+				commentNum:'2310',
+				relayNum:'2310',
+				starNum:'2310',
 				pic:[
 					'../../static/contentImg/3.jpg',
 					'../../static/CoserlistSource/userheadimg7.jpg',
@@ -147,6 +167,8 @@
 				model:'国际巨星',
 				photography:'超级摄影',
 				makeupLook:'江南美人妆',
+				clothingName:'汉服',
+				clothingLink:'hfeuigywbqbfiu',
 				label:[
 					'汉服',
 					'约拍广场'
@@ -175,6 +197,47 @@
 				],
 				comment:[
 					{
+						commentId:'1',
+						avatarC:'../../static/iconn/p2.jpg',
+						usernameC:'蒲儿姓蒲',
+						timeC:'2020-12-08      ',
+						textC:'春水碧于天，画船听雨眠',
+						commentN:'10',
+						commented:[
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							}
+						]
+					},
+					{
+						commentId:'3',
+						avatarC:'../../static/iconn/p2.jpg',
+						usernameC:'蒲儿姓蒲',
+						timeC:'2020-12-08      ',
+						textC:'春水碧于天，画船听雨眠',
+						commentN:'10',
+						commented:[
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							}
+						]
+					},{
+						commentId:'4',
+						avatarC:'../../static/iconn/p2.jpg',
+						usernameC:'蒲儿姓蒲',
+						timeC:'2020-12-08      ',
+						textC:'春水碧于天，画船听雨眠',
+						commentN:'10',
+						commented:[
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							}
+						]
+					},{
+						commentId:'55',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
 						timeC:'2020-12-08      ',
@@ -216,18 +279,30 @@
 				uni.navigateTo({
 					url:'myWish'
 				})
+			},
+			clothingClick(i){
+				uni.setClipboardData({
+					data:i,
+					success:function(){
+						console.log(i);
+						uni.hideToast();
+					}
+					
+				})
 			}
 		},
 		
 		changeIndicatorDots(e) {
 		            this.indicatorDots = !this.indicatorDots
-		        },
-		        intervalChange(e) {
+		},
+		intervalChange(e) {
 		            this.interval = e.target.value
-		        },
-		        durationChange(e) {
+		},
+		durationChange(e) {
 		            this.duration = e.target.value
-		        }
+		}
+		
+				
 		    
 	}
 </script>

@@ -73,7 +73,8 @@
 						workId:"",
 						covers:"../../static/iconn/4.jpg",
 						head:"江南美人图|奇迹党党环游中华之江南"
-					}
+					},
+				
 				
 			}
 		},

@@ -267,7 +267,7 @@ $list-item-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 	display: flex;
 	/* #endif */
 	flex-direction: row;
-	padding: 5rpx 0rpx;
+	padding: 0rpx 0rpx;
 	// padding-left: $uni-spacing-row-lg;
 	flex: 1;
 	overflow: hidden;

@@ -2,13 +2,8 @@
 	<view class="box">
 		<view class="my-content">
 			<!-- 图片 -->
-			<view class="row-box addimages-box">
-				<view class="addimages-item" v-for="(item, index) in images" :key="index" >
-					<image :src="item" mode="widthFix"></image>
-				</view>
-				<view class="addimages-item">
-					<image @click="onChooseImage" src="@/static/addimages.png" mode="widthFix"></image>
-				</view>
+			<view class="row-box choose-image-box">
+				<g-upload ref='gUpload' @chooseFile='onChooseImage' @imgDelete='onDeleteImage' :columnNum="columnNum" :maxCount='maxCount'></g-upload>
 			</view>
 			<!-- 来个醒目的标题吧！ -->
 			<view class="row-box">
@@ -93,6 +88,8 @@
 				ifagree: false,
 				ifpostdynamic: false,
 				ifdownloadimag: false,
+				columnNum : 4,	//	上传图片显示几列
+				maxCount: 9,	//	最多上传图片数量
 				images: [],
 				worksContent: [
 				{
@@ -141,20 +138,49 @@
 			onChangeLimit: function(){
 				this.ifdownloadimag = !this.ifdownloadimag;
 			},
-			onChooseImage: function(){
-				uni.chooseImage({
-				    count: 9, 	//默认9
-				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				    sourceType: ['album'], 	//从相册选择
-				    success: res=>{
-				        console.log(JSON.stringify(res.tempFiles));
-						this.images = res.tempFilePaths;
-					}
-				});
+			// 选择上传图片
+			onChooseImage: function(list, v) {
+				// uni.chooseImage({
+				// 	count: 9, //默认9
+				// 	sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				// 	sourceType: ['album'], //从相册选择
+				// 	success: res => {
+				// 		console.log(JSON.stringify(res.tempFiles));
+				// 		this.images = res.tempFilePaths;
+				// 	}
+				// });
+				this.images = list.map((value, index) => {
+				     return {
+				        name: 'img',
+				        uri: value
+						}
+				    })
+				console.log(this.images)	
+			},
+			// 删除图片
+			onDeleteImage: function(list, v){
+				this.images = list.map((value, index) => {
+				     return {
+				        name: 'img',
+				        uri: value
+						}
+				    })
+				console.log(this.images)	
 			}
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap(){
+			// 上传图片至服务器
+			uni.uploadFile({
+			    url: 'http://8.136.216.96:8086/img_post', 
+			    files: this.images,
+			    success: (uploadFileRes) => {
+			        console.log(uploadFileRes.data);
+			    }
+			});
+			//上传其他信息
+			
+			// 跳转至首页
 			uni.switchTab({
 				url:"../Index_Recommend/Index_Hot"
 			})
@@ -164,159 +190,5 @@
 
 <style>
 	@import url("../../static/css/login.css");
-	.row-box{
-		width: 90%;
-		padding: 5px 0;
-	}
-	.addimages-box{
-		padding: 20px;
-	}
-	.addimages-item{
-		float: left;
-		width: 20%;
-		height: 150rpx;
-		border-radius: 10px;
-		overflow: hidden;
-		margin: 5px;
-		margin-bottom: 10px;
-	}
-	.addimages-box image{	
-		width: 20%;
-	}
-	.addimages-item image{
-		width: 100%;
-	}
-	.works-title{
-		border-bottom: solid 1px rgba(121, 121, 121, 0.1);
-	}
-	.works-title input{
-		font-size: 14px;
-		margin-bottom: 5px;
-	}
-	.content-item{
-		width: 100%;
-		line-height: 20px;
-		margin-bottom: 5px;
-		/* 分离每行元素 */
-		overflow: hidden;
-	}
-	.content-item text{
-		float: left;
-		font-size: 14px;
-		line-height: 20px;
-	}
-	.content-item .at-text{
-		color: #65A6FF;
-		font-weight: 700;
-	}
-	.content-item input{
-		float: left;
-		width: 70%;
-		font-size: 13px;
-		line-height: 20px;
-	}
-	.works-article textarea{
-		width: 100%;
-		height: 150rpx;
-		font-size: 14px;
-	}
-	.line{
-		width: 100%;
-		height: 7px;
-		background-color: rgba(242, 242, 242, 0.5);
-	}
-	.checked-box{
-		padding-bottom: 30px;
-	}
-	.checked-group-title{
-		border-bottom: solid 1px rgba(121, 121, 121, 0.1);
-		margin-bottom: 10px;
-		width: 100%;
-		font-size: 16px;
-		font-weight: 700;
-		font-family: "PingFang SC";
-		line-height: 30px;
-	}
-	.checked-item{
-		width: 25%;
-		height: 30px;
-		float: left;
-		padding: 0;
-	}
-	.checked-item text{
-		font-size: 13px;
-		color: #101010;
-		font-family: "Verdana";
-	}
-	.checked-item checkbox{
-		/* 调整多选框大小 */
-		transform: scale(0.6);
-	}
-	.agree-box{
-		font-family: 'PingFang SC';
-		font-size: 15px;
-		padding: 10px 0;
-		font-weight: 700;
-	}
-	.agree-box text{
-		font-family: 'PingFang SC';
-		font-size: 15px;
-		color: #65A6FF;
-		font-weight: 700;
-	}
-	.agree-box label{
-		float: right;
-	}
-	.agree-box label radio{
-		/* 调整单选框大小 */
-		transform: scale(0.6);
-	}
-	.limit-box{
-		padding-bottom: 50px;
-	}
-	.limit-box text{
-		display: block;
-		font-family: 'PingFang SC';
-		font-size: 16px;
-		font-weight: 700;
-		margin-bottom: 10px;
-		color: #101010;
-	}
-	.limit-box .limit-content text{
-		width: 100%;
-		color: #555555;
-		margin-bottom: 5px;
-	}
-	.limit-box .limit-content .text1{
-		font-size: 16px;
-	}
-	.limit-box .limit-content .text2{
-		font-size: 13px;
-		font-weight: 400;
-	}
-	.limit-box switch{
-		float: right;
-	}
-	.limit-content{
-		float: left;
-	}
-	.fixed-bottom-box{
-		width: 100%;
-		height: 40px;
-		position: fixed;
-		bottom: 0px;
-		background-color: #FFFFFF;
-	}
-	.bottom-box image{
-		width: 40px;
-	}
-	.bottom-box label{
-		float: right;
-		font-size: 13px;
-		color: #333333;
-	}
-	.bottom-box radio{
-		/* 调整单选框大小 */
-		transform: scale(0.6);
-	}
+	@import url("./post.css");
 </style>

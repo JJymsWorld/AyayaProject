@@ -74,34 +74,32 @@
 	}
 	.search-text{
 		font-size: 32rpx;
-		font-weight: bold;
 		font-family: 'Courier New';
 	}
 	.topic-btn,.hsty-btn{
 		float: left;
-		margin-top: 35rpx;
+		margin-top: 40rpx;
 		margin-right: 25rpx;
-		padding: 0 50rpx;
+		padding: 0 30rpx;
 		background-color: #FFF2F6;
 		color: rgba(255,110,162,0.7);
 		border: 1rpx solid #FFF2F6;
 		font-weight: 700;
-		font-size: 26rpx;
-		line-height: 48rpx;
+		font-size: 24rpx;
+		line-height: 45rpx;
 		border-radius: 35rpx;
 	}
 	.hsty-btn{
 		background-color: #F2F2F2;
 		border: 1rpx solid #F2F2F2;
-		color: rgba(0,0,0,0.6);
+		color: #323233;
 	}
 	.delete-icon{
-		opacity: 0.4;
+		
 	}
 	.delete-text{
 		padding: 10rpx;
 		font-size: 24rpx;
-		opacity: 0.4;
 	}
 	.delete-hsty{
 		float: right;

@@ -1,5 +1,8 @@
 <script>
 	export default {
+		globalData:{
+			global_userId: 0
+		},
 		onLaunch: function() {
 			uni.onTabBarMidButtonTap(()=>{
 					console.log("点击了");
