@@ -25,7 +25,7 @@
 					</view>
 					<view class="view-more-Coser" @click="gotoStayInCoserList">
 						<view class="moreCoser-Icon">· · ·</view>
-						<text class="user-info-box-name">查看更多</text>
+						<text class="user-info-box-more">查看更多</text>
 					</view>
 				</view>
 			</view>
@@ -43,24 +43,24 @@
 							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].headimg_url">
 							</image>
 						</view>
-						<text>{{userInfoList[1].username}}</text>
-						<text>🔥{{userInfoList[1].popularity_values}}</text>
+						<text class="Coser-Items-text">{{userInfoList[1].username}}</text>
+						<text class="Coser-Item-Number">{{userInfoList[1].popularity_values}}</text>
 					</view>
 					<view class="Coser-Items">
 						<view class="img-wrapper-2">
 							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[3].headimg_url">
 							</image>
 						</view>
-						<text>{{userInfoList[0].username}}</text>
-						<text>🔥{{userInfoList[0].popularity_values}}</text>
+						<text class="Coser-Items-text">{{userInfoList[0].username}}</text>
+						<text class="Coser-Item-Number">{{userInfoList[0].popularity_values}}</text>
 					</view>
 					<view class="Coser-Items">
 						<view class="img-wrapper-3">
 							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[5].headimg_url">
 							</image>
 						</view>
-						<text>{{userInfoList[2].username}}</text>
-						<text>🔥{{userInfoList[2].popularity_values}}</text>
+						<text class="Coser-Items-text">{{userInfoList[2].username}}</text>
+						<text class="Coser-Item-Number">{{userInfoList[2].popularity_values}}</text>
 					</view>
 				</view>
 				<view class="CoserListbox-down">
@@ -75,7 +75,7 @@
 								<text class="CoserListbox-down-body-name">{{item.username}}</text>
 							</view>
 							<view slot="footer" class="CoserListbox-down-footer">
-								<text class="CoserListbox-down-footer-text">🔥人气值</text>
+								<text class="CoserListbox-down-footer-text">🔥 人气值</text>
 								<text class="CoserListbox-down-footer-popNum">{{item.popularity_values}}</text>
 							</view>
 						</uni-list-item>
@@ -186,6 +186,16 @@
 	}
 </script>
 
+<style lang="scss" scoped>
+	/deep/ .uni-list-item{
+		// padding-top: 15rpx;
+		// padding-bottom: 15rpx;
+		// border-bottom: 1rpx solid #e9e9e9;
+		width: 88%;
+		margin: 0 auto ;
+	}
+</style>
+
 <style>
 	page {
 		background-image: url(../../static/backgroundImg/bg3.png);
@@ -220,8 +230,8 @@
 	}
 
 	.popcoser-search-fs {
-		font-size: 30rpx;
-		color: #797979;
+		font-size: 25rpx;
+		color: rgba(16,16,16,0.33);
 		margin-right: auto;
 		width: auto;
 	}
@@ -233,19 +243,20 @@
 	}
 
 	.searchIcon-style {
-		color: #797979;
-		font-size: 30rpx;
+		color: rgba(16,16,16,0.33);
+		font-size: 25rpx;
+
 	}
 
 	.CoserInfo-box {
 		display: flex;
 		flex-direction: column;
 		border-style: none;
-		border-radius: 50rpx;
+		border-radius: 30rpx;
 		margin-top: 30rpx;
 		background-color: #FFFFFF;
 		height: 280rpx;
-		box-shadow: 0 0 4rpx 4rpx rgba(199, 199, 199, 0.35);
+		box-shadow: 0 0 10rpx 10rpx rgba(199, 199, 199, 0.15);
 		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
@@ -279,7 +290,7 @@
 	}
 
 	.Infobox-head-right {
-		font-size: 20rpx;
+		font-size: 18rpx;
 		color: rgba(255, 110, 162, 0.6);
 		border-style: solid;
 		border-radius: 10rpx;
@@ -288,7 +299,7 @@
 		margin-bottom: auto;
 		padding: 5rpx 10rpx 5rpx 10rpx;
 		margin-left: auto;
-		margin-right: 20rpx;
+		margin-right: 40rpx;
 	}
 
 	.Infobox-down {
@@ -296,7 +307,9 @@
 		flex-direction: row;
 		margin-top: auto;
 		margin-bottom: auto;
-		width: 95%;
+		margin-left: auto;
+		margin-right: auto;
+		width: 92%;
 		align-items: center;
 	}
 
@@ -315,15 +328,21 @@
 	}
 
 	.user-info-box-name {
-		font-size: 25rpx;
-		color: #797979;
+		font-size: 20rpx;
+		color: rgba(51,51,51,0.42);
 		text-align: center;
 		margin-top: 5rpx;
+		line-height: 50rpx;
+		color: rgba(51,51,51,0.42);
+	}
+	.user-info-box-more{
+		font-size: 15rpx;
+		color: rgba(51,51,51,0.42);
 	}
 
 	.moreCoser-Icon {
-		width: 80rpx;
-		height: 80rpx;
+		width: 70rpx;
+		height: 70rpx;
 		border-style: none;
 		border-radius: 40rpx;
 		background-color: #F2A3C3;
@@ -332,13 +351,15 @@
 		align-items: center;
 		justify-content: center;
 		margin: auto;
-		font-size: 30rpx;
+		margin-bottom: 0rpx;
+		font-size: 13rpx;
 	}
 
 	.CoserList-box {
 		display: flex;
 		flex-direction: column;
 		margin-top: 30rpx;
+		background-color: #FFFFFF;
 	}
 
 	.CoserListbox-head {
@@ -351,24 +372,29 @@
 	.ListTab-item {
 		margin-right: 20rpx;
 		margin-left: 20rpx;
+
 	}
 
 	.ListTabs-title {
 		font-size: 36rpx;
-		color: #797979;
+		color: #C6C6C6;
 	}
 
 	.ListTabs-title-active {
 		font-size: 42rpx;
+		font-weight: bold;
 		color: #080808;
+		
 	}
 
 	.CoserListbox-mid {
 		display: flex;
 		flex-direction: row;
+		width: 90%;
 		align-items: baseline;
 		justify-content: space-around;
-		margin-top: 30rpx;
+		margin: 60rpx auto;
+		margin-bottom: 0rpx;
 	}
 
 	.Coser-Items {
@@ -376,6 +402,17 @@
 		flex-direction: column;
 		text-align: center;
 		font-size: 30rpx;
+	}
+	.Coser-Items-text{
+		font-size: 28rpx;
+		font-weight: bold;
+		line-height: 48rpx;
+		color: rgba(32,30,30,0.88);
+	}
+	.Coser-Item-Number{
+		font-size: 26rpx;
+		font-weight: bold;
+		color: rgba(32,30,30,0.88);
 	}
 
 	.CoserItem-img-Other {
@@ -416,7 +453,7 @@
 	.CoserListbox-down-header {
 		margin-top: auto;
 		margin-bottom: auto;
-		font-size: 34rpx;
+		font-size: 30rpx;
 		color: #333333;
 	}
 
@@ -439,12 +476,13 @@
 	.CoserListbox-down-footer-popNum {
 		font-size: 30rpx;
 		color: #F59A23;
-		margin-left: 10rpx;
+		margin-left: 20rpx;
+		margin-right: 38rpx;
 	}
 
 	.CoserListbox-down-body-name {
-		font-size: 28rpx;
-		margin-left: 20rpx;
+		font-size: 30rpx;
+		margin-left: 40rpx;
 	}
 	.uni-list::before{
 		display: none;

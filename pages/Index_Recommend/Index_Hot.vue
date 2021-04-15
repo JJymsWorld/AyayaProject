@@ -332,6 +332,14 @@
 			padding: 10rpx;
 		}
 	}
+	/deep/ .uni-list-item{
+		padding-top: 15rpx;
+		padding-bottom: 15rpx;
+		border-bottom: 1rpx solid #e9e9e9;
+	}
+	/deep/ .uni-list-item__container{
+		background-color: #FFFFFF;
+	}
 </style>
 
 <style>
@@ -560,6 +568,7 @@
 		margin-top: auto;
 		margin-bottom: auto;
 		margin-right: 30rpx;
+		margin-left: 10rpx;
 	}
 
 	.Img-In-List {

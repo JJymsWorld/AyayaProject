@@ -26,7 +26,7 @@
 							<image :src="item.img_url" mode="aspectFill"></image>
 						</view>
 						<view slot="body" class="Events-list-item-body">
-							<text>{{item.title}}</text>
+							<text class="Events-list-item-body-text">{{item.title}}</text>
 						</view>
 						<view slot="footer" class="Events-list-item-footer">
 							<view class="Events-list-item-footer-left">

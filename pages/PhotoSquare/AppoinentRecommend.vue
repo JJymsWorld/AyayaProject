@@ -193,9 +193,8 @@
 
 <style lang="scss" scoped>
 	.content-box{
-		width: 95%;
-		margin-left: auto;
-		margin-right: auto;
+		width: 93%;
+        margin: 40rpx auto;
 		.cnt{
 			padding: 10rpx;
 		}
@@ -208,19 +207,21 @@
 		display: flex;
 		flex-direction: row;
 		margin: auto;
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
 	}
 	
 	.user-head-img {
-		width: 50rpx;
-		height: 50rpx;
+		width: 30rpx;
+		height: 30rpx;
 		border-style: none;
 		border-radius: 25rpx;
 		margin-right: 10rpx;
-		margin-left: 5rpx;
+		margin-left: 10rpx;
 	}
 	
 	.user-name {
-		font-size: 25rpx;
+		font-size: 20rpx;
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
@@ -228,9 +229,10 @@
 	}
 	
 	.view-num {
-		color: #797979;
+		color: rgba(51,51,51,0.4);
 		margin-top: auto;
 		margin-bottom: auto;
-		font-size: 25rpx;
+		margin-right: 10rpx;
+		font-size: 20rpx;
 	}
 </style>

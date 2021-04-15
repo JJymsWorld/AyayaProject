@@ -248,6 +248,8 @@ $list-item-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 	align-items: center;
 	background-color: #fff;
 	flex-direction: row;
+	padding-top: 15rpx;
+	padding-bottom: 15rpx;
 	/* #ifdef H5 */
 	cursor: pointer;
 	/* #endif */
@@ -272,7 +274,7 @@ $list-item-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 	flex: 1;
 	overflow: hidden;
 	// align-items: center;
-	background-color: #FBFBFB;
+	background-color: #FFFFFF;
 }
 
 .container--right {

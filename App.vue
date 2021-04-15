@@ -35,6 +35,7 @@
 	@import "./wxcomponents/vant/dist/common/index.wxss";
 	/* 自定义图标库 */
 	@import url("./common/iconfont.css");
+	@import url("iconclass.css");
 	page{
 		background-color: #FBFBFB;
 		background: #FFFFFF;

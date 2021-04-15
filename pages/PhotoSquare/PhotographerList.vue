@@ -114,6 +114,14 @@
 	/deep/ .uni-fav-text {
 		font-size: 24rpx;
 	}
+	/deep/ .uni-list-item{
+		// padding-top: 15rpx;
+		// padding-bottom: 15rpx;
+		// border-bottom: 1rpx solid #e9e9e9;
+		width: 88%;
+		margin: 0 auto ;
+		padding-bottom: 30rpx;
+	}
 	
 </style>
 <style>

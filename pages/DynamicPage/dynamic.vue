@@ -28,9 +28,9 @@
 		<!-- 动态内容 -->
 		<view class="dynamicBox">
 			<uni-list :border="false" >
-			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id">
+			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id" >
 				<template v-slot:body>
-					<view class="dynamicIt">
+					<view class="dynamicIt" @click="dynamicDetailNavi(item.Id)">
 						  <view class="dynamnicHead">
 							<image class="dynamicAvatar" :src='item.avatarD'></image>
 							<view class="dynamicUserDate">
@@ -41,10 +41,20 @@
 						</view>
 						<!-- 正文 -->
 						<view class="dynamicText">{{item.title}}</view>
-						<!-- 封面 -->
-						<image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image>
-						<!-- 标题 -->
-						<view class="dynamicTitle">{{item.textD}}</view>
+						<!-- 内容为作品 -->
+						<!-- <image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image> -->
+						<view v-if="item.work.workid ==''" class="dynamicGridBox">
+							<gridBox :picture="item.image"></gridBox>
+						</view>
+						<!-- 内容为作品 end-->
+						
+						<!-- 内容不为为作品 -->
+						<view v-if="item.work.workid!=''" class="dynamicGridBox" @click="workNavi(item.work.workid)">
+							<image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image>
+							<view class="dynamicTitle">{{item.work.titleW}}</view>
+						</view>
+						<!-- 内容不为为作品end -->
+						
 						<table class="littleIconTable">
 							<tr>
 								<td>
@@ -106,7 +116,9 @@
 	</view>
 </template>
 
+
 <script>
+	import gridBox from '../../components/gridImage/gridImage.vue'
 	export default{
 		// data(){
 		// 	return{
@@ -116,6 +128,9 @@
 		// onLoad(){
 		// 	this.inconType = ['success', 'success_no_circle', 'info', 'warn', 'waiting', 'cancel', 'download', 'search','clear']
 		// }
+		components: {
+			gridBox
+		},
 		data(){
 			return{
 				recommendTag:0,
@@ -161,8 +176,15 @@
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
 						title:'点赞表态!',
+						image:[
+							'../../static/iconn/d1.jpg'
+						],
+						work:{
+							workid:'1',
+							titleW:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
+							firstImage:'../../static/iconn/d1.jpg'
+						},
 						imageD:'../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
 						isInterest:'0',
 						commentNum:'2145',
@@ -175,8 +197,22 @@
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
 						title:'点赞表态!',
+						image:[
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg'
+						],
+						work:{
+							workid:'',
+							titleW:''
+						},
 						imageD:'../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
 						isInterest:'0',
 						commentNum:'2145',
@@ -189,8 +225,50 @@
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
 						title:'点赞表态!',
+						image:[
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg'
+						],
+						work:{
+							workid:'',
+							titleW:''
+						},
 						imageD:'../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
+						interestNum:'5482',
+						isInterest:'0',
+						commentNum:'2145',
+						relayNum:'1141'
+					},
+					{
+						Id:'4',
+						userId:'',
+						avatarD:'../../static/iconn/p2.jpg',
+						usernameD:'机智的党妹',
+						date:'2020-06-25',
+						title:'点赞表态!',
+						image:[
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg',
+							'../../static/iconn/d1.jpg'
+						],
+						work:{
+							workid:'',
+							titleW:''
+						},
+						imageD:'../../static/iconn/d1.jpg',
 						interestNum:'5482',
 						isInterest:'0',
 						commentNum:'2145',
@@ -296,13 +374,29 @@
 				else{
 					this.recomendList[i].recLike=0;
 				}
+			},
+			workNavi(i){
+				uni.navigateTo({
+					url:'../works/works?workId='+i
+				})
+			},
+			dynamicDetailNavi(i){
+				uni.navigateTo({
+					url:'dynamicDetails?dynamicId='+i
+				})
 			}
 		}
 		
 	}
 	
 </script>
-
+<style lang="scss" scoped>
+	/deep/ .uni-list-item{
+		background-color: #FBFBFB;
+		padding-bottom: 0rpx;
+		padding-top: 5rpx;
+	}
+</style>
 <style>
 	@import url("dynamic.css");
 </style>
