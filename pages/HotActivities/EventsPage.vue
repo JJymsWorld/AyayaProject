@@ -86,6 +86,12 @@
 
 
 <style lang="scss" scoped>
+	/deep/ .uni-list-item__container{
+		// padding-top: 15rpx;
+		// padding-bottom: 15rpx;
+		// border-bottom: 1rpx solid #e9e9e9;
+
+	}
 </style>
 <style>
 	@import url("HotActivities.css");

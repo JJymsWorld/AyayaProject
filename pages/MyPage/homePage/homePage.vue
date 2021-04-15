@@ -443,6 +443,17 @@
 		}
 	}
 	
+		/deep/ .uni-list-item{
+			background-color: #FBFBFB;
+			padding: 0;
+			padding-bottom: 0rpx;
+			padding-top: 5rpx;
+		}
+		/deep/ .uni-list-item__container{
+			background-color: #FFFFFF;
+			padding: 0;
+	
+		}
 </style>
 <style>
 	@import url("homePageCss");

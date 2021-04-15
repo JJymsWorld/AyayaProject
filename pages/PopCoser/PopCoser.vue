@@ -194,6 +194,12 @@
 		width: 88%;
 		margin: 0 auto ;
 	}
+	/deep/ .uni-list-item__container{
+		// padding-top: 15rpx;
+		// padding-bottom: 15rpx;
+		// border-bottom: 1rpx solid #e9e9e9;
+		padding-left: 0;
+	}
 </style>
 
 <style>
@@ -477,7 +483,7 @@
 		font-size: 30rpx;
 		color: #F59A23;
 		margin-left: 20rpx;
-		margin-right: 38rpx;
+		margin-right: 0rpx;
 	}
 
 	.CoserListbox-down-body-name {
