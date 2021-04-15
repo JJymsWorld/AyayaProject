@@ -17,7 +17,7 @@
 				</view>
 				<view class="AppReco-Hot-list-more" @click="gotoPhotographerList">
 					<view class="AppReco-Hot-list-more-icon">
-						<text>· · ·</text>
+						<text>. . .</text>
 					</view>
 					<text class="AppReco-Hot-pg-list-name">查看更多</text>
 				</view>

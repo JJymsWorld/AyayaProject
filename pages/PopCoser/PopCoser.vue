@@ -20,11 +20,11 @@
 				</view>
 				<view class="Infobox-down">
 					<view class="user-info-box" v-for="(item,index) in showThree" :key="index">
-						<image class="user-info-box-headimg" :src="item.headimg_url" mode="aspectFill"></image>
-						<text class="user-info-box-name">{{item.username}}</text>
+						<image class="user-info-box-headimg" :src="item.header_Pic" mode="aspectFill"></image>
+						<text class="user-info-box-name">{{item.user_name}}</text>
 					</view>
 					<view class="view-more-Coser" @click="gotoStayInCoserList">
-						<view class="moreCoser-Icon">· · ·</view>
+						<view class="moreCoser-Icon">. . .</view>
 						<text class="user-info-box-name">查看更多</text>
 					</view>
 				</view>
@@ -40,43 +40,43 @@
 				<view class="CoserListbox-mid">
 					<view class="Coser-Items">
 						<view class="img-wrapper-1">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].headimg_url">
+							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].header_Pic">
 							</image>
 						</view>
-						<text>{{userInfoList[1].username}}</text>
-						<text>🔥{{userInfoList[1].popularity_values}}</text>
+						<text>{{userInfoList[1].user_name}}</text>
+						<text>🔥{{userInfoList[1].energy}}</text>
 					</view>
 					<view class="Coser-Items">
 						<view class="img-wrapper-2">
-							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[3].headimg_url">
+							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[3].header_Pic">
 							</image>
 						</view>
-						<text>{{userInfoList[0].username}}</text>
-						<text>🔥{{userInfoList[0].popularity_values}}</text>
+						<text>{{userInfoList[0].user_name}}</text>
+						<text>🔥{{userInfoList[0].energy}}</text>
 					</view>
 					<view class="Coser-Items">
 						<view class="img-wrapper-3">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[5].headimg_url">
+							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[5].header_Pic">
 							</image>
 						</view>
-						<text>{{userInfoList[2].username}}</text>
-						<text>🔥{{userInfoList[2].popularity_values}}</text>
+						<text>{{userInfoList[2].user_name}}</text>
+						<text>🔥{{userInfoList[2].energy}}</text>
 					</view>
 				</view>
 				<view class="CoserListbox-down">
 					<uni-list class="CoserListbox-down-list" :border="false">
-						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.username" :ellipsis="1">
+						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.user_name" :ellipsis="1">
 							<view slot="header" class="CoserListbox-down-header">
 								<text class="CoserListbox-down-header-text">{{index+4}}</text>
 							</view>
 							<view slot="body" class="CoserListbox-down-body">
-								<image :src="item.headimg_url" class="CoserListbox-down-body-avatar" mode="aspectFill">
+								<image :src="item.header_Pic" class="CoserListbox-down-body-avatar" mode="aspectFill">
 								</image>
-								<text class="CoserListbox-down-body-name">{{item.username}}</text>
+								<text class="CoserListbox-down-body-name">{{item.user_name}}</text>
 							</view>
 							<view slot="footer" class="CoserListbox-down-footer">
 								<text class="CoserListbox-down-footer-text">🔥人气值</text>
-								<text class="CoserListbox-down-footer-popNum">{{item.popularity_values}}</text>
+								<text class="CoserListbox-down-footer-popNum">{{item.energy}}</text>
 							</view>
 						</uni-list-item>
 					</uni-list>
@@ -89,64 +89,79 @@
 
 <script>
 	export default {
+		onLoad() {
+			// uni.request({
+			// 	url:"http://8.136.216.96:8086/Cos/PopCoserList/getAllRank",
+			// 	success(res) {
+			// 		this.userInfoList = res.data.sort((a,b)=>{
+			// 			return b.energy-a.energy
+			// 		})
+			// 		console.log(this.userInfoList)
+			// 	},
+			// 	fail() {
+			// 		console.log('请求失败')
+			// 	}
+			// })
+		},
 		data() {
 			return {
 				listTabsType: ['总榜', '周榜'],
 				tabIndex: 0,
-				userInfoList: [{
+				userInfoList: [
+					{
 						user_id: 1,
-						headimg_url: '../../static/CoserlistSource/userheadimg1.jpg',
-						username: '嘉Sama',
-						popularity_values: 5947
+						header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
+						user_name: '嘉Sama',
+						energy: 5947
 					},
 					{
 						user_id: 2,
-						headimg_url: '../../static/CoserlistSource/userheadimg2.jpg',
-						username: '夜呀_mm',
-						popularity_values: 4747
+						header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
+						user_name: '夜呀_mm',
+						energy: 4747
 					},
 					{
 						user_id: 3,
-						headimg_url: '../../static/CoserlistSource/userheadimg3.jpg',
-						username: '青玉子sei',
-						popularity_values: 3947
+						header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
+						user_name: '青玉子sei',
+						energy: 3947
 					},
 					{
 						user_id: 4,
-						headimg_url: '../../static/CoserlistSource/userheadimg4.jpg',
-						username: '小娜',
-						popularity_values: 3256
+						header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
+						user_name: '小娜',
+						energy: 3256
 					},
 					{
 						user_id: 5,
-						headimg_url: '../../static/CoserlistSource/userheadimg5.jpg',
-						username: '奈奈喵',
-						popularity_values: 2756
+						header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
+						user_name: '奈奈喵',
+						energy: 2756
 					},
 					{
 						user_id: 6,
-						headimg_url: '../../static/CoserlistSource/userheadimg6.jpg',
-						username: '国际巨星',
-						popularity_values: 2733
+						header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
+						user_name: '国际巨星',
+						energy: 2733
 					},
 					{
 						user_id: 7,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: 'abcde',
-						popularity_values: 1236
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'abcde',
+						energy: 1236
 					},
 					{
 						user_id: 8,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: 'roserrrr',
-						popularity_values: 1235
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'roserrrr',
+						energy: 1235
 					},
 					{
 						user_id: 9,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: '12344',
-						popularity_values: 1234
-					},
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: '12344',
+						energy: 1234
+					}
 				]
 			}
 		},
@@ -327,12 +342,13 @@
 		border-style: none;
 		border-radius: 40rpx;
 		background-color: #F2A3C3;
-		/* text-align: center;*/
-		display: flex;
+		text-align: center;
+		/* display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: center; */
 		margin: auto;
 		font-size: 30rpx;
+		color: #797979;
 	}
 
 	.CoserList-box {

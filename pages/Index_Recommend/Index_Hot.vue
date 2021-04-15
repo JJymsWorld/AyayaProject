@@ -1,6 +1,5 @@
 <template>
 	<view>
-
 		<view class="index-halfpadding">
 			<view class="index-header">
 				<view class="row-box">
@@ -18,7 +17,7 @@
 			<view class="swiper-box">
 				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000" style="height: 355rpx;">
 					<swiper-item v-for="(img,index) in swiperimgs" :key="index">
-						<image :src="img.url" mode="aspectFill" class="swiper-item"></image>
+						<image :src="img.photo" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -50,14 +49,19 @@
 			</view>
 			<view class="topic-box">
 				<text class="topic-title">话题</text>
-				<text class="topic-type">#{{topicType}}#</text>
-				<text class="topic-content">{{topicContent}}</text>
-				<view :class="['fas','fa-bars']" class="sort-icon" />
+				<view class="topictype-andcontent">
+					<text class="topic-type">#{{topicType}}#</text>
+					<text class="topic-content">{{topicContent}}</text>
+				</view>
+				<!-- <view :class="['fas','fa-bars']" class="sort-icon"  /> -->
+				<view class="filter-icon">
+					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
+				</view>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList">
-					<template v-slot:default="item" class="content-box-item">
-						<view class="cnt" @click="jumpto">
+				<waterfallsFlow :list="contentList" @wapper-lick="jumpto">
+					<template v-slot:default="item" class="content-box-item" >
+						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
 								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
@@ -96,19 +100,37 @@
 		components: {
 			waterfallsFlow
 		},
+		onLoad() {
+			uni.request({
+				url:"http://8.136.216.96:8086/Index/Recommend/slide",
+				data:{
+					type:1
+				},
+				success: (res) => {
+					console.log(res)
+					
+					this.swiperimgs = res.data
+				},
+				fail: () => {
+					console.log('请求失败')
+				}
+			})
+		},
 		data() {
 			return {
 				value: "",
 				index_tabs: ["推荐", "热门"],
 				tabIndex: 0,
-				swiperimgs: [{
-						imgId: 0,
-						url: "../../static/swiperImg/2.jpg"
-					},
-					{
-						imgId: 1,
-						url: "../../static/swiperImg/2.jpg"
-					}
+				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
+				swiperimgs: [
+					// {
+					// 	imgId: 0,
+					// 	url: "../../static/swiperImg/2.jpg"
+					// },
+					// {
+					// 	imgId: 1,
+					// 	url: "../../static/swiperImg/2.jpg"
+					// }
 				],
 				topicType: "约拍广场",
 				topicContent: "谁知江南无醉意，笑看春风。",
@@ -332,11 +354,44 @@
 			padding: 10rpx;
 		}
 	}
+	/deep/ .uni-combox{
+		height:20px;
+		margin-top:auto;
+		margin-bottom:auto;
+		// width:40%;
+	}
+	/deep/ .uni-combox__input{
+		flex:1;
+		font-size:24rpx;
+		height:15px;
+		line-height:15px;
+		text-align: center;
+		width: 60rpx;
+	}
+	/deep/ .uni-combox__input-box{
+		height:20px;		
+	}
+	// /deep/ .product-window{
+	// 	background-color: rgba($color: #fff, $alpha: 0.9);
+	// }
+	// .filterbutton-wrapper{
+	// 	background-color: rgba($color: #FFF, $alpha: 0.0);
+	// }
+	// .filterButton-style{
+	// 	color: #797979;
+	// 	font-size: 34rpx;
+	// 	// background-color: rgba($color: #FFF, $alpha: 0.9);
+	// 	border: none;
+	// }
+	// .filterButton-hover{
+	// 	color: rgb(0,0,0);
+	// 	background-color: rgba(0, 0, 0, 0.2);
+	// 	opacity: 0.7;
+	// }
 </style>
 
 <style>
 	@import url("../../static/css/login.css");
-
 	.status_bar {
 		height: var(--status-bar-height);
 		width: 100%;
@@ -471,6 +526,8 @@
 		margin-bottom: 20rpx;
 		margin-left: auto;
 		margin-right: auto;
+		align-items: center;
+		justify-content: space-around;
 		width: 90%;
 	}
 
@@ -479,25 +536,30 @@
 		border-style: none;
 		border-radius: 10rpx;
 		background-color: #FFA7C7;
-		margin-left: 50rpx;
+		/* margin-left: 50rpx; */
 		padding: 10rpx 20rpx 10rpx 20rpx;
 		color: #F1F1F1;
 	}
-
+	.topictype-andcontent{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 	.topic-type {
 		font-size: 20rpx;
 		color: #428BFF;
 		opacity: 0.5;
-		margin-left: 20rpx;
-		margin-top: 10rpx;
+		margin-right: 10rpx;
+		/* margin-left: 20rpx;
+		margin-top: 10rpx; */
 	}
 
 	.topic-content {
 		font-size: 8pt;
 		color: #797979;
 		opacity: 0.6;
-		margin-left: 20rpx;
-		margin-top: 10rpx;
+	/* 	margin-left: 20rpx;
+		margin-top: 10rpx; */
 	}
 
 	.sort-icon {
@@ -585,4 +647,10 @@
 	.index-header {
 		padding-top: 70rpx;
 	}
+	.filter-icon{
+		display:flex;
+		align-item: center;
+		justify-content:center;
+	}
+	
 </style>

@@ -114,7 +114,9 @@
 	/deep/ .uni-fav-text {
 		font-size: 24rpx;
 	}
-	
+	/deep/ .uni-collapse-cell{
+		border:none;
+	}
 </style>
 <style>
 	@import url("PhotographerList.css");
