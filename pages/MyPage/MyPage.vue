@@ -9,39 +9,6 @@
 		<view class="head" >
 			<span class="iconfont" @click='resetNavi()'>&#xe60a;</span>
 		</view>
-<<<<<<< HEAD
-		<table>
-			<tr>
-				<td><image class="avatar" src="../../static/iconn/2.jpg" mode="aspectFill" ></image></td>
-				<td style="vertical-align: top;"><text class="username">jennie</text></td>
-				<td style="vertical-align: top;">
-						<view @click="homePageNavi()" style="font-size: 9pt;border: 3rpx solid #797979;opacity: 0.7; border-radius: 9rpx;width: 120rpx;height: 46rpx;margin-left: 245rpx;margin-top: 30rpx;">
-						<text style="line-height: 46rpx;padding-left: 11rpx;color: #797979;">个人主页</text></view>
-				</td>
-			</tr>
-		</table>
-		<view style="font-size: 10pt;font-family: Arial;height: 66rpx;">
-			<text style="padding-left: 100rpx;line-height: 66rpx;font-size: 9pt;">你还没有个性签名哦！</text>
-		</view>
-		<!-- 第二模块：关注、粉丝、获应援、获赞与收藏 -->
-		<view>
-			<table style="padding-left: 40rpx;height: 100rpx;">
-			<tr>
-				<td style="width: 130rpx;text-align: center;height: 30rpx;">
-					<view class="number">2</view><view class="word">关注</view>
-				</td>
-				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
-				<td style="width: 150rpx;text-align: center;">
-					<view class="number">0</view><view class="word">粉丝</view>
-				</td>
-				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
-				<td style="width: 150rpx;text-align: center;">
-					<view class="number">0</view><view class="word">获应援</view>
-				</td>
-				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
-				<td style="width: 170rpx;text-align: center;">
-					<view class="number">20</view><view class="word">获赞与收藏</view>
-=======
 		<view class="head1">
 		<table>
 			<tr>
@@ -74,7 +41,6 @@
 				<td style="color: #C0C0C0;font-size: 10pt;">|</td>
 				<td style="width: 170rpx;text-align: center;">
 					<view class="number">{{praiseN}}</view><view class="word">获赞与收藏</view>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				</td>
 			</tr>
 		</table>
@@ -120,15 +86,7 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
-<<<<<<< HEAD
-<<<<<<< HEAD
-				<text @click="gotoMyOrder" style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
-=======
 				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
@@ -153,11 +111,6 @@
 <script>
 	export default{
 		data(){
-<<<<<<< HEAD
-			
-		},
-		methods:{
-=======
 			// userId:'';
 			// userName:'';
 			// avatar:'../../static/iconn/2.jpg';
@@ -189,7 +142,6 @@
 					url:'foucsAndFan/fan?userId='+i
 				})
 			},
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			resetNavi(){
 				uni.navigateTo({
 					url:'reset/reset'
@@ -202,11 +154,7 @@
 			},
 			homePageNavi(){
 				uni.navigateTo({
-<<<<<<< HEAD
-					url:'homePage/homePage'
-=======
 					url:'homePage/homePage?userId='+this.userId+'&userId2='+this.userId
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				})
 			},
 			myCollectionNavi(){
@@ -218,23 +166,7 @@
 				uni.navigateTo({
 					url:'myWishList/myWishList'
 				})
-<<<<<<< HEAD
-<<<<<<< HEAD
-			},
-			gotoMyOrder(){
-				uni.navigateTo({
-					url:'../pictureOrder/coser/cosorder'
-				})
 			}
-		},
-		onLoad(){
-			console.log(getApp().globalData.global_userId)
-=======
-			}
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-			}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		}
 	}
 </script>
@@ -251,15 +183,12 @@
 		width: 100%;
 		height: 70px;
 	}
-<<<<<<< HEAD
-=======
 	.head1{
 		position: relative;
 		top: 0;
 		left: 0;
 		width: 100%;
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	.avatar {
 		width: 140rpx;
 		height: 140rpx;

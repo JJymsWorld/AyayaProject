@@ -17,11 +17,7 @@
 				</view>
 				<view class="AppReco-Hot-list-more" @click="gotoPhotographerList">
 					<view class="AppReco-Hot-list-more-icon">
-<<<<<<< HEAD
-						<text>· · ·</text>
-=======
 						<text>. . .</text>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					</view>
 					<text class="AppReco-Hot-pg-list-name">查看更多</text>
 				</view>
@@ -197,14 +193,8 @@
 
 <style lang="scss" scoped>
 	.content-box{
-<<<<<<< HEAD
-		width: 95%;
-		margin-left: auto;
-		margin-right: auto;
-=======
 		width: 93%;
         margin: 0rpx auto;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		.cnt{
 			padding: 10rpx;
 		}
@@ -217,21 +207,6 @@
 		display: flex;
 		flex-direction: row;
 		margin: auto;
-<<<<<<< HEAD
-	}
-	
-	.user-head-img {
-		width: 50rpx;
-		height: 50rpx;
-		border-style: none;
-		border-radius: 25rpx;
-		margin-right: 10rpx;
-		margin-left: 5rpx;
-	}
-	
-	.user-name {
-		font-size: 25rpx;
-=======
 		margin-top: 10rpx;
 		margin-bottom: 10rpx;
 	}
@@ -247,7 +222,6 @@
 	
 	.user-name {
 		font-size: 20rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
@@ -255,17 +229,10 @@
 	}
 	
 	.view-num {
-<<<<<<< HEAD
-		color: #797979;
-		margin-top: auto;
-		margin-bottom: auto;
-		font-size: 25rpx;
-=======
 		color: rgba(51,51,51,0.4);
 		margin-top: auto;
 		margin-bottom: auto;
 		margin-right: 10rpx;
 		font-size: 20rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 </style>

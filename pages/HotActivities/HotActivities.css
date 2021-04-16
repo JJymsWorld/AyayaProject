@@ -102,12 +102,6 @@
 }
 
 .Events-list-item-body{
-<<<<<<< HEAD
-    font-size: 30rpx;
-    margin-bottom: 20rpx;
-}
-
-=======
 	width: 90%;
     font-size: 30rpx;
     margin-bottom: 20rpx;
@@ -117,17 +111,13 @@
 	padding-left: 20rpx;
 	line-height: 45rpx;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .Events-list-item-footer{
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 26rpx;
     margin-left: 20rpx;
-<<<<<<< HEAD
-=======
 	margin-bottom: 15rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }
 
 .Events-list-item-footer-EventsActive{
@@ -149,12 +139,9 @@
     border-style: none;
     border-radius: 20rpx;
 }
-<<<<<<< HEAD
-=======
 .Events-list-item-footer-left{
 	margin-left: 10rpx;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .Events-list-item-footer-right{
     color: #797979;
     margin-left: 20rpx;

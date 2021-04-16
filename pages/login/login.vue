@@ -9,29 +9,17 @@
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">账号</text>
-<<<<<<< HEAD
-<<<<<<< HEAD
 				<view class="login-input">
 					<input type="text" @input="onAccountInput" class="login-input account-input" :value="account"/>
 					<text class="uni-icon"></text>
 				</view>
-=======
-				<input type="text" @input="onAccountInput" class="login-input" :value="account"/>
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-				<input type="text" @input="onAccountInput" class="login-input" :value="account"/>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			</view>
 		</view>
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text" :value='password'>密码</text>
 				<view class="login-input">
-<<<<<<< HEAD
 					<input :password="showPassword" @input="onPwdInput" class="login-input pwd-input" :value="password"/>
-=======
-					<input :password="showPassword" @input="onPwdInput" class="login-input pwd-input"/>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					<text class="uni-icon" :class="[!showPassword ? 'uni-eye-active' : '']" @click="changePassword">&#xe568;</text>
 				</view>
 			</view>
@@ -40,11 +28,7 @@
 			<view class="row-box">
 				<checkbox-group @change="localStorage" class="rempwd">
 					<label>
-<<<<<<< HEAD
 						<checkbox :checked="ifremPwd" class="rempwd-check" value="rempwd"/><text class="login-text login-text1">记住密码</text>
-=======
-						<checkbox class="rempwd-check" value="rempwd"/><text class="login-text login-text1">记住密码</text>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					</label>
 				</checkbox-group>
 				<text class="login-text login-text2" @click="gotoFogotpw">忘记密码?</text>
@@ -67,15 +51,7 @@
 	export default {
 		data() {
 			return {
-<<<<<<< HEAD
-<<<<<<< HEAD
 				account:"",	//	测试账号17757273698
-=======
-				account:"",	//	测试账号13757269040
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-				account:"17757273698",	//	测试账号
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				password:"",
 				userId: 0,
 				realPW:"",
@@ -93,10 +69,6 @@
 						account: this.account
 					}
 				})
-<<<<<<< HEAD
-=======
-				console.log(res)
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				// 获取密码和用户ID
 				this.realPW = res.data[0].password
 				this.userId = res.data[0].user_id
@@ -110,13 +82,7 @@
 				// 账号密码正确跳转
 				else if(this.password === this.realPW){
 					// 本地存入密码
-<<<<<<< HEAD
-<<<<<<< HEAD
 					console.log(this.ifremPwd)
-=======
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					if(this.ifremPwd){
 						// 本地存入密码
 						uni.setStorage({
@@ -139,15 +105,7 @@
 					}
 					// 本地存入账号
 					uni.setStorage({
-<<<<<<< HEAD
-<<<<<<< HEAD
 					    key: 'userAccount',
-=======
-					    key: 'userId',
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-					    key: 'userId',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					    data: this.account,
 					    success: function () {
 					        console.log('success');
@@ -155,13 +113,7 @@
 					});
 					//将用户ID存入全局变量
 					getApp().globalData.global_userId = this.userId
-<<<<<<< HEAD
-<<<<<<< HEAD
 					console.log(getApp().globalData.global_userId)
-=======
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					uni.switchTab({
 						url:"../Mypage/mypage"
 					})
@@ -176,18 +128,11 @@
 			},
 			onPwdInput:function(event){
 				this.password = event.target.value;
-<<<<<<< HEAD
-=======
-				console.log(this.password)
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			},
 			changePassword: function(){
 			    this.showPassword = !this.showPassword;
 			},
-<<<<<<< HEAD
 			// 判断是否存入密码
-=======
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			localStorage: function(e){
 				var valid = e.detail.value;
 				console.log(valid)
@@ -213,15 +158,7 @@
 		},
 		onLoad(){
 			uni.getStorage({
-<<<<<<< HEAD
-<<<<<<< HEAD
 			    key: 'userAccount',
-=======
-			    key: 'userId',
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
-			    key: 'userId',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			    success: res=> {
 			        console.log(res.data);
 					this.account = res.data
@@ -234,16 +171,10 @@
 					this.password = res.data
 			    }
 			});
-<<<<<<< HEAD
-<<<<<<< HEAD
 			// 判断是否勾选记住密码
 			if(this.password != ''){
 				this.ifremPwd = true
 			}
-=======
->>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
-=======
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			console.log(getApp().globalData.global_userId)
 		}
 	}
@@ -258,11 +189,7 @@
 		text-align: center;
 		font-size: 18px;
 	}
-<<<<<<< HEAD
 	.pwd-input, .account-input{
-=======
-	.pwd-input{
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		border: none;
 		float: left;
 	}

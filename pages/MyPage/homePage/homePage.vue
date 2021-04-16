@@ -7,11 +7,7 @@
 			<image src="../../../static/iconn/2.jpg" mode="aspectFill"></image>
 			<text class="backBoxUsername">{{username}}</text>
 			<text class="backBoxSign">{{sign}}</text>
-<<<<<<< HEAD
-			<view class="backBoxEdit"><text>编辑资料</text></view>
-=======
 			<view v-if="userId==userId2" class="backBoxEdit"><text>编辑资料</text></view>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<view class="backBoxCos"><text>cos榜</text></view>
 			<table class='backBoxTable'>
 				<tr>
@@ -43,11 +39,7 @@
 	<!-- 动态列表 -->
 	<view class="dynamicBox" v-if="tabIndex==0">
 		<uni-list :border="false" >
-<<<<<<< HEAD
-		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dyId">
-=======
 		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id">
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<template v-slot:body>
 				<view class="dynamicIt">
 					  <view class="dynamnicHead">
@@ -67,13 +59,6 @@
 					<table class="littleIconTable">
 						<tr>
 							<td>
-<<<<<<< HEAD
-								<image class='littleIcon'src='../../../static/icon/like.png' @click="addLike(index)"></image>
-								<text class="number">{{item.interestNum}}</text>
-							</td>
-							<td>
-							    <image class='littleIcon' src="../../../static/icon/chat.png"></image>
-=======
 								<view v-if="item.isInterest==0" style="width: 50rpx;height: 50rpx;">
 								<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
 								<text class="number">{{item.interestNum}}</text>
@@ -85,7 +70,6 @@
 							</td>
 							<td>
 							    <image class='littleIcon' src="../../../static/icon/chat.png"@click="open"></image>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 							    <text class="number">{{item.commentNum}}</text>
 							</td>
 							<td>
@@ -101,8 +85,6 @@
 		</uni-list-item>
 	</uni-list>
 	<uni-load-more status="noMore"></uni-load-more>
-<<<<<<< HEAD
-=======
 	
 
 	<uni-popup ref="popup" type="bottom">
@@ -159,7 +141,6 @@
 		 </view>
 	 </view>
 	
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	</view>
 	<!-- 动态列表end -->
 	
@@ -198,22 +179,16 @@
 		// onReady() {
 		// 	document.getElementsByTagName('li')[this.tabIndex].className='navi'
 		// },
-<<<<<<< HEAD
-=======
 		onReady(option) {
 			// this.userId=option.userId
 			// this.userId2=option.userId2
 			
 		},
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		components: {
 			waterfallsFlow
 		},
 		data(){
 			return{
-<<<<<<< HEAD
-				
-=======
 				scrollTop: 0,
 				old: {
 				    scrollTop: 0
@@ -222,7 +197,6 @@
 				
 				userId:'',
 				userId2:'',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
@@ -233,18 +207,11 @@
 					'作品',
 					'收藏夹'
 				],
-<<<<<<< HEAD
-				tabIndex:1,
-				dynamicItem:[
-					{
-						dyId:'1',
-=======
 				tabIndex:0,
 				dynamicItem:[
 					{
 						Id:'1',
 						userId:'',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -252,20 +219,13 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
-<<<<<<< HEAD
-=======
 						isInterest:'0',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
-<<<<<<< HEAD
-						dyId:'2',
-=======
 						Id:'2',
 						userId:'',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -273,20 +233,13 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
-<<<<<<< HEAD
-=======
 						isInterest:'0',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
-<<<<<<< HEAD
-						dyId:'3',
-=======
 						Id:'3',
 						userId:'',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -294,16 +247,11 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
-<<<<<<< HEAD
-=======
 						isInterest:'0',
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					}
 				],
-<<<<<<< HEAD
-=======
 				recomendList:[
 					{
 						userIdR:'',
@@ -362,7 +310,6 @@
 						recLike:'0'
 					}
 				],
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				contentList: [{
 						id: 1,
 						// image_url: "../../static/contentImg/1.jpg",
@@ -410,8 +357,6 @@
 			}
 		},
 		methods:{
-<<<<<<< HEAD
-=======
 			open(){
 			         // 通过组件定义的ref调用uni-popup方法
 			         this.$refs.popup.open()
@@ -430,17 +375,11 @@
 			       lower: function(e) {
 			           console.log(e)
 			       },
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			navigateBack(){
 				uni.navigateBack();
 			},
 			changeFun(i){
 				this.tabIndex=i;
-<<<<<<< HEAD
-			},
-			addLike:function(i){
-				this.dynamicItem[i].interestNum++;
-=======
 				console.log(i);
 				if(i==0){
 					this.loadDynamic(1);
@@ -456,14 +395,11 @@
 					this.$data.dynamicItem[i].interestNum--;
 					this.$data.dynamicItem[i].isInterest=0;
 				}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			},
 			workNavigate(){
 				uni.navigateTo({
 					url:'../../works/works'
 				})
-<<<<<<< HEAD
-=======
 			},
 			async loadDynamic(i){
 				console.log(i)
@@ -493,7 +429,6 @@
 				else{
 					this.recomendList[i].recLike=0;
 				}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		}
 	}

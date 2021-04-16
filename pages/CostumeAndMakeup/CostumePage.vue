@@ -1,15 +1,12 @@
 <template>
 	<view>
 		<view class="CosumeMakeup-wrapper">
-<<<<<<< HEAD
-=======
 			<mingpop ref="mingpop" direction="center" :is_close="false" :width="80">
 				<view class="fullTopic" v-for="(item,index) in CostumetopicContent" :key="index">
 					<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
 					<text class="topic-lable-mid-content-title">{{item.title}}</text>
 				</view>
 			</mingpop>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<view class="top-tab-bar">
 				<view class="top-tab-bar-active">服饰</view>
 				<view class="top-tab-bar-title" @click="tabToMakeup">妆容</view>
@@ -18,11 +15,7 @@
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
 						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index">
-<<<<<<< HEAD
-							<image :src="item.url" mode="aspectFill" class="swiper-item"></image>
-=======
 							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						</swiper-item>
 					</swiper>
 				</view>
@@ -36,25 +29,15 @@
 							<text class="topic-lable-mid-content-title">{{item.title}}</text>
 						</view>
 					</view>
-<<<<<<< HEAD
-					<view class="topic-lable-right">
-=======
 					<view class="topic-lable-right" @click="viewMoreTopic">
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						查看更多内容
 					</view>
 				</view>
 				<view class="function-bar">
-<<<<<<< HEAD
-					<view class="function-bar-filter">
-						<text>分类</text>
-						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view>
-=======
 					<view class="function-bar-filter" >
 						<!-- <text>分类</text>
 						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view> -->
 						<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					</view>
 					<view class="function-bar-searchbar">
 						<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
@@ -85,20 +68,6 @@
 
 <script>
 	import waterfallsFlow from "../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
-<<<<<<< HEAD
-	export default {
-		components:{waterfallsFlow},
-		data() {
-			return {
-				CostumeswiperImgs: [{
-						img_id: 0,
-						url: "../../static/swiperImg/3.jpg"
-					},
-					{
-						img_id: 1,
-						url: "../../static/swiperImg/4.jpg"
-					}
-=======
 	import mingpop from "@/components/ming-pop/ming-pop.vue"
 	export default {
 		components:{waterfallsFlow,mingpop},
@@ -129,7 +98,6 @@
 					// 	img_id: 1,
 					// 	url: "../../static/swiperImg/4.jpg"
 					// }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				],
 				CostumetopicContent:[
 					{
@@ -177,12 +145,9 @@
 				uni.redirectTo({
 					url:'./MakeUpPage'
 				})
-<<<<<<< HEAD
-=======
 			},
 			viewMoreTopic(){
 				this.$refs.mingpop.show();
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		},
 		computed:{
@@ -206,8 +171,6 @@
 			padding: 10rpx;
 		}
 	}
-<<<<<<< HEAD
-=======
 	/deep/ .uni-combox{
 		height:20px;
 		margin-top:auto;
@@ -228,7 +191,6 @@
 	/deep/ .product-window{
 		background-color: rgba($color: #FFF, $alpha: 0.8);
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </style>
 <style>
 	@import url("CostumeAndMakeup.css");
@@ -244,8 +206,6 @@
 		font-size: 26rpx;
 		margin-bottom: 20rpx;
 	}
-<<<<<<< HEAD
-=======
 	.fullTopic{
 		display: flex;
 		flex-direction: row;
@@ -253,5 +213,4 @@
 		margin-top: 10rpx;
 		margin-bottom: 10rpx;
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </style>

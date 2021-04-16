@@ -27,8 +27,6 @@
 				<td><view class="picword">社交平台主页</view></td>
 			</tr>
 		</table>
-<<<<<<< HEAD
-=======
 		<!-- 
 		<view class="pickerBox">
 			<uni-file-picker 
@@ -44,14 +42,11 @@
 		</view>
 		 -->
 		
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		<view class="buttonBox"><text>提交申请</text></view>
 	</view>
 </template>
 
 <script>
-<<<<<<< HEAD
-=======
 	export default {
 	        data() {
 	            return {
@@ -84,7 +79,6 @@
 	            }
 	        }
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </script>
 
 <style>
@@ -139,10 +133,7 @@
 		color: #FFFFFF;
 		line-height: 80rpx;
 	}
-<<<<<<< HEAD
-=======
 	.pickerBox{
 		width: 30%;
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </style>

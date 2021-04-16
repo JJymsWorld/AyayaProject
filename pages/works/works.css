@@ -43,14 +43,11 @@
 	padding-left: 26rpx;
 	/* line-height: 0rpx; */
 }
-<<<<<<< HEAD
-=======
 .clothingTab{
 	position: relative;
 	top: 0;
 	left: 0;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .picbox{
 	width: 100%;
 }
@@ -84,19 +81,6 @@ ul,li{
 	background-color: #FF6EA2;
 }
 .contentBox{
-<<<<<<< HEAD
-	position: relative;
-	top: 10rpx;
-	left: 0;
-	width: 100%;
-	height: 230rpx;
-/* 	background-color: #07C160; */
-}
-.contentBox view:nth-child(1){
-	position: absolute;
-	top: 0;
-	left: 70rpx;
-=======
 	/* position: relative;
 	top: 30rpx;
 	left: 0;
@@ -111,24 +95,17 @@ ul,li{
 	top: 0;
 	left: 70rpx; */
 	padding-left: 70rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	font-size: 32rpx;
 	font-weight: bold;
 	font-family: '黑体';
 	letter-spacing: 3rpx;
 }
 .contentBox table{
-<<<<<<< HEAD
-	position: absolute;
-	top: 65rpx;
-	left:50rpx;
-=======
 	/* position: absolute;
 	top: 65rpx;
 	left:50rpx; */
 	margin-left: 50rpx;
 	margin-top: 30rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	font-size: 10pt;
 }
 .contentBox view:nth-child(3){
@@ -138,11 +115,7 @@ ul,li{
 	font-size: 10pt;
 	color: #62A1EC;
 }
-<<<<<<< HEAD
-.contentBox table a{
-=======
 .contentBox table text{
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	color: #62A1EC;
 }
 .contentBox view:nth-child(4){
@@ -182,11 +155,7 @@ ul,li{
 	font-size: 10pt;
 	font-family: 'Verdana';
 	line-height: 40rpx;
-<<<<<<< HEAD
-	margin: 0 auto;
-=======
 	margin: 20rpx auto;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }
 .timeAread{
 	font-size: 7pt;
@@ -262,16 +231,11 @@ ul,li{
 	font-family: '黑体';
 }
 .commentBox{
-<<<<<<< HEAD
-	margin-top: 20rpx;
-/* 	background-color: #0077AA; */
-=======
 	padding-top: 20rpx;
 	background-color: #FFFFFF;
 }
 .commentboxFirst{
 	margin-top: 20rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }
 .commentBox view:first-child image{
 	width: 62rpx;
@@ -306,20 +270,6 @@ ul,li{
 }
 .commentedBox{
 	width: 550rpx;
-<<<<<<< HEAD
-	height: 120rpx;
-	background-color: #F7F7F7;
-	margin-left: 100rpx;
-	margin-top: 25rpx;
-	border-radius: 15rpx;
-}
-.commentedBox view a{
-	font-size: 10pt;
-	color: #62A1EC;
-}
-.commentedBox view .commendedtext{
-	font-size: 10pt;
-=======
 	
 	background-color: #F7F7F7;
 	margin-left: 100rpx;
@@ -351,7 +301,6 @@ ul,li{
 }
 .commentedBox view .commendedtext{
 	font-size: 18rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	color: #101010;
 }
 .commentedBox view:first-child{
@@ -364,11 +313,7 @@ ul,li{
 	margin-left: 30rpx;
 	padding-top: 18rpx;
 	color: #62A1EC;
-<<<<<<< HEAD
-}
-=======
 } */
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .lastBox{
 	width: 100%;
 	height: 100rpx;
@@ -414,15 +359,9 @@ ul,li{
 .uni-list::before{
 		display: none;
 	}
-<<<<<<< HEAD
-	.uni-list::after{
-		display: none;
-	}
-=======
 .uni-list::after{
 	display: none;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	
 	
 .myswiper{

@@ -267,20 +267,11 @@ $list-item-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 	display: flex;
 	/* #endif */
 	flex-direction: row;
-<<<<<<< HEAD
-	padding: 5rpx 0rpx;
-	// padding-left: $uni-spacing-row-lg;
-	flex: 1;
-	overflow: hidden;
-	// align-items: center;
-	background-color: #FBFBFB;
-=======
 	padding: $list-item-pd;
 	padding-left: $uni-spacing-row-lg;
 	flex: 1;
 	overflow: hidden;
 	// align-items: center;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }
 
 .container--right {

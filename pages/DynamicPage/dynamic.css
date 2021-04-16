@@ -106,11 +106,7 @@
 .dynamicIt{
 	width: 100%;
 	background-color: #FFFFFF;
-<<<<<<< HEAD
-	margin: 0rpx auto;
-=======
 	margin: 7rpx auto;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }
 .dynamnicHead{
 	position: relative;
@@ -187,14 +183,11 @@
 	color: #ACACAC;
 	padding-left: 6rpx;
 }
-<<<<<<< HEAD
-=======
 .number1{
 	font-size: 10pt;
 	color: #F2A3C3;
 	padding-left: 6rpx;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .lastBlank{
 	width: 100%;
 	height: 100rpx;
@@ -204,9 +197,6 @@
 	}
 .uni-list::after{
 	    display: none;
-<<<<<<< HEAD
-	}
-=======
 	}
 	
 .recommendBox{
@@ -317,4 +307,3 @@
   -moz-osx-font-smoothing: grayscale;
    vertical-align: middle;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029

@@ -140,11 +140,7 @@
 ```
 
 ```javascript
-<<<<<<< HEAD
 export default {
-=======
-export default {
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		data() {
 			return {
 				imageValue:[]
@@ -211,11 +207,7 @@ export default {
 ```
 
 ```javascript
-<<<<<<< HEAD
 export default {
-=======
-export default {
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		data() {},
 		methods:{
 			upload(){
@@ -258,11 +250,7 @@ export default {
 ```
 
 ```javascript
-<<<<<<< HEAD
 export default {
-=======
-export default {
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		data() {
 			imageStyles:{
 				width:64,

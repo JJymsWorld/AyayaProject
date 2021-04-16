@@ -25,11 +25,7 @@
 		</view>
 		<view class="content">
 			<view class="row-box">
-<<<<<<< HEAD
 				<button class="btn" @click="retrievePw">修改密码</button>
-=======
-				<button class="btn" @click="getData">修改密码</button>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			</view>
 		</view>
 	</view>
@@ -47,25 +43,6 @@
 			}
 		},
 		methods: {
-<<<<<<< HEAD
-=======
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
-			},
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			onAccountInput:function(event){
 				this.account = event.target.value;
 			},
@@ -81,7 +58,6 @@
 				}
 				else this.samePW = false;
 			},
-<<<<<<< HEAD
 			radio: function(e){
 				this.gender = e;
 			},
@@ -99,19 +75,6 @@
 					})
 				}
 				
-=======
-			localStorage: function(e){
-				var valid = e.detail.value;
-				if(valid[0] == 'rempwd'){
-					// 本地存入账号和密码
-				}
-				else{
-					// 仅在本地存入账号
-				}
-			},
-			radio: function(e){
-				this.gender = e;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		}
 	}

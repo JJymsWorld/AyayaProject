@@ -6,16 +6,10 @@
 				<view class="tab-top-bar-right" @click="JumpToCollectionContentPage">季番合集</view>
 			</view>
 			<view class="top-function-bar">
-<<<<<<< HEAD
-				<view class="top-function-bar-left">
-					<text>筛选</text>
-					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view>
-=======
 				<view class="top-function-bar-left" >
 					<!-- <text>筛选</text>
 					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view> -->
 					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				</view>
 				<view class="top-function-bar-right">
 					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
@@ -56,10 +50,7 @@
 	export default{
 		data(){
 			return {
-<<<<<<< HEAD
-=======
 				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				EventsList:[
 					{
 						id:0,
@@ -97,8 +88,6 @@
 
 
 <style lang="scss" scoped>
-<<<<<<< HEAD
-=======
 	/deep/ .uni-combox{
 		height:20px;
 		margin-top:auto;
@@ -116,7 +105,6 @@
 	/deep/ .uni-combox__input-box{
 		height:20px;		
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </style>
 <style>
 	@import url("HotActivities.css");

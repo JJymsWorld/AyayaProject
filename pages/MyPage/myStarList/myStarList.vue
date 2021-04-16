@@ -17,11 +17,6 @@
 	export default{
 		data(){
 			return{
-<<<<<<< HEAD
-				pic:"",
-				title:"",
-				collectNum:""
-=======
 				list:[
 					{
 					pic:"",
@@ -44,7 +39,6 @@
 						  // 数据操作
 					}
 				})
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		}
 	}

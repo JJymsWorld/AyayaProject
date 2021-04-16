@@ -32,11 +32,7 @@
 	/* 动画库 */
 	@import url("./common/animate.css");
 	/* vant-weapp */
-<<<<<<< HEAD
-	
-=======
-	
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
+	/* @import "./wxcomponents/vant/dist/common/index.wxss"; */
 	/* 自定义图标库 */
 	@import url("./common/iconfont.css");
 	page{

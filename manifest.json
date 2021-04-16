@@ -67,9 +67,6 @@
     },
     "uniStatistics": {  
         "enable": false
-<<<<<<< HEAD
-    }
-=======
     },
 	"h5" : {
 	    "devServer" : {
@@ -87,5 +84,4 @@
 	        }
 	    }
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }

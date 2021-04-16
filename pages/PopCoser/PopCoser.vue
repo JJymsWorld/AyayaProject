@@ -20,19 +20,11 @@
 				</view>
 				<view class="Infobox-down">
 					<view class="user-info-box" v-for="(item,index) in showThree" :key="index">
-<<<<<<< HEAD
-						<image class="user-info-box-headimg" :src="item.headimg_url" mode="aspectFill"></image>
-						<text class="user-info-box-name">{{item.username}}</text>
-					</view>
-					<view class="view-more-Coser" @click="gotoStayInCoserList">
-						<view class="moreCoser-Icon">· · ·</view>
-=======
 						<image class="user-info-box-headimg" :src="item.header_Pic" mode="aspectFill"></image>
 						<text class="user-info-box-name">{{item.user_name}}</text>
 					</view>
 					<view class="view-more-Coser" @click="gotoStayInCoserList">
 						<view class="moreCoser-Icon">. . .</view>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						<text class="user-info-box-name">查看更多</text>
 					</view>
 				</view>
@@ -48,29 +40,6 @@
 				<view class="CoserListbox-mid">
 					<view class="Coser-Items">
 						<view class="img-wrapper-1">
-<<<<<<< HEAD
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].headimg_url">
-							</image>
-						</view>
-						<text>{{userInfoList[1].username}}</text>
-						<text>🔥{{userInfoList[1].popularity_values}}</text>
-					</view>
-					<view class="Coser-Items">
-						<view class="img-wrapper-2">
-							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[3].headimg_url">
-							</image>
-						</view>
-						<text>{{userInfoList[0].username}}</text>
-						<text>🔥{{userInfoList[0].popularity_values}}</text>
-					</view>
-					<view class="Coser-Items">
-						<view class="img-wrapper-3">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[5].headimg_url">
-							</image>
-						</view>
-						<text>{{userInfoList[2].username}}</text>
-						<text>🔥{{userInfoList[2].popularity_values}}</text>
-=======
 							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].header_Pic">
 							</image>
 						</view>
@@ -92,29 +61,15 @@
 						</view>
 						<text class="Coser-Items-text">{{userInfoList[2].user_name}}</text>
 						<text class="Coser-Item-Number">{{userInfoList[2].energy}}</text>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 					</view>
 				</view>
 				<view class="CoserListbox-down">
 					<uni-list class="CoserListbox-down-list" :border="false">
-<<<<<<< HEAD
-						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.username" :ellipsis="1">
-=======
 						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.user_name" :ellipsis="1">
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 							<view slot="header" class="CoserListbox-down-header">
 								<text class="CoserListbox-down-header-text">{{index+4}}</text>
 							</view>
 							<view slot="body" class="CoserListbox-down-body">
-<<<<<<< HEAD
-								<image :src="item.headimg_url" class="CoserListbox-down-body-avatar" mode="aspectFill">
-								</image>
-								<text class="CoserListbox-down-body-name">{{item.username}}</text>
-							</view>
-							<view slot="footer" class="CoserListbox-down-footer">
-								<text class="CoserListbox-down-footer-text">🔥人气值</text>
-								<text class="CoserListbox-down-footer-popNum">{{item.popularity_values}}</text>
-=======
 								<image :src="item.header_Pic" class="CoserListbox-down-body-avatar" mode="aspectFill">
 								</image>
 								<text class="CoserListbox-down-body-name">{{item.user_name}}</text>
@@ -122,7 +77,6 @@
 							<view slot="footer" class="CoserListbox-down-footer">
 								<text class="CoserListbox-down-footer-text">🔥人气值</text>
 								<text class="CoserListbox-down-footer-popNum">{{item.energy}}</text>
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 							</view>
 						</uni-list-item>
 					</uni-list>
@@ -135,8 +89,6 @@
 
 <script>
 	export default {
-<<<<<<< HEAD
-=======
 		onLoad() {
 			// uni.request({
 			// 	url:"http://8.136.216.96:8086/Cos/PopCoserList/getAllRank",
@@ -151,67 +103,10 @@
 			// 	}
 			// })
 		},
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		data() {
 			return {
 				listTabsType: ['总榜', '周榜'],
 				tabIndex: 0,
-<<<<<<< HEAD
-				userInfoList: [{
-						user_id: 1,
-						headimg_url: '../../static/CoserlistSource/userheadimg1.jpg',
-						username: '嘉Sama',
-						popularity_values: 5947
-					},
-					{
-						user_id: 2,
-						headimg_url: '../../static/CoserlistSource/userheadimg2.jpg',
-						username: '夜呀_mm',
-						popularity_values: 4747
-					},
-					{
-						user_id: 3,
-						headimg_url: '../../static/CoserlistSource/userheadimg3.jpg',
-						username: '青玉子sei',
-						popularity_values: 3947
-					},
-					{
-						user_id: 4,
-						headimg_url: '../../static/CoserlistSource/userheadimg4.jpg',
-						username: '小娜',
-						popularity_values: 3256
-					},
-					{
-						user_id: 5,
-						headimg_url: '../../static/CoserlistSource/userheadimg5.jpg',
-						username: '奈奈喵',
-						popularity_values: 2756
-					},
-					{
-						user_id: 6,
-						headimg_url: '../../static/CoserlistSource/userheadimg6.jpg',
-						username: '国际巨星',
-						popularity_values: 2733
-					},
-					{
-						user_id: 7,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: 'abcde',
-						popularity_values: 1236
-					},
-					{
-						user_id: 8,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: 'roserrrr',
-						popularity_values: 1235
-					},
-					{
-						user_id: 9,
-						headimg_url: '../../static/CoserlistSource/userheadimg7.jpg',
-						username: '12344',
-						popularity_values: 1234
-					},
-=======
 				userInfoList: [
 					{
 						user_id: 1,
@@ -267,7 +162,6 @@
 						user_name: '12344',
 						energy: 1234
 					}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				]
 			}
 		},
@@ -307,8 +201,6 @@
 	}
 </script>
 
-<<<<<<< HEAD
-=======
 <style lang="scss" scoped>
 	/deep/ .uni-list-item{
 		// padding-top: 15rpx;
@@ -325,7 +217,6 @@
 	}
 </style>
 
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 <style>
 	page {
 		background-image: url(../../static/backgroundImg/bg3.png);
@@ -360,13 +251,8 @@
 	}
 
 	.popcoser-search-fs {
-<<<<<<< HEAD
-		font-size: 30rpx;
-		color: #797979;
-=======
 		font-size: 25rpx;
 		color: rgba(16,16,16,0.33);
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		margin-right: auto;
 		width: auto;
 	}
@@ -378,33 +264,20 @@
 	}
 
 	.searchIcon-style {
-<<<<<<< HEAD
-		color: #797979;
-		font-size: 30rpx;
-=======
 		color: rgba(16,16,16,0.33);
 		font-size: 25rpx;
 
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.CoserInfo-box {
 		display: flex;
 		flex-direction: column;
 		border-style: none;
-<<<<<<< HEAD
-		border-radius: 50rpx;
-		margin-top: 30rpx;
-		background-color: #FFFFFF;
-		height: 280rpx;
-		box-shadow: 0 0 4rpx 4rpx rgba(199, 199, 199, 0.35);
-=======
 		border-radius: 30rpx;
 		margin-top: 30rpx;
 		background-color: #FFFFFF;
 		height: 280rpx;
 		box-shadow: 0 0 10rpx 10rpx rgba(199, 199, 199, 0.15);
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
@@ -438,11 +311,7 @@
 	}
 
 	.Infobox-head-right {
-<<<<<<< HEAD
-		font-size: 20rpx;
-=======
 		font-size: 18rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		color: rgba(255, 110, 162, 0.6);
 		border-style: solid;
 		border-radius: 10rpx;
@@ -451,11 +320,7 @@
 		margin-bottom: auto;
 		padding: 5rpx 10rpx 5rpx 10rpx;
 		margin-left: auto;
-<<<<<<< HEAD
-		margin-right: 20rpx;
-=======
 		margin-right: 40rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.Infobox-down {
@@ -463,13 +328,9 @@
 		flex-direction: row;
 		margin-top: auto;
 		margin-bottom: auto;
-<<<<<<< HEAD
-		width: 95%;
-=======
 		margin-left: auto;
 		margin-right: auto;
 		width: 92%;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		align-items: center;
 	}
 
@@ -488,17 +349,6 @@
 	}
 
 	.user-info-box-name {
-<<<<<<< HEAD
-		font-size: 25rpx;
-		color: #797979;
-		text-align: center;
-		margin-top: 5rpx;
-	}
-
-	.moreCoser-Icon {
-		width: 80rpx;
-		height: 80rpx;
-=======
 		font-size: 20rpx;
 		color: rgba(51,51,51,0.42);
 		text-align: center;
@@ -514,7 +364,6 @@
 	.moreCoser-Icon {
 		width: 70rpx;
 		height: 70rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		border-style: none;
 		border-radius: 40rpx;
 		background-color: #F2A3C3;
@@ -523,22 +372,15 @@
 		align-items: center;
 		justify-content: center;
 		margin: auto;
-<<<<<<< HEAD
-		font-size: 30rpx;
-=======
 		margin-bottom: 0rpx;
 		font-size: 13rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.CoserList-box {
 		display: flex;
 		flex-direction: column;
 		margin-top: 30rpx;
-<<<<<<< HEAD
-=======
 		background-color: #FFFFFF;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.CoserListbox-head {
@@ -551,46 +393,29 @@
 	.ListTab-item {
 		margin-right: 20rpx;
 		margin-left: 20rpx;
-<<<<<<< HEAD
-=======
 
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.ListTabs-title {
 		font-size: 36rpx;
-<<<<<<< HEAD
-		color: #797979;
-=======
 		color: #C6C6C6;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.ListTabs-title-active {
 		font-size: 42rpx;
-<<<<<<< HEAD
-		color: #080808;
-=======
 		font-weight: bold;
 		color: #080808;
 		
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.CoserListbox-mid {
 		display: flex;
 		flex-direction: row;
-<<<<<<< HEAD
-		align-items: baseline;
-		justify-content: space-around;
-		margin-top: 30rpx;
-=======
 		width: 90%;
 		align-items: baseline;
 		justify-content: space-around;
 		margin: 60rpx auto;
 		margin-bottom: 0rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.Coser-Items {
@@ -599,8 +424,6 @@
 		text-align: center;
 		font-size: 30rpx;
 	}
-<<<<<<< HEAD
-=======
 	.Coser-Items-text{
 		font-size: 28rpx;
 		font-weight: bold;
@@ -612,7 +435,6 @@
 		font-weight: bold;
 		color: rgba(32,30,30,0.88);
 	}
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 
 	.CoserItem-img-Other {
 		width: 134rpx;
@@ -652,11 +474,7 @@
 	.CoserListbox-down-header {
 		margin-top: auto;
 		margin-bottom: auto;
-<<<<<<< HEAD
-		font-size: 34rpx;
-=======
 		font-size: 30rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		color: #333333;
 	}
 
@@ -679,14 +497,6 @@
 	.CoserListbox-down-footer-popNum {
 		font-size: 30rpx;
 		color: #F59A23;
-<<<<<<< HEAD
-		margin-left: 10rpx;
-	}
-
-	.CoserListbox-down-body-name {
-		font-size: 28rpx;
-		margin-left: 20rpx;
-=======
 		margin-left: 20rpx;
 		margin-right: 0rpx;
 	}
@@ -694,7 +504,6 @@
 	.CoserListbox-down-body-name {
 		font-size: 30rpx;
 		margin-left: 40rpx;
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 	.uni-list::before{
 		display: none;

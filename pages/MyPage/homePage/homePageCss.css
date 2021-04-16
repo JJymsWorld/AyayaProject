@@ -265,15 +265,11 @@ ul,li{
 	color: #ACACAC;
 	padding-left: 6rpx;
 }
-<<<<<<< HEAD
-
-=======
 .number1{
 	font-size: 10pt;
 	color: #F2A3C3;
 	padding-left: 6rpx;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 
 @font-face {
   font-family: 'iconfont';
@@ -295,15 +291,6 @@ ul,li{
 	font-size: 25rpx;
 	padding-left: 0rpx;
 }
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .iconfont {
   position: absolute;
   top: 69rpx;
@@ -317,9 +304,6 @@ ul,li{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-<<<<<<< HEAD
-
-=======
 .iconfont1 {
 /*  opacity: 0.7; */
   position: absolute;
@@ -371,15 +355,11 @@ ul,li{
 	  -moz-osx-font-smoothing: grayscale;
 	 
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 .uni-list::before{
 		display: none;
 	}
 	.uni-list::after{
 		display: none;
-<<<<<<< HEAD
-	}
-=======
 	}
 	
 	
@@ -428,4 +408,3 @@ ul,li{
 	font-size: 16rpx;
 	color: #ACACAC;
 }
->>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
