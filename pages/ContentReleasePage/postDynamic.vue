@@ -103,7 +103,12 @@
 			}
 		},
 		// 页面导航栏按钮点击事件
+<<<<<<< HEAD
 		onNavigationBarButtonTap() {
+=======
+		async onNavigationBarButtonTap() {
+			
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			uni.uploadFile({
 			    url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
 			    files: this.images,
@@ -117,6 +122,7 @@
 					console.log(uploadFileRes)
 			    }
 			});
+<<<<<<< HEAD
 			
 			// 跳转至首页
 			uni.switchTab({
@@ -144,6 +150,8 @@
 			// 	console.log(jsonObj[prop]);
 			// 	this.photoes.push(jsonObj[prop])
 			// }   
+=======
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 
 			// uni.uploadFile({
 			//     url: 'http://8.136.216.96:8086/Date/PhotographerList/applyStayInPg', 
@@ -159,9 +167,46 @@
 			//         // console.log(uploadFileRes.data);
 			// 		console.log(uploadFileRes)
 			//     }
+<<<<<<< HEAD
 			// });
 
 			
+=======
+			// });
+			
+			// uni.request({
+			// 	header: {
+			// 		"Content-Type": "application/x-www-form-urlencoded"
+			// 	},
+			// 	url: "http://8.136.216.96:8086/ContentReleasePage/dynamic", //仅为示例，并非真实接口地址。
+			// 	method: 'POST',
+			// 	data: {
+			// 		callUser: 13,
+			// 		mainBody: 'test',
+			// 		img: this.images[0].uri
+			// 	},
+			// 	dataType: 'json',
+			// 	success: (res) => {
+			// 		//var result = JSON.parse(res.data.projectList);
+			// 		console.log(res)
+			// 	}
+			// });
+
+			// // 上传图片至服务器
+			// uni.uploadFile({
+			//     url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
+			//     files: this.images,
+			//     success: (uploadFileRes) => {
+			//         console.log(uploadFileRes.data);
+			//     }
+			// });
+			// //上传其他信息
+
+			// 跳转至首页
+			uni.switchTab({
+				url:"../Index_Recommend/Index_Hot"
+			})
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 		}
 	}
 </script>

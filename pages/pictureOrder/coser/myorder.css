@@ -1,14 +1,23 @@
 .row-box {
+<<<<<<< HEAD
 	width: 100%;
 	background-color: rgba(240, 240, 240, 0.4);
+=======
+	width: 90%;
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 	margin: auto;
 	overflow: hidden;
 }
 
 .top-box {
+<<<<<<< HEAD
 	width: 90%;
 	height: 140rpx;
 	margin: 0 auto;
+=======
+	background-color: rgba(240, 240, 240, 0.4);
+	height: 120rpx;
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 	overflow: hidden;
 }
 
@@ -96,12 +105,21 @@
 }
 .slot-footer-box button{
 	font-family: 'PingFang SC';
+<<<<<<< HEAD
 	font-size: 24rpx;
 	line-height: 48rpx;
 	color: #333333;
 	float: right;
 	height: 50rpx;
 	width: 220rpx;
+=======
+	font-size: 12px;
+	line-height: 50rpx;
+	color: #333333;
+	float: right;
+	height: 50rpx;
+	width: 180rpx;
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 	margin: 10rpx;
 	background-color: #FFFFFF;
 	border: 1px solid rgba(150, 150, 150, 0.5);

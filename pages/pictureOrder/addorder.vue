@@ -80,6 +80,7 @@
 			},
 			//提交订单信息
 			submitData: function(){
+<<<<<<< HEAD
 				this.$myRequest({
 					url: '/Data/LaunchOrderPage/addOrder',
 					method: 'POST',
@@ -93,6 +94,9 @@
 						user_b: 1, // 摄影师ID
 					}
 				})
+=======
+				
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			}
 		},
 		components:{

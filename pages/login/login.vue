@@ -9,10 +9,14 @@
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">账号</text>
+<<<<<<< HEAD
 				<view class="login-input">
 					<input type="text" @input="onAccountInput" class="login-input account-input" :value="account"/>
 					<text class="uni-icon"></text>
 				</view>
+=======
+				<input type="text" @input="onAccountInput" class="login-input" :value="account"/>
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			</view>
 		</view>
 		<view class="content">
@@ -51,7 +55,11 @@
 	export default {
 		data() {
 			return {
+<<<<<<< HEAD
 				account:"",	//	测试账号17757273698
+=======
+				account:"",	//	测试账号13757269040
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 				password:"",
 				userId: 0,
 				realPW:"",
@@ -82,7 +90,10 @@
 				// 账号密码正确跳转
 				else if(this.password === this.realPW){
 					// 本地存入密码
+<<<<<<< HEAD
 					console.log(this.ifremPwd)
+=======
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 					if(this.ifremPwd){
 						// 本地存入密码
 						uni.setStorage({
@@ -105,7 +116,11 @@
 					}
 					// 本地存入账号
 					uni.setStorage({
+<<<<<<< HEAD
 					    key: 'userAccount',
+=======
+					    key: 'userId',
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 					    data: this.account,
 					    success: function () {
 					        console.log('success');
@@ -113,7 +128,10 @@
 					});
 					//将用户ID存入全局变量
 					getApp().globalData.global_userId = this.userId
+<<<<<<< HEAD
 					console.log(getApp().globalData.global_userId)
+=======
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 					uni.switchTab({
 						url:"../Mypage/mypage"
 					})
@@ -158,7 +176,11 @@
 		},
 		onLoad(){
 			uni.getStorage({
+<<<<<<< HEAD
 			    key: 'userAccount',
+=======
+			    key: 'userId',
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			    success: res=> {
 			        console.log(res.data);
 					this.account = res.data
@@ -171,10 +193,13 @@
 					this.password = res.data
 			    }
 			});
+<<<<<<< HEAD
 			// 判断是否勾选记住密码
 			if(this.password != ''){
 				this.ifremPwd = true
 			}
+=======
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			console.log(getApp().globalData.global_userId)
 		}
 	}

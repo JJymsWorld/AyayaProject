@@ -85,7 +85,11 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
+<<<<<<< HEAD
 				<text @click="gotoMyOrder" style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
+=======
+				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
@@ -137,6 +141,7 @@
 				uni.navigateTo({
 					url:'myWishList/myWishList'
 				})
+<<<<<<< HEAD
 			},
 			gotoMyOrder(){
 				uni.navigateTo({
@@ -146,6 +151,9 @@
 		},
 		onLoad(){
 			console.log(getApp().globalData.global_userId)
+=======
+			}
+>>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
 		}
 	}
 </script>
