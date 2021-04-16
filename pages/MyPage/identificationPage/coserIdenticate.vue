@@ -27,11 +27,64 @@
 				<td><view class="picword">社交平台主页</view></td>
 			</tr>
 		</table>
+<<<<<<< HEAD
+=======
+		<!-- 
+		<view class="pickerBox">
+			<uni-file-picker 
+		    v-model="imageValue" 
+		    fileMediatype="image" 
+		    mode="grid" 
+		    @select="select" 
+		    @progress="progress" 
+		    @success="success" 
+		    @fail="fail" 
+			:image-styles="imageStyles"
+		/>
+		</view>
+		 -->
+		
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		<view class="buttonBox"><text>提交申请</text></view>
 	</view>
 </template>
 
 <script>
+<<<<<<< HEAD
+=======
+	export default {
+	        data() {
+	            return {
+	                imageValue:[],
+					imageStyles:{
+					                width:100,
+					                height:100,
+					                
+					            },
+	            }
+	        },
+	        methods:{
+	            // 获取上传状态
+	            select(e){
+	                console.log('选择文件：',e)
+	            },
+	            // 获取上传进度
+	            progress(e){
+	                console.log('上传进度：',e)
+	            },
+	
+	            // 上传成功
+	            success(e){
+	                console.log('上传成功')
+	            },
+	
+	            // 上传失败
+	            fail(e){
+	                console.log('上传失败：',e)
+	            }
+	        }
+	}
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </script>
 
 <style>
@@ -86,4 +139,10 @@
 		color: #FFFFFF;
 		line-height: 80rpx;
 	}
+<<<<<<< HEAD
+=======
+	.pickerBox{
+		width: 30%;
+	}
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 </style>

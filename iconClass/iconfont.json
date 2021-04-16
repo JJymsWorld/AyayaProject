@@ -6,6 +6,23 @@
   "description": "",
   "glyphs": [
     {
+<<<<<<< HEAD
+=======
+      "icon_id": "924671",
+      "name": "点赞(激活)-b",
+      "font_class": "dianzanjihuob",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "3217884",
+      "name": "退出",
+      "font_class": "icon-",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
       "icon_id": "11594393",
       "name": "评论",
       "font_class": "pinglun1",

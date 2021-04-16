@@ -7,7 +7,11 @@
 			<image src="../../../static/iconn/2.jpg" mode="aspectFill"></image>
 			<text class="backBoxUsername">{{username}}</text>
 			<text class="backBoxSign">{{sign}}</text>
+<<<<<<< HEAD
 			<view class="backBoxEdit"><text>编辑资料</text></view>
+=======
+			<view v-if="userId==userId2" class="backBoxEdit"><text>编辑资料</text></view>
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<view class="backBoxCos"><text>cos榜</text></view>
 			<table class='backBoxTable'>
 				<tr>
@@ -39,7 +43,11 @@
 	<!-- 动态列表 -->
 	<view class="dynamicBox" v-if="tabIndex==0">
 		<uni-list :border="false" >
+<<<<<<< HEAD
 		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dyId">
+=======
+		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id">
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<template v-slot:body>
 				<view class="dynamicIt">
 					  <view class="dynamnicHead">
@@ -59,11 +67,25 @@
 					<table class="littleIconTable">
 						<tr>
 							<td>
+<<<<<<< HEAD
 								<image class='littleIcon'src='../../../static/icon/like.png' @click="addLike(index)"></image>
 								<text class="number">{{item.interestNum}}</text>
 							</td>
 							<td>
 							    <image class='littleIcon' src="../../../static/icon/chat.png"></image>
+=======
+								<view v-if="item.isInterest==0" style="width: 50rpx;height: 50rpx;">
+								<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
+								<text class="number">{{item.interestNum}}</text>
+								</view>
+								<view v-if="item.isInterest==1" style="width: 50rpx;height: 50rpx;">
+								<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
+								<text class="number1">{{item.interestNum}}</text>
+								</view>
+							</td>
+							<td>
+							    <image class='littleIcon' src="../../../static/icon/chat.png"@click="open"></image>
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 							    <text class="number">{{item.commentNum}}</text>
 							</td>
 							<td>
@@ -79,6 +101,65 @@
 		</uni-list-item>
 	</uni-list>
 	<uni-load-more status="noMore"></uni-load-more>
+<<<<<<< HEAD
+=======
+	
+
+	<uni-popup ref="popup" type="bottom">
+		
+		<view>
+			 <view  class="recommendBox">
+			 			 <view class="recommendHead">10 条评论
+			 			 <span class="iconfont1" @click='close'>&#xe623;</span>
+			 			 </view>
+			 			 
+			 			 <view>
+			 				 <view>
+			        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+			        @scroll="scroll" >
+			            <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
+			 						<image :src="item.avatarR" mode="aspectFill"></image>
+			 						<view class="recomendItemT">
+			 						<view>{{item.usernameR}}</view>
+			 						<view>{{item.text}}</view>
+			 						<view>{{item.date}}</view>
+			 						
+			 						</view>
+			 						<span :class="item.recLike==1?'iconfont2':'iconfont5'" @click='recomendLike(index)'>&#xe608;</span>
+			 					</view>
+			        </scroll-view>
+			    </view>
+			 			 </view>
+			 </view>
+		 </view>
+	</uni-popup>
+	<view>
+		 <view v-if="recommendTag==1" class="recommendBox">
+		 			 <view class="recommendHead">10 条评论
+		 			 <span class="iconfont1" @click='recoomendExit'>&#xe623;</span>
+		 			 </view>
+		 			 
+		 			 <view>
+		 				 <view>
+		        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+		        @scroll="scroll" >
+		            <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
+		 						<image :src="item.avatarR" mode="aspectFill"></image>
+		 						<view class="recomendItemT">
+		 						<view>{{item.usernameR}}</view>
+		 						<view>{{item.text}}</view>
+		 						<view>{{item.date}}</view>
+		 						
+		 						</view>
+		 						<span :class="item.recLike==1?'iconfont2':'iconfont5'" @click='recomendLike(index)'>&#xe608;</span>
+		 					</view>
+		        </scroll-view>
+		    </view>
+		 			 </view>
+		 </view>
+	 </view>
+	
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	</view>
 	<!-- 动态列表end -->
 	
@@ -117,12 +198,31 @@
 		// onReady() {
 		// 	document.getElementsByTagName('li')[this.tabIndex].className='navi'
 		// },
+<<<<<<< HEAD
+=======
+		onReady(option) {
+			// this.userId=option.userId
+			// this.userId2=option.userId2
+			
+		},
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 		components: {
 			waterfallsFlow
 		},
 		data(){
 			return{
+<<<<<<< HEAD
 				
+=======
+				scrollTop: 0,
+				old: {
+				    scrollTop: 0
+				},
+				recommendTag:0,
+				
+				userId:'',
+				userId2:'',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
@@ -133,10 +233,18 @@
 					'作品',
 					'收藏夹'
 				],
+<<<<<<< HEAD
 				tabIndex:1,
 				dynamicItem:[
 					{
 						dyId:'1',
+=======
+				tabIndex:0,
+				dynamicItem:[
+					{
+						Id:'1',
+						userId:'',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -144,11 +252,20 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+<<<<<<< HEAD
+=======
+						isInterest:'0',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
+<<<<<<< HEAD
 						dyId:'2',
+=======
+						Id:'2',
+						userId:'',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -156,11 +273,20 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+<<<<<<< HEAD
+=======
+						isInterest:'0',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					},
 					{
+<<<<<<< HEAD
 						dyId:'3',
+=======
+						Id:'3',
+						userId:'',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						avatarD:'../../../static/iconn/p2.jpg',
 						usernameD:'机智的党妹',
 						date:'2020-06-25',
@@ -168,10 +294,75 @@
 						imageD:'../../../static/iconn/d1.jpg',
 						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 						interestNum:'5482',
+<<<<<<< HEAD
+=======
+						isInterest:'0',
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						commentNum:'2145',
 						relayNum:'1141'
 					}
 				],
+<<<<<<< HEAD
+=======
+				recomendList:[
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:0
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					}
+				],
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				contentList: [{
 						id: 1,
 						// image_url: "../../static/contentImg/1.jpg",
@@ -219,19 +410,90 @@
 			}
 		},
 		methods:{
+<<<<<<< HEAD
+=======
+			open(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.open()
+			      },
+			close(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.close()
+			      },
+			scroll: function(e) {
+			    console.log(e)
+			    this.old.scrollTop = e.detail.scrollTop
+			},
+			upper: function(e) {
+			           console.log(e)
+			       },
+			       lower: function(e) {
+			           console.log(e)
+			       },
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			navigateBack(){
 				uni.navigateBack();
 			},
 			changeFun(i){
 				this.tabIndex=i;
+<<<<<<< HEAD
 			},
 			addLike:function(i){
 				this.dynamicItem[i].interestNum++;
+=======
+				console.log(i);
+				if(i==0){
+					this.loadDynamic(1);
+				}
+			},
+			addLike:function(i){
+				var t=this.$data.dynamicItem[i].isInterest;
+				if(t==0){
+					this.$data.dynamicItem[i].interestNum++;
+					this.$data.dynamicItem[i].isInterest=1;
+				}
+				else{
+					this.$data.dynamicItem[i].interestNum--;
+					this.$data.dynamicItem[i].isInterest=0;
+				}
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			},
 			workNavigate(){
 				uni.navigateTo({
 					url:'../../works/works'
 				})
+<<<<<<< HEAD
+=======
+			},
+			async loadDynamic(i){
+				console.log(i)
+				const res = await this.$myRequest({
+					url:'/Login/login',
+					data:{
+						account: "17757273698"
+					}
+				});
+				    console.log(res);
+			},
+			loadWork(i){
+				uni.request({
+					
+				})
+			},
+			recommend(i){
+			this.recommendTag=1;
+			},
+			recoomendExit(){
+			this.recommendTag=0;	
+			},
+			recomendLike(i){
+				if(this.recomendList[i].recLike==0){
+					this.recomendList[i].recLike=1;
+				}
+				else{
+					this.recomendList[i].recLike=0;
+				}
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		}
 	}

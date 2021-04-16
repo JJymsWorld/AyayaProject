@@ -17,9 +17,34 @@
 	export default{
 		data(){
 			return{
+<<<<<<< HEAD
 				pic:"",
 				title:"",
 				collectNum:""
+=======
+				list:[
+					{
+					pic:"",
+				    title:"",
+				    collectNum:""	
+					}
+				]
+			}
+		},
+		methods:{
+			// 获取收藏夹列表
+			loadList(i){
+				uni.request({
+					url:'/api/MyPage/MyStarList/getAllList',
+					data:{
+						user_id:i
+					},
+					success:(res) => {
+						  console.log(res);
+						  // 数据操作
+					}
+				})
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		}
 	}

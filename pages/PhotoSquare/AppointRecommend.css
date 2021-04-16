@@ -38,7 +38,11 @@
     height: 245rpx;
     border-style: none;
     border-radius: 40rpx;
+<<<<<<< HEAD
     box-shadow: 0 0 4rpx 4rpx rgba(121, 121, 121, 0.1);
+=======
+    box-shadow: 0 0 10rpx 10rpx rgba(199, 199, 199, 0.1);
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
     margin-top: 30rpx;
     margin-left: auto;
     margin-right: auto;
@@ -53,20 +57,35 @@
 
 }
 .AppReco-Hot-pg-list-avatar{
+<<<<<<< HEAD
     width: 110rpx;
     height: 110rpx;
+=======
+    width: 100rpx;
+    height: 100rpx;
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
     border-style: none;
     border-radius: 55rpx;
 }
 .AppReco-Hot-pg-list-name{
+<<<<<<< HEAD
     font-size: 25rpx;
+=======
+    font-size: 20rpx;
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
     color: #797979;
     text-align: center;
     margin-top: 20rpx;
 }
 .AppReco-Hot-list-more-icon{
+<<<<<<< HEAD
     width: 80rpx;
     height: 80rpx;
+=======
+    width: 70rpx;
+    height: 70rpx;
+	font-size: 20rpx;
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
     border-style: none;
     border-radius: 40rpx;
     background-color: #F2A3C3;
@@ -88,4 +107,11 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 30rpx;
+<<<<<<< HEAD
+=======
+}
+.title{
+	font-size: 20rpx;
+	padding-left: 50rpx;
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }

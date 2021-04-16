@@ -67,5 +67,25 @@
     },
     "uniStatistics": {  
         "enable": false
+<<<<<<< HEAD
     }
+=======
+    },
+	"h5" : {
+	    "devServer" : {
+	        // "disableHostCheck" : true, // 开启可以用自己的域名
+	        "proxy": {
+	          "/api": {
+	            "target": "http://8.136.216.96:8086",
+	            "changeOrigin" : true,
+	            "secure" : false,
+	            "pathRewrite": { //匹配请求路径里面有 /api 会替换成https://www.test.com
+	            // 举例：/api/api/user => https://www.test.com/api/user
+	              "^/api": "/"
+	            }
+	          }
+	        }
+	    }
+	}
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 }

@@ -81,6 +81,7 @@
 			//提交订单信息
 			submitData: function(){
 <<<<<<< HEAD
+<<<<<<< HEAD
 				this.$myRequest({
 					url: '/Data/LaunchOrderPage/addOrder',
 					method: 'POST',
@@ -97,6 +98,9 @@
 =======
 				
 >>>>>>> d8453de1c67b4845791327ecbb57d726a1bba948
+=======
+				
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		},
 		components:{

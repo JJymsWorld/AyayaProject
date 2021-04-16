@@ -6,13 +6,21 @@
 		<view class="uni-combox__input-box">
 			<input :disabled="inputDisabled" class="uni-combox__input" type="text" :placeholder="placeholder" v-model="inputVal" @input="onInput"
 			 @focus="onFocus" @blur="onBlur" />
+<<<<<<< HEAD
 			<uni-icons class="uni-combox__input-arrow" type="arrowdown" size="14" @click="toggleSelector"></uni-icons>
+=======
+			<uni-icons class="uni-combox__input-arrow" :type="iconType" :size="iconSize" @click="toggleSelector"></uni-icons>
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			<view class="uni-combox__selector" v-if="showSelector">
 				<scroll-view scroll-y="true" class="uni-combox__selector-scroll">
 					<view class="uni-combox__selector-empty" v-if="filterCandidatesLength === 0">
 						<text>{{emptyTips}}</text>
 					</view>
+<<<<<<< HEAD
 					<view class="uni-combox__selector-item" v-for="(item,index) in filterCandidates" :key="index" @click="onSelectorClick(index)">
+=======
+					<view class="uni-combox__selector-item" v-for="(item,index) in candidates" :key="index" @click="onSelectorClick(index)">
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 						<text>{{item}}</text>
 					</view>
 				</scroll-view>
@@ -65,6 +73,17 @@
 			value: {
 				type: [String, Number],
 				default: ''
+<<<<<<< HEAD
+=======
+			},
+			iconType:{
+				type: String,
+				default: 'arrowdown'
+			},
+			iconSize:{
+				type:Number,
+				default:14
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 			}
 		},
 		data() {
@@ -112,7 +131,11 @@
 				}, 153)
 			},
 			onSelectorClick(index) {
+<<<<<<< HEAD
 				this.inputVal = this.filterCandidates[index]
+=======
+				this.inputVal = this.candidates[index]
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 				this.showSelector = false
 				this.$emit('input', this.inputVal)
 			},
@@ -161,7 +184,11 @@
 	}
 
 	.uni-combox__input-arrow {
+<<<<<<< HEAD
 		padding: 10px;
+=======
+		padding: 6rpx;
+>>>>>>> a3304d4e5b50c730a4f211d95d351218591e8029
 	}
 
 	.uni-combox__selector {
