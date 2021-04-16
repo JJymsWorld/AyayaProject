@@ -15,9 +15,7 @@
 		            <view class="page-section swiper">
 		                <view class="page-section-spacing">
 <<<<<<< HEAD
-		                    <swiper class="myswiper" :indicator-dots="false" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
-								<swiper-item v-for="(item,index) in pic" >
-									<image :src="item" mode="aspectFit"></image>
+		                   
 =======
 		                    <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
 								<swiper-item v-for="(item,index) in pic" >
