@@ -1,12 +1,14 @@
 .row-box {
-	width: 90%;
+	width: 100%;
+	background-color: rgba(240, 240, 240, 0.4);
 	margin: auto;
 	overflow: hidden;
 }
 
 .top-box {
-	background-color: rgba(240, 240, 240, 0.4);
-	height: 120rpx;
+	width: 90%;
+	height: 140rpx;
+	margin: 0 auto;
 	overflow: hidden;
 }
 
@@ -94,12 +96,12 @@
 }
 .slot-footer-box button{
 	font-family: 'PingFang SC';
-	font-size: 12px;
-	line-height: 50rpx;
+	font-size: 24rpx;
+	line-height: 48rpx;
 	color: #333333;
 	float: right;
 	height: 50rpx;
-	width: 180rpx;
+	width: 220rpx;
 	margin: 10rpx;
 	background-color: #FFFFFF;
 	border: 1px solid rgba(150, 150, 150, 0.5);

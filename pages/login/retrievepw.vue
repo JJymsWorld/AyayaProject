@@ -25,7 +25,7 @@
 		</view>
 		<view class="content">
 			<view class="row-box">
-				<button class="btn" @click="getData">修改密码</button>
+				<button class="btn" @click="retrievePw">修改密码</button>
 			</view>
 		</view>
 	</view>
@@ -43,22 +43,6 @@
 			}
 		},
 		methods: {
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
-			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
 			},
@@ -74,17 +58,23 @@
 				}
 				else this.samePW = false;
 			},
-			localStorage: function(e){
-				var valid = e.detail.value;
-				if(valid[0] == 'rempwd'){
-					// 本地存入账号和密码
-				}
-				else{
-					// 仅在本地存入账号
-				}
-			},
 			radio: function(e){
 				this.gender = e;
+			},
+			// 修改密码
+			retrievePw: function(){
+				if(this.samePW){
+					this.$myRequest({
+						method: 'PUT',
+						header:{'content-type':'application/x-www-form-urlencoded'},
+						url:'/Login/changePassword',
+						data:{
+							password: this.password1,
+							user_id: 10
+						}
+					})
+				}
+				
 			}
 		}
 	}

@@ -28,6 +28,10 @@
 					<text class="at-text">@</text>
 					<input type="text" value="" placeholder="仅限收藏列表"/>
 				</view>
+				<view class="content-item">
+					<text>服饰：</text>
+					<input type="text" value="" placeholder="～点击编辑服饰链接"/>
+				</view>
 			</view>
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">

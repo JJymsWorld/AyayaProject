@@ -80,7 +80,19 @@
 			},
 			//提交订单信息
 			submitData: function(){
-				
+				this.$myRequest({
+					url: '/Data/LaunchOrderPage/addOrder',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data: {
+						area: this.city,
+						date: this.time,
+						content: this.demand,
+						money: this.money,
+						user_a: 4, // coserID
+						user_b: 1, // 摄影师ID
+					}
+				})
 			}
 		},
 		components:{
