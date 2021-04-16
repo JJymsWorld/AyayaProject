@@ -269,7 +269,6 @@ $list-item-pd: $uni-spacing-col-lg $uni-spacing-row-lg;
 	flex-direction: row;
 	padding: $list-item-pd;
 	padding-left: $uni-spacing-row-lg;
-	
 	flex: 1;
 	overflow: hidden;
 	// align-items: center;

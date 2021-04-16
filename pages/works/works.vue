@@ -16,7 +16,7 @@
 		                <view class="page-section-spacing">
 		                    <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
 								<swiper-item v-for="(item,index) in pic" >
-										<image :src="item" mode="aspectFit" @click="preview(index)"></image>
+										<image :src="item" mode="aspectFit"></image>
 								</swiper-item>
 		                    </swiper>
 		                </view>
@@ -201,7 +201,7 @@
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
 						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
+						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
 						commented:[
 							{
@@ -268,12 +268,6 @@
 			console.log(option.id);
 		},
 		methods:{
-			preview(i){
-				uni.previewImage({
-					current:i,
-					urls:this.$data.pic
-				})
-			},
 			scroll: function(e) {
 			    console.log(e)
 			    this.old.scrollTop = e.detail.scrollTop

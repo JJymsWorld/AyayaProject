@@ -6,9 +6,10 @@
 				<view class="tab-top-bar-right" @click="JumpToCollectionContentPage">季番合集</view>
 			</view>
 			<view class="top-function-bar">
-				<view class="top-function-bar-left">
-					<text>筛选</text>
-					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view>
+				<view class="top-function-bar-left" >
+					<!-- <text>筛选</text>
+					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view> -->
+					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 				</view>
 				<view class="top-function-bar-right">
 					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
@@ -26,7 +27,7 @@
 							<image :src="item.img_url" mode="aspectFill"></image>
 						</view>
 						<view slot="body" class="Events-list-item-body">
-							<text class="Events-list-item-body-text">{{item.title}}</text>
+							<text>{{item.title}}</text>
 						</view>
 						<view slot="footer" class="Events-list-item-footer">
 							<view class="Events-list-item-footer-left">
@@ -49,6 +50,7 @@
 	export default{
 		data(){
 			return {
+				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
 				EventsList:[
 					{
 						id:0,
@@ -86,11 +88,22 @@
 
 
 <style lang="scss" scoped>
-	/deep/ .uni-list-item__container{
-		// padding-top: 15rpx;
-		// padding-bottom: 15rpx;
-		// border-bottom: 1rpx solid #e9e9e9;
-
+	/deep/ .uni-combox{
+		height:20px;
+		margin-top:auto;
+		margin-bottom:auto;
+		// width:40%;
+	}
+	/deep/ .uni-combox__input{
+		flex:1;
+		font-size:28rpx;
+		height:15px;
+		line-height:15px;
+		text-align: center;
+		width: 80rpx;
+	}
+	/deep/ .uni-combox__input-box{
+		height:20px;		
 	}
 </style>
 <style>

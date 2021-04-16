@@ -257,9 +257,8 @@ ul,li{
 	line-height: 25rpx;
 }
 .commentTextC{
-	font-size: 22rpx;
+	font-size: 10pt;
 	margin-left: 145rpx;
-	line-height: 32rpx;
 }
 .commentIconBox{
 	margin-top: 0rpx;
@@ -284,9 +283,9 @@ ul,li{
 	width: 90%;
 	font-size: 20rpx;
 	color: #101010;
-	line-height: 30rpx;
+	
 }
-.commentedBox.commentedBoxv1 text{
+.commentedBoxv1 text{
 	color: #62A1EC;
 }
 .commentBoxv2{

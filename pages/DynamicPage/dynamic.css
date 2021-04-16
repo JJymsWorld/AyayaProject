@@ -144,21 +144,18 @@
 }
 .dynamicImage{
 	/* width: 670rpx; */
-	width: 100%;
+	width: 90%;
 	height: 340rpx;
 	border-radius: 20rpx;
-	margin-top: 10rpx;
+	margin-top: 20rpx;
+	margin-left: 5%;
 	/* margin-left: 2rpx; */
 }
-.dynamicGridBox{
-  width: 90%;
-  margin: 20rpx auto;
-}
 .dynamicTitle{
-	width: 100%;
+	width: 80%;
 	font-size: 12pt;
 	font-weight: bold;
-	padding-left: 15rpx;
+	padding-left: 42rpx;
 	line-height: 58rpx;
 }
 .littleIconTable{

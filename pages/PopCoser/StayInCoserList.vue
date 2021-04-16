@@ -105,8 +105,10 @@
 	}
 </script>
 
-<style scoped>
-	
+<style lang="scss" scoped>
+	/deep/ .uni-collapse-cell{
+		border: none;
+	}
 </style>
 <style>
 	@import url("PopCoser.css");
