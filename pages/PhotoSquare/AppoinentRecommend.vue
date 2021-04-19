@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<view class="AppReco-Hot-list">
-				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index">
+				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index" @click="gotoPherHomePage">
 					<image class="AppReco-Hot-pg-list-avatar" mode="aspectFill" :src="item.pg_avatar"></image>
 					<text class="AppReco-Hot-pg-list-name">{{item.pg_name}}</text>
 				</view>
@@ -27,7 +27,7 @@
 				<text >作品展示</text>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList">
+				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -178,6 +178,16 @@
 				uni.navigateTo({
 					url: './PhotographerList'
 				})
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoPherHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
+				})
 			}
 		},
 		computed:{
@@ -193,9 +203,8 @@
 
 <style lang="scss" scoped>
 	.content-box{
-		width: 95%;
-		margin-left: auto;
-		margin-right: auto;
+		width: 93%;
+        margin: 0rpx auto;
 		.cnt{
 			padding: 10rpx;
 		}
@@ -208,19 +217,21 @@
 		display: flex;
 		flex-direction: row;
 		margin: auto;
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
 	}
 	
 	.user-head-img {
-		width: 50rpx;
-		height: 50rpx;
+		width: 30rpx;
+		height: 30rpx;
 		border-style: none;
 		border-radius: 25rpx;
 		margin-right: 10rpx;
-		margin-left: 5rpx;
+		margin-left: 10rpx;
 	}
 	
 	.user-name {
-		font-size: 25rpx;
+		font-size: 20rpx;
 		color: #797979;
 		margin-top: auto;
 		margin-bottom: auto;
@@ -228,9 +239,10 @@
 	}
 	
 	.view-num {
-		color: #797979;
+		color: rgba(51,51,51,0.4);
 		margin-top: auto;
 		margin-bottom: auto;
-		font-size: 25rpx;
+		margin-right: 10rpx;
+		font-size: 20rpx;
 	}
 </style>

@@ -1,112 +1,117 @@
 <template>
 	<view>
-		<view class="CosCollectionsPage-wrapper">
+		<view class="CoserHirePage-wrapper">
 			<view class="CosCollections-top">
 				<view class="CosCollections-top-imgwrapper">
-					<image class="CosCollections-top-image" :src="PageInfo.image_url" mode="widthFix"></image>
+					<image class="CosCollections-top-image" :src="CoserHirePageInfo.image_url" mode="widthFix"></image>
 				</view>
 				<view class="CosCollections-top-title">
-					{{PageInfo.title}}
+					{{CoserHirePageInfo.title}}
 				</view>
 				<view class="CosCollections-top-themeandtime">
-					<view class="CosCollections-top-theme">主题: {{PageInfo.theme}}</view>
-					<view class="CosCollections-top-time">活动时间: {{PageInfo.time}}</view>
+					<view class="CoserHirePage-top-theme">主题: {{CoserHirePageInfo.theme}}</view>
+					<view class="CoserHirePage-top-time">线下活动时间: {{CoserHirePageInfo.time}}</view>
+					<view class="CoserHirePage-top-positon">地址: {{CoserHirePageInfo.position}}</view>
+				</view>
+				<view class="CoserHirePage-viewButton" @click="gotoWorksPage">
+					<view class="CoserHirePage-viewButton-style">查看正片</view>
 				</view>
 			</view>
-			<view class="CosCollections-list">
-				<view class="CosCollections-taptab">
-					<view class="CosCollections-taptab-left" :class="tabIndex == 0 ?'CosCollections-taptab-left-active':''" @click="tabChangeToZero">征集角色</view>
-					<view class="CosCollections-taptab-right" :class="tabIndex == 1 ?'CosCollections-taptab-right-active':''" @click="tabChangeToOne">活动说明</view>
+			<view class="AttendCoser-list">
+				<view class="AttendCoserlist-bar">
+					<text class="AttendCoserlist-bar-label">
+						参演Coser
+					</text>
 				</view>
-				<view class="CosCollections-list-content" v-if="tabIndex==0">
-					<uni-list class="CosCollections-list-content-unilist" :border="false">
-						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row">
-							<view slot="header" class="CosCollections-list-content-item-header">
-								<image :src="item.image_url" mode="aspectFill" class="CosCollections-list-content-item-image"></image>
+				<view class="AttendCoserlist-content">
+					<uni-list class="AttendCoserlist-content-listWrapper" :border="false">
+						<uni-list-item :border="false" class="AttendCoserlist-content-listItem" v-for="(item,index) in AttendCoserlist" :key="index" direction="row">
+							<view slot="header" class="AttendCoserlist-content-listItem-header" >
+								<text class="AttendCoserlist-content-listItem-header-Character" >{{item.Character_name}}:</text>
 							</view>
-							<view slot="body" class="CosCollections-list-content-item-body">
-								<text class="CosCollections-list-content-item-body-title">{{item.title}}</text>
-								<view class="CosCollections-list-content-item-body-character">Cos人物: <text class="CosCollections-list-content-item-body-character-text">{{item.CosCharacter}}</text></view>
-								<view class="CosCollections-list-content-item-body-activeStatus" v-if="item.isActive==true">进行中</view>
-								<view class="CosCollections-list-content-item-body-notactiveStatus" v-if="item.isActive==false">已结束</view>
+							<view slot="body" class="AttendCoserlist-content-listItem-body">
+								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage">{{item.Coser_name}}</text>
+								<text class="AttendCoserlist-content-listItem-body-label">#{{item.label}} #{{item.wardCategory}}</text>
 							</view>
 						</uni-list-item>
 					</uni-list>
 				</view>
-			</view>
-			<view class="CosCollections-allButton" :class="isallButtonStatus == true ?'CosCollections-allButton-active':''">
-				<view class="CosCollections-Button" :class="isallButtonStatus == true ?'CosCollections-Button-active':''">查看合集活动</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				tabIndex:0,
-				PageInfo: {
+	export default{
+		data(){
+			return{
+				CoserHirePageInfo: {
 					image_url: "../../static/CollectionSources/1.jpg",
-					title: "【季番人物征集】第10期",
+					title: "【季番线下合集】第10期",
 					theme: "《请问您今天要来点兔子吗？》",
-					time: "12月1日-1月10日"
+					time: "2020年10月25日",
+					position:"杭州市..."
 				},
-				CoserCollectionList: [{
-						id: 0,
-						image_url: "../../static/CollectionSources/6.jpeg",
-						title: "【Cos正品征集】第10-1期",
-						CosCharacter: "宇治松 千夜",
-						isActive: false
+				AttendCoserlist:[
+					{
+						id:0,
+						Character_name:"宇治松 千夜",
+						Coser_name:"小娜",
+						label:"【Cos正品征集】第10-1期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 1,
-						image_url: "../../static/CollectionSources/7.jpeg",
-						title: "【Cos正品征集】第10-2期",
-						CosCharacter: "香风智乃",
-						isActive: false
+						id:1,
+						Character_name:"香风智乃",
+						Coser_name:"奈奈猫",
+						label:"【Cos正品征集】第10-2期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 2,
-						image_url: "../../static/CollectionSources/8.jpeg",
-						title: "【Cos正品征集】第10-3期",
-						CosCharacter: "保登 心爱",
-						isActive: true
+						id:2,
+						Character_name:"保登 心爱",
+						Coser_name:"佳佳",
+						label:"【Cos正品征集】第10-3期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 3,
-						image_url: "../../static/CollectionSources/9.jpg",
-						title: "【Cos正品征集】第10-4期",
-						CosCharacter: "天天座理世",
-						isActive: false
+						id:3,
+						Character_name:"天天座里世",
+						Coser_name:"屿y",
+						label:"【Cos正品征集】第10-4期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 4,
-						image_url: "../../static/CollectionSources/10.jpg",
-						title: "【Cos正品征集】第10-5期",
-						CosCharacter: "桐间纱路",
-						isActive: false
+						id:4,
+						Character_name:"桐间纱路",
+						Coser_name:"夜呀mmm",
+						label:"【Cos正品征集】第10-5期",
+						wardCategory:"最佳Coser"
+					},
+					{
+						id:5,
+						Character_name:"香风隆宏",
+						Coser_name:"青玉子",
+						label:"【Cos正品征集】第10-6期",
+						wardCategory:"最佳Coser"
 					}
 				]
 			}
 		},
-		methods: {
-			tabChangeToZero() {
-				this.tabIndex = 0;
+		methods:{
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
 			},
-			tabChangeToOne() {
-				this.tabIndex = 1;
+			gotoCoserHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
+				})
 			}
 		},
-		computed: {
-			isallButtonStatus(){
-				for(let i in this.CoserCollectionList){
-					if (this.CoserCollectionList[i].isActive == true){
-						return false
-					}
-				}
-				return true
-			}
+		computed:{
+			
 		}
 	}
 </script>

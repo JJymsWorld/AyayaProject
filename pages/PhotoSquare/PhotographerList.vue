@@ -15,7 +15,7 @@
 				<uni-list :border="false">
 					<uni-list-item :title="item.Coser_intro" :ellipsis="1" :border="false" direction="column" v-for="(item,index) in PhotographerInfoList" :key="index" class="StayInCoser-List-item">
 						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill"></image>
+							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
 									<text>{{item.Coser_name}}</text>
@@ -27,14 +27,14 @@
 									<view class="StayInCoser-item-likebutton">
 										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
 										<uni-fav class="StayInCoser-item-likebutton-like" circle="true" :checked="item.checked" star="false" :contentText="contentText" bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
-										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98"></uni-fav>
+										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98" @click="gotoAddOrder"></uni-fav>
 									</view>
 								</view>
-								<view class="StayInCoser-item-position">
+								<view class="StayInCoser-item-position"  @click="gotoCoserHomePage">
 									<uni-icons type="location-filled" size="14"></uni-icons>
 									<text>{{item.Coser_city}}</text>
 								</view>
-								<text class="StayInCoser-item-intro">个人介绍:{{item.Coser_intro}}</text>
+								<text class="StayInCoser-item-intro"  @click="gotoCoserHomePage">个人介绍:{{item.Coser_intro}}</text >
 							</view>
 							
 						</view>
@@ -42,9 +42,9 @@
 							<uni-collapse :accordion="true">
 								<uni-collapse-item ref="collapse_item" :showAnimation="true" class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work1"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work2"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work3"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work1" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work2" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work3" @click="gotoWorksPage"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
@@ -105,6 +105,21 @@
 			LikeBtnClick(e) {
 				this.PhotographerInfoList[e].checked = !this.PhotographerInfoList[e].checked
 				console.log(e,this.PhotographerInfoList[e].checked)
+			},
+			gotoCoserHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
+				})
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoAddOrder(){
+				uni.navigateTo({
+					url:"../pictureOrder/addorder"
+				})
 			}
 		}
 	}

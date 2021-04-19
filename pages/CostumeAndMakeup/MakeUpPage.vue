@@ -14,7 +14,7 @@
 			<view  class="Makeup-wrapper">
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
-						<swiper-item v-for="(item,index) in MakeupswiperImgs" :key="index">
+						<swiper-item v-for="(item,index) in MakeupswiperImgs" :key="index" @click="gotoWorksPage">
 							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
 						</swiper-item>
 					</swiper>
@@ -39,7 +39,7 @@
 						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view> -->
 						<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 					</view>
-					<view class="function-bar-searchbar">
+					<view class="function-bar-searchbar" @click="gotoSearchPage">
 						<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
 						<view class="searchbar-search-Icon">
 							<slot class="search-icon">
@@ -47,15 +47,15 @@
 							</slot>
 						</view>
 					</view>
-					<view class="function-bar-editor">
+					<view class="function-bar-editor" @click="gotoPostWorksPage">
 						<view :class="['fas','fa-edit']"></view>
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style">
+					<waterfallsFlow :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPage">
 						<template v-slot:default="item" class="content-box-item">
 							<view class="cnt">
-								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.title}}</view>
+								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
 							</view>
 						</template>
 					</waterfallsFlow>
@@ -74,18 +74,30 @@
 	export default {
 		components:{waterfallsFlow,msDropdownMenu,msDropdownItem,mingpop},
 		onLoad() {
-			uni.request({
-				url:"http://8.136.216.96:8086/MakeUp/getSlide",
-				data:{
-					type:1
-				},
-				success(res) {
-					this.MakeupswiperImgs = res.data;
-					console.log(this.MakeupswiperImgs)
-				},
-				fail() {
-					cnosole.log('请求失败')
-				}
+			const http = new this.$Request();
+			
+			http.get("/MakeUp/getSlide",{params:{type:1}}).then(res=>{
+				this.MakeupswiperImgs = res.data;
+			}).catch(err=>{
+				console.log(err);
+			})
+			// uni.request({
+			// 	url:"http://8.136.216.96:8086/MakeUp/getAllWorks",
+			// 	data:{
+			// 		type:2
+			// 	},
+			// 	success: (res) => {
+			// 		console.log(res.data);
+			// 		this.MakeupWorkslist = res.data;
+			// 	},
+			// 	fail: () => {
+					
+			// 	}
+			// })
+			http.get("/MakeUp/getAllWorks",{params:{type:2}}).then(res=>{
+				this.MakeupWorkslist = res.data;
+			}).catch(err=>{
+				console.log(err);
 			})
 		},
 		data() {
@@ -114,31 +126,31 @@
 					}
 				],
 				MakeupWorkslist:[
-					{
-						id:0,
-						image_url:"../../static/CostumeAndMakeup/1.jpg",
-						title:"圣母玛利亚妆面the Virgin Mary油画质感创意欧美妆"
-					},
-					{
-						id:1,
-						image_url:"../../static/CostumeAndMakeup/2.jpg",
-						title:"偏光爆闪霓虹复古y2k妆面撞色吸睛眼妆"
-					},
-					{
-						id:2,
-						image_url:"../../static/CostumeAndMakeup/3.jpg",
-						title:"把BJD娃娃妆面画在脸上，BJD娃娃仿妆"
-					},
-					{
-						id:3,
-						image_url:"../../static/CostumeAndMakeup/4.jpg",
-						title:"加入Seraphine出新皮肤，会是这样的吗？"
-					},
-					{
-						id:4,
-						image_url:"../../static/CostumeAndMakeup/9.jpg",
-						title:"陶瓷姑娘|我又仿了我的画"
-					}
+					// {
+					// 	id:0,
+					// 	image_url:"../../static/CostumeAndMakeup/1.jpg",
+					// 	title:"圣母玛利亚妆面the Virgin Mary油画质感创意欧美妆"
+					// },
+					// {
+					// 	id:1,
+					// 	image_url:"../../static/CostumeAndMakeup/2.jpg",
+					// 	title:"偏光爆闪霓虹复古y2k妆面撞色吸睛眼妆"
+					// },
+					// {
+					// 	id:2,
+					// 	image_url:"../../static/CostumeAndMakeup/3.jpg",
+					// 	title:"把BJD娃娃妆面画在脸上，BJD娃娃仿妆"
+					// },
+					// {
+					// 	id:3,
+					// 	image_url:"../../static/CostumeAndMakeup/4.jpg",
+					// 	title:"加入Seraphine出新皮肤，会是这样的吗？"
+					// },
+					// {
+					// 	id:4,
+					// 	image_url:"../../static/CostumeAndMakeup/9.jpg",
+					// 	title:"陶瓷姑娘|我又仿了我的画"
+					// }
 				]
 			}
 		},
@@ -150,6 +162,21 @@
 			},
 			viewMoreTopic(){
 				this.$refs.mingpop.show();
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoSearchPage(){
+				uni.navigateTo({
+					url:"../search/search"
+				})
+			},
+			gotoPostWorksPage(){
+				uni.navigateTo({
+					url:"../ContentReleasePage/postWorks"
+				})
 			}
 		},
 		computed:{

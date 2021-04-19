@@ -11,7 +11,7 @@
 					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view> -->
 					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 				</view>
-				<view class="top-function-bar-right">
+				<view class="top-function-bar-right" @click="gotoSearchPage">
 					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
 					<view class="searchbar-search-Icon">
 						<slot class="search-icon">
@@ -22,7 +22,7 @@
 			</view>
 			<view class="Events-list">
 				<uni-list class="Events-list-list" :border="false">
-					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList" :key="index" direction="column" :title="item.title" :ellipsis="2">
+					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList" :key="index" direction="column" :title="item.title" :ellipsis="2" to="../works/works">
 						<view slot="header" class="Events-list-item-header">
 							<image :src="item.img_url" mode="aspectFill"></image>
 						</view>
@@ -41,6 +41,7 @@
 						</view>
 					</uni-list-item>
 				</uni-list>
+				<uni-load-more status="noMore"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -80,6 +81,11 @@
 			JumpToCollectionContentPage() {
 				uni.redirectTo({
 					url:'CollectionContentPage'
+				})
+			},
+			gotoSearchPage(){
+				uni.navigateTo({
+					url:"../search/search"
 				})
 			}
 		}

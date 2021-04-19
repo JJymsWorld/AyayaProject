@@ -16,7 +16,7 @@
 			</view>
 			<view class="swiper-box">
 				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000" style="height: 355rpx;">
-					<swiper-item v-for="(img,index) in swiperimgs" :key="index">
+					<swiper-item v-for="(img,index) in swiperimgs" :key="index" @click="workNavigate(img.ppt_id)">
 						<image :src="img.photo" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
 				</swiper>
@@ -59,14 +59,14 @@
 				</view>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="jumpto">
+				<waterfallsFlow :list="contentList" @wapper-lick="workNavigate(0)" imageSrcKey="imageUrl">
 					<template v-slot:default="item" class="content-box-item" >
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
-								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
+								<image class="user-head-img" :src="item.headerPic" mode="aspectFill"></image>
 								<view class="user-name">{{item.userName}}</view>
-								<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.viewNum}}
+								<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.likesNumber}}
 								</view>
 							</view>
 						</view>
@@ -78,13 +78,13 @@
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
 			<uni-list :border="false" class="Hotcontent-list-list">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id"
-					:title="item.text">
-					<template v-slot:body>
-						<view class="List-text">{{item.text}}</view>
+					:title="item.text" >
+					<template v-slot:body >
+						<view class="List-text" @click="workNavigate(item.id)">{{item.text}}</view>
 					</template>
 					<template v-slot:footer>
 						<view class="Img-In-List">
-							<image class="ListImg-Style" :src="item.image_url" mode="aspectFill"></image>
+							<image class="ListImg-Style" :src="item.image_url" mode="aspectFill" @click="workNavigate(item.id)" ></image>
 						</view>
 					</template>
 				</uni-list-item>
@@ -101,19 +101,21 @@
 			waterfallsFlow
 		},
 		onLoad() {
-			uni.request({
-				url:"http://8.136.216.96:8086/Index/Recommend/slide",
-				data:{
-					type:1
-				},
-				success: (res) => {
-					console.log(res)
-					
-					this.swiperimgs = res.data
-				},
-				fail: () => {
-					console.log('请求失败')
-				}
+			//获取首页轮播图
+			
+			const http = new this.$Request();
+			http.get('/Index/Recommend/slide',{params:{type:1}}).then(res=>{
+				console.log(res.data)
+				this.swiperimgs = res.data;
+			}).catch(err=>{
+				console.log(err)
+			})
+			//获取首页瀑布流数据
+			http.get("/Index/Recommend/getWorks",{params:{user_id:1}}).then(res=>{
+				console.log(res.data);
+				this.contentList = res.data;
+			}).catch(err=>{
+				console.log(err)
 			})
 		},
 		data() {
@@ -134,102 +136,103 @@
 				],
 				topicType: "约拍广场",
 				topicContent: "谁知江南无醉意，笑看春风。",
-				contentList: [{
-						id: 1,
-						// image_url: "../../static/contentImg/1.jpg",
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 2,
-						image_url: "../../static/contentImg/3.jpg",
-						title: '【汉服】西域美人',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					}, {
-						id: 3,
-						image_url: "../../static/contentImg/2.jpg",
-						title: '【Cos正品】楼兰',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 4,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 5,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 6,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 7,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 8,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 9,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 10,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 11,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 12,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					}
+				contentList: [
+					// {
+					// 	id: 1,
+					// 	// image_url: "../../static/contentImg/1.jpg",
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 2,
+					// 	image_url: "../../static/contentImg/3.jpg",
+					// 	title: '【汉服】西域美人',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// }, {
+					// 	id: 3,
+					// 	image_url: "../../static/contentImg/2.jpg",
+					// 	title: '【Cos正品】楼兰',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 4,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 5,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 6,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 7,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 8,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 9,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 10,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 11,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 12,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// }
 				],
 				HotList: [{
 						id: 1,
