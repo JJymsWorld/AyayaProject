@@ -42,6 +42,10 @@
 		</view>
 		<view class="row-box bottom-box">
 			<button @click="submitData">提交</button>
+			<uni-popup ref="popup" type="dialog">
+			    <uni-popup-dialog type="info" mode="base" content="确认提交该约拍订单？" :before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
+			</uni-popup>
+			
 		</view>
 	</view>
 </template>
@@ -54,7 +58,7 @@
 				demand: '',
 				time: '请选择',
 				city: '请选择',
-				money: ''
+				money: '',
 			}
 		},
 		methods: {
@@ -67,6 +71,10 @@
 			onChangeTime: function(e){
 				this.time = e.detail.value
 				console.log(this.time)
+				
+				// var d = new Date(this.time);  
+				// alert(d)
+				
 			},
 			//修改拍摄地点
 			onChangeCity: function(data){
@@ -78,21 +86,36 @@
 				this.money = e.detail.value
 				console.log(this.money)
 			},
-			//提交订单信息
+			// 提交订单信息
 			submitData: function(){
-				this.$myRequest({
-					url: '/Data/LaunchOrderPage/addOrder',
-					method: 'POST',
-					header:{'content-type':'application/x-www-form-urlencoded'},
-					data: {
-						area: this.city,
-						date: this.time,
-						content: this.demand,
-						money: this.money,
-						user_a: 4, // coserID
-						user_b: 1, // 摄影师ID
-					}
+				// this.$myRequest({
+				// 	url: '/Data/LaunchOrderPage/addOrder',
+				// 	method: 'POST',
+				// 	header:{'content-type':'application/x-www-form-urlencoded'},
+				// 	data: {
+				// 		area: this.city,
+				// 		date: this.time,
+				// 		content: this.demand,
+				// 		money: this.money,
+				// 		user_a: 4, // coserID
+				// 		user_b: 1, // 摄影师ID
+				// 	}
+				// })
+				this.$refs.popup.open()
+				// uni.navigateBack({})
+			},
+			// 	取消提交订单
+			close: function(done){
+				console.log('text')
+				done()
+			},
+			// 	确认提交订单
+			confirm: function(done){
+				console.log('text')
+				uni.$emit('showOrderMsg')
+				uni.navigateBack({	
 				})
+				
 			}
 		},
 		components:{

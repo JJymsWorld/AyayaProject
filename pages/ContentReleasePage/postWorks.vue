@@ -8,35 +8,47 @@
 			<!-- 来个醒目的标题吧！ -->
 			<view class="row-box">
 				<view class="works-title">
-					<input type="text" value="" placeholder="来个醒目的标题吧！"/>
+					<input type="text" value="" placeholder="来个醒目的标题吧！" @input="onTitleInput"/>
 				</view>
 			</view>
 			<!-- 内容 -->
 			<view class="row-box">
 				<view class="content-item">
 					<text>出镜：</text>
-					<text class="at-text">@</text>
-					<input type="text" value="" placeholder="仅限关注列表"/>
+					<view class="chooseAt-box"  @click="onChooseAt(1)">
+						<text class="at-text" v-if="this.worksContent[1].atPerson == ''">@</text>
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[1].atPerson == ''">仅限关注列表</text>
+						<text class="at-text">{{this.worksContent[1].atPerson}}</text>
+					</view>
 				</view>
 				<view class="content-item">
 					<text>摄影：</text>
-					<text class="at-text">@</text>
-					<input type="text" value="" placeholder="仅限关注列表"/>
+					<view class="chooseAt-box"  @click="onChooseAt(2)">
+						<text class="at-text" v-if="this.worksContent[2].atPerson == ''">@</text>
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[2].atPerson == ''">仅限关注列表</text>
+						<text class="at-text">{{this.worksContent[2].atPerson}}</text>
+					</view>
 				</view>
 				<view class="content-item">
 					<text>妆容：</text>
-					<text class="at-text">@</text>
-					<input type="text" value="" placeholder="仅限收藏列表"/>
+					<view class="chooseAt-box"  @click="onChooseCollection">
+						<text class="at-text" v-if="this.worksContent[3].atPerson == ''">@</text>
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].atPerson == ''">仅限收藏列表</text>
+						<text class="at-text">{{this.worksContent[3].atPerson}}</text>
+					</view>
 				</view>
 				<view class="content-item">
 					<text>服饰：</text>
-					<input type="text" value="" placeholder="～点击编辑服饰链接"/>
+					<view class="chooseAt-box"  @click="onEditCloth">
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].atPerson == ''">～点击编辑服饰链接</text>
+						<text class="at-text">{{this.worksContent[3].atPerson}}</text>
+					</view>
 				</view>
 			</view>
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">
 				<view class="works-article">
-					<textarea type="text" value="" placeholder="正文和内容一样重要哦！" />
+					<textarea type="text" :value="this.worksContent[5].article" placeholder="正文和内容一样重要哦！" @input="onArticleInput"/>
 				</view>
 			</view>
 			<!-- 发往圈子 -->
@@ -44,8 +56,8 @@
 				<view class="checked-group-title">发往圈子</view>
 				<!-- 选项卡 -->
 				<view class="checked-group">
-					<checkbox-group name="" v-for="(item, index) in myclass" :key="index">
-						<label class="checked-item">
+					<checkbox-group @change="onGetClass">
+						<label class="checked-item" v-for="(item, index) in myclass" :key="index" >
 							<checkbox :value="item.name" />
 							<text>{{item.name}}</text>
 						</label>
@@ -77,8 +89,8 @@
 		<!-- 底部固定栏 -->
 		<view class="fixed-bottom-box">
 			<view class="row-box bottom-box">
-				<image src="@/static/at.png" mode="widthFix"></image>	
-				<image src="@/static/addlabel.png" mode="widthFix"></image>
+				<image src="@/static/at.png" mode="widthFix" @click="onChooseAt(5)"></image>	
+				<image src="@/static/addlabel.png" mode="widthFix" @click="onChooseLabel"></image>
 				<label><radio :checked="ifpostdynamic" @click="onChangePostDynamic"/>同时发布动态</label>
 			</view>
 		</view>
@@ -89,27 +101,39 @@
 	export default {
 		data() {
 			return {
+				
 				ifagree: false,
 				ifpostdynamic: false,
 				ifdownloadimag: false,
 				columnNum : 4,	//	上传图片显示几列
 				maxCount: 9,	//	最多上传图片数量
 				images: [],
+				index: 0,	//	标记 出镜/摄影/妆容/服饰等跳转入口
+				workClass: [],	//	标记作品发往的圈子
 				worksContent: [
 				{
-					name: '标题'
+					name: '标题',
+					title: '',
 				},
 				{
-					name: '出镜'
+					name: '出镜',
+					atPerson: '',
 				},
 				{
-					name: '摄影'
+					name: '摄影',
+					atPerson: '',
 				},
 				{
-					name: '妆容'
+					name: '妆容',
+					atPerson: ''
 				},
 				{
-					name: '正文'
+					name: '服饰',
+				},
+				{
+					name: '正文',
+					article: '',
+					atPerson: '',
 				}
 				],
 				myclass: [{
@@ -170,7 +194,51 @@
 						}
 				    })
 				console.log(this.images)	
-			}
+			},
+			// 编辑标题内容
+			onTitleInput: function(e){
+				this.worksContent[0].title = e.detail.value
+			},
+			// @出镜摄影用户
+			onChooseAt: function(i){
+				this.index = i
+				console.log(i)
+				uni.navigateTo({
+					url: './at?index=' + this.index,
+					// animationType:'slide-in-right',
+				})
+			},
+			// 选择热门话题
+			onChooseLabel: function(){
+				uni.navigateTo({
+					url: './label',
+					// animationType:'slide-in-right',
+				})
+			},
+			// 选择收藏的妆容作品
+			onChooseCollection: function(){
+				uni.navigateTo({
+					url: '../Mypage/myStarList/myStarList',
+					// animationType:'slide-in-right',
+				})
+			},
+			// 编辑服饰链接
+			onEditCloth: function(){
+				
+			},
+			// 编辑正文内容
+			onArticleInput: function(e){
+				
+				this.worksContent[5].article = e.detail.value
+				
+			},
+			// 获取发往的圈子
+			onGetClass: function(e){
+				
+				this.workClass = e.detail.value
+				console.log(this.workClass)
+				
+			},
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap(){
@@ -187,6 +255,19 @@
 			// 跳转至首页
 			uni.switchTab({
 				url:"../Index_Recommend/Index_Hot"
+			})
+		},
+		onShow(){
+			uni.$on("emitChoosePersonName",res => {
+				const i = res.index
+				this.index = i
+				this.worksContent[i].atPerson = res.choosePersonName
+				if(i == 5){
+					this.worksContent[i].article += res.choosePersonName
+				}
+				console.log(this.worksContent[i].atPerson)
+				// 清除监听
+				uni.$off("emitChoosePersonName");
 			})
 		}
 	}

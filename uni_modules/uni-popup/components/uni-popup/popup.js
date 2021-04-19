@@ -13,6 +13,8 @@ const config = {
 	dialog: 'center',
 	// 分享
 	share: 'bottom',
+	// 自定义消息提示样式
+	ordermessage: 'top'
 }
 
 export default {

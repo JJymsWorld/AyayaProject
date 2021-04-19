@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<uni-popup ref="popup" type="ordermessage">
+		    <uni-popup-ordermessage :duration="2000" :gotoOrderMsgPage="gotoOrderMsgPage"></uni-popup-ordermessage>
+		</uni-popup>
 		<view class="StayInCoser-page-wrapper">
 			<view class="StayInCoser-topBar">
 				<view class="StayInCoser-topBar-left">
@@ -27,7 +30,7 @@
 									<view class="StayInCoser-item-likebutton">
 										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
 										<uni-fav class="StayInCoser-item-likebutton-like" circle="true" :checked="item.checked" star="false" :contentText="contentText" bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
-										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98"></uni-fav>
+										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true" :contentText="contentText2" bgColor="rgba(242,163,195,0.33)" fgColor="#FF5E98" @click="addOrder"></uni-fav>
 									</view>
 								</view>
 								<view class="StayInCoser-item-position">
@@ -105,7 +108,26 @@
 			LikeBtnClick(e) {
 				this.PhotographerInfoList[e].checked = !this.PhotographerInfoList[e].checked
 				console.log(e,this.PhotographerInfoList[e].checked)
+			},
+			// 发起一个约拍订单
+			addOrder() {
+				uni.navigateTo({
+					url: '../pictureOrder/addorder'
+				})
+			},
+			// // 跳转至订单对话框
+			gotoOrderMsgPage(){
+				uni.navigateTo({
+					url: '../MessageCenter/cos-dialogpage'
+				})
 			}
+		},
+		onShow(){
+			uni.$on('showOrderMsg', res => {
+				this.$refs.popup.open()
+				// 清除监听
+				uni.$off("showOrderMsg");
+			})
 		}
 	}
 </script>

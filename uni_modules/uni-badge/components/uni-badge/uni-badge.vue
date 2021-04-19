@@ -68,12 +68,13 @@
 
 <style lang="scss" scoped>
 	$bage-size: 12px;
-	$bage-small: scale(0.8);
+	$bage-small: scale(0.7);
 	$bage-height: 20px;
 
 	.uni-badge {
 		/* #ifndef APP-PLUS */
 		display: flex;
+		// float: right;
 		box-sizing: border-box;
 		overflow: hidden;
 		/* #endif */
@@ -141,7 +142,7 @@
 
 	.uni-badge--error {
 		color: $uni-text-color-inverse;
-		background-color: $uni-color-error;
+		background-color: rgb(247, 49, 49);
 	}
 
 	.uni-badge--error-inverted {

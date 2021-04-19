@@ -22,10 +22,10 @@
 			</view>
 			<view class="row-box">
 				<view class="bottom-box">
-					<view class="btn1" @click="onCancleOrder">
+					<view class="btn1" @click="editOrderMsg">
 						修改订单信息
 					</view>
-					<view class="btn2" @click="editOrderMsg">
+					<view class="btn2" @click="onCancleOrder">
 						取消订单
 					</view>
 				</view>

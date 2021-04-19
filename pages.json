@@ -237,6 +237,37 @@
 				}
 			}
 		}
+		,{
+		    "path" : "pages/ContentReleasePage/at",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "提醒谁可以看",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "确定",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/label",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加话题",
+				"navigationBarBackgroundColor":"#FFFFFF",
+		        "enablePullDownRefresh": false,
+				"app-plus":{
+				}
+			}
+		}
         ,{
             "path" : "pages/MessageCenter/collectmsg",
             "style" :
@@ -467,6 +498,15 @@
 				"navigationBarTitleText":"我的粉丝"
 			}
 		}
+        ,{
+            "path" : "pages/MessageCenter/cos-dialogpage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

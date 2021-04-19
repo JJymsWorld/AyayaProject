@@ -9,7 +9,7 @@
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">
 				<view class="works-article">
-					<textarea type="text" value="" placeholder="正文和内容一样重要哦！" />
+					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput"/>
 				</view>
 			</view>
 		</view>
@@ -39,8 +39,8 @@
 		<!-- 底部固定栏 -->
 		<view class="fixed-bottom-box">
 			<view class="row-box bottom-box">
-				<image src="@/static/at.png" mode="widthFix"></image>
-				<image src="@/static/addlabel.png" mode="widthFix"></image>
+				<image src="@/static/at.png" mode="widthFix" @click="onChooseAt"></image>
+				<image src="@/static/addlabel.png" mode="widthFix" @click="onChooseLabel"></image>
 			</view>
 		</view>
 	</view>
@@ -57,6 +57,7 @@
 				columnNum: 4, //	上传图片显示几列
 				maxCount: 9, //	最多上传图片数量
 				images: [],
+				article: ''
 			}
 		},
 		components: {
@@ -100,7 +101,25 @@
 					}
 				})
 				console.log(this.images)
-			}
+			},
+			// 选择@的用户
+			onChooseAt: function(i){
+				
+				uni.navigateTo({
+					url: './at',
+					// animationType:'slide-in-right',
+				})
+			},
+			// 选择热门话题
+			onChooseLabel: function(){
+				uni.navigateTo({
+					url: './label',
+					// animationType:'slide-in-right',
+				})
+			},
+			onArticleInput: function(e){
+				this.article = e.detail.value
+			},
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap() {
@@ -110,7 +129,7 @@
 				formData: {
 					'user_id': 13,
 				    'callUser': 9,
-					'mainBody': 'test'
+					'mainBody': this.article
 				},
 			    success: (uploadFileRes) => {
 			        // console.log(uploadFileRes.data);
@@ -162,6 +181,14 @@
 			// });
 
 			
+		},
+		onShow(){
+			uni.$on("emitChoosePersonName",res => {
+				this.article += res.choosePersonName
+				console.log(this.article)
+				// 清除监听
+				uni.$off("emitChoosePersonName");
+			})
 		}
 	}
 </script>
