@@ -13,10 +13,10 @@
 			</view>
 			<view class="StayInCoser-List">
 				<uni-list :border="false">
-					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index" class="StayInCoser-List-item">
+					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index" class="StayInCoser-List-item" >
 						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill"></image>
-							<view class="StayInCoser-item-info">
+							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
+							<view class="StayInCoser-item-info" @click="gotoCoserHomePage">
 								<view class="StayInCoser-item-nameandlikenum">
 									<text>{{item.Coser_name}}</text>
 									<view>
@@ -41,9 +41,9 @@
 							<uni-collapse :accordion="true">
 								<uni-collapse-item ref="collapse_item" :showAnimation="true" class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work1"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work2"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work3"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work1" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work2" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work3" @click="gotoWorksPage"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
@@ -100,6 +100,16 @@
 			LikeBtnClick(e) {
 				this.CoserInfoList[e].checked = !this.CoserInfoList[e].checked
 				console.log(e,this.CoserInfoList[e].checked)
+			},
+			gotoCoserHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
+				})
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
 			}
 		}
 	}

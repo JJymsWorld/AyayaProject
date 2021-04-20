@@ -52,15 +52,15 @@ ul,li{
 	position: absolute;
 	top: 96rpx;
 	left: 66rpx;
-	font-size: 15pt;
+	font-size: 26rox;
 	font-weight: bold;
 	color: #201E1E;
 }
 .backBoxSign{
 	position: absolute;
-	top: 163rpx;
+	top: 153rpx;
 	left: 62rpx;
-	font-size: 8pt;
+	font-size: 23rpx;
 	color: #B1B1B1;
 }
 .backBoxTable{
@@ -73,12 +73,12 @@ ul,li{
 	width: 183rpx;
 }
 .boxTableNum{
-	font-size: 15pt;
+	font-size: 36rpx;
 	font-weight: bold;
 	text-align: center;
 }
 .boxTableText{
-	font-size: 9pt;
+	font-size: 25rpx;
 	text-align: center;
 	line-height: 45rpx;
 	color: #9C9C9C;
@@ -87,15 +87,15 @@ ul,li{
 	position: absolute;
 	top:25rpx;
 	right: 25rpx;
-	width: 145rpx;
+	width: 135rpx;
 	height: 48rpx;
-	border: 5rpx solid #D4D4D4;
+	border: 3rpx solid #D4D4D4;
 	border-radius: 9rpx;
 	line-height: 40rpx;
 	text-align: center;
 }
 .backBoxEdit text{
-	font-size: 9pt;
+	font-size: 24rpx;
 	color: #BBBBBB;
 	line-height: 40rpx;
 	
@@ -215,9 +215,14 @@ ul,li{
 	font-weight: bold;
 }
 .dynamicDate{
-	font-size: 5pt;
+	font-size: 22rpx;
 	color: #ACACAC;
 	line-height: 35rpx;
+}
+.dynamicMoreIcon{
+	position: absolute;
+	top: 30rpx;
+	right: 50rpx;
 }
 .dynamicText{
 	width: 90%;
@@ -234,8 +239,8 @@ ul,li{
 	/* margin-left: 2rpx; */
 }
 .dynamicTitle{
-	width: 80%;
-	font-size: 12pt;
+	width: 90%;
+	font-size: 28rpx;
 	font-weight: bold;
 	padding-left: 42rpx;
 	line-height: 58rpx;
@@ -408,3 +413,48 @@ ul,li{
 	font-size: 16rpx;
 	color: #ACACAC;
 }
+.ll{
+	position: absolute;
+	top: -50rpx;
+	right: 0rpx;
+	color: #000000;
+	font-size: 25rpx;
+}
+.ll span{
+	opacity: 1;
+	font-size: 30rpx;
+	margin-right: 5rpx;
+}
+
+
+
+
+
+.sexBox{
+		background-color: #FBFBFB;
+		border-top-left-radius: 15rpx;
+		border-top-right-radius: 15rpx;
+		overflow: hidden;
+	}
+	.sexChoose{
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		/* border-bottom: 3rpx solid #fbfbfb; */
+		background-color: #FFFFFF;
+	}
+	.sexChoose2{
+		
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		border-top: 3rpx solid #fbfbfb;
+		background-color: #FFFFFF;
+	}
+	.sexExitChoose{
+		background-color: #FFFFFF;
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		margin-top: 20rpx;
+	}

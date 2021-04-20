@@ -11,7 +11,7 @@
 				<text class="search-text">热门话题</text>
 			</view>
 			<view class="hot-topic">
-				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index'>{{item}}</view>
+				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index'>{{item.mark}}</view>
 			</view>
 		</view>
 		<view class="row-box">
@@ -35,7 +35,8 @@
 		data() {
 			return {
 				value: "",
-				hotTopic:['#12月份季番活动#','#漫展返图大赛#','#cosplay#','#妆容#'],
+				// hotTopic:['#12月份季番活动#','#漫展返图大赛#','#cosplay#','#妆容#'],
+				hotTopic:[],
 				searchHsty:['#12月份季番活动#','#漫展返图大赛#','#cosplay#','#妆容#']
 			}
 		},
@@ -59,6 +60,15 @@
 					
 				})
 			}
+		},
+		async onLoad(){
+			// 获取热门话题
+			const res = await this.$myRequest({
+				url:'/Index/Search/getTopic',
+			})
+			this.hotTopic = res.data
+			console.log(this.hotTopic)
+			// 获取用户历史搜索记录
 		}
 	}
 </script>

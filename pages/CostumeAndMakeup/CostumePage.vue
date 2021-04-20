@@ -14,7 +14,7 @@
 			<view  class="Costume-wrapper">
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
-						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index">
+						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index" @click="gotoWorksPage">
 							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
 						</swiper-item>
 					</swiper>
@@ -39,7 +39,7 @@
 						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view> -->
 						<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 					</view>
-					<view class="function-bar-searchbar">
+					<view class="function-bar-searchbar" @click="gotoSearchPage">
 						<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
 						<view class="searchbar-search-Icon">
 							<slot class="search-icon">
@@ -47,15 +47,15 @@
 							</slot>
 						</view>
 					</view>
-					<view class="function-bar-editor">
+					<view class="function-bar-editor" @click="gotoPostWorks">
 						<view :class="['fas','fa-edit']"></view>
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="CostumeWorkslist">
-						<template v-slot:default="item" class="content-box-item">
+					<waterfallsFlow :list="CostumeWorkslist" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPage">
+						<template v-slot:default="item" class="content-box-item" >
 							<view class="cnt">
-								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.title}}</view>
+								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
 							</view>
 						</template>
 					</waterfallsFlow>
@@ -72,18 +72,21 @@
 	export default {
 		components:{waterfallsFlow,mingpop},
 		onLoad() {
-			uni.request({
-				url:"http://8.136.216.96:8086/Costume/getSlide",
-				data:{
-					type:1
-				},
-				success(res) {
-					this.CostumeswiperImgs = res.data
-					console.log(this.CostumeswiperImgs)
-				},
-				fail() {
-					console.log('请求失败')
-				}
+			const http = new this.$Request();
+			//获取轮播图
+			http.get("/Costume/getSlide",{params:{type:2}}).then(res=>{
+				this.CostumeswiperImgs = res.data;
+			}).catch(err=>{
+				
+			})
+			//获取瀑布流内容
+			
+			
+			http.get("/Costume/getAllWorks",{params:{type:2}}).then(res=>{
+				console.log(res.data);
+				this.CostumeWorkslist = res.data;
+			}).catch(err=>{
+				console.log(err)
 			})
 		},
 		data() {
@@ -92,11 +95,11 @@
 				CostumeswiperImgs: [
 					// {
 					// 	img_id: 0,
-					// 	url: "../../static/swiperImg/3.jpg"
+					// 	photo: "http://8.136.216.96:8080/picture/O1CN01zUpm4224kX0ui6XMj_!!830107429.jpg"
 					// },
 					// {
 					// 	img_id: 1,
-					// 	url: "../../static/swiperImg/4.jpg"
+					// 	photo: "../../static/swiperImg/4.jpg"
 					// }
 				],
 				CostumetopicContent:[
@@ -117,26 +120,26 @@
 					}
 				],
 				CostumeWorkslist:[
-					{
-						id:0,
-						image_url:"../../static/CostumeAndMakeup/5.jpg",
-						title:"王者荣耀:露娜紫霞仙子Cosplay"
-					},
-					{
-						id:1,
-						image_url:"../../static/CostumeAndMakeup/6.jpg",
-						title:"迪士尼万圣节攻略:装扮白雪公主"
-					},
-					{
-						id:2,
-						image_url:"../../static/CostumeAndMakeup/7.jpg",
-						title:"当不倒翁小姐姐Cosplay楚乔传"
-					},
-					{
-						id:3,
-						image_url:"../../static/CostumeAndMakeup/8.jpg",
-						title:"孙尚香-时之恋人"
-					}
+					// {
+					// 	id:0,
+					// 	opus_photos:"../../static/CostumeAndMakeup/5.jpg",
+					// 	main_body:"王者荣耀:露娜紫霞仙子Cosplay"
+					// },
+					// {
+					// 	id:1,
+					// 	opus_photos:"../../static/CostumeAndMakeup/6.jpg",
+					// 	main_body:"迪士尼万圣节攻略:装扮白雪公主"
+					// },
+					// {
+					// 	id:2,
+					// 	opus_photos:"../../static/CostumeAndMakeup/7.jpg",
+					// 	main_body:"当不倒翁小姐姐Cosplay楚乔传"
+					// },
+					// {
+					// 	id:3,
+					// 	opus_photos:"../../static/CostumeAndMakeup/8.jpg",
+					// 	main_body:"孙尚香-时之恋人"
+					// }
 				]
 			}
 		},
@@ -148,6 +151,21 @@
 			},
 			viewMoreTopic(){
 				this.$refs.mingpop.show();
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoSearchPage(){
+				uni.navigateTo({
+					url:"../search/search"
+				})
+			},
+			gotoPostWorks(){
+				uni.navigateTo({
+					url:"../ContentReleasePage/postWorks"
+				})
 			}
 		},
 		computed:{

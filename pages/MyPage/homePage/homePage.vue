@@ -7,15 +7,15 @@
 			<image src="../../../static/iconn/2.jpg" mode="aspectFill"></image>
 			<text class="backBoxUsername">{{username}}</text>
 			<text class="backBoxSign">{{sign}}</text>
-			<view v-if="userId==userId2" class="backBoxEdit"><text>编辑资料</text></view>
+			<view v-if="userId==userId2" class="backBoxEdit" @click="editNavi"><text>编辑资料</text></view>
 			<view class="backBoxCos"><text>cos榜</text></view>
 			<table class='backBoxTable'>
 				<tr>
-					<td>
+					<td @click="interestNavi(userId)">
 						<view class="boxTableNum">{{interstNum}}</view>
 						<view class="boxTableText">关注</view>
 					</td>
-					<td>
+					<td @click="fanNavi(userId)">
 						<view class="boxTableNum">{{fanNum}}</view>
 						<view class="boxTableText">粉丝</view>
 					</td>
@@ -41,14 +41,16 @@
 		<uni-list :border="false" >
 		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id">
 			<template v-slot:body>
-				<view class="dynamicIt">
+				<view class="dynamicIt" @click="dynamicNavi(item.Id)">
 					  <view class="dynamnicHead">
-						<image class="dynamicAvatar" :src='item.avatarD'></image>
+						<image class="dynamicAvatar" :src='item.avatarD'@click.stop="homePageNavi(userId)"></image>
 						<view class="dynamicUserDate">
 							<view class="dynamicUsername">{{item.usernameD}}</view>
 						    <view class="dynamicDate">{{item.date}}</view>
 						</view>
-						
+						<view class="dynamicMoreIcon" @click.stop="open">
+							<span class="iconfont_dy">&#xe604;</span>
+						</view>
 					</view>
 					<!-- 正文 -->
 					<view class="dynamicText">{{item.title}}</view>
@@ -69,7 +71,7 @@
 								</view>
 							</td>
 							<td>
-							    <image class='littleIcon' src="../../../static/icon/chat.png"@click="open"></image>
+							    <image class='littleIcon' src="../../../static/icon/chat.png"@click="dynamicNavi(item.Id)"></image>
 							    <text class="number">{{item.commentNum}}</text>
 							</td>
 							<td>
@@ -86,7 +88,19 @@
 	</uni-list>
 	<uni-load-more status="noMore"></uni-load-more>
 	
-
+	<!-- 删除动态pop -->
+	
+	<view>
+		<uni-popup ref="popup" type="bottom">
+		<view class="sexBox">
+			<view class="sexChoose" >删除</view>
+			<view class="sexExitChoose"@click="close">取消</view>
+		</view>
+	</uni-popup>
+	</view>
+	
+	
+<!-- 
 	<uni-popup ref="popup" type="bottom">
 		
 		<view>
@@ -114,7 +128,7 @@
 			 			 </view>
 			 </view>
 		 </view>
-	</uni-popup>
+	</uni-popup> -->
 	<view>
 		 <view v-if="recommendTag==1" class="recommendBox">
 		 			 <view class="recommendHead">10 条评论
@@ -148,10 +162,14 @@
 	<view v-if="tabIndex==1">
 		
 		<view class="content-box">
-			<waterfallsFlow :list="contentList">
+			<waterfallsFlow :list="contentList" idKey="opus_id" imageSrcKey="opus_photos" @wapper-lick="workNavigate($event)" >
 				<template v-slot:default="item" class="content-box-item">
-					<view class="cnt" @click="workNavigate">
+					<view class="cnt" >
 						<view class="title">{{item.title}}</view>
+						<view class="ll">
+							<span class="iconfont_dy">&#xe785;</span>
+							<text>{{item.likes_number}}</text>
+						</view>
 					</view>
 				</template>
 			</waterfallsFlow>
@@ -184,6 +202,11 @@
 			// this.userId2=option.userId2
 			
 		},
+		onLoad(option) {
+			this.userId=option.userId // 上个页面传递的用户id
+			this.userId2=getApp().globalData.global_userId
+			this.loadHead()
+		},
 		components: {
 			waterfallsFlow
 		},
@@ -197,6 +220,7 @@
 				
 				userId:'',
 				userId2:'',
+				avatar:'',
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
@@ -217,7 +241,7 @@
 						date:'2020-06-25',
 						title:'点赞表态!',
 						imageD:'../../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
+						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!蜜瓜JK妆!',
 						interestNum:'5482',
 						isInterest:'0',
 						commentNum:'2145',
@@ -310,53 +334,72 @@
 						recLike:'0'
 					}
 				],
-				contentList: [{
-						id: 1,
-						// image_url: "../../static/contentImg/1.jpg",
-						image_url:"../../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						viewNum: 2206
-					},
-					{
-						id: 2,
-						image_url: "../../../static/contentImg/3.jpg",
-						title: '【汉服】西域美人',
-						viewNum: 2206
-					},{
-						id: 3,
-						image_url: "../../../static/contentImg/2.jpg",
-						title: '【Cos正品】楼兰',
-						viewNum: 2206
-					},
-					{
-						id: 4,
-						image_url: "../../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						viewNum: 2206
-					},
-					{
-						id: 5,
-						image_url: "../../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						viewNum: 2206
-					},
-					{
-						id: 6,
-						image_url: "../../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						viewNum: 2206
-					},
-					{
-						id: 7,
-						image_url: "../../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						viewNum: 2206
-					}
+				 contentList: [//{
+				// 		id: 1,
+				// 		// image_url: "../../static/contentImg/1.jpg",
+				// 		image_url:"../../../static/contentImg/1.jpg",
+				// 		title: '鬼灭之刃',
+				// 		viewNum: 2206
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		image_url: "../../../static/contentImg/3.jpg",
+				// 		title: '【汉服】西域美人',
+				// 		viewNum: 2206
+				// 	},{
+				// 		id: 3,
+				// 		image_url: "../../../static/contentImg/2.jpg",
+				// 		title: '【Cos正品】楼兰',
+				// 		viewNum: 2206
+				// 	},
+				// 	{
+				// 		id: 4,
+				// 		image_url: "../../../static/contentImg/1.jpg",
+				// 		title: '鬼灭之刃',
+				// 		viewNum: 2206
+				// 	},
+				// 	{
+				// 		id: 5,
+				// 		image_url: "../../../static/contentImg/1.jpg",
+				// 		title: '鬼灭之刃',
+				// 		viewNum: 2206
+				// 	},
+				// 	{
+				// 		id: 6,
+				// 		image_url: "../../../static/contentImg/1.jpg",
+				// 		title: '鬼灭之刃',
+				// 		viewNum: 2206
+				// 	},
+				// 	{
+				// 		id: 7,
+				// 		image_url: "../../../static/contentImg/1.jpg",
+				// 		title: '鬼灭之刃',
+				// 		viewNum: 2206
+				// 	}
 			
 				],
 			}
 		},
 		methods:{
+			async loadHead(){
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/getMainAll',
+					data:{
+						user_id:5
+					}
+				})
+				console.log(res)
+				this.username=res.data[0].user_name
+				this.avatar=res.data[0].header_pic
+				this.interstNum=res.data[0].focus_num
+				this.fanNum=res.data[0].focused_num
+				this.starNum=res.data[0].raised_num
+			},
+			editNavi(){
+				uni.navigateTo({
+					url:'../reset/edit'
+				})
+			},
 			open(){
 			         // 通过组件定义的ref调用uni-popup方法
 			         this.$refs.popup.open()
@@ -384,6 +427,10 @@
 				if(i==0){
 					this.loadDynamic(1);
 				}
+				else if(i==1){
+					this.loadWork();
+				}
+				else{}
 			},
 			addLike:function(i){
 				var t=this.$data.dynamicItem[i].isInterest;
@@ -396,9 +443,9 @@
 					this.$data.dynamicItem[i].isInterest=0;
 				}
 			},
-			workNavigate(){
+			workNavigate(item){
 				uni.navigateTo({
-					url:'../../works/works'
+					url:'../../works/works?workId='+item.opus_id
 				})
 			},
 			async loadDynamic(i){
@@ -411,10 +458,17 @@
 				});
 				    console.log(res);
 			},
-			loadWork(i){
-				uni.request({
-					
+			async loadWork(i){
+				const res=await this.$myRequest({
+					url:'/MyPage/HomePage/getOpusById',
+					data:{
+						pageNum:1,
+						pageSize:10,
+						user_id:5
+					}
 				})
+				console.log(res.data)
+				this.contentList=res.data.list
 			},
 			recommend(i){
 			this.recommendTag=1;
@@ -429,6 +483,35 @@
 				else{
 					this.recomendList[i].recLike=0;
 				}
+			},
+			interestNavi(i){
+				uni.navigateTo({
+					url:'../foucsAndFan/focus?userId='+i
+				})
+			},
+			fanNavi(i){
+				uni.navigateTo({
+					url:'../foucsAndFan/fan?userId='+i
+				})
+			},
+			dynamicNavi(event,i){
+				
+				// event = event || window.event;
+				// event.preventDefault()
+				//         if (event && event.stopPropagation) {
+				//             event.stopPropagation();
+				//         } else {
+				//             event.cancelBubble = true;
+				//         }
+				uni.navigateTo({
+					url:'../../DynamicPage/dynamicDetails?dynamicId='+i
+				})
+				return false
+			},
+			homePageNavi(i){
+				uni.navigateTo({
+					url:'homePage?userId='+i
+				})
 			}
 		}
 	}
@@ -439,10 +522,24 @@
 		margin-left: auto;
 		margin-right: auto;
 		.cnt{
+			position: relative;
+			top: 0;
+			left: 0;
 			padding: 10rpx;
 		}
 	}
 	
+		/deep/ .uni-list-item{
+			background-color: #FBFBFB;
+			padding: 0;
+			padding-bottom: 0rpx;
+			padding-top: 5rpx;
+		}
+		/deep/ .uni-list-item__container{
+			background-color: #FFFFFF;
+			padding: 0;
+	
+		}
 </style>
 <style>
 	@import url("homePageCss");

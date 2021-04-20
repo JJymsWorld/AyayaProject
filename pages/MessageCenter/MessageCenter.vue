@@ -35,16 +35,30 @@
 					官方公告
 				</view>
 			</view>
-			<view class="message-item">
-				<image src="../../static/image1.png" mode="widthFix"></image>
-				<view class="message-item-rbox" @click="gotoDialogPage">
-					<view class="">
-						<text class="text1">机智的党妹</text>
-						<text class="text2">2020-12-08</text>
-					</view>
-					<text class="text3">看来又有一个小可爱关注我了~</text>
-				</view>
-			</view>
+			<!-- 消息列表 -->
+			<uni-list :border="false">
+				<uni-list-item clickable @click="gotoDialogPage(index)" class="message-item" :border="false" :ellipsis='2' direction="row" v-for="(item, index) in MessageList" :key="index">
+					<!-- 左边头像 -->
+					<template v-slot:body>
+						<view class="message-item-lbox list-item-lbox">
+							<image src="../../static/image1.png" mode="widthFix"></image>
+						</view>
+					</template>
+					<!-- 右边信息 -->
+					<template v-slot:footer>
+						<view class="message-item-rbox list-item-rbox">
+							<view class="list-item-rbox-top">
+								<text class="text1">{{item.name}}</text>
+								<text class="text2">{{item.time}}</text>
+							</view>
+							<view class="list-item-rbox-buttom">
+								<text class="text3">{{item.body}}</text>
+								<uni-badge type="error" :text="item.msgNum" size="small" style="float: right;"></uni-badge>
+							</view>
+						</view>
+					</template>
+				</uni-list-item>
+			</uni-list>
 		</view>
 	</view>
 </template>
@@ -53,7 +67,13 @@
 	export default {
 		data() {
 			return {
-				
+				MessageList: [{
+					image: '../../static/image1.png',
+					name: '机智的党妹',
+					time: '2020-12-08',
+					body: '看来又有一个小可爱关注我了~',
+					msgNum: 1
+				}],
 			}
 		},
 		methods: {
@@ -76,15 +96,28 @@
 				})
 			},
 			// 跳转至对话框页面
-			gotoDialogPage: function(){
+			gotoDialogPage: function(index){
+				console.log(index)
 				uni.navigateTo({
-					url: './dialogpage'
+					url: './cos-dialogpage'
 				})
+				// 查看消息后右侧角标消失
+				this.MessageList[index].msgNum = 0
 			}
 		}
 	}
 </script>
 
+<style lang="scss" scoped>
+	 /deep/ .uni-list-item{
+	  background-color: #FBFBFB;
+	  padding: 0;
+	 }
+	 /deep/ .uni-list-item__container{
+	  background-color: #FFFFFF;
+	  padding: 0;
+	 }
+</style>
 <style>
 	@import url("../../static/css/login.css");
 	.icon-box{
@@ -130,7 +163,7 @@
 		float: right;
 		font-size: 12px;
 		line-height: 20px;
-		width: 40%;
+		width: 30%;
 		color: #797979;
 	}
 	.message-item-rbox .text3{
@@ -138,9 +171,26 @@
 		font-size: 12px;
 		line-height: 20px;
 	}
+	.list-item-lbox image{
+		width: 90rpx;
+		border-radius: 50%;
+	}
+	.list-item-rbox{
+		margin-left: 50rpx;
+		width: 500rpx;
+	}
+	.list-item-rbox-buttom{
+		padding-top: 4rpx;
+	}
 	.line{
 		width: 100%;
 		height: 7px;
 		background-color: rgba(242, 242, 242, 0.5);
+	}
+	.uni-list::before{
+		display: none;
+	}
+	.uni-list::after{
+		display: none;
 	}
 </style>

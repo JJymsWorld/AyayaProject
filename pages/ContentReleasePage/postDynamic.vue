@@ -9,7 +9,7 @@
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">
 				<view class="works-article">
-					<textarea type="text" value="" placeholder="正文和内容一样重要哦！" />
+					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput"/>
 				</view>
 			</view>
 		</view>
@@ -39,8 +39,8 @@
 		<!-- 底部固定栏 -->
 		<view class="fixed-bottom-box">
 			<view class="row-box bottom-box">
-				<image src="@/static/at.png" mode="widthFix"></image>
-				<image src="@/static/addlabel.png" mode="widthFix"></image>
+				<image src="@/static/at.png" mode="widthFix" @click="onChooseAt"></image>
+				<image src="@/static/addlabel.png" mode="widthFix" @click="onChooseLabel"></image>
 			</view>
 		</view>
 	</view>
@@ -57,6 +57,7 @@
 				columnNum: 4, //	上传图片显示几列
 				maxCount: 9, //	最多上传图片数量
 				images: [],
+				article: ''
 			}
 		},
 		components: {
@@ -100,24 +101,68 @@
 					}
 				})
 				console.log(this.images)
-			}
+			},
+			// 选择@的用户
+			onChooseAt: function(i){
+				
+				uni.navigateTo({
+					url: './at',
+					// animationType:'slide-in-right',
+				})
+			},
+			// 选择热门话题
+			onChooseLabel: function(){
+				uni.navigateTo({
+					url: './label',
+					// animationType:'slide-in-right',
+				})
+			},
+			onArticleInput: function(e){
+				this.article = e.detail.value
+			},
 		},
 		// 页面导航栏按钮点击事件
-		async onNavigationBarButtonTap() {
-			
+		onNavigationBarButtonTap() {
 			uni.uploadFile({
 			    url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
 			    files: this.images,
 				formData: {
 					'user_id': 13,
 				    'callUser': 9,
-					'mainBody': 'test'
+					'mainBody': this.article
 				},
 			    success: (uploadFileRes) => {
 			        // console.log(uploadFileRes.data);
 					console.log(uploadFileRes)
 			    }
 			});
+			
+			// 跳转至首页
+			uni.switchTab({
+				url:"../Index_Recommend/Index_Hot"
+			})
+			
+			// // 提取json文件键字对
+			// const res = await this.$myRequest({
+			// 	url:'/MyPage/HomePage/dynamic',
+			// 	data:{
+			// 		user_id: 13
+			// 	}
+			// })
+			// // 提取json文件键字对
+			// console.log(res.data[0].photos)
+			
+			// var photoes = res.data[0].photos
+			// console.log(photoes)
+			// var jsonObj = eval('('+photoes+')')
+			// console.log(jsonObj)
+			// for (var prop in jsonObj)
+			// {
+			//     //输出 key-value值
+			//     //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+			// 	console.log(jsonObj[prop]);
+			// 	this.photoes.push(jsonObj[prop])
+			// }   
 
 			// uni.uploadFile({
 			//     url: 'http://8.136.216.96:8086/Date/PhotographerList/applyStayInPg', 
@@ -134,38 +179,15 @@
 			// 		console.log(uploadFileRes)
 			//     }
 			// });
+
 			
-			// uni.request({
-			// 	header: {
-			// 		"Content-Type": "application/x-www-form-urlencoded"
-			// 	},
-			// 	url: "http://8.136.216.96:8086/ContentReleasePage/dynamic", //仅为示例，并非真实接口地址。
-			// 	method: 'POST',
-			// 	data: {
-			// 		callUser: 13,
-			// 		mainBody: 'test',
-			// 		img: this.images[0].uri
-			// 	},
-			// 	dataType: 'json',
-			// 	success: (res) => {
-			// 		//var result = JSON.parse(res.data.projectList);
-			// 		console.log(res)
-			// 	}
-			// });
-
-			// // 上传图片至服务器
-			// uni.uploadFile({
-			//     url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
-			//     files: this.images,
-			//     success: (uploadFileRes) => {
-			//         console.log(uploadFileRes.data);
-			//     }
-			// });
-			// //上传其他信息
-
-			// 跳转至首页
-			uni.switchTab({
-				url:"../Index_Recommend/Index_Hot"
+		},
+		onShow(){
+			uni.$on("emitChoosePersonName",res => {
+				this.article += res.choosePersonName
+				console.log(this.article)
+				// 清除监听
+				uni.$off("emitChoosePersonName");
 			})
 		}
 	}

@@ -237,6 +237,57 @@
 				}
 			}
 		}
+		,{
+		    "path" : "pages/ContentReleasePage/at",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "提醒谁可以看",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "确定",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/clothLink",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑服装链接",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "完成",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/label",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加话题",
+				"navigationBarBackgroundColor":"#FFFFFF",
+		        "enablePullDownRefresh": false,
+				"app-plus":{
+				}
+			}
+		}
         ,{
             "path" : "pages/MessageCenter/collectmsg",
             "style" :
@@ -290,7 +341,17 @@
                 "enablePullDownRefresh": false
             }
             
-        },{
+        }
+		,{
+		    "path" : "pages/pictureOrder/alterorder",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
 			"path":"pages/PopCoser/PopCoser",
 			"style":{
 				"navigationBarTitleText":"人气Cos榜"
@@ -465,6 +526,29 @@
 			"path":"pages/Mypage/foucsAndFan/fan",
 			"style":{
 				"navigationBarTitleText":"我的粉丝"
+			}
+		}
+        ,{
+            "path" : "pages/MessageCenter/cos-dialogpage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+			"path":"pages/DynamicPage/dynamicDetails",
+			"style":{
+				"navigationBarTitleText":"详情"
+			}
+		},
+		{
+			"path":"pages/Mypage/reset/edit",
+			"style":{
+				// "navigationBarTitleText":"个人信息",
+				// "navigationBarBackgroundColor":"#FFFFFF"
+				"navigationStyle":"custom"
 			}
 		}
     ],

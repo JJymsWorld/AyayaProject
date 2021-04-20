@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<view class="AppReco-Hot-list">
-				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index">
+				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index" @click="gotoPherHomePage">
 					<image class="AppReco-Hot-pg-list-avatar" mode="aspectFill" :src="item.pg_avatar"></image>
 					<text class="AppReco-Hot-pg-list-name">{{item.pg_name}}</text>
 				</view>
@@ -27,7 +27,7 @@
 				<text >作品展示</text>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList">
+				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -177,6 +177,16 @@
 			gotoPhotographerList() {
 				uni.navigateTo({
 					url: './PhotographerList'
+				})
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoPherHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
 				})
 			}
 		},

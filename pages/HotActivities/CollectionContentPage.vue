@@ -1,154 +1,133 @@
 <template>
 	<view>
-		<view class="CollectionContent-wrapper">
-			<view class="tab-top-bar">
-				<view class="tab-top-bar-left-Collection" @click="JumpToEventsPage">活动</view>
-				<view class="tab-top-bar-right-Collection">季番合集</view>
-				<view class="top-function-bar-right">
-					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
-					<view class="searchbar-search-Icon">
-						<slot class="search-icon">
-							<view :class="['fas','fa-search']" class="searchIcon-style"></view>
-						</slot>
-					</view>
+		<view class="CoserHirePage-wrapper">
+			<view class="CosCollections-top">
+				<view class="CosCollections-top-imgwrapper">
+					<image class="CosCollections-top-image" :src="CoserHirePageInfo.image_url" mode="widthFix"></image>
+				</view>
+				<view class="CosCollections-top-title">
+					{{CoserHirePageInfo.title}}
+				</view>
+				<view class="CosCollections-top-themeandtime">
+					<view class="CoserHirePage-top-theme">主题: {{CoserHirePageInfo.theme}}</view>
+					<view class="CoserHirePage-top-time">线下活动时间: {{CoserHirePageInfo.time}}</view>
+					<view class="CoserHirePage-top-positon">地址: {{CoserHirePageInfo.position}}</view>
+				</view>
+				<view class="CoserHirePage-viewButton" @click="gotoWorksPage">
+					<view class="CoserHirePage-viewButton-style">查看正片</view>
 				</view>
 			</view>
-			<view class="Events-list">
-				<uni-list class="Events-list-list" :border="false">
-					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList"
-						:key="index" direction="column" :title="item.title" :ellipsis="2">
-						<view slot="header" class="Events-list-item-header">
-							<image :src="item.img_url" mode="aspectFill"></image>
-						</view>
-						<view slot="body" class="Events-list-item-body">
-							<text>{{item.title}}</text>
-						</view>
-						<!-- <view slot="footer" class="Events-list-item-footer">
-							<view class="Events-list-item-footer-left">
-								<view class="Events-list-item-footer-EventsActive" v-if="item.isActive==true">进行中</view>
-								<view class="Events-list-item-footer-EventsnoActive" v-if="item.isActive==false">已结束</view>
+			<view class="AttendCoser-list">
+				<view class="AttendCoserlist-bar">
+					<text class="AttendCoserlist-bar-label">
+						参演Coser
+					</text>
+				</view>
+				<view class="AttendCoserlist-content">
+					<uni-list class="AttendCoserlist-content-listWrapper" :border="false">
+						<uni-list-item :border="false" class="AttendCoserlist-content-listItem" v-for="(item,index) in AttendCoserlist" :key="index" direction="row">
+							<view slot="header" class="AttendCoserlist-content-listItem-header" >
+								<text class="AttendCoserlist-content-listItem-header-Character" >{{item.Character_name}}:</text>
 							</view>
-							<view class="Events-list-item-footer-right">
-								<view :class="['far','fa-user']" class="Events-list-item-footer-right-icon"></view>
-								<text class="Events-list-item-footer-right-text">{{item.AttendentNum}}参与</text>
+							<view slot="body" class="AttendCoserlist-content-listItem-body">
+								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage">{{item.Coser_name}}</text>
+								<text class="AttendCoserlist-content-listItem-body-label">#{{item.label}} #{{item.wardCategory}}</text>
 							</view>
-						</view> -->
-					</uni-list-item>
-				</uni-list>
+						</uni-list-item>
+					</uni-list>
+				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				EventsList: [{
-						id: 0,
-						img_url: "../../static/EventsSource/1.jpg",
-						title: "【#Cos合集】第10期《请问您今天要来点兔子吗？》"
+	export default{
+		data(){
+			return{
+				CoserHirePageInfo: {
+					image_url: "../../static/CollectionSources/1.jpg",
+					title: "【季番线下合集】第10期",
+					theme: "《请问您今天要来点兔子吗？》",
+					time: "2020年10月25日",
+					position:"杭州市..."
+				},
+				AttendCoserlist:[
+					{
+						id:0,
+						Character_name:"宇治松 千夜",
+						Coser_name:"小娜",
+						label:"【Cos正品征集】第10-1期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 2,
-						img_url: "../../static/EventsSource/2.jpg",
-						title: "【#Cos合集】第9期《租界女友》"
+						id:1,
+						Character_name:"香风智乃",
+						Coser_name:"奈奈猫",
+						label:"【Cos正品征集】第10-2期",
+						wardCategory:"最佳Coser"
 					},
 					{
-						id: 3,
-						img_url: "../../static/EventsSource/2.jpg",
-						title: "【#Cos合集】第十期《请问您今天要来点兔子吗？》"
+						id:2,
+						Character_name:"保登 心爱",
+						Coser_name:"佳佳",
+						label:"【Cos正品征集】第10-3期",
+						wardCategory:"最佳Coser"
+					},
+					{
+						id:3,
+						Character_name:"天天座里世",
+						Coser_name:"屿y",
+						label:"【Cos正品征集】第10-4期",
+						wardCategory:"最佳Coser"
+					},
+					{
+						id:4,
+						Character_name:"桐间纱路",
+						Coser_name:"夜呀mmm",
+						label:"【Cos正品征集】第10-5期",
+						wardCategory:"最佳Coser"
+					},
+					{
+						id:5,
+						Character_name:"香风隆宏",
+						Coser_name:"青玉子",
+						label:"【Cos正品征集】第10-6期",
+						wardCategory:"最佳Coser"
 					}
 				]
 			}
 		},
-		methods: {
-			JumpToEventsPage() {
-				uni.redirectTo({
-					url:'EventsPage'
+		methods:{
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoCoserHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
 				})
 			}
+		},
+		computed:{
+			
 		}
 	}
 </script>
 
+
 <style lang="scss" scoped>
+	/deep/ .uni-list-item{
+		background-color: rgba(242, 163, 195, 0.33);
+	}
 </style>
 <style>
 	@import url("HotActivities.css");
-
-	.uni-list::before {
+	.uni-list::before{
 		display: none;
 	}
-
-	.uni-list::after {
+	.uni-list::after{
 		display: none;
-	}
-
-	.tab-top-bar {
-		margin-top: 30rpx;
-		display: flex;
-		flex-direction: row;
-		width: 85%;
-		margin-left: auto;
-		margin-right: auto;
-		align-items: flex-end;
-	}
-
-	.top-function-bar-right {
-		display: flex;
-		flex-direction: row;
-		border-style: none;
-		border-radius: 40rpx;
-		background-color: rgba(242, 242, 242, 0.5);
-		align-items: center;
-		width: 25%;
-		height: 40rpx;
-		margin-left: auto;
-		/* margin-right: 20rpx; */
-		box-shadow: 0 0 4rpx 4rpx rgba(121, 121, 121, 0.1);
-	}
-
-	.popcoser-search-fs {
-		font-size: 26rpx;
-		margin-left: 20rpx;
-		margin-top: auto;
-		margin-bottom: auto;
-	}
-
-	.searchbar-search-Icon {
-		color: #797979;
-		font-size: 26rpx;
-		margin-top: auto;
-		margin-bottom: auto;
-		margin-right: 20rpx;
-	}
-
-	.tab-top-bar-right-Collection {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		height: 68rpx;
-		width: 192rpx;
-		background-color: #F2A3C3;
-		border-style: none;
-		border-radius: 10rpx;
-		color: white;
-	}
-
-	.tab-top-bar-left-Collection {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		height: 62rpx;
-		width: 184rpx;
-		border-style: dotted;
-		border-radius: 10rpx;
-		border-color: #E7A7C2;
-		border-width: 4rpx;
-		color: #797979;
-		margin-right: 20rpx;
 	}
 </style>
