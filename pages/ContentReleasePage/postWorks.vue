@@ -40,8 +40,8 @@
 				<view class="content-item">
 					<text>服饰：</text>
 					<view class="chooseAt-box"  @click="onEditCloth">
-						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].atPerson == ''">～点击编辑服饰链接</text>
-						<text class="at-text">{{this.worksContent[3].atPerson}}</text>
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[4].clothLabels == ''">～点击编辑服饰链接</text>
+						<text class="at-text">{{this.worksContent[4].clothLabels}}</text>
 					</view>
 				</view>
 			</view>
@@ -129,6 +129,7 @@
 				},
 				{
 					name: '服饰',
+					clothLabels: ''
 				},
 				{
 					name: '正文',
@@ -224,7 +225,10 @@
 			},
 			// 编辑服饰链接
 			onEditCloth: function(){
-				
+				uni.navigateTo({
+					url: './clothLink',
+					// animationType:'slide-in-right',
+				})
 			},
 			// 编辑正文内容
 			onArticleInput: function(e){
@@ -258,6 +262,7 @@
 			})
 		},
 		onShow(){
+			// 监听@用户事件
 			uni.$on("emitChoosePersonName",res => {
 				const i = res.index
 				this.index = i
@@ -269,7 +274,15 @@
 				// 清除监听
 				uni.$off("emitChoosePersonName");
 			})
-		}
+			// 监听编辑服饰链接事件
+			uni.$on("emitClothLabels",res => {
+					console.log(res.clothLabels)
+					this.worksContent[4].clothLabels = res.clothLabels
+					console.log(this.worksContent[4].clothLabels)
+					// 清除监听
+					uni.$off("emitClothLabels");
+				})
+			}
 	}
 </script>
 

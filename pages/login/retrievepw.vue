@@ -70,7 +70,7 @@
 						url:'/Login/changePassword',
 						data:{
 							password: this.password1,
-							user_id: 10
+							user_id: 9
 						}
 					})
 				}

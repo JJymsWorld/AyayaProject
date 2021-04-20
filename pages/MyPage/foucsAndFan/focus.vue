@@ -27,35 +27,35 @@
 				focusPerson:[
 					{
 						userid:'',
-						isFocus:'1',
+						isFocus: 1,
 						avatar:'../../../static/iconn/2.jpg',
 						username:'布兰妮老田田',
 						signature:'没有个性签名！！！！'
 					},
 					{
 						userid:'',
-						isFocus:'1',
+						isFocus: 1,
 						avatar:'../../../static/iconn/2.jpg',
 						username:'布兰妮老田田',
 						signature:'没有个性签名！！！！'
 					},
 					{
 						userid:'',
-						isFocus:'1',
+						isFocus: 1,
 						avatar:'../../../static/iconn/2.jpg',
 						username:'布兰妮老田田',
 						signature:'没有个性签名！！！！'
 					},
 					{
 						userid:'',
-						isFocus:'1',
+						isFocus: 1,
 						avatar:'../../../static/iconn/2.jpg',
 						username:'布兰妮老田田',
 						signature:'没有个性签名！！！！'
 					},
 					{
 						userid:'',
-						isFocus:'1',
+						isFocus: 1,
 						avatar:'../../../static/iconn/2.jpg',
 						username:'布兰妮老田田',
 						signature:'没有个性签名！！！！'

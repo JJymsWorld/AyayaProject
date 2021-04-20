@@ -13,11 +13,9 @@
 								<text>机智的党妹</text>
 							</view>
 							<view class="">
-								<text>给你发来一条约拍订单信息～</text>
+								<text class="text1">[请核对约拍订单信息～]</text>
 							</view>
-							<view class="">
-								<text class="text2">2020-12-08  21：33</text>
-							</view>
+							
 						</view>
 					</view>
 				</view>
@@ -160,14 +158,16 @@
 		height: 100%;
 	}
 	.message-item-rbox-left view{
-		height: 33%;
+		height: 45%;
+		
 	}
 	.message-item-rbox-left text{
-		font-size: 14px;
+		font-size: 26rpx;
 		font-family: 'PingFang SC';
+		
 	}
-	.message-item-rbox-left .text2{
-		font-size: 12px;
+	.message-item-rbox-left .text1{
+		
 		color: #797979;
 	}
 </style>

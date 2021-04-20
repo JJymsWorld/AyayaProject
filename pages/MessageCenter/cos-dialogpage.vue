@@ -81,8 +81,8 @@
 			editOrderMsg(){
 				console.log('edit')
 				// 编辑框
-				uni.showToast({
-					title: '是否修改订单信息'
+				uni.navigateTo({
+					url: '../pictureOrder/alterorder'
 				})
 			},
 			// 摄影师接受订单

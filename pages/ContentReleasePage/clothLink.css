@@ -1,0 +1,32 @@
+.addLink{
+	width: 90%;
+	margin: 0 auto;
+	height: 50rpx;
+}
+.function-bar-editor{
+	float: right;
+}
+.form-item{
+	width: 90%;
+	margin: 0 auto;
+	height: 70rpx;
+}
+.form-item1{
+	height: 150rpx;
+}
+.form-item-input{
+	
+	float: right;
+	border: #0086B3 solid 1rpx;
+	width: 70%;
+	border-radius: 10rpx;
+}
+.form-item-input input{
+	width: 90%;
+	margin: 0 auto;
+}
+.form-item-teatarea textarea{
+	margin: 0 auto;
+	width: 90%;
+	height: 120rpx;
+}

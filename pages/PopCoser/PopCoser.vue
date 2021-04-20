@@ -19,7 +19,7 @@
 					<view class="Infobox-head-right" @click="gotoCoserIdenticate">成为入驻Coser</view>
 				</view>
 				<view class="Infobox-down">
-					<view class="user-info-box" v-for="(item,index) in showThree" :key="index">
+					<view class="user-info-box" v-for="(item,index) in showThree" :key="index" @click="gotoCoserHomePage">
 						<image class="user-info-box-headimg" :src="item.header_Pic" mode="aspectFill"></image>
 						<text class="user-info-box-name">{{item.user_name}}</text>
 					</view>
@@ -39,24 +39,24 @@
 				</view>
 				<view class="CoserListbox-mid">
 					<view class="Coser-Items">
-						<view class="img-wrapper-1">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[4].header_Pic">
+						<view class="img-wrapper-1" @click="gotoCoserHomePage">
+							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[1].header_Pic">
 							</image>
 						</view>
 						<text class="Coser-Items-text">{{userInfoList[1].user_name}}</text>
 						<text class="Coser-Item-Number">{{userInfoList[1].energy}}</text>
 					</view>
-					<view class="Coser-Items">
+					<view class="Coser-Items" @click="gotoCoserHomePage">
 						<view class="img-wrapper-2">
-							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[3].header_Pic">
+							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[0].header_Pic">
 							</image>
 						</view>
 						<text class="Coser-Items-text">{{userInfoList[0].user_name}}</text>
 						<text class="Coser-Item-Number">{{userInfoList[0].energy}}</text>
 					</view>
-					<view class="Coser-Items">
+					<view class="Coser-Items" @click="gotoCoserHomePage">
 						<view class="img-wrapper-3">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[5].header_Pic">
+							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[2].header_Pic">
 							</image>
 						</view>
 						<text class="Coser-Items-text">{{userInfoList[2].user_name}}</text>
@@ -65,7 +65,7 @@
 				</view>
 				<view class="CoserListbox-down">
 					<uni-list class="CoserListbox-down-list" :border="false">
-						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.user_name" :ellipsis="1">
+						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.user_name" :ellipsis="1" to="../Mypage/homePage/homePage">
 							<view slot="header" class="CoserListbox-down-header">
 								<text class="CoserListbox-down-header-text">{{index+4}}</text>
 							</view>
@@ -90,78 +90,76 @@
 <script>
 	export default {
 		onLoad() {
-			// uni.request({
-			// 	url:"http://8.136.216.96:8086/Cos/PopCoserList/getAllRank",
-			// 	success(res) {
-			// 		this.userInfoList = res.data.sort((a,b)=>{
-			// 			return b.energy-a.energy
-			// 		})
-			// 		console.log(this.userInfoList)
-			// 	},
-			// 	fail() {
-			// 		console.log('请求失败')
-			// 	}
-			// })
+			const http = new this.$Request();
+			
+			http.get("/Cos/PopCoserList/getAllRank").then(res=>{
+				this.userInfoList = res.data.sort((a,b)=>{
+					return b.energy - a.energy;
+				})
+			}).catch(err=>{
+				console.log(err)
+			});
+			console.log(this.userInfoList);
 		},
 		data() {
 			return {
 				listTabsType: ['总榜', '周榜'],
 				tabIndex: 0,
 				userInfoList: [
-					{
-						user_id: 1,
-						header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
-						user_name: '嘉Sama',
-						energy: 5947
-					},
-					{
-						user_id: 2,
-						header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
-						user_name: '夜呀_mm',
-						energy: 4747
-					},
-					{
-						user_id: 3,
-						header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
-						user_name: '青玉子sei',
-						energy: 3947
-					},
-					{
-						user_id: 4,
-						header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
-						user_name: '小娜',
-						energy: 3256
-					},
-					{
-						user_id: 5,
-						header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
-						user_name: '奈奈喵',
-						energy: 2756
-					},
-					{
-						user_id: 6,
-						header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
-						user_name: '国际巨星',
-						energy: 2733
-					},
-					{
-						user_id: 7,
-						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-						user_name: 'abcde',
-						energy: 1236
-					},
-					{
-						user_id: 8,
-						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-						user_name: 'roserrrr',
-						energy: 1235
-					},
-					{
-						user_id: 9,
-						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-						user_name: '12344',
-						energy: 1234
-					}
+					// {
+					// 	user_id: 1,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
+					// 	user_name: '嘉Sama',
+					// 	energy: 5947
+					// },
+					// {
+					// 	user_id: 2,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
+					// 	user_name: '夜呀_mm',
+					// 	energy: 4747
+					// },
+					// {
+					// 	user_id: 3,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
+					// 	user_name: '青玉子sei',
+					// 	energy: 3947
+					// },
+					// {
+					// 	user_id: 4,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
+					// 	user_name: '小娜',
+					// 	energy: 3256
+					// },
+					// {
+					// 	user_id: 5,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
+					// 	user_name: '奈奈喵',
+					// 	energy: 2756
+					// },
+					// {
+					// 	user_id: 6,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
+					// 	user_name: '国际巨星',
+					// 	energy: 2733
+					// },
+					// {
+					// 	user_id: 7,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+					// 	user_name: 'abcde',
+					// 	energy: 1236
+					// },
+					// {
+					// 	user_id: 8,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+					// 	user_name: 'roserrrr',
+					// 	energy: 1235
+					// },
+					// {
+					// 	user_id: 9,
+					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+					// 	user_name: '12344',
+					// 	energy: 1234
+					// }
 				]
 			}
 		},
@@ -183,6 +181,11 @@
 			gotoCoserIdenticate() {
 				uni.navigateTo({
 					url: '../Mypage/identificationPage/coserIdenticate'
+				})
+			},
+			gotoCoserHomePage(){
+				uni.navigateTo({
+					url:"../Mypage/homePage/homePage"
 				})
 			}
 		},

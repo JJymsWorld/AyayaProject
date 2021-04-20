@@ -19,7 +19,7 @@
 					<view class="EventDetail-top-content-line" v-for="(item,index) in EventDetailPageInfo.content"
 						:key="index">{{item}}</view>
 				</view>
-				<view class="EventDetail-top-viewButton">
+				<view class="EventDetail-top-viewButton" @click="gotoPostWorksPage">
 					<view class="EventDetail-top-viewButton-style">我要参加</view>
 				</view>
 			</view>
@@ -46,7 +46,7 @@
 				</view>
 				<view class="EventDetail-bottom-works-list">
 					<view class="content-box">
-						<waterfallsFlow :list="AttendWorksList">
+						<waterfallsFlow :list="AttendWorksList" @wapper-lick="">
 							<template v-slot:default="item" class="content-box-item">
 								<view class="cnt">
 									<view class="title">{{item.title}}</view>
@@ -160,6 +160,16 @@
 			tabChangeToTwo(){
 				this.tabIndex = 2
 				console.log(this.tabIndex)
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
+			},
+			gotoPostWorksPage(){
+				uni.navigateTo({
+					url:"../ContentReleasePage/postWorks"
+				})
 			}
 
 		},

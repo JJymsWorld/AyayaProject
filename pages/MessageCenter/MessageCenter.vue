@@ -74,13 +74,6 @@
 					body: '看来又有一个小可爱关注我了~',
 					msgNum: 1
 				}],
-				avatarList: [{
-				                url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/460d46d0-4fcc-11eb-8ff1-d5dcf8779628.png'
-				            }, {
-				                url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/460d46d0-4fcc-11eb-8ff1-d5dcf8779628.png'
-				            }, {
-				                url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/460d46d0-4fcc-11eb-8ff1-d5dcf8779628.png'
-				            }]
 			}
 		},
 		methods: {

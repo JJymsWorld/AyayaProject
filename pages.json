@@ -258,6 +258,26 @@
 			}
 		}
 		,{
+		    "path" : "pages/ContentReleasePage/clothLink",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑服装链接",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "完成",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
 		    "path" : "pages/ContentReleasePage/label",
 		    "style" :                                                                                    
 		    {
@@ -321,7 +341,17 @@
                 "enablePullDownRefresh": false
             }
             
-        },{
+        }
+		,{
+		    "path" : "pages/pictureOrder/alterorder",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
 			"path":"pages/PopCoser/PopCoser",
 			"style":{
 				"navigationBarTitleText":"人气Cos榜"

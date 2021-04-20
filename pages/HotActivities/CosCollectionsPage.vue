@@ -1,41 +1,41 @@
 <template>
 	<view>
-		<view class="CosCollectionsPage-wrapper">
-			<view class="CosCollections-top">
-				<view class="CosCollections-top-imgwrapper">
-					<image class="CosCollections-top-image" :src="PageInfo.image_url" mode="widthFix"></image>
-				</view>
-				<view class="CosCollections-top-title">
-					{{PageInfo.title}}
-				</view>
-				<view class="CosCollections-top-themeandtime">
-					<view class="CosCollections-top-theme">主题: {{PageInfo.theme}}</view>
-					<view class="CosCollections-top-time">活动时间: {{PageInfo.time}}</view>
-				</view>
-			</view>
-			<view class="CosCollections-list">
-				<view class="CosCollections-taptab">
-					<view class="CosCollections-taptab-left" :class="tabIndex == 0 ?'CosCollections-taptab-left-active':''" @click="tabChangeToZero">征集角色</view>
-					<view class="CosCollections-taptab-right" :class="tabIndex == 1 ?'CosCollections-taptab-right-active':''" @click="tabChangeToOne">活动说明</view>
-				</view>
-				<view class="CosCollections-list-content" v-if="tabIndex==0">
-					<uni-list class="CosCollections-list-content-unilist" :border="false">
-						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row">
-							<view slot="header" class="CosCollections-list-content-item-header">
-								<image :src="item.image_url" mode="aspectFill" class="CosCollections-list-content-item-image"></image>
-							</view>
-							<view slot="body" class="CosCollections-list-content-item-body">
-								<text class="CosCollections-list-content-item-body-title">{{item.title}}</text>
-								<view class="CosCollections-list-content-item-body-character">Cos人物: <text class="CosCollections-list-content-item-body-character-text">{{item.CosCharacter}}</text></view>
-								<view class="CosCollections-list-content-item-body-activeStatus" v-if="item.isActive==true">进行中</view>
-								<view class="CosCollections-list-content-item-body-notactiveStatus" v-if="item.isActive==false">已结束</view>
-							</view>
-						</uni-list-item>
-					</uni-list>
+		<view class="CollectionContent-wrapper">
+			<view class="tab-top-bar">
+				<view class="tab-top-bar-left-Collection" @click="JumpToEventsPage">活动</view>
+				<view class="tab-top-bar-right-Collection">季番合集</view>
+				<view class="top-function-bar-right" @click="gotoSearchPage">
+					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
+					<view class="searchbar-search-Icon">
+						<slot class="search-icon">
+							<view :class="['fas','fa-search']" class="searchIcon-style"></view>
+						</slot>
+					</view>
 				</view>
 			</view>
-			<view class="CosCollections-allButton" :class="isallButtonStatus == true ?'CosCollections-allButton-active':''">
-				<view class="CosCollections-Button" :class="isallButtonStatus == true ?'CosCollections-Button-active':''">查看合集活动</view>
+			<view class="Events-list">
+				<uni-list class="Events-list-list" :border="false">
+					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList"
+						:key="index" direction="column" :title="item.content" :ellipsis="2" to="CoserHirePage">
+						<view slot="header" class="Events-list-item-header">
+							<image :src="item.photo" mode="aspectFill"></image>
+						</view>
+						<view slot="body" class="Events-list-item-body">
+							<text>{{item.content}}</text>
+						</view>
+						<!-- <view slot="footer" class="Events-list-item-footer">
+							<view class="Events-list-item-footer-left">
+								<view class="Events-list-item-footer-EventsActive" v-if="item.isActive==true">进行中</view>
+								<view class="Events-list-item-footer-EventsnoActive" v-if="item.isActive==false">已结束</view>
+							</view>
+							<view class="Events-list-item-footer-right">
+								<view :class="['far','fa-user']" class="Events-list-item-footer-right-icon"></view>
+								<text class="Events-list-item-footer-right-text">{{item.AttendentNum}}参与</text>
+							</view>
+						</view> -->
+					</uni-list-item>
+				</uni-list>
+				<uni-load-more status="noMore"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -43,86 +43,132 @@
 
 <script>
 	export default {
+		onLoad() {
+			const http = new this.$Request();
+			http.get("/Activity/CosCollections/getAllEvents",{params:{type:1}}).then(res=>{
+				this.EventsList = res.data;
+			}).catch(err=>{
+				console.log(err)
+			});
+		},
 		data() {
 			return {
-				tabIndex:0,
-				PageInfo: {
-					image_url: "../../static/CollectionSources/1.jpg",
-					title: "【季番人物征集】第10期",
-					theme: "《请问您今天要来点兔子吗？》",
-					time: "12月1日-1月10日"
-				},
-				CoserCollectionList: [{
-						id: 0,
-						image_url: "../../static/CollectionSources/6.jpeg",
-						title: "【Cos正品征集】第10-1期",
-						CosCharacter: "宇治松 千夜",
-						isActive: false
-					},
-					{
-						id: 1,
-						image_url: "../../static/CollectionSources/7.jpeg",
-						title: "【Cos正品征集】第10-2期",
-						CosCharacter: "香风智乃",
-						isActive: false
-					},
-					{
-						id: 2,
-						image_url: "../../static/CollectionSources/8.jpeg",
-						title: "【Cos正品征集】第10-3期",
-						CosCharacter: "保登 心爱",
-						isActive: true
-					},
-					{
-						id: 3,
-						image_url: "../../static/CollectionSources/9.jpg",
-						title: "【Cos正品征集】第10-4期",
-						CosCharacter: "天天座理世",
-						isActive: false
-					},
-					{
-						id: 4,
-						image_url: "../../static/CollectionSources/10.jpg",
-						title: "【Cos正品征集】第10-5期",
-						CosCharacter: "桐间纱路",
-						isActive: false
-					}
+				EventsList: [
+					// {
+					// 	id: 0,
+					// 	img_url: "../../static/EventsSource/1.jpg",
+					// 	title: "【#Cos合集】第10期《请问您今天要来点兔子吗？》"
+					// },
+					// {
+					// 	id: 2,
+					// 	img_url: "../../static/EventsSource/2.jpg",
+					// 	title: "【#Cos合集】第9期《租界女友》"
+					// },
+					// {
+					// 	id: 3,
+					// 	img_url: "../../static/EventsSource/2.jpg",
+					// 	title: "【#Cos合集】第十期《请问您今天要来点兔子吗？》"
+					// }
 				]
 			}
 		},
 		methods: {
-			tabChangeToZero() {
-				this.tabIndex = 0;
+			JumpToEventsPage() {
+				uni.redirectTo({
+					url:'EventsPage'
+				})
 			},
-			tabChangeToOne() {
-				this.tabIndex = 1;
-			}
-		},
-		computed: {
-			isallButtonStatus(){
-				for(let i in this.CoserCollectionList){
-					if (this.CoserCollectionList[i].isActive == true){
-						return false
-					}
-				}
-				return true
+			gotoSearchPage(){
+				uni.navigateTo({
+					url:"../search/search"
+				})
+			},
+			gotoWorksPage(){
+				uni.navigateTo({
+					url:"../works/works"
+				})
 			}
 		}
 	}
 </script>
 
-
 <style lang="scss" scoped>
-	/deep/ .uni-list-item{
-		background-color: rgba(242, 163, 195, 0.33);
-	}
 </style>
 <style>
 	@import url("HotActivities.css");
-	.uni-list::before{
+
+	.uni-list::before {
 		display: none;
 	}
-	.uni-list::after{
+
+	.uni-list::after {
 		display: none;
+	}
+
+	.tab-top-bar {
+		margin-top: 30rpx;
+		display: flex;
+		flex-direction: row;
+		width: 85%;
+		margin-left: auto;
+		margin-right: auto;
+		align-items: flex-end;
+	}
+
+	.top-function-bar-right {
+		display: flex;
+		flex-direction: row;
+		border-style: none;
+		border-radius: 40rpx;
+		background-color: rgba(242, 242, 242, 0.5);
+		align-items: center;
+		width: 25%;
+		height: 40rpx;
+		margin-left: auto;
+		/* margin-right: 20rpx; */
+		box-shadow: 0 0 4rpx 4rpx rgba(121, 121, 121, 0.1);
+	}
+
+	.popcoser-search-fs {
+		font-size: 26rpx;
+		margin-left: 20rpx;
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
+	.searchbar-search-Icon {
+		color: #797979;
+		font-size: 26rpx;
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: 20rpx;
+	}
+
+	.tab-top-bar-right-Collection {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 68rpx;
+		width: 192rpx;
+		background-color: #F2A3C3;
+		border-style: none;
+		border-radius: 10rpx;
+		color: white;
+	}
+
+	.tab-top-bar-left-Collection {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 62rpx;
+		width: 184rpx;
+		border-style: dotted;
+		border-radius: 10rpx;
+		border-color: #E7A7C2;
+		border-width: 4rpx;
+		color: #797979;
+		margin-right: 20rpx;
 	}
 </style>
