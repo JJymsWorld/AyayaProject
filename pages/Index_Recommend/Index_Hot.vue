@@ -59,8 +59,8 @@
 				</view>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="workNavigate(0)" imageSrcKey="imageUrl">
-					<template v-slot:default="item" class="content-box-item" >
+				<waterfallsFlow :list="contentList" @wapper-lick="workNavigate(null,$event)" imageSrcKey="imageUrl" idKey="opusId">
+					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
@@ -334,10 +334,19 @@
 					url: '../HotActivities/EventsPage?'
 				})
 			},
-			workNavigate(i) {
-				uni.navigateTo({
-					url: '../works/works?id=' + i
-				})
+			workNavigate(i,event) {
+				if(i!=null){
+					uni.navigateTo({
+						url: '../works/works?id=' + i
+					})
+					console.log(i);
+				}
+				if(i==null){
+					uni.navigateTo({
+						url: '../works/works?id=' + event.opusId
+					});
+					console.log(event.opusId);
+				}
 			},
 			jumpto() {
 				uni.navigateTo({
