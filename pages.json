@@ -198,6 +198,16 @@
             }
             
         }
+		,{
+		    "path" : "pages/search/searchLabel",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		    
+		}
         ,{
             "path" : "pages/ContentReleasePage/postDynamic",
             "style" :
@@ -551,6 +561,7 @@
 				"navigationStyle":"custom"
 			}
 		}
+		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
