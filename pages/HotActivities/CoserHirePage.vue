@@ -20,12 +20,12 @@
 				</view>
 				<view class="CosCollections-list-content" v-if="tabIndex==0">
 					<uni-list class="CosCollections-list-content-unilist" :border="false">
-						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row" to="./EventDetailPage">
+						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row">
 							<view slot="header" class="CosCollections-list-content-item-header">
 								<image :src="item.image_url" mode="aspectFill" class="CosCollections-list-content-item-image"></image>
 							</view>
 							<view slot="body" class="CosCollections-list-content-item-body">
-								<text class="CosCollections-list-content-item-body-title">{{item.title}}</text>
+								<text class="CosCollections-list-content-item-body-title" @click="gotoEventDetailPage">{{item.title}}</text>
 								<view class="CosCollections-list-content-item-body-character">Cos人物: <text class="CosCollections-list-content-item-body-character-text">{{item.CosCharacter}}</text></view>
 								<view class="CosCollections-list-content-item-body-activeStatus" v-if="item.isActive==true">进行中</view>
 								<view class="CosCollections-list-content-item-body-notactiveStatus" v-if="item.isActive==false">已结束</view>
@@ -43,6 +43,9 @@
 
 <script>
 	export default {
+		onLoad(options) {
+			console.log(options.activity_id);
+		},
 		data() {
 			return {
 				tabIndex:0,

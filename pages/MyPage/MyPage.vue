@@ -110,6 +110,9 @@
 
 <script>
 	export default{
+		onLoad() {
+			this.userId=getApp().globalData.global_userId
+		},
 		data(){
 			// userId:'';
 			// userName:'';
@@ -154,7 +157,7 @@
 			},
 			homePageNavi(){
 				uni.navigateTo({
-					url:'homePage/homePage?userId='+this.userId+'&userId2='+this.userId
+					url:'homePage/homePage?userId='+this.userId
 				})
 			},
 			myCollectionNavi(){

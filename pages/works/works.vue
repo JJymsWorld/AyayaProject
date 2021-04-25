@@ -4,9 +4,10 @@
 		<!-- 顶部导航栏 -->
 	<view class="head">
 		<span class="iconfont" @click='backlast'>&#xe6b0;</span>
-		<image :src="avertar" mode="aspectFill"></image>
-		<text class="hText">{{username}}</text>
-		<view class="contentIcon"><text>关注</text></view>
+		<image :src="avertar" mode="aspectFill"@click="homePageNavi(userId)"></image>
+		<text class="hText"@click="homePageNavi(userId)">{{username}}</text>
+		<view class="contentIcon" v-if="isFocus==0"@click="focusButton(1)"><text>关注</text></view>
+		<view class="contentIconY" v-if="isFocus==1"@click="focusButton(0)"><text>已关注</text></view>
 	</view>
 	<!-- 内容部分 -->
 	<view class="picbox">
@@ -16,7 +17,7 @@
 		                <view class="page-section-spacing">
 		                    <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
 								<swiper-item v-for="(item,index) in pic" >
-										<image :src="item" mode="aspectFit"></image>
+										<image :src="item" mode="aspectFit" @click="preview(index)"></image>
 								</swiper-item>
 		                    </swiper>
 		                </view>
@@ -34,10 +35,10 @@
 		<view>{{title}}</view>
 		<table>
 			<tr>
-				<td>出境：<text>@{{model}}</text></td>
+				<td>出境：<text @click="homePageNavi(modelId)">@{{model}}</text></td>
 			</tr>
 			<tr>
-				<td>摄影：<text>@{{photography}}</text></td>
+				<td>摄影：<text @click="homePageNavi(photographyId)">@{{photography}}</text></td>
 			</tr>
 			<tr>
 				<td>妆容：<text>#{{makeupLook}}#</text></td>
@@ -50,9 +51,9 @@
 	<!-- 正文 -->
 	<view class="textBox">
 		<view class="otherLabel">
-			<span v-for="(item,index) in label" :key="index">
+			<span v-for="(item,index) in label" :key="index" @click="searchLabelNavi">
 			#{{item}}#
-		</span>
+		    </span>
 		</view>
 		<view>{{text}}</view>
 	</view>
@@ -69,7 +70,7 @@
 	<view class="recomendBox">
 		<view>作品推荐</view>
 		<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="0">
-			<span v-for="(item,index) in recommend" :key='index'>
+			<span v-for="(item,index) in recommend" :key='index' @click="workNavi(item.workId)">
 			<image :src="item.pic"></image>
 			<view>{{item.title}}</view>
 		    </span>
@@ -85,10 +86,10 @@
 		    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.commentId'>
 		        <template slot="body" class="slot-box slot-text">
 					<view class="commentBox">
-						<view class="commentboxFirst">
+						<view class="commentboxFirst" @click="homePageNavi(item.userId)">
 							<image :src="item.avatarC"></image>
 							<span>
-								<view>{{item.usernameC}}</view>
+								<view class="commentUserName">{{item.usernameC}}</view>
 								<view class="commentTime">{{item.timeC}}</view>
 							</span>
 						</view>
@@ -100,7 +101,7 @@
 						</view>
 						<view class="commentedBox">
 							<view class="commentedBoxv1">
-								<text>国际巨星：</text>
+								<text @click="homePageNavi(item.userId)">国际巨星：</text>
 								少女的恬静 夫人的端庄 书生的洒脱少女的恬静 夫人的端庄 书生的洒脱
 							</view>
 							<view class="commentBoxv2">共{{item.commentN}}条回复 ></view>
@@ -147,8 +148,9 @@
 	export default{
 		data(){
 			return{
+				isFocus:'0',
 				workId:'',
-				userid:'',
+				userId:'',
 				avertar:'../../static/CoserlistSource/userheadimg7.jpg',
 				username:'国际巨星',
 				interestNum:'2310',
@@ -164,7 +166,9 @@
 					'../../static/contentImg/3.jpg',
 					'../../static/contentImg/3.jpg'
 				],
+				modelId:'',
 				model:'国际巨星',
+				photographyId:'',
 				photography:'超级摄影',
 				makeupLook:'江南美人妆',
 				clothingName:'汉服',
@@ -179,18 +183,22 @@
 				readN:'3000',
 				recommend:[
 					{
+						workId:'',
 						pic:'../../static/CoserlistSource/userheadimg7.jpg',
 						title:'西域美人图 预告gaogaoagoagaogaoag'
 					},
 					{
+						workId:'',
 						pic:'../../static/CoserlistSource/userheadimg7.jpg',
 						title:'西域美人图 预告'
 					},
 					{
+						workId:'',
 						pic:'../../static/CoserlistSource/userheadimg7.jpg',
 						title:'西域美人图 预告'
 					},
 					{
+						workId:'',
 						pic:'../../static/CoserlistSource/userheadimg7.jpg',
 						title:'西域美人图 预告'
 					}
@@ -200,8 +208,9 @@
 						commentId:'1',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
+						userId:'',
 						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠',
+						textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
 						commentN:'10',
 						commented:[
 							{
@@ -214,6 +223,7 @@
 						commentId:'3',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
+						userId:'',
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
@@ -227,6 +237,7 @@
 						commentId:'4',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
+						userId:'',
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
@@ -240,6 +251,7 @@
 						commentId:'55',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
+						userId:'',
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
@@ -265,9 +277,18 @@
 			}
 		},
 		onLoad:function(option){
-			console.log(option.id);
+			console.log(option.workId);
 		},
 		methods:{
+			focusButton(i){
+				this.$data.isFocus=i
+			},
+			preview(i){
+				uni.previewImage({
+					current:i,
+					urls:this.$data.pic
+				})
+			},
 			scroll: function(e) {
 			    console.log(e)
 			    this.old.scrollTop = e.detail.scrollTop
@@ -289,6 +310,21 @@
 					}
 					
 				})
+			},
+			searchLabelNavi(){
+				uni.navigateTo({
+					url:'../search/searchLabel'
+				})
+			},
+			homePageNavi(i){
+				uni.navigateTo({
+					url:'../Mypage/homePage/homePage?userId='+i
+				})
+			},
+			workNavi(i){
+				uni.navigateTo({
+					url:'works?workId='+i
+				})
 			}
 		},
 		
@@ -306,6 +342,33 @@
 		    
 	}
 </script>
+
+<style lang="scss" scoped>
+	.content-box{
+		width: 88%;
+		margin-left: auto;
+		margin-right: auto;
+		.cnt{
+			position: relative;
+			top: 0;
+			left: 0;
+			padding: 10rpx;
+		}
+	}
+	
+		/deep/ .uni-list-item{
+			background-color: #FBFBFB;
+			padding: 0;
+			padding-bottom: 0rpx;
+			padding-top: 5rpx;
+		}
+		/deep/ .uni-list-item__container{
+			background-color: #FFFFFF;
+			padding: 0;
+	
+		}
+</style>
+
 
 <style>
 	@import url("works.css");

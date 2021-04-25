@@ -16,7 +16,7 @@
 			</view>
 			<view class="swiper-box">
 				<swiper indicator-dots="true" autoplay="true" interval="4000" duration="1000" style="height: 355rpx;">
-					<swiper-item v-for="(img,index) in swiperimgs" :key="index" @click="workNavigate(img.ppt_id)">
+					<swiper-item v-for="(img,index) in swiperimgs" :key="index" @click="workNavigateSwiper(img.opus_id)">
 						<image :src="img.photo" mode="aspectFill" class="swiper-item"></image>
 					</swiper-item>
 				</swiper>
@@ -51,7 +51,7 @@
 				<text class="topic-title">话题</text>
 				<view class="topictype-andcontent">
 					<text class="topic-type">#{{topicType}}#</text>
-					<text class="topic-content">{{topicContent}}</text>
+					<!-- <text class="topic-content">{{topicContent}}</text> -->
 				</view>
 				<!-- <view :class="['fas','fa-bars']" class="sort-icon"  /> -->
 				<view class="filter-icon">
@@ -59,7 +59,7 @@
 				</view>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="workNavigate(null,$event)" imageSrcKey="imageUrl" idKey="opusId">
+				<waterfallsFlow :list="contentList" @wapper-lick="workNavigateWaterFall($event)" imageSrcKey="imageUrl" idKey="opusId">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -72,24 +72,24 @@
 						</view>
 					</template>
 				</waterfallsFlow>
-				<uni-load-more status="noMore"></uni-load-more>
+				<uni-load-more :status="RecloadStatus"></uni-load-more>
 			</view>
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
 			<uni-list :border="false" class="Hotcontent-list-list">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id"
-					:title="item.text" >
+					:title="item.text" :to="'../works/works?workId=' + item.opus_id">
 					<template v-slot:body >
-						<view class="List-text" @click="workNavigate(item.id)">{{item.text}}</view>
+						<view class="List-text" >{{item.title}}</view>
 					</template>
 					<template v-slot:footer>
 						<view class="Img-In-List">
-							<image class="ListImg-Style" :src="item.image_url" mode="aspectFill" @click="workNavigate(item.id)" ></image>
+							<image class="ListImg-Style" :src="item.opus_photos" mode="aspectFill"  ></image>
 						</view>
 					</template>
 				</uni-list-item>
 			</uni-list>
-			<uni-load-more status="noMore"></uni-load-more>
+			<uni-load-more :status="HotloadStatus"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -100,26 +100,112 @@
 		components: {
 			waterfallsFlow
 		},
-		onLoad() {
+		async onLoad() {
 			//获取首页轮播图
 			
 			const http = new this.$Request();
-			http.get('/Index/Recommend/slide',{params:{type:1}}).then(res=>{
+			http.get('/Index/Recommend/slide',{params:{pageNum:1,pageSize:5,type:1}}).then(res=>{
 				console.log(res.data)
-				this.swiperimgs = res.data;
+				this.swiperimgs = res.data.list;
 			}).catch(err=>{
 				console.log(err)
 			})
 			//获取首页瀑布流数据
-			http.get("/Index/Recommend/getWorks",{params:{user_id:1}}).then(res=>{
+			if(this.RecinitList == true){
+				http.get("/Index/Recommend/getWorks",{params:{pageNum:1,pageSize:5,user_id:3}}).then(res=>{
+					console.log(res.data);
+					this.contentList = res.data.list;
+					this.RecpageNum++;
+					this.RecinitList = false;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					else{
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
+			}
+			
+			//获取主页Topic
+			http.get("/Index/Recommend/getTopic",{params:{pageNum:1,pageSize:10}}).then(res=>{
 				console.log(res.data);
-				this.contentList = res.data;
+				this.topicTypelist = res.data.list;
+				this.topicType = this.topicTypelist[0].mark;
 			}).catch(err=>{
 				console.log(err)
-			})
+			});
+			
+			if(this.HotinitList == true){
+				http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:5}}).then(res=>{
+					console.log(res.data);
+					this.HotList = res.data.list;
+					this.HotpageNum++;
+					this.HotinitList = false;
+					if(res.data.hasNextPage == true){
+						this.HotloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.HotloadStatus = "noMore";
+						this.Hotflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+			}
+			
+		},
+		onShow() {
+			this.timeid = setInterval(()=>{
+				this.topicIndex = (this.topicIndex + 1) % (this.topicTypelist.length);
+				// console.log(this.topicIndex)
+				this.topicType = this.topicTypelist[this.topicIndex].mark;
+			}, 3000);
+		},
+		onHide() {
+			clearInterval(this.timeId);
+			this.HotbeforePage = this.HotpageNum;
+			this.RecbeforePage = this.RecpageNum;
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.tabIndex == 0){
+				
+			}
+			if(this.tabIndex == 1 && this.Hotflag==true){
+				
+				await http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:5}}).then(res=>{
+					this.HotList = this.HotList.concat(res.data.list);
+					this.HotpageNum++;
+					console.log(this.HotpageNum);
+					if(res.data.hasNextPage == true){
+						this.HotloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.HotloadStatus = "noMore";
+						this.Hotflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
 		},
 		data() {
 			return {
+				HotloadStatus:"noMore",
+				RecloadStatus:"noMore",
+				RecpageNum:1,
+				RecpageSize:0,
+				HotpageNum:1,
+				HotpageSize:0,
+				RecbeforePage:0,
+				HotbeforePage:0,
+				RecinitList:true,
+				HotinitList:true,
+				Recflag:true,
+				Hotflag:true,
 				value: "",
 				index_tabs: ["推荐", "热门"],
 				tabIndex: 0,
@@ -134,8 +220,11 @@
 					// 	url: "../../static/swiperImg/2.jpg"
 					// }
 				],
-				topicType: "约拍广场",
-				topicContent: "谁知江南无醉意，笑看春风。",
+				topicType: "",
+				topicTypelist:[],
+				topicIndex:0,
+				timeId:0,
+				// topicContent: "谁知江南无醉意，笑看春风。",
 				contentList: [
 					// {
 					// 	id: 1,
@@ -234,7 +323,8 @@
 					// 	viewNum: 2206
 					// }
 				],
-				HotList: [{
+				HotList: [
+					{
 						id: 1,
 						image_url: '../../static/HotListImg/1.jpg',
 						text: '蜜瓜JK妆!毕业要和姐妹去迪斯尼拍照呀!'
@@ -298,6 +388,7 @@
 			}
 		},
 		methods: {
+			
 			onSearch(e) {
 				this.value = e.value
 				console.log(this.value)
@@ -334,19 +425,18 @@
 					url: '../HotActivities/EventsPage?'
 				})
 			},
-			workNavigate(i,event) {
-				if(i!=null){
-					uni.navigateTo({
-						url: '../works/works?id=' + i
-					})
-					console.log(i);
-				}
-				if(i==null){
-					uni.navigateTo({
-						url: '../works/works?id=' + event.opusId
-					});
-					console.log(event.opusId);
-				}
+			workNavigateWaterFall(event) {
+				uni.navigateTo({
+					url: '../works/works?id=' + event.opusId
+				});
+				console.log(event.opusId);
+				
+			},
+			workNavigateSwiper(event){
+				uni.navigateTo({
+					url: '../works/works?id=' + event
+				});
+				console.log(event);
 			},
 			jumpto() {
 				uni.navigateTo({
@@ -539,8 +629,8 @@
 		margin-left: auto;
 		margin-right: auto;
 		align-items: center;
-		justify-content: space-around;
-		width: 90%;
+		justify-content: space-between;
+		width: 80%;
 	}
 
 	.topic-title {
@@ -558,7 +648,7 @@
 		align-items: center;
 	}
 	.topic-type {
-		font-size: 20rpx;
+		font-size: 26rpx;
 		color: #428BFF;
 		opacity: 0.5;
 		margin-right: 10rpx;
@@ -637,6 +727,7 @@
 	}
 
 	.Img-In-List {
+		margin-left: auto;
 		width: 200rpx;
 		height: 120rpx;
 	}

@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "16194535",
+      "name": "更多",
+      "font_class": "gengduo",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "908604",
+      "name": "扩展",
+      "font_class": "kuozhan",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "849350",
+      "name": "修改",
+      "font_class": "xiugai07",
+      "unicode": "e738",
+      "unicode_decimal": 59192
+    },
+    {
+      "icon_id": "17124304",
+      "name": "拍照",
+      "font_class": "paizhao",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
       "icon_id": "924671",
       "name": "点赞(激活)-b",
       "font_class": "dianzanjihuob",

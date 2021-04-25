@@ -126,9 +126,15 @@
 			 * 点击确认按钮
 			 */
 			onOk() {
+				// if (this.mode === 'input'){
+				// 	this.$emit('confirm', this.val)
+				// }else{
+				// 	this.popup.close()
+				// }
 				if (this.mode === 'input'){
 					this.$emit('confirm', this.val)
 				}else{
+					this.$emit('confirm', this.val)
 					this.popup.close()
 				}
 			},

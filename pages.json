@@ -198,6 +198,16 @@
             }
             
         }
+		,{
+		    "path" : "pages/search/searchLabel",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		    
+		}
         ,{
             "path" : "pages/ContentReleasePage/postDynamic",
             "style" :
@@ -234,6 +244,57 @@
 							"fontSize":"16px"
 						}]
 					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/at",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "提醒谁可以看",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "确定",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/clothLink",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "编辑服装链接",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "完成",
+							"fontSize":"16px",
+							"color":"#F2A3C3"
+						}]
+					}
+				}
+			}
+		}
+		,{
+		    "path" : "pages/ContentReleasePage/label",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加话题",
+				"navigationBarBackgroundColor":"#FFFFFF",
+		        "enablePullDownRefresh": false,
+				"app-plus":{
 				}
 			}
 		}
@@ -290,7 +351,17 @@
                 "enablePullDownRefresh": false
             }
             
-        },{
+        }
+		,{
+		    "path" : "pages/pictureOrder/alterorder",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
 			"path":"pages/PopCoser/PopCoser",
 			"style":{
 				"navigationBarTitleText":"人气Cos榜"
@@ -467,12 +538,37 @@
 				"navigationBarTitleText":"我的粉丝"
 			}
 		}
+        ,{
+            "path" : "pages/MessageCenter/cos-dialogpage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+			"path":"pages/DynamicPage/dynamicDetails",
+			"style":{
+				"navigationBarTitleText":"详情"
+			}
+		},
+		{
+			"path":"pages/Mypage/reset/edit",
+			"style":{
+				// "navigationBarTitleText":"个人信息",
+				// "navigationBarBackgroundColor":"#FFFFFF"
+				"navigationStyle":"custom"
+			}
+		}
+		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F2A3C3",
-		"backgroundColor": "rgba(240, 240, 240, 0.4)"
+		"backgroundColor": "rgba(240, 240, 240, 0.4)",
+		"onReachBottomDistance":0
 	},
 	"tabBar": {
 		"color":"#737373",

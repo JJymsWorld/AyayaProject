@@ -36,13 +36,36 @@
 	border: 3rpx solid #FF5E98;
 	border-radius: 25rpx;
 	line-height: 30rpx;
+	text-align: center;
 }
 .contentIcon text{
 	font-size: 25rpx;
 	color: #FF5E98;
-	padding-left: 26rpx;
+	/* padding-left: 26rpx; */
 	/* line-height: 0rpx; */
+	
 }
+
+.contentIconY{
+	position: absolute;
+	bottom: 22rpx;
+	right: 40rpx;
+	width: 100rpx;
+	height: 40rpx;
+	border: 3rpx solid rgba(1,1,1,0.25);
+	border-radius: 25rpx;
+	line-height: 30rpx;
+	text-align: center;
+}
+.contentIconY text{
+	font-size: 25rpx;
+	color: rgba(1,1,1,0.3);
+	/* padding-left: 26rpx; */
+	/* line-height: 0rpx; */
+	
+}
+
+
 .clothingTab{
 	position: relative;
 	top: 0;
@@ -248,17 +271,20 @@ ul,li{
 	display: inline-block;
 	margin-left: 20rpx;
 }
-.commentBox view:first-child span{
-	font-size: 9pt;
+.commentUserName{
+	font-size: 25rpx;
 	color: rgba(16,16,16,0.5);
 }
-.commentBox view:first-child .commentTime{
-	font-size: 15rpx;
-	line-height: 25rpx;
+.commentTime{
+	font-size: 20rpx;
+	line-height: 35rpx;
+	color: rgba(16,16,16,0.5);
 }
 .commentTextC{
-	font-size: 10pt;
+	width: 70%;
+	font-size: 25rpx;
 	margin-left: 145rpx;
+	line-height: 35rpx;
 }
 .commentIconBox{
 	margin-top: 0rpx;
@@ -272,7 +298,7 @@ ul,li{
 	width: 550rpx;
 	
 	background-color: #F7F7F7;
-	margin-left: 100rpx;
+	margin-left: 140rpx;
 	margin-top: 25rpx;
 	margin-bottom: 20rpx;
 	border-radius: 15rpx;
@@ -281,9 +307,9 @@ ul,li{
 	margin-left: 35rpx;
 	padding-top: 25rpx;
 	width: 90%;
-	font-size: 20rpx;
-	color: #101010;
-	
+	font-size: 24rpx;
+	color: rgba(16,16,16,0.7);
+	line-height: 30rpx;
 }
 .commentedBoxv1 text{
 	color: #62A1EC;
@@ -292,8 +318,11 @@ ul,li{
 	padding-top: 10rpx;
 	margin-left: 35rpx;
 	padding-bottom: 25rpx;
-	font-size: 18rpx;
+	font-size: 23rpx;
 	color: #62A1EC;
+}
+.commentTime{
+	font-size: 20rpx;
 }
 /* .commentedBox view a{
 	font-size: 20rpx;

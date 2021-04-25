@@ -9,14 +9,17 @@
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">账号</text>
-				<input type="text" @input="onAccountInput" class="login-input" :value="account"/>
+				<view class="login-input">
+					<input type="text" @input="onAccountInput" class="login-input account-input" :value="account"/>
+					<text class="uni-icon"></text>
+				</view>
 			</view>
 		</view>
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text" :value='password'>密码</text>
 				<view class="login-input">
-					<input :password="showPassword" @input="onPwdInput" class="login-input pwd-input"/>
+					<input :password="showPassword" @input="onPwdInput" class="login-input pwd-input" :value="password"/>
 					<text class="uni-icon" :class="[!showPassword ? 'uni-eye-active' : '']" @click="changePassword">&#xe568;</text>
 				</view>
 			</view>
@@ -25,7 +28,7 @@
 			<view class="row-box">
 				<checkbox-group @change="localStorage" class="rempwd">
 					<label>
-						<checkbox class="rempwd-check" value="rempwd"/><text class="login-text login-text1">记住密码</text>
+						<checkbox :checked="ifremPwd" class="rempwd-check" value="rempwd"/><text class="login-text login-text1">记住密码</text>
 					</label>
 				</checkbox-group>
 				<text class="login-text login-text2" @click="gotoFogotpw">忘记密码?</text>
@@ -48,7 +51,7 @@
 	export default {
 		data() {
 			return {
-				account:"17757273698",	//	测试账号
+				account:"",	//	测试账号17757273698
 				password:"",
 				userId: 0,
 				realPW:"",
@@ -66,7 +69,6 @@
 						account: this.account
 					}
 				})
-				console.log(res)
 				// 获取密码和用户ID
 				this.realPW = res.data[0].password
 				this.userId = res.data[0].user_id
@@ -80,6 +82,7 @@
 				// 账号密码正确跳转
 				else if(this.password === this.realPW){
 					// 本地存入密码
+					console.log(this.ifremPwd)
 					if(this.ifremPwd){
 						// 本地存入密码
 						uni.setStorage({
@@ -102,7 +105,7 @@
 					}
 					// 本地存入账号
 					uni.setStorage({
-					    key: 'userId',
+					    key: 'userAccount',
 					    data: this.account,
 					    success: function () {
 					        console.log('success');
@@ -110,6 +113,7 @@
 					});
 					//将用户ID存入全局变量
 					getApp().globalData.global_userId = this.userId
+					console.log(getApp().globalData.global_userId)
 					uni.switchTab({
 						url:"../Mypage/mypage"
 					})
@@ -124,11 +128,11 @@
 			},
 			onPwdInput:function(event){
 				this.password = event.target.value;
-				console.log(this.password)
 			},
 			changePassword: function(){
 			    this.showPassword = !this.showPassword;
 			},
+			// 判断是否存入密码
 			localStorage: function(e){
 				var valid = e.detail.value;
 				console.log(valid)
@@ -154,7 +158,7 @@
 		},
 		onLoad(){
 			uni.getStorage({
-			    key: 'userId',
+			    key: 'userAccount',
 			    success: res=> {
 			        console.log(res.data);
 					this.account = res.data
@@ -167,6 +171,10 @@
 					this.password = res.data
 			    }
 			});
+			// 判断是否勾选记住密码
+			if(this.password != ''){
+				this.ifremPwd = true
+			}
 			console.log(getApp().globalData.global_userId)
 		}
 	}
@@ -181,7 +189,7 @@
 		text-align: center;
 		font-size: 18px;
 	}
-	.pwd-input{
+	.pwd-input, .account-input{
 		border: none;
 		float: left;
 	}

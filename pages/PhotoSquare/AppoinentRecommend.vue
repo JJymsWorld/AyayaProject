@@ -12,8 +12,8 @@
 			</view>
 			<view class="AppReco-Hot-list">
 				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index" @click="gotoPherHomePage">
-					<image class="AppReco-Hot-pg-list-avatar" mode="aspectFill" :src="item.pg_avatar"></image>
-					<text class="AppReco-Hot-pg-list-name">{{item.pg_name}}</text>
+					<image class="AppReco-Hot-pg-list-avatar" mode="aspectFill" :src="item.header_pic"></image>
+					<text class="AppReco-Hot-pg-list-name">{{item.user_name}}</text>
 				</view>
 				<view class="AppReco-Hot-list-more" @click="gotoPhotographerList">
 					<view class="AppReco-Hot-list-more-icon">
@@ -50,6 +50,14 @@
 	import waterfallsFlow from "../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 	export default{
 		components:{waterfallsFlow},
+		onLoad() {
+			const http = new this.$Request();
+			http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:1, pageSize:3}}).then(res=>{
+				this.PhotographerList = res.data.list;
+			}).catch(err=>{
+				console.log(err);
+			})
+		},
 		data(){
 			return {
 				PhotographerList:[

@@ -26,7 +26,7 @@
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">昵称</text>
-				<input @input="onPwdInput" class="login-input" placeholder="请取一个昵称" />
+				<input @input="onUsernameInput" class="login-input" placeholder="请取一个昵称" />
 			</view>
 		</view>
 		<view class="content">
@@ -50,14 +50,14 @@
 		    <view class="row-box">
 		        <text class="login-text">性别</text>
 				<view class="gender-box">
-					<label class="radio"><radio class="gender" value="r1" :checked="gender === '1'" @click="radio('1')"/>男</label>
-					<label class="radio"><radio class="gender" value="r2" :checked="gender === '2'" @click="radio('2')"/>女</label>
+					<label class="radio"><radio class="gender" value="r1" :checked="gender === 1" @click="radio(1)"/>男</label>
+					<label class="radio"><radio class="gender" value="r2" :checked="gender === 0" @click="radio(0)"/>女</label>
 				</view>
 		    </view>
 		</view>
 		<view class="content">
 			<view class="row-box">
-				<button class="btn" @click="getData">注册</button>
+				<button class="btn" @click="onRegister">注册</button>
 			</view>
 		</view>
 	</view>
@@ -70,29 +70,19 @@
 				account:"",
 				password1:"",
 				password2:"",
-				gender:'0',
+				user_name:"",
+				gender:1,
 				samePW: true
 			}
 		},
 		methods: {
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
-			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
+				console.log(this.account)
+			},
+			onUsernameInput:function(event){
+				this.user_name = event.target.value;
+				console.log(this.user_name)
 			},
 			onPwdInput:function(event){
 				this.password1 = event.target.value;
@@ -117,6 +107,24 @@
 			},
 			radio: function(e){
 				this.gender = e;
+				console.log(this.gender)
+			},
+			// 注册账号
+			onRegister: function(){
+				// 	判断注册条件
+				if(this.samePW){
+					this.$myRequest({
+						method: 'POST',
+						header:{'content-type':'application/x-www-form-urlencoded'},
+						url:'/Login/register',
+						data:{
+							account: this.account,
+							gender: this.gender,
+							password: this.password1,
+							user_name: this.user_name
+						}
+					})
+				}
 			}
 		}
 	}

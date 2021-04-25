@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<view class="CosumeMakeup-wrapper">
-			<mingpop ref="mingpop" direction="center" :is_close="false" :width="80">
+			<mingpop ref="mingpop" direction="center" :is_close="false" :width="50">
 				<view class="fullTopic" v-for="(item,index) in CostumetopicContent" :key="index">
-					<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
-					<text class="topic-lable-mid-content-title">{{item.title}}</text>
+					<text class="topic-lable-mid-content-label">#{{item.mark}}#</text>
+					<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 				</view>
 			</mingpop>
 			<view class="top-tab-bar">
@@ -14,7 +14,7 @@
 			<view  class="Costume-wrapper">
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
-						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index" @click="gotoWorksPage">
+						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index" @click="gotoWorksPage(item.opus_id)">
 							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
 						</swiper-item>
 					</swiper>
@@ -24,9 +24,9 @@
 						<text>话题</text>
 					</view>
 					<view class="topic-lable-mid">
-						<view class="topic-lable-mid-content" v-for="(item,index) in TwoCostumeTopic" :key="index">
-							<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
-							<text class="topic-lable-mid-content-title">{{item.title}}</text>
+						<view class="topic-lable-mid-content">
+							<text class="topic-lable-mid-content-label">#{{CostumeTopic}}#</text>
+							<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 						</view>
 					</view>
 					<view class="topic-lable-right" @click="viewMoreTopic">
@@ -52,7 +52,7 @@
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="CostumeWorkslist" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPage">
+					<waterfallsFlow :list="CostumeWorkslist" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPageWaterFall($event)">
 						<template v-slot:default="item" class="content-box-item" >
 							<view class="cnt">
 								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
@@ -71,10 +71,10 @@
 	import mingpop from "@/components/ming-pop/ming-pop.vue"
 	export default {
 		components:{waterfallsFlow,mingpop},
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
 			//获取轮播图
-			http.get("/Costume/getSlide",{params:{type:1}}).then(res=>{
+			http.get("/Costume/getSlide",{params:{type:2}}).then(res=>{
 				this.CostumeswiperImgs = res.data;
 			}).catch(err=>{
 				
@@ -88,6 +88,24 @@
 			}).catch(err=>{
 				console.log(err)
 			})
+			
+			http.get("/Costume/getTopic",{params:{type:1}}).then(res=>{
+				this.CostumetopicContent = res.data;
+				this.CostumeTopic = this.CostumetopicContent[0].mark;
+			}).catch(err=>{
+				consolel.log(err);
+			})
+			
+		},
+		onShow() {
+			this.timeid = setInterval(()=>{
+				this.CostumeTopicIndex = (this.CostumeTopicIndex + 1) % (this.CostumetopicContent.length);
+				// console.log(this.CostumeTopicIndex)
+				this.CostumeTopic = this.CostumetopicContent[this.CostumeTopicIndex].mark;
+			}, 3000);
+		},
+		onHide() {
+			clearInterval(this.timeId);
 		},
 		data() {
 			return {
@@ -102,22 +120,25 @@
 					// 	photo: "../../static/swiperImg/4.jpg"
 					// }
 				],
+				CostumeTopic:"",
+				CostumeTopicIndex:0,
+				timeid:0,
 				CostumetopicContent:[
-					{
-						id:0,
-						label:"服装推荐",
-						title:"万圣节Cos服装"
-					},
-					{
-						id:1,
-						label:"12月新品发布",
-						title:"中牌制服馆"
-					},
-					{
-						id:2,
-						label:"约拍广场",
-						title:"谁知江南无醉意，笑看春风。"
-					}
+					// {
+					// 	id:0,
+					// 	label:"服装推荐",
+					// 	title:"万圣节Cos服装"
+					// },
+					// {
+					// 	id:1,
+					// 	label:"12月新品发布",
+					// 	title:"中牌制服馆"
+					// },
+					// {
+					// 	id:2,
+					// 	label:"约拍广场",
+					// 	title:"谁知江南无醉意，笑看春风。"
+					// }
 				],
 				CostumeWorkslist:[
 					// {
@@ -152,9 +173,16 @@
 			viewMoreTopic(){
 				this.$refs.mingpop.show();
 			},
-			gotoWorksPage(){
+			gotoWorksPage(id){
+				console.log(id);
 				uni.navigateTo({
-					url:"../works/works"
+					url:"../works/works?workId=" + id
+				})
+			},
+			gotoWorksPageWaterFall(event){
+				console.log(event.opus_id);
+				uni.navigateTo({
+					url:"../works/works?workId=" + event.opus_id
 				})
 			},
 			gotoSearchPage(){
@@ -169,9 +197,9 @@
 			}
 		},
 		computed:{
-			TwoCostumeTopic() {
+			OneCostumeTopic() {
 				return this.CostumetopicContent.filter((item,index)=>{
-					return index<=1
+					return index<1
 				})
 			}
 		}

@@ -3,7 +3,7 @@
 		<view class="EventsPage-wrapper">
 			<view class="tab-top-bar">
 				<view class="tab-top-bar-left">活动</view>
-				<view class="tab-top-bar-right" @click="JumpToCollectionContentPage">季番合集</view>
+				<view class="tab-top-bar-right" @click="JumpToCollectionsPage">季番合集</view>
 			</view>
 			<view class="top-function-bar">
 				<view class="top-function-bar-left" >
@@ -22,7 +22,7 @@
 			</view>
 			<view class="Events-list">
 				<uni-list class="Events-list-list" :border="false">
-					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList" :key="index" direction="column" :title="item.title" :ellipsis="2" to="../works/works">
+					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList" :key="index" direction="column" :title="item.title" :ellipsis="2" :to="'EventDetailPage?activity_id=' + item.activity_id">
 						<view slot="header" class="Events-list-item-header">
 							<image :src="item.photo" mode="aspectFill"></image>
 						</view>
@@ -86,9 +86,9 @@
 			}
 		},
 		methods:{
-			JumpToCollectionContentPage() {
+			JumpToCollectionsPage(){
 				uni.redirectTo({
-					url:'CollectionContentPage'
+					url:'CosCollectionsPage'
 				})
 			},
 			gotoSearchPage(){

@@ -46,7 +46,7 @@
 				</view>
 				<view class="EventDetail-bottom-works-list">
 					<view class="content-box">
-						<waterfallsFlow :list="AttendWorksList" @wapper-lick="gotoWorksPage">
+						<waterfallsFlow :list="AttendWorksList" @wapper-lick="">
 							<template v-slot:default="item" class="content-box-item">
 								<view class="cnt">
 									<view class="title">{{item.title}}</view>
@@ -76,6 +76,9 @@
 		components: {
 			xwCountDown,
 			waterfallsFlow
+		},
+		onLoad(options) {
+			console.log(options.activity_id);
 		},
 		data() {
 			return {
