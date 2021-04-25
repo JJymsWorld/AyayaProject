@@ -10,7 +10,7 @@
 				<td><input value="请输入身份证件号"class="inputstyle"></td>
 			</tr>
 		</table>
-		<view><image src="../../../static/icon/提交.png" style="width: 340rpx;height: 80rpx;padding-left: 205rpx;padding-top: 77rpx;" mode="aspectFill"></image></view>
+		<view><image src="../../../static/icon/11.png" style="width: 340rpx;height: 80rpx;padding-left: 205rpx;padding-top: 77rpx;" mode="aspectFill"></image></view>
 	</view>
 </template>
 
