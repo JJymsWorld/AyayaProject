@@ -28,35 +28,30 @@
 				focusPerson:[
 					{
 						userid:'',
-						isFocus:'1',
 						avatar:'../../static/iconn/2.jpg',
 						username:'user1',
 						ifchoose: false
 					},
 					{
 						userid:'',
-						isFocus:'1',
 						avatar:'../../static/iconn/2.jpg',
 						username:'user2',
 						ifchoose: false
 					},
 					{
 						userid:'',
-						isFocus:'1',
 						avatar:'../../static/iconn/2.jpg',
 						username:'user3',
 						ifchoose: false
 					},
 					{
 						userid:'',
-						isFocus:'1',
 						avatar:'../../static/iconn/2.jpg',
 						username:'user4',
 						ifchoose: false
 					},
 					{
 						userid:'',
-						isFocus:'1',
 						avatar:'../../static/iconn/2.jpg',
 						username:'user5',
 						ifchoose: false
@@ -74,7 +69,6 @@
 				if(this.focusPerson[item].ifchoose)
 					this.choosePersonName += '@' + this.focusPerson[item].username
 			}
-			
 			// 传回@用户name及index到发布页面
 			uni.$emit("emitChoosePersonName",{choosePersonName: this.choosePersonName, index: this.index});
 			
@@ -82,7 +76,7 @@
 		},
 		onLoad: function(option) {
 		  this.index = option.index
-		  const eventChannel = this.getOpenerEventChannel()
+		  // const eventChannel = this.getOpenerEventChannel()
 		  // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
 		  
 		}

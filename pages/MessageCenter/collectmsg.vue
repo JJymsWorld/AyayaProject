@@ -1,28 +1,34 @@
 <template>
 	<view>
-		<view class="row-box message-box">
-			<view class="message-item">
-				<view class="message-item-lbox">
-					<image src="../../static/image1.png" mode="widthFix"></image>
-				</view>
-				<view class="message-item-rbox">
-					<view class="message-item-rbox-left">
-						<view class="">
-							<text>机智的党妹</text>
+		<uni-list :border="false">
+			<uni-list-item clickable @click="" class="message-item" :border="false" :ellipsis='2' direction="row" v-for="(item, index) in collectList" :key="index">
+				<!-- 左边头像 -->
+				<template v-slot:body>
+					<view class="message-item-lbox" @click="gotoUserHomePage">
+						<image src="../../static/image1.png" mode="widthFix"></image>
+					</view>
+				</template>
+				<!-- 右边信息 -->
+				<template v-slot:footer>
+					<view class="message-item-rbox">
+						<view class="message-item-rbox-left">
+							<view class="">
+								<text @click="gotoUserHomePage">机智的党妹</text>
+							</view>
+							<view class="">
+								<image src="../../static/hearticon.png" mode="heightFix"></image>
+							</view>
+							<view class="">
+								<text class="text2">2020-12-08  21：33</text>
+							</view>
 						</view>
-						<view class="">
-							<image src="../../static/hearticon.png" mode="heightFix"></image>
-						</view>
-						<view class="">
-							<text class="text2">2020-12-08  21：33</text>
+						<view class="message-item-rbox-right" @click="gotoWorkPage">
+							<image src="../../static/worksimg.png" mode="heightFix"></image>
 						</view>
 					</view>
-					<view class="message-item-rbox-right">
-						<image src="../../static/worksimg.png" mode="heightFix"></image>
-					</view>
-				</view>
-			</view>
-		</view>
+				</template>
+			</uni-list-item>
+		</uni-list>
 	</view>
 </template>
 
@@ -30,71 +36,41 @@
 	export default {
 		data() {
 			return {
-				
+				collectList: [{
+					username: '',	// 对方用户昵称
+					userid: '',		// 对方用户ID
+					userimage: '',		// 对方用户头像
+					type: 0,	// 表示赞或收藏 0为赞 1为收藏
+					time: '2020-12-08  21：33',		// 时间
+					workID: 0,	// 动态ID
+					dynamicID: 0,	// 作品ID
+					picture: '',  // 动态/作品的第一张图
+				}]
 			}
 		},
 		methods: {
-			
+			// 进入用户个人主页
+			gotoUserHomePage: function(){
+				uni.navigateTo({
+					url: '../Mypage/homePage/homePage'
+				})
+			},
+			// 进入作品详情页面
+			gotoWorkPage: function(){
+				uni.navigateTo({
+					url: '../works/works'
+				})
+			},
+			// 进入动态详情页面
+			gotoDynamicPage: function(){
+				uni.navigateTo({
+					url: '../DynamicPage/dynamicDetails'
+				})
+			}
 		}
 	}
 </script>
 	
-<style>
-	@import url("../../static/css/login.css");
-	.message-box{
-		width: 90%;
-	}
-	.message-item{
-		margin-bottom: 17px;
-	}
-	.message-item-lbox{
-		float: left;
-		width: 15%;
-	}
-	.message-item-lbox image{
-		width: 100%;
-		border-radius: 50%;
-	}
-	.message-item-rbox{
-		float: right;
-		overflow: hidden;
-		width: 80%;
-		height: 50px;
-		font-size: 14px;
-		font-family: 'PingFang SC';
-		padding: 5px 0;
-		border-bottom: solid 1px rgba(121, 121, 121, 0.1);
-	}
-	.message-item-rbox-left{
-		float: left;
-		width: 70%;
-		height: 100%;
-	}
-	.message-item-rbox-left view{
-		height: 33%;
-	}
-	.message-item-rbox-left image{
-		height: 100%;
-	}
-	.message-item-rbox-left text{
-		font-size: 14px;
-		font-family: 'PingFang SC';
-	}
-	.message-item-rbox-left .text2{
-		font-size: 12px;
-		color: #797979;
-	}
-	.message-item-rbox-right{
-		height: 100%;
-		float: right;
-	}
-	.message-item-rbox-right image{
-		height: 100%;
-		border-radius: 10px;
-	}
-	.message-item-rbox .text3{
-		color: #797979;
-		font-size: 12px;
-		line-height: 20px;
-	}
+<style lang="scss" scoped>
+	@import url("./collectmsg.css");
 </style>

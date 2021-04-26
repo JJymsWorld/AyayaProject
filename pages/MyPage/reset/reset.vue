@@ -6,7 +6,7 @@
 				<view class="text1">{{username}}</view>
 			    <view class="text2">账号：{{account}}</view>
 			</view>
-			<view class="edit"><text>编辑</text></view>
+			<view class="edit" @click="editNavi"><text>编辑</text></view>
 		</view>
 		<table style="width: 100%;background-color: #FFFFFF;margin-top: 10rpx;">
 			<tr class="blanktd">
@@ -52,6 +52,13 @@
 				avatarr:'../../../static/iconn/2.jpg',
 				username:'jennieee',
 				account:'17367108604'
+			}
+		},
+		methods:{
+			editNavi(){
+				uni.navigateTo({
+					url:'edit'
+				})
 			}
 		}
 	}

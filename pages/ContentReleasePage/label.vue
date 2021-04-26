@@ -6,7 +6,7 @@
 				<text class="search-text">热门话题</text>
 			</view>
 			<view class="hot-topic">
-				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index'>{{item.mark}}</view>
+				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index' @click="addHotTopic(item.mark)">{{item.mark}}</view>
 			</view>
 		</view>
 	</view>
@@ -18,16 +18,20 @@
 		data(){
 			return {
 				userId:'',
-				hotTopic:['#12月份季番活动#','#漫展返图大赛#','#cosplay#','#妆容#'],
+				hotTopic:[],
 			}
 		},
 	methods:{
-		
+		addHotTopic: function(topic){
+			const label = '#' + topic + '#'
+			uni.$emit('emitAddHotTopic', {label: label})
+			uni.navigateBack({})
+		}
 	},
 	async onLoad(){
 		// 获取热门话题
 		const res = await this.$myRequest({
-			url:'/Index/Search/getTopic',
+			url:'/Search/Index/Search/getTopic',
 		})
 		this.hotTopic = res.data
 		console.log(this.hotTopic)

@@ -86,7 +86,7 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
-				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;" @click="myOrderNavi">查看全部订单 ></text>
+				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;" @click="getAllOrder">查看全部订单 ></text>
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
@@ -110,6 +110,9 @@
 
 <script>
 	export default{
+		onLoad() {
+			this.userId=getApp().globalData.global_userId
+		},
 		data(){
 			// userId:'';
 			// userName:'';
@@ -154,7 +157,7 @@
 			},
 			homePageNavi(){
 				uni.navigateTo({
-					url:'homePage/homePage?userId='+this.userId+'&userId2='+this.userId
+					url:'homePage/homePage?userId='+this.userId
 				})
 			},
 			myCollectionNavi(){
@@ -167,7 +170,8 @@
 					url:'myWishList/myWishList'
 				})
 			},
-			myOrderNavi(){
+			// 查看全部订单
+			getAllOrder(){
 				uni.navigateTo({
 					url:'../pictureOrder/coser/cosorder'
 				})

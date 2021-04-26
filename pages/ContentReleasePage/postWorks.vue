@@ -1,5 +1,25 @@
 <template>
 	<view class="box">
+		<!-- 至少选择一张图片上传 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请至少选择一张图片上传哦～" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 至少选择发往的圈子 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请至少勾选一个发往的圈子" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请先同意《用户自制内容协议》 -->
+		<uni-popup ref="popup3" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请先同意《用户自制内容协议》" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 是否发布动态 -->
+		<uni-popup ref="popup4" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="确认发布作品吗？" :before-close="true" @close="close"
+				@confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 		<view class="my-content">
 			<!-- 图片 -->
 			<view class="row-box choose-image-box">
@@ -32,9 +52,8 @@
 				<view class="content-item">
 					<text>妆容：</text>
 					<view class="chooseAt-box"  @click="onChooseCollection">
-						<text class="at-text" v-if="this.worksContent[3].atPerson == ''">@</text>
-						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].atPerson == ''">仅限收藏列表</text>
-						<text class="at-text">{{this.worksContent[3].atPerson}}</text>
+						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].makeupLabels == ''">～仅限收藏列表</text>
+						<text class="at-text">{{this.worksContent[3].makeupLabels}}</text>
 					</view>
 				</view>
 				<view class="content-item">
@@ -103,7 +122,7 @@
 			return {
 				
 				ifagree: false,
-				ifpostdynamic: false,
+				ifpostdynamic: false,		// 是否同时发布动态
 				ifdownloadimag: false,
 				columnNum : 4,	//	上传图片显示几列
 				maxCount: 9,	//	最多上传图片数量
@@ -125,10 +144,12 @@
 				},
 				{
 					name: '妆容',
-					atPerson: ''
+					makeupList: [],
+					makeupLabels: ''
 				},
 				{
 					name: '服饰',
+					clothList: [],
 					clothLabels: ''
 				},
 				{
@@ -219,22 +240,27 @@
 			// 选择收藏的妆容作品
 			onChooseCollection: function(){
 				uni.navigateTo({
-					url: '../Mypage/myStarList/myStarList',
+					url: '../Mypage/myStarList/myStarList?addmakeuplabels=1',
 					// animationType:'slide-in-right',
 				})
 			},
 			// 编辑服饰链接
 			onEditCloth: function(){
+				const that = this
 				uni.navigateTo({
 					url: './clothLink',
 					// animationType:'slide-in-right',
+					success: function(res) {
+					    // 通过eventChannel向被打开页面传送数据
+					    res.eventChannel.emit('emitClothLink', { clothList: that.worksContent[4].clothList })
+					}
 				})
 			},
 			// 编辑正文内容
 			onArticleInput: function(e){
 				
 				this.worksContent[5].article = e.detail.value
-				
+				console.log(this.worksContent[5].article)
 			},
 			// 获取发往的圈子
 			onGetClass: function(e){
@@ -243,23 +269,52 @@
 				console.log(this.workClass)
 				
 			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确认发布作品
+			confirm: function() {
+				// uni.uploadFile({
+				//     url: 'http://81.68.73.252:8086/ContentReleasePage/works', 
+				//     files: this.images,
+				// 	formData: {
+				// 		'accountA': 0,	// coserID
+				// 		'accountB': 0,	// 摄影师ID
+				// 		'clothingId': 0,		// 服饰id
+				// 		'mainBody': 'test',	// 正文
+				// 		'makeupId': 0,	// 妆容ID
+				// 		'title': this.worksContent[0].title	// 标题
+				// 		'type': 0, // 发往圈子id
+				// 	},
+				//     success: (uploadFileRes) => {
+				//         console.log(uploadFileRes.data);
+				//     }
+				// });
+				
+				// 跳转至个人主页
+				uni.redirectTo({
+				    url: '../Mypage/homePage/homePage?showToast=2'
+				});
+			}
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap(){
-			// 上传图片至服务器
-			uni.uploadFile({
-			    url: 'http://8.136.216.96:8086/img_post', 
-			    files: this.images,
-			    success: (uploadFileRes) => {
-			        console.log(uploadFileRes.data);
-			    }
-			});
-			//上传其他信息
-			
-			// 跳转至首页
-			uni.switchTab({
-				url:"../Index_Recommend/Index_Hot"
-			})
+			// 如果未选择图片
+			if (this.images.length == 0) {
+				this.$refs.popup1.open()
+			}
+			// 如果未勾选任何一个发往圈子
+			else if (this.workClass.length == 0) {
+				this.$refs.popup2.open()
+			} 
+			// 如果未同意《用户自制内容协议》
+			else if (!this.ifagree) {
+				this.$refs.popup3.open()
+			} 
+			else {
+				this.$refs.popup4.open()
+			}
 		},
 		onShow(){
 			// 监听@用户事件
@@ -274,15 +329,37 @@
 				// 清除监听
 				uni.$off("emitChoosePersonName");
 			})
+			
+			// 监听编辑妆容链接事件
+			uni.$on("emitmakeuplabels",res => {
+					console.log(res.title)
+					const makeupLabels = '#' + res.title + '#'
+					this.worksContent[3].makeupLabels += makeupLabels
+					console.log(this.worksContent[3].makeupLabels)
+					// 清除监听
+					uni.$off("emitmakeuplabels");
+			})
+			
 			// 监听编辑服饰链接事件
 			uni.$on("emitClothLabels",res => {
 					console.log(res.clothLabels)
 					this.worksContent[4].clothLabels = res.clothLabels
-					console.log(this.worksContent[4].clothLabels)
+					this.worksContent[4].clothList = res.clothList
 					// 清除监听
 					uni.$off("emitClothLabels");
-				})
-			}
+			})
+			
+			// 监听获取热门话题标签事件
+			uni.$on("emitAddHotTopic", res => {
+				this.worksContent[5].article += res.label
+				console.log(this.article)
+				// 清除监听
+				uni.$off("emitAddHotTopic");
+			})
+		},
+		onLoad(option){
+			console.log(option)
+		}
 	}
 </script>
 

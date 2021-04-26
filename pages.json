@@ -117,6 +117,20 @@
 			}
 		},	
 		{
+			"path":"pages/Mypage/myStarList/myStarListDetail",
+			"style":{
+				"navigationBarTitleText":"我的收藏夹",
+				"navigationBarBackgroundColor":"#F2A3C3",
+				"app-plus":
+					{
+						"titleNView":{
+							"titleColor":"#272727"
+						}
+					}
+				
+			}
+		},	
+		{
 			"path":"pages/Mypage/myPic/myPic",
 			"style":{
 				// "navigationStyle":"custom",
@@ -544,6 +558,40 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+			"path":"pages/DynamicPage/dynamicDetails",
+			"style":{
+				"navigationBarTitleText":"详情"
+			}
+		},
+		{
+			"path":"pages/Mypage/reset/edit",
+			"style":{
+				// "navigationBarTitleText":"个人信息",
+				// "navigationBarBackgroundColor":"#FFFFFF"
+				"navigationStyle":"custom"
+			}
+		}
+        ,{
+            "path" : "pages/pictureOrder/searchorder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/pictureOrder/searchorderRes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
             }
             
         }

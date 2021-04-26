@@ -4,249 +4,320 @@
 
 		</view>
 		<view class="search-box">
-			<uni-search-bar @confirm="onSearch" :radius="30" @cancel="onGoBack" :value="value"></uni-search-bar>
+			<uni-search-bar @confirm="" :radius="30" @cancel="onGoBack" :value="searchLabel"></uni-search-bar>
 		</view>
-		<view class="row-box tab-box">
-			<view v-for="(tab,index) in tabBars" :key="index" :id='index' class='uni-tab-item' @click="ontabtap">
-				<text class="uni-tab-item-title"
-					:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab}}</text>
-			</view>
-			<view class="line-h"></view>
-		</view>
-		<view class="row-box user-box" v-if='tabIndex == 0'>
-			<!-- 综合页面 -->
-
-			<!-- 用户头像 -->
-			<view class="recentBox">
-				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="0">
-					<span v-for="(item,index) in recentUser" :key='index'>
-						<image :src="item.avatarT"></image>
-						<view>{{item.usernameT}}</view>
-					</span>
-				</scroll-view>
-			</view>
-			<!-- 作品页面 -->
-			<uni-list :border="false">
-				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"
-					:key="index" :title="item.text">
-					<!-- 左边作品图片 -->
-					<template v-slot:body>
-						<view class="Img-In-List">
-							<image class="ListImg-Style" :src="item.image_url" mode="aspectFill"></image>
-						</view>
-					</template>
-					<!-- 右边作品信息 -->
-					<template v-slot:footer>
-						<view class="slot-footer-box">
-							<view class="List-text">{{item.text}}</view>
-							<view class="List-article">{{item.article}}</view>
-							<view class="List-Icon">
-								<view class="like-box">
-									<image class='littleIcon' src='../../static/icon/like.png'></image>
-									<text class="number">{{item.interestNum}}</text>
-								</view>
-								<view class="chat-box">
-									<image class='littleIcon' src="../../static/icon/chat.png"></image>
-									<text class="number">{{item.commentNum}}</text>
-								</view>
-								<view class="relay-box">
-									<image class='littleIcon' src="../../static/icon/relay.png"></image>
-									<text class="number">{{item.relayNum}}</text>
-								</view>
+		<!-- 动态内容 -->
+		<view class="dynamicBox">
+			<uni-list :border="false" >
+			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
+				<template v-slot:body>
+					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
+						  <view class="dynamnicHead">
+							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
+							<view class="dynamicUserDate">
+								<view class="dynamicUsername" @click.stop="homePageNavi(item.accountB)">{{item.userName}}</view>
+							    <view class="dynamicDate">{{item.uploadTime}}</view>
 							</view>
+							<view class="cancelButtonNot"  @click.stop=""><text>关注</text></view>
 						</view>
-					</template>
-				</uni-list-item>
-			</uni-list>
-		</view>
-		<view class="row-box" v-if='tabIndex == 1'>
-			<!-- 作品页面 -->
-			<uni-list :border="false">
-				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"
-					:key="index" :title="item.text">
-					<!-- 左边作品图片 -->
-					<template v-slot:body>
-						<view class="Img-In-List">
-							<image class="ListImg-Style" :src="item.image_url" mode="aspectFill"></image>
+						<!-- 正文 -->
+						<view class="dynamicText">{{item.mainBody}}</view>
+						
+						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
+							<view class="dynamicTitle">{{item.title}}</view>
 						</view>
-					</template>
-					<!-- 右边作品信息 -->
-					<template v-slot:footer>
-						<view class="slot-footer-box">
-							<view class="List-text">{{item.text}}</view>
-							<view class="List-article">{{item.article}}</view>
-							<view class="List-Icon">
-								<view class="like-box">
-									<image class='littleIcon' src='../../static/icon/like.png'></image>
-									<text class="number">{{item.interestNum}}</text>
-								</view>
-								<view class="chat-box">
-									<image class='littleIcon' src="../../static/icon/chat.png"></image>
-									<text class="number">{{item.commentNum}}</text>
-								</view>
-								<view class="relay-box">
-									<image class='littleIcon' src="../../static/icon/relay.png"></image>
-									<text class="number">{{item.relayNum}}</text>
-								</view>
-							</view>
-						</view>
-					</template>
-				</uni-list-item>
-			</uni-list>
-		</view>
-		<view class="row-box" v-if='tabIndex == 2'>
-			<!-- 用户页面 -->
-			<view class="StayInCoser-List">
-				<uni-list :border="false">
-					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index"
-						class="StayInCoser-List-item">
-						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill"></image>
-							<view class="StayInCoser-item-info">
-								<view class="StayInCoser-item-nameandlikenum">
-									<text>{{item.Coser_name}}</text>
-									<view>
-										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
-										<uni-icons type="heart-filled" color="red"></uni-icons>
-										<text>{{item.Coser_likeNum}}</text>
+						<!-- 内容不为为作品end -->
+						
+						<table class="littleIconTable">
+							<tr>
+								<td>
+									
+									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+									    <span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
+									    <text class="number">{{item.likesNumber}}</text>
 									</view>
-								</view>
-								<view class="StayInCoser-item-position">
-									<uni-icons type="location-filled"></uni-icons>
-									<text>{{item.Coser_city}}</text>
-								</view>
-								<text class="StayInCoser-item-intro">个人介绍:{{item.Coser_intro}}</text>
-							</view>
-							<view class="StayInCoser-item-likebutton">
-								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
-								<uni-fav :checked="item.checked" star="false" :contentText="contentText"
-									bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)"
-									fgColor="#333333"></uni-fav>
-							</view>
-						</view>
-					</uni-list-item>
-				</uni-list>
-			</view>
+									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
+									    <span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
+									    <text class="number1">{{item.likesNumber}}</text>
+									</view>
+								</td>
+								<td>
+								    <image class='littleIcon' src="../../static/icon/chat.png" @click="recommend(item.id)"></image>
+								    <text class="number">{{item.commentedNumber}}</text>
+								</td>
+								<td>
+									<image class='littleIcon2' src="../../static/icon/relay.png"></image>
+									<text class="number">{{item.sharedNumber}}</text>
+								</td>
+							</tr>
+						</table>
+					</view>
+						    
+				</template>
+				
+			</uni-list-item>
+		</uni-list>
+		
+		<uni-load-more status="noMore"></uni-load-more>
 		</view>
+		
+		</view>
+		
 	</view>
 	</view>
 
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				value: "",
-				tabBars: ["综合", "作品", "用户"],
-				tabIndex: 0,
-				recentUser: [{
-						avatarT: '../../static/iconn/p2.jpg',
-						usernameT: '蒲儿姓蒲'
-					},
-					{
-						avatarT: '../../static/iconn/p3.jpg',
-						usernameT: 'Suzy_Z'
-					},
-					{
-						avatarT: '../../static/iconn/p2.jpg',
-						usernameT: '机智的党妹'
-					}
-				],
-				dynamicItem: [{
-					avatarD: '../../static/iconn/p2.jpg',
-					usernameD: '机智的党妹',
-					date: '2020-06-25',
-					title: '点赞表态!',
-					imageD: '../../static/iconn/d1.jpg',
-					textD: '蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
-					interestNum: '5482',
-					commentNum: '2145',
-					relayNum: '1141'
-				}],
-				CoserInfoList: [{
-						Coser_id: 1,
-						Coser_name: "Coser1",
-						Coser_avatar: "../../static/CoserlistSource/avatar1.jpg",
-						Coser_intro: "底层泥坑里滚爬的一只小可爱",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					},
-					{
-						Coser_id: 2,
-						Coser_name: "Coser2",
-						Coser_avatar: "../../static/CoserlistSource/avatar2.jpg",
-						Coser_intro: "底层泥坑里滚爬的一只小可爱",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					}
-				],
-				contentText: {
-					contentDefault: '关注',
-					contentFav: '已关注'
+	
+	import gridBox from '../../components/gridImage/gridImage.vue'
+	export default{
+		onLoad(option) {
+			// 接收传入的搜索话题
+			this.searchLabel = option.label
+			
+			this.userId = getApp().globalData.global_userId
+			console.log(this.userId)
+			this.LoadDynamic(1,1,10)
+		},
+		
+		components: {
+			gridBox
+		},
+		data(){
+			return{
+				searchLabel: '',
+				userId:'',
+				recommendTag:0,
+				scrollTop: 0,
+				old: {
+				    scrollTop: 0
 				},
-				SearchWorksList: [{
-						image_url: '../../static/HotListImg/1.jpg',
-						text: '蜜瓜JK妆!毕业要和姐妹去迪斯尼拍照呀!',
-						article: '机智的党妹',
-						interestNum: '5482',
-						commentNum: '2145',
-						relayNum: '1141'
+				recentUser:[
+					{
+					avatarT:'../../static/iconn/p2.jpg',
+					usernameT:'蒲儿姓蒲',
+					userId:''
 					},
 					{
-						image_url: '../../static/HotListImg/2.jpg',
-						text: '江南美人图|奇迹团团环游中华之乌镇',
-						article: '机智的党妹',
-						interestNum: '5482',
-						commentNum: '2145',
-						relayNum: '1141'
+						avatarT:'../../static/iconn/p3.jpg',
+						usernameT:'Suzy_Z',
+					userId:''
+					},
+					{
+						avatarT:'../../static/iconn/p2.jpg',
+						usernameT:'机智的党妹',
+					userId:''
+					},
+					{
+						avatarT:'../../static/iconn/p2.jpg',
+						usernameT:'机智的党妹',
+					userId:''
+					},
+					{
+						avatarT:'../../static/iconn/p2.jpg',
+						usernameT:'机智的党妹',
+					userId:''
+					},
+					{
+						avatarT:'../../static/iconn/p2.jpg',
+						usernameT:'机智的党妹',
+					userId:''
+					},
+					{
+						avatarT:'../../static/iconn/p2.jpg',
+						usernameT:'机智的党妹',
+					userId:''
+					}
+				],
+				dynamicItem:[
+					
+				],
+			    recomendList:[
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:0
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
+					},
+					{
+						userIdR:'',
+						usernameR:'机智的党妹',
+						avatarR:'../../static/iconn/p2.jpg',
+						date:'2020-06-25',
+						text:'LILAC热卖！！！！！！！！',
+						recLike:'0'
 					}
 				]
 			}
 		},
-		onLoad(option) {
-			this.value = option.value
-		},
-		methods: {
-			onSearch: function(e) {
-				this.value = e.value
-				console.log(this.value)
-				// 跳转至搜索结果页面
+		methods:{
+			searchNavi(){
 				uni.navigateTo({
-					url: './searchRes'
+					url:'../search/search'
 				})
 			},
-			// 清空搜索历史
-			delHsty: function() {
-				console.log('清空搜索历史')
-			},
-			ontabtap: function(e) {
-				console.log(e.currentTarget.id)
-				this.tabIndex = e.currentTarget.id
+			addLike(i){
+				var t=this.$data.dynamicItem[i].isInterest;
+				if(t==0){
+					this.$data.dynamicItem[i].interestNum++;
+					this.$data.dynamicItem[i].isInterest=1;
+				}
+				else{
+					this.$data.dynamicItem[i].interestNum--;
+					this.$data.dynamicItem[i].isInterest=0;
+				}
+				
 			},
 			// 返回前一页面
-			onGoBack: function() {
+			onGoBack: function(){
 				console.log('cancel')
 				uni.navigateBack({
-
+					
 				})
 			},
-			LikeBtnClick: function(e) {
-				this.CoserInfoList[e].checked = !this.CoserInfoList[e].checked
-				console.log(e, this.CoserInfoList[e].checked)
+			scroll: function(e) {
+			    console.log(e)
+			    this.old.scrollTop = e.detail.scrollTop
+			},
+			backlast: function() {
+				uni.navigateBack()
+			},
+			recommend(i){
+			this.recommendTag=1;
+			},
+			recoomendExit(){
+			this.recommendTag=0;	
+			},
+			 upper: function(e) {
+			            console.log(e)
+			        },
+			        lower: function(e) {
+			            console.log(e)
+			        },
+			recomendLike(i){
+				if(this.recomendList[i].recLike==0){
+					this.recomendList[i].recLike=1;
+				}
+				else{
+					this.recomendList[i].recLike=0;
+				}
+			},
+			workNavi(i){
+				uni.navigateTo({
+					url:'../works/works?workId='+i
+				})
+			},
+			dynamicDetailNavi:function(event,i){
+				// event = event || window.event;
+				// event.preventDefault()
+				//         if (event && event.stopPropagation) {
+				//             event.stopPropagation();
+				//         } else {
+				//             event.cancelBubble = true;
+				//         }
+				uni.navigateTo({
+					url:'../DynamicPage/dynamicDetails?dynamicId='+i
+				})
+			},
+			async LoadDynamic(id,pNum,pSize){
+				const res = await this.$myRequest({
+						url:'/Dynamic/getFocusPersonItems',
+						data:{
+							user_id: id,
+							pageNum: pNum,
+							pageSize: pSize
+						}
+					})
+					console.log(res.data)
+					this.$data.dynamicItem=res.data.list
+			},
+			homePageNavi(i){
+				uni.navigateTo({
+					url:'../Mypage/homePage/homePage?userId='+i
+				})
 			}
 		}
+		
 	}
+	
 </script>
 
-<style>
-	@import url("./searchRes.css");
+
+<style lang="scss" scoped>
+	/deep/ .uni-list-item{
+		background-color: #FBFBFB;
+		padding: 0;
+		padding-bottom: 0rpx;
+		padding-top: 5rpx;
+	}
+	/deep/ .uni-list-item__container{
+		background-color: #FFFFFF;
+		padding: 0;
+
+	}
 </style>
+<style>
+	@import url("../DynamicPage/dynamic.css");
+	@import url("./searchRes.css");
+	.cancelButtonNot{
+		position: absolute;
+		top: 40rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 45rpx;
+		border: 1rpx solid #EC808D;
+		border-radius: 30rpx;
+		text-align: center;
+		line-height: 35rpx;
+	}
+	.cancelButtonNot text{
+		font-size: 23rpx;
+		color: #EC808D;
+	}
+</style>
+
+

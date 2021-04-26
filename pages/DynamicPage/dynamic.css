@@ -72,6 +72,15 @@
 	text-align: center;
 }
 
+
+
+
+
+
+
+
+
+
 .recentTable{
 	margin-left: 25rpx;
 	padding-top: 25rpx;
@@ -120,38 +129,41 @@
 	left:140rpx;
 }
 .dynamicUsername{
-	font-size: 11pt;
+	font-size: 30rpx;
 	font-weight: bold;
 }
 .dynamicDate{
-	font-size: 5pt;
+	font-size: 22rpx;
 	color: #ACACAC;
 	line-height: 35rpx;
 }
 .dynamicText{
 	width: 90%;
-	font-size: 11pt;
+	font-size: 30rpx;
 	padding-left: 46rpx;
 }
 .dynamicImage{
 	/* width: 670rpx; */
-	width: 90%;
+	width: 100%;
 	height: 340rpx;
 	border-radius: 20rpx;
-	margin-top: 20rpx;
-	margin-left: 5%;
+	margin-top: 10rpx;
 	/* margin-left: 2rpx; */
 }
+.dynamicGridBox{
+  width: 90%;
+  margin: 20rpx auto;
+}
 .dynamicTitle{
-	width: 80%;
-	font-size: 12pt;
+	width: 100%;
+	font-size: 33rpx;
 	font-weight: bold;
-	padding-left: 42rpx;
-	line-height: 58rpx;
+	padding-left: 15rpx;
+	line-height: 40rpx;
 }
 .littleIconTable{
 	margin-left: 85rpx;
-	margin-top: 10rpx;
+	margin-top: 0rpx;
 	margin-bottom: 20rpx;
 }
 .littleIconTable tr td{
