@@ -1,0 +1,112 @@
+.row-box {
+	width: 90%;
+	margin: auto;
+	overflow: hidden;
+}
+
+.top-box {
+	background-color: rgba(240, 240, 240, 0.4);
+	height: 120rpx;
+	overflow: hidden;
+}
+
+.goback-box {
+	float: left;
+	margin-top: 80rpx;
+}
+
+.goback-box image {
+	width: 10px;
+	height: 15px;
+}
+
+.search-box {
+	width: 45%;
+	height: 40%;
+	float: right;
+	border-radius: 40rpx;
+	border: 1px solid #EC808D;
+	background-color: #FFFFFF;
+	margin-top: 70rpx;
+}
+
+.search-box input {
+	height: 100%;
+	width: 80%;
+	text-align: left;
+	font-size: 11px;
+	font-family: 'PingFang SC';
+	color: #AAAAAA;
+	float: right;
+}
+
+.search-box image {
+	width: 11px;
+	height: 11px;
+	float: left;
+	padding: 15rpx;
+}
+
+.search-box uni-search-bar {
+	height: 50rpx;
+}
+
+.my-list-item{
+	border-radius: 50rpx;
+}
+
+.slot-header-box{
+	font-family: 'PingFang SC';
+	font-size: 12px;
+	color: #333333;
+}
+.slot-header-box .money-box{
+	font-family: 'PingFang SC';
+	font-size: 15px;
+	line-height: 50rpx;
+	color: #333333;
+	float: right;
+}
+.slot-header-box .money-box image{
+	width: 18rpx;
+	height: 23rpx;
+}
+.slot-body-box{
+	
+}
+.slot-body-box image{
+	width: 130rpx;
+	height: 130rpx;
+	border-radius: 10rpx;
+	float: left;
+	margin: 10rpx;
+}
+.slot-body-box .content-box {
+	width: 90%;
+	font-family: 'PingFang SC';
+	font-size: 13px;
+	line-height: 50rpx;
+	color: #333333;
+}
+
+.slot-footer-box{
+	
+}
+.slot-footer-box button{
+	font-family: 'PingFang SC';
+	font-size: 24rpx;
+	line-height: 48rpx;
+	color: #333333;
+	float: right;
+	height: 50rpx;
+	width: 220rpx;
+	margin: 10rpx;
+	background-color: #FFFFFF;
+	border: 1px solid rgba(150, 150, 150, 0.5);
+	
+}
+.slot-footer-box .pinkbutton{
+	color: #EC808D;
+	border: 1px solid rgba(236, 128, 141, 0.8);
+}
+
