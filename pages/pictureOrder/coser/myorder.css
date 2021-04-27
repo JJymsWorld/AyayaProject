@@ -1,3 +1,4 @@
+
 .row-box {
 	width: 100%;
 	background-color: rgba(240, 240, 240, 0.4);
@@ -36,7 +37,7 @@
 	height: 100%;
 	width: 80%;
 	text-align: left;
-	font-size: 11px;
+	font-size: 22rpx;
 	font-family: 'PingFang SC';
 	color: #AAAAAA;
 	float: right;
@@ -53,36 +54,39 @@
 	height: 50rpx;
 }
 
-.my-list-item{
+.my-list-item {
 	border-radius: 50rpx;
 }
 
-.slot-header-box{
+.slot-header-box {
 	font-family: 'PingFang SC';
 	font-size: 12px;
 	color: #333333;
 }
-.slot-header-box .money-box{
+
+.slot-header-box .money-box {
 	font-family: 'PingFang SC';
 	font-size: 15px;
 	line-height: 50rpx;
 	color: #333333;
 	float: right;
 }
-.slot-header-box .money-box image{
+
+.slot-header-box .money-box image {
 	width: 18rpx;
 	height: 23rpx;
 }
-.slot-body-box{
-	
-}
-.slot-body-box image{
+
+.slot-body-box {}
+
+.slot-body-box image {
 	width: 130rpx;
 	height: 130rpx;
 	border-radius: 10rpx;
 	float: left;
 	margin: 10rpx;
 }
+
 .slot-body-box .content-box {
 	width: 90%;
 	font-family: 'PingFang SC';
@@ -91,10 +95,9 @@
 	color: #333333;
 }
 
-.slot-footer-box{
-	
-}
-.slot-footer-box button{
+.slot-footer-box {}
+
+.slot-footer-box button {
 	font-family: 'PingFang SC';
 	font-size: 24rpx;
 	line-height: 48rpx;
@@ -105,10 +108,18 @@
 	margin: 10rpx;
 	background-color: #FFFFFF;
 	border: 1px solid rgba(150, 150, 150, 0.5);
-	
+
 }
-.slot-footer-box .pinkbutton{
+
+.slot-footer-box .pinkbutton {
 	color: #EC808D;
 	border: 1px solid rgba(236, 128, 141, 0.8);
 }
 
+.uni-list::before {
+	display: none;
+}
+
+.uni-list::after {
+	display: none;
+}

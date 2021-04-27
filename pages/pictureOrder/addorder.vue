@@ -47,6 +47,7 @@
 			</uni-popup>
 			
 		</view>
+		
 	</view>
 </template>
 
@@ -59,6 +60,7 @@
 				time: '请选择',
 				city: '请选择',
 				money: '',
+				datetime: ''
 			}
 		},
 		methods: {
@@ -72,9 +74,10 @@
 				this.time = e.detail.value
 				console.log(this.time)
 				
-				// var d = new Date(this.time);  
+				var d = new Date(this.time);  
 				// alert(d)
-				
+				this.datetime = d
+				console.log(this.datetime)
 			},
 			//修改拍摄地点
 			onChangeCity: function(data){
@@ -94,7 +97,7 @@
 				// 	header:{'content-type':'application/x-www-form-urlencoded'},
 				// 	data: {
 				// 		area: this.city,
-				// 		date: this.time,
+				// 		date: this.datetime,
 				// 		content: this.demand,
 				// 		money: this.money,
 				// 		user_a: 4, // coserID
@@ -115,7 +118,6 @@
 				uni.$emit('showOrderMsg')
 				uni.navigateBack({	
 				})
-				
 			}
 		},
 		components:{

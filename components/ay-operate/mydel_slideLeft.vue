@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="box-slideLeft" >
-			<view class="touch-item touch-slideLeft " @touchstart="touchS" @touchmove="touchM" @touchend="touchE"  :style="item_show.txtStyle">
+			<view class="touch-item touch-slideLeft " @touchstart="touchS" @touchmove="touchM" @touchend="touchE"  :style="txtStyle_show">
 				<slot />
 			</view>
 			
@@ -21,6 +21,12 @@
 		},
 		props: {
 			// txtStyle:'',初始化这个字段
+			txtStyle: {
+				type: String,
+				default () {
+					return ''
+				}
+			},
 			item: {
 				type: Object,
 				default () {
@@ -40,7 +46,7 @@
 		
 		data() {
 			return {
-				
+				txtStyle_show:'',
 				item_show : {},
 				delBtnWidth: 60, //删除按钮宽度单位（rpx）
 				startX: '',
@@ -52,6 +58,7 @@
 		watch: {
 			item(e){
 				this.item_show = e ;
+				this.txtStyle_show = this.txtStyle ;
 			},
 		},
 		methods: {
@@ -94,7 +101,7 @@
 					}
 					//获取手指触摸的是哪一项
 					
-					that.item_show.txtStyle = txtStyle;
+					that.txtStyle_show = txtStyle;
 					
 				}
 			},
@@ -109,7 +116,7 @@
 					//如果距离小于删除按钮的1/2，不显示删除按钮
 					var txtStyle = disX > delBtnWidth / 2 ? "left:-" + delBtnWidth + "px" : "left:0px";
 					//获取手指触摸的是哪一项
-					that.item_show.txtStyle = txtStyle;
+					that.txtStyle_show = txtStyle;
 					
 				}
 			},
@@ -157,6 +164,7 @@
 			height: 100%;
 			line-height: 101px;
 			background-color: #EA5863;
+			border: 2rpx solid #FFFFFF;
 			border-radius: 0 10px 10px 0;
 			color: #fff;
 			font-size: 18px;

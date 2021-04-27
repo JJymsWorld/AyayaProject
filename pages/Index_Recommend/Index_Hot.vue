@@ -50,7 +50,7 @@
 			<view class="topic-box">
 				<text class="topic-title">话题</text>
 				<view class="topictype-andcontent">
-					<text class="topic-type">#{{topicType}}#</text>
+					<text class="topic-type" @click="indexTopicClick(topicType)">#{{topicType}}#</text>
 					<!-- <text class="topic-content">{{topicContent}}</text> -->
 				</view>
 				<!-- <view :class="['fas','fa-bars']" class="sort-icon"  /> -->
@@ -393,7 +393,11 @@
 			}
 		},
 		methods: {
-			
+			indexTopicClick(e){
+				uni.navigateTo({
+					url:"../search/searchLabel?label=" + e
+				})
+			},
 			onSearch(e) {
 				this.value = e.value
 				console.log(this.value)

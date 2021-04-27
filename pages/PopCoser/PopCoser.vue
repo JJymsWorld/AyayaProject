@@ -321,7 +321,7 @@
 		methods: {
 			popcoserSearch() {
 				uni.navigateTo({
-					url: '../search/search'
+					url: '../search/searchCoser'
 				})
 			},
 			tabTap(e) {

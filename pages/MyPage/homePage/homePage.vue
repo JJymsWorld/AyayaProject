@@ -187,31 +187,52 @@
 	
 	<!-- 收藏夹列表end -->
 	
-   </view>
+	
+   <!-- 加载框 -->
+   <kModel ref="kModel" />
    
+   </view>
+  
 </template>
 
 <script>
 	import waterfallsFlow from "../../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+	import kModel from '@/components/k-model/k-model.vue';
 	export default{
 		// onReady() {
 		// 	document.getElementsByTagName('li')[this.tabIndex].className='navi'
 		// },
 		onReady(option) {
+			// 页面渲染完成后是否显示发布成功模态框
+			if(this.showToast){
+				this.startShow()
+			}
+			
 			// this.userId=option.userId
 			// this.userId2=option.userId2
-			
 		},
 		onLoad(option) {
 			this.userId=option.userId // 上个页面传递的用户id
 			this.userId2=getApp().globalData.global_userId
 			this.loadHead()
+			
+			// 标记是否由发布动态页面跳转进入
+			if(option.showToast == '1'){
+				this.showToast = true
+			}
+			// 标记是否由发布作品页面跳转进入
+			if(option.showToast == '2'){
+				this.showToast = true
+				this.tabIndex = 1
+			}
 		},
 		components: {
-			waterfallsFlow
+			waterfallsFlow,
+			kModel
 		},
 		data(){
 			return{
+				showToast: false,	// 标记是否显示发布成功模态框
 				scrollTop: 0,
 				old: {
 				    scrollTop: 0
@@ -381,6 +402,14 @@
 			}
 		},
 		methods:{
+			// 显示发布成功加载框
+			startShow: function() {
+				this.$refs['kModel'].showModel({
+					type: 'success',
+					title: '发布成功',
+					duration: 3000
+				});
+			},
 			async loadHead(){
 				const res = await this.$myRequest({
 					url:'/MyPage/HomePage/getMainAll',
@@ -419,7 +448,15 @@
 			           console.log(e)
 			       },
 			navigateBack(){
-				uni.navigateBack();
+				if(this.showToast){
+					uni.switchTab({
+						url: '../mypage'
+					})
+				}
+				else{
+					uni.navigateBack({})
+				}
+					
 			},
 			changeFun(i){
 				this.tabIndex=i;

@@ -51,9 +51,9 @@
 	<!-- 正文 -->
 	<view class="textBox">
 		<view class="otherLabel">
-			<span v-for="(item,index) in label" :key="index" @click="searchLabelNavi">
+			<span v-for="(item,index) in label" :key="index">
 			#{{item}}#
-		    </span>
+		</span>
 		</view>
 		<view>{{text}}</view>
 	</view>
@@ -101,7 +101,7 @@
 						</view>
 						<view class="commentedBox">
 							<view class="commentedBoxv1">
-								<text @click="homePageNavi(item.userId)">国际巨星：</text>
+								<text>国际巨星：</text>
 								少女的恬静 夫人的端庄 书生的洒脱少女的恬静 夫人的端庄 书生的洒脱
 							</view>
 							<view class="commentBoxv2">共{{item.commentN}}条回复 ></view>
@@ -309,11 +309,6 @@
 						uni.hideToast();
 					}
 					
-				})
-			},
-			searchLabelNavi(){
-				uni.navigateTo({
-					url:'../search/searchLabel'
 				})
 			},
 			homePageNavi(i){

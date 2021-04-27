@@ -6,12 +6,12 @@
 			<view class="talk-list">
 				<view v-for="(item,index) in talkList" :key="index" :id="`msg-${item.id}`">
 					<view class="item flex_col" :class=" item.type == 1 ? 'push':'pull' ">
-						<image :src="item.pic" mode="aspectFill" class="pic"></image>
+						<image :src="userPic[item.type]" mode="aspectFill" class="pic"></image>
 						<!-- 普通消息 -->
-						<!-- <view class="content" v-if='item.iforderMsg == 0'>{{item.content}}</view> -->
+						<view class="content" v-if='item.orderID == 0'>{{item.content}}</view>
 						<!-- 订单消息 -->
-						<view class="content">
-							<cosordermsg :cosordermsg='cosordermsg[0]' :onCancleOrder='onCancleOrder' :editOrderMsg='editOrderMsg'></cosordermsg>
+						<view class="content" v-if='item.orderID != 0'>
+							<cosordermsg :cosordermsg='item' :onCancleOrder='onCancleOrder' :editOrderMsg='editOrderMsg'></cosordermsg>
 						</view>
 					</view>
 				</view>
@@ -35,7 +35,27 @@
 	export default {
 		data() {
 			return {
-				talkList:[],
+				userPic:['../../static/image1.png', '../../static/image2.png'],
+				talkList:[{
+					demand: '好看就行',
+					time: '2021-04-19',
+					city: '北京-北京市-大兴区',
+					money: '1000',
+					state: '待处理',
+					type: 0,	
+					orderID: 19		// 对应的订单ID
+				},
+				{
+					content: '你好',
+					type: 0,
+					orderID: 0		// orderID为0表示普通消息类型
+				},
+				{
+					content: '请核对约拍订单信息',
+					type: 0,
+					orderID: 0		
+				}	
+				],
 				ajax:{
 					rows:20,	//每页数量
 					page:1,	//页码
@@ -44,14 +64,6 @@
 					loadText:'正在获取消息'
 				},
 				content:'',
-				cosordermsg: [{
-					demand: '好看就行',
-					time: '2021-04-19',
-					city: '北京-北京市-大兴区',
-					money: '1000',
-					state: '待处理'
-				}
-				]
 			}
 		},
 		components:{
@@ -165,19 +177,18 @@
 					
 					let i = 0;
 					arr.push({
-							"id":i,	// 消息的ID
-							"content":`这是历史记录的第${i+1}条消息`,	// 消息内容
-							"type": 0,// 此为消息类别，设 1 为发出去的消息，0 为收到对方的消息,
-							"pic":"../../static/image1.png"	// 头像
+						"id":i,	// 消息的ID
+						"content":`这是历史记录的第${i+1}条消息`,	// 消息内容
+						"type":Math.random() > 0.5 ? 1 : 0	,// 此为消息类别，设 1 为发出去的消息，0 为收到对方的消息,
+						"orderID": 0		// orderID为0表示普通消息类型
 					})
-					
 					// 新增模拟消息记录
 					// for(let i = startIndex; i < endIndex; i++){
 					// 	arr.push({
 					// 		"id":i,	// 消息的ID
 					// 		"content":`这是历史记录的第${i+1}条消息`,	// 消息内容
 					// 		"type":Math.random() > 0.5 ? 1 : 0	,// 此为消息类别，设 1 为发出去的消息，0 为收到对方的消息,
-					// 		"pic":"../../static/image1.png"	// 头像
+					// 		"orderID": 0		// orderID为0表示普通消息类型
 					// 	})
 					// }
 					
@@ -241,8 +252,9 @@
 					let data = {
 						"id":new Date().getTime(),
 						"content":this.content,
-						"type":1,
-						"pic":"../../static/image1.png"
+						"type":1,		// 0为接收的消息，1为发送的消息
+						orderID: 0		// orderID为0表示普通消息类型
+						
 					}
 					this.talkList.push(data);
 					

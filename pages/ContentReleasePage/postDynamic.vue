@@ -1,5 +1,20 @@
 <template>
 	<view class="box">
+		<!-- 至少选择一张图片上传 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请至少选择一张图片上传哦～" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请先同意《用户自制内容协议》 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请先同意《用户自制内容协议》" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 是否发布动态 -->
+		<uni-popup ref="popup3" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="确认发布动态吗？" :before-close="true" @close="close"
+				@confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 		<view class="my-content">
 			<!-- 图片 -->
 			<view class="row-box choose-image-box">
@@ -9,7 +24,7 @@
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">
 				<view class="works-article">
-					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput"/>
+					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput" />
 				</view>
 			</view>
 		</view>
@@ -52,23 +67,20 @@
 		data() {
 			return {
 				ifagree: false,
-				ifpostdynamic: false,
 				ifdownloadimag: false,
 				columnNum: 4, //	上传图片显示几列
 				maxCount: 9, //	最多上传图片数量
 				images: [],
-				article: ''
+				article: '',
 			}
 		},
 		components: {
-			gUpload
+			gUpload,
 		},
 		methods: {
+			
 			onChangeAgree: function() {
 				this.ifagree = !this.ifagree;
-			},
-			onChangePostDynamic: function() {
-				this.ifpostdynamic = !this.ifpostdynamic;
 			},
 			onChangeLimit: function() {
 				this.ifdownloadimag = !this.ifdownloadimag;
@@ -103,45 +115,64 @@
 				console.log(this.images)
 			},
 			// 选择@的用户
-			onChooseAt: function(i){
-				
+			onChooseAt: function(i) {
+
 				uni.navigateTo({
 					url: './at',
 					// animationType:'slide-in-right',
 				})
 			},
 			// 选择热门话题
-			onChooseLabel: function(){
+			onChooseLabel: function() {
 				uni.navigateTo({
 					url: './label',
 					// animationType:'slide-in-right',
 				})
 			},
-			onArticleInput: function(e){
+			onArticleInput: function(e) {
 				this.article = e.detail.value
 			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确认发布动态
+			confirm: function() {
+				uni.uploadFile({
+					url: 'http://81.68.73.252:8086/ContentReleasePage/dynamic',
+					files: this.images,
+					formData: {
+						'user_id': 4,
+						'callUser': 1,
+						'mainBody': this.article
+					},
+					success: uploadFileRes => {
+						// console.log(uploadFileRes.data);
+						console.log(uploadFileRes)
+					}
+				});
+				
+				// 跳转至个人主页
+				uni.redirectTo({
+				    url: '../Mypage/homePage/homePage?showToast=1'
+				});
+			},
 		},
+		
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap() {
-			uni.uploadFile({
-			    url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
-			    files: this.images,
-				formData: {
-					'user_id': 13,
-				    'callUser': 9,
-					'mainBody': this.article
-				},
-			    success: (uploadFileRes) => {
-			        // console.log(uploadFileRes.data);
-					console.log(uploadFileRes)
-			    }
-			});
 			
-			// 跳转至首页
-			uni.switchTab({
-				url:"../Index_Recommend/Index_Hot"
-			})
-			
+			// 如果未选择图片
+			if (this.images.length == 0) {
+				this.$refs.popup1.open()
+			}
+			// 如果未同意《用户自制内容协议》
+			else if (!this.ifagree) {
+				this.$refs.popup2.open()
+			} else {
+				this.$refs.popup3.open()
+			}
+
 			// // 提取json文件键字对
 			// const res = await this.$myRequest({
 			// 	url:'/MyPage/HomePage/dynamic',
@@ -151,7 +182,7 @@
 			// })
 			// // 提取json文件键字对
 			// console.log(res.data[0].photos)
-			
+
 			// var photoes = res.data[0].photos
 			// console.log(photoes)
 			// var jsonObj = eval('('+photoes+')')
@@ -164,32 +195,30 @@
 			// 	this.photoes.push(jsonObj[prop])
 			// }   
 
-			// uni.uploadFile({
-			//     url: 'http://8.136.216.96:8086/Date/PhotographerList/applyStayInPg', 
-			//     files: this.images,
-			// 	formData: {
-			// 	    'city': '杭州',
-			// 		'nick_name': 'wwweng',
-			// 		'phone_num': 17395710519,
-			// 		'real_name': '翁馨',
-			// 		'user_id': 17395710519
-			// 	},
-			//     success: (uploadFileRes) => {
-			//         // console.log(uploadFileRes.data);
-			// 		console.log(uploadFileRes)
-			//     }
-			// });
-
-			
 		},
-		onShow(){
-			uni.$on("emitChoosePersonName",res => {
+		onShow() {
+			// 获取@用户名
+			uni.$on("emitChoosePersonName", res => {
 				this.article += res.choosePersonName
 				console.log(this.article)
 				// 清除监听
 				uni.$off("emitChoosePersonName");
 			})
-		}
+			// 获取热门话题标签
+			uni.$on("emitAddHotTopic", res => {
+				this.article += res.label
+				console.log(this.article)
+				// 清除监听
+				uni.$off("emitAddHotTopic");
+			})
+		},
+		// // 页面中如果使用了定时器，在离开这个页面的时候一定要记得清除，避免出现bug
+		// onUnload() {
+		// 	if(this.timer) {  
+		// 		clearTimeout(this.timer);  
+		// 		this.timer = null;  
+		// 	}  
+		// }
 	}
 </script>
 
