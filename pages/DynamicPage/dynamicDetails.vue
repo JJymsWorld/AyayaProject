@@ -52,6 +52,31 @@
 			</view>
 		</view>
 		<!-- 评论转发部分end -->
+		
+		<!-- 底部导航栏 -->
+		<view class="lastBox">
+			<ul>
+				<li><input value="说点啥..."> </li>
+				<li>
+					<span v-if="isInterest==0" class="iconfont_NoSelect"@click="interestButton(isInterest)">&#xe785;</span>
+					<span v-if="isInterest==1" class="iconfont_select"@click="interestButton(isInterest)">&#xe608;</span>
+					
+					<span :class="isInterest==1?'icon_number':'icon_number'">{{interestNum}}</span>
+				</li>
+				
+				<li>
+					<span class="iconfont_NoSelect">&#xe600;</span>
+					<span style="font-size: 30rpx;">{{commentNum}}</span>
+				</li>
+				<li>
+					<span class="iconfont_NoSelect">&#xe65f;</span>
+					<span style="font-size: 30rpx;">{{relayNum}}</span>
+				</li>
+
+			</ul>
+		</view>
+		<view class="lastblank"></view>
+		<!-- 底部导航栏 end-->
 	</view>
 </template>
 
@@ -165,6 +190,14 @@
 				uni.navigateTo({
 					url:'../Mypage/homePage/homePage?userID='+i
 				})
+			},
+			interestButton(i){
+				if(i==0){
+					this.$data.isInterest=1
+				}
+				else if(i==1){
+					this.$data.isInterest=0
+				}
 			}
 		}
 	}

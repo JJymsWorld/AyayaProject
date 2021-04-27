@@ -77,7 +77,7 @@
 		</view>
 		<view class="Hotcontent-list-box" v-if="tabIndex == 1">
 			<uni-list :border="false" class="Hotcontent-list-list">
-				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="item in HotList" :key="item.id"
+				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item,index) in HotList" :key="index"
 					:title="item.text" :to="'../works/works?workId=' + item.opus_id">
 					<template v-slot:body >
 						<view class="List-text" >{{item.title}}</view>
@@ -130,7 +130,7 @@
 			}
 			
 			//获取主页Topic
-			http.get("/Index/Recommend/getTopic",{params:{pageNum:1,pageSize:10}}).then(res=>{
+			await http.get("/Index/Recommend/getTopic",{params:{pageNum:1,pageSize:10}}).then(res=>{
 				console.log(res.data);
 				this.topicTypelist = res.data.list;
 				this.topicType = this.topicTypelist[0].mark;
@@ -138,8 +138,14 @@
 				console.log(err)
 			});
 			
+			this.timeid = setInterval(()=>{
+				this.topicIndex = (this.topicIndex + 1) % (this.topicTypelist.length);
+				// console.log(this.topicIndex)
+				this.topicType = this.topicTypelist[this.topicIndex].mark;
+			}, 3000);
+			
 			if(this.HotinitList == true){
-				http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:5}}).then(res=>{
+				http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:6}}).then(res=>{
 					console.log(res.data);
 					this.HotList = res.data.list;
 					this.HotpageNum++;
@@ -158,16 +164,15 @@
 			
 		},
 		onShow() {
-			this.timeid = setInterval(()=>{
-				this.topicIndex = (this.topicIndex + 1) % (this.topicTypelist.length);
-				// console.log(this.topicIndex)
-				this.topicType = this.topicTypelist[this.topicIndex].mark;
-			}, 3000);
+			
 		},
 		onHide() {
-			clearInterval(this.timeId);
+			
 			this.HotbeforePage = this.HotpageNum;
 			this.RecbeforePage = this.RecpageNum;
+		},
+		onUnload() {
+			clearInterval(this.timeId);
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
@@ -175,8 +180,8 @@
 				
 			}
 			if(this.tabIndex == 1 && this.Hotflag==true){
-				
-				await http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:5}}).then(res=>{
+				this.HotloadStatus = "loading";
+				await http.get("/Index/Hot/getWorks",{params:{pageNum:this.HotpageNum, pageSize:6}}).then(res=>{
 					this.HotList = this.HotList.concat(res.data.list);
 					this.HotpageNum++;
 					console.log(this.HotpageNum);

@@ -11,33 +11,33 @@
 		<table style="width: 100%;background-color: #FFFFFF;margin-top: 10rpx;">
 			<tr class="blanktd">
 				<td style="width: 680rpx;"><text class="word">账户与安全</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">支付设置</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">地区设置</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">隐私</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">通用</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 		</table>
 		<table style="margin-top: 20rpx;width: 100%;background-color: #FFFFFF;">
 			<tr class="blanktd">
 				<td style="width: 680rpx;"><text class="word">问题反馈</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">关于Ayaya</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			</table>
 		<view class="loginAndExit"style="margin-top: 20rpx;">切换账号</view>

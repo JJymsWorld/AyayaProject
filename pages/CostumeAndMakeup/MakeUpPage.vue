@@ -101,21 +101,25 @@
 			});
 			
 			//获取Topic
-			http.get("/MakeUp/getTopic",{params:{type:1}}).then(res=>{
+			await http.get("/MakeUp/getTopic",{params:{type:1}}).then(res=>{
 				this.MakeuptopicContent = res.data;
 				this.MakeUpTopic = this.MakeuptopicContent[0].mark;
 			}).catch(err=>{
 				console.log(err);
-			})
-		},
-		onShow() {
+			});
 			this.timeid = setInterval(()=>{
 				this.MakeUpTopicIndex = (this.MakeUpTopicIndex + 1) % (this.MakeuptopicContent.length);
 				// console.log(this.MakeUpTopicIndex)
 				this.MakeUpTopic = this.MakeuptopicContent[this.MakeUpTopicIndex].mark;
 			}, 3000);
 		},
+		onShow() {
+			
+		},
 		onHide() {
+			
+		},
+		onUnload() {
 			clearInterval(this.timeId);
 		},
 		data() {

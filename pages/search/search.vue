@@ -64,7 +64,7 @@
 		async onLoad(){
 			// 获取热门话题
 			const res = await this.$myRequest({
-				url:'/Index/Search/getTopic',
+				url:'/Search/Index/Search/getTopic',
 			})
 			this.hotTopic = res.data
 			console.log(this.hotTopic)

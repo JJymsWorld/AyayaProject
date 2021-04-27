@@ -40,7 +40,7 @@
 						</view>
 					</template>
 				</waterfallsFlow>
-				<uni-load-more status="noMore"></uni-load-more>
+				<uni-load-more :status="loadStatus"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -50,16 +50,69 @@
 	import waterfallsFlow from "../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 	export default{
 		components:{waterfallsFlow},
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
+			//获取所有摄影师列表
 			http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:1, pageSize:3}}).then(res=>{
 				this.PhotographerList = res.data.list;
 			}).catch(err=>{
 				console.log(err);
-			})
+			});
+			
+			//获取所有约拍作品(瀑布流内容)
+			// if(this.initList == true){
+			// 	http.get("/Date/PhotographerList/getAllDataWorks", {params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+			// 		this.contentList = res.data.list;
+			// 		this.pageNum++;
+			// 		this.initList = false;
+			// 		if(res.data.hasNextPage == true){
+			// 			this.loadStatus = "more";
+			// 		}
+			// 		if(res.data.haxNextPage == false){
+			// 			this.loadStatus = "noMore";
+			// 			this.flag = false;
+			// 		}
+			// 	}).catch(err=>{
+			// 		console.log(err);
+			// 	})
+			// }
+			
+				
+		},
+		onHide() {
+			
+		},
+		onShow() {
+			
+		},
+		async onReachBottom() {
+			//触底加载新内容
+			// const http = new this.$Request();
+			// if(this.flag == true){
+			// 	this.loadStatus = "loading";
+			// 	await http.get("/Date/PhotographerList/getAllDataWorks",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+			// 		this.contentList = this.contentList.concat(res.data.list);
+			// 		this.pageNum++;
+			// 		if(res.data.hasNextPage == true){
+			// 			this.loadStatus = "more";
+			// 		}
+			// 		if(res.data.hasNextPage == false){
+			// 			this.loadStatus = "noMore";
+			// 			this.flag = false;
+			// 		}
+			// 	}).catch(err=>{
+			// 		console.log(err);
+			// 	})
+			// }
 		},
 		data(){
 			return {
+				initList:true,
+				flag:true,
+				pageNum:1,
+				pageSize:0,
+				beforePage:0,
+				loadStatus:"noMore",
 				PhotographerList:[
 					{
 						pg_id:1,

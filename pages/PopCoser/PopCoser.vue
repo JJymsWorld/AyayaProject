@@ -145,14 +145,14 @@
 
 <script>
 	export default {
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
 			this.tabIndex = 0;
 			if(this.allinitlist == true){
 				http.get("/Cos/PopCoserList/getAllRank", {
 					params: {
 						pageNum: this.allpageNum,
-						pageSize: 6
+						pageSize: 8
 					}
 				}).then(res => {
 					this.userInfoList = res.data.list.sort((a, b) => {
@@ -176,7 +176,7 @@
 				http.get("/Cos/PopCoserList/getWeekRank", {
 					params: {
 						pageNum: this.WeekpageNum,
-						pageSize: 6
+						pageSize: 8
 					}
 				}).then(res => {
 					this.userInfoListWeek = res.data.list.sort((a, b) => {
@@ -209,7 +209,7 @@
 			const http = new this.$Request();
 			if(this.tabIndex == 0 && this.allflag == true){
 				this.allloadStatus = "loading";
-				await http.get("/Cos/PopCoserList/getAllRank",{params:{pageNum:this.allpageNum,pageSize:6}}).then(res=>{
+				await http.get("/Cos/PopCoserList/getAllRank",{params:{pageNum:this.allpageNum,pageSize:8}}).then(res=>{
 					this.userInfoList = this.userInfoList.concat(res.data.list);
 					this.allpageNum++;
 					if(res.data.hasNextPage == true){
@@ -227,7 +227,7 @@
 			}
 			if(this.tabIndex == 1 && this.Weekflag == true){
 				this.WeekloadStatus = "loading";
-				await http.get("/Cos/PopCoserList/getWeekRank", {params:{pageNum:this.WeekpageNum, pageSize:6}}).then(res=>{
+				await http.get("/Cos/PopCoserList/getWeekRank", {params:{pageNum:this.WeekpageNum, pageSize:8}}).then(res=>{
 					this.userInfoListWeek = this.userInfoListWeek.concat(res.data.list);
 					this.WeekpageNum++;
 					if(res.data.hasNextPage == true){
@@ -260,60 +260,60 @@
 				listTabsType: ['总榜', '周榜'],
 				tabIndex: 0,
 				userInfoList: [
-					// {
-					// 	user_id: 1,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
-					// 	user_name: '嘉Sama',
-					// 	energy: 5947
-					// },
-					// {
-					// 	user_id: 2,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
-					// 	user_name: '夜呀_mm',
-					// 	energy: 4747
-					// },
-					// {
-					// 	user_id: 3,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
-					// 	user_name: '青玉子sei',
-					// 	energy: 3947
-					// },
-					// {
-					// 	user_id: 4,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
-					// 	user_name: '小娜',
-					// 	energy: 3256
-					// },
-					// {
-					// 	user_id: 5,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
-					// 	user_name: '奈奈喵',
-					// 	energy: 2756
-					// },
-					// {
-					// 	user_id: 6,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
-					// 	user_name: '国际巨星',
-					// 	energy: 2733
-					// },
-					// {
-					// 	user_id: 7,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: 'abcde',
-					// 	energy: 1236
-					// },
-					// {
-					// 	user_id: 8,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: 'roserrrr',
-					// 	energy: 1235
-					// },
-					// {
-					// 	user_id: 9,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: '12344',
-					// 	energy: 1234
-					// }
+					{
+						user_id: 1,
+						header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
+						user_name: '嘉Sama',
+						energy: 5947
+					},
+					{
+						user_id: 2,
+						header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
+						user_name: '夜呀_mm',
+						energy: 4747
+					},
+					{
+						user_id: 3,
+						header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
+						user_name: '青玉子sei',
+						energy: 3947
+					},
+					{
+						user_id: 4,
+						header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
+						user_name: '小娜',
+						energy: 3256
+					},
+					{
+						user_id: 5,
+						header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
+						user_name: '奈奈喵',
+						energy: 2756
+					},
+					{
+						user_id: 6,
+						header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
+						user_name: '国际巨星',
+						energy: 2733
+					},
+					{
+						user_id: 7,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'abcde',
+						energy: 1236
+					},
+					{
+						user_id: 8,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'roserrrr',
+						energy: 1235
+					},
+					{
+						user_id: 9,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: '12344',
+						energy: 1234
+					}
 				],
 				userInfoListWeek:[]
 			}

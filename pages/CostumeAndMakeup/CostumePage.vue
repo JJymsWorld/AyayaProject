@@ -89,22 +89,28 @@
 				console.log(err)
 			})
 			
-			http.get("/Costume/getTopic",{params:{type:1}}).then(res=>{
+			
+			//获取Topic并设置定时改变内容
+			await http.get("/Costume/getTopic",{params:{type:1}}).then(res=>{
 				this.CostumetopicContent = res.data;
 				this.CostumeTopic = this.CostumetopicContent[0].mark;
 			}).catch(err=>{
 				consolel.log(err);
-			})
-			
-		},
-		onShow() {
+			});
 			this.timeid = setInterval(()=>{
 				this.CostumeTopicIndex = (this.CostumeTopicIndex + 1) % (this.CostumetopicContent.length);
 				// console.log(this.CostumeTopicIndex)
 				this.CostumeTopic = this.CostumetopicContent[this.CostumeTopicIndex].mark;
 			}, 3000);
+			
+		},
+		onShow() {
+			
 		},
 		onHide() {
+			
+		},
+		onUnload() {
 			clearInterval(this.timeId);
 		},
 		data() {

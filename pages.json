@@ -567,8 +567,7 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F2A3C3",
-		"backgroundColor": "rgba(240, 240, 240, 0.4)",
-		"onReachBottomDistance":0
+		"backgroundColor": "rgba(240, 240, 240, 0.4)"
 	},
 	"tabBar": {
 		"color":"#737373",
