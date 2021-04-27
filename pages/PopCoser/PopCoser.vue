@@ -19,7 +19,8 @@
 					<view class="Infobox-head-right" @click="gotoCoserIdenticate">成为入驻Coser</view>
 				</view>
 				<view class="Infobox-down">
-					<view class="user-info-box" v-for="(item,index) in showThree" :key="index" @click="gotoCoserHomePage">
+					<view class="user-info-box" v-for="(item,index) in showThree" :key="index"
+						@click="gotoCoserHomePage(item.user_id)">
 						<image class="user-info-box-headimg" :src="item.header_Pic" mode="aspectFill"></image>
 						<text class="user-info-box-name">{{item.user_name}}</text>
 					</view>
@@ -37,50 +38,105 @@
 							:class="tabIndex == index ? 'ListTabs-title-active' : ''">{{item}}</text>
 					</view>
 				</view>
-				<view class="CoserListbox-mid">
-					<view class="Coser-Items">
-						<view class="img-wrapper-1" @click="gotoCoserHomePage">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[1].header_Pic">
-							</image>
+				<view class="allRank" v-if="tabIndex == 0">
+					<view class="CoserListbox-mid">
+						<view class="Coser-Items">
+							<view class="img-wrapper-1" @click="gotoCoserHomePage(userInfoList[1].user_id)">
+								<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[1].header_Pic">
+								</image>
+							</view>
+							<text class="Coser-Items-text">{{userInfoList[1].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoList[1].energy}}</text>
 						</view>
-						<text class="Coser-Items-text">{{userInfoList[1].user_name}}</text>
-						<text class="Coser-Item-Number">{{userInfoList[1].energy}}</text>
+						<view class="Coser-Items" @click="gotoCoserHomePage(userInfoList[0].user_id)">
+							<view class="img-wrapper-2">
+								<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[0].header_Pic">
+								</image>
+							</view>
+							<text class="Coser-Items-text">{{userInfoList[0].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoList[0].energy}}</text>
+						</view>
+						<view class="Coser-Items" @click="gotoCoserHomePage(userInfoList[2].user_id)">
+							<view class="img-wrapper-3">
+								<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[2].header_Pic">
+								</image>
+							</view>
+							<text class="Coser-Items-text">{{userInfoList[2].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoList[2].energy}}</text>
+						</view>
 					</view>
-					<view class="Coser-Items" @click="gotoCoserHomePage">
-						<view class="img-wrapper-2">
-							<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoList[0].header_Pic">
-							</image>
-						</view>
-						<text class="Coser-Items-text">{{userInfoList[0].user_name}}</text>
-						<text class="Coser-Item-Number">{{userInfoList[0].energy}}</text>
-					</view>
-					<view class="Coser-Items" @click="gotoCoserHomePage">
-						<view class="img-wrapper-3">
-							<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoList[2].header_Pic">
-							</image>
-						</view>
-						<text class="Coser-Items-text">{{userInfoList[2].user_name}}</text>
-						<text class="Coser-Item-Number">{{userInfoList[2].energy}}</text>
+					<view class="CoserListbox-down">
+						<uni-list class="CoserListbox-down-list" :border="false">
+							<uni-list-item v-for="(item,index) in FourToSix" :key="index" direction="row"
+								:title="item.user_name" :ellipsis="1"
+								:to="'../Mypage/homePage/homePage?userid' + item.user_id">
+								<view slot="header" class="CoserListbox-down-header">
+									<text class="CoserListbox-down-header-text">{{index+4}}</text>
+								</view>
+								<view slot="body" class="CoserListbox-down-body">
+									<image :src="item.header_Pic" class="CoserListbox-down-body-avatar"
+										mode="aspectFill">
+									</image>
+									<text class="CoserListbox-down-body-name">{{item.user_name}}</text>
+								</view>
+								<view slot="footer" class="CoserListbox-down-footer">
+									<text class="CoserListbox-down-footer-text">🔥人气值</text>
+									<text class="CoserListbox-down-footer-popNum">{{item.energy}}</text>
+								</view>
+							</uni-list-item>
+						</uni-list>
+						<uni-load-more :status="allloadStatus"></uni-load-more>
 					</view>
 				</view>
-				<view class="CoserListbox-down">
-					<uni-list class="CoserListbox-down-list" :border="false">
-						<uni-list-item  v-for="(item,index) in FourToSix" :key="index" direction="row" :title="item.user_name" :ellipsis="1" to="../Mypage/homePage/homePage">
-							<view slot="header" class="CoserListbox-down-header">
-								<text class="CoserListbox-down-header-text">{{index+4}}</text>
-							</view>
-							<view slot="body" class="CoserListbox-down-body">
-								<image :src="item.header_Pic" class="CoserListbox-down-body-avatar" mode="aspectFill">
+				<view class="allRank" v-if="tabIndex == 1">
+					<view class="CoserListbox-mid">
+						<view class="Coser-Items">
+							<view class="img-wrapper-1" @click="gotoCoserHomePage(userInfoListWeek[1].user_id)">
+								<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoListWeek[1].header_Pic">
 								</image>
-								<text class="CoserListbox-down-body-name">{{item.user_name}}</text>
 							</view>
-							<view slot="footer" class="CoserListbox-down-footer">
-								<text class="CoserListbox-down-footer-text">🔥人气值</text>
-								<text class="CoserListbox-down-footer-popNum">{{item.energy}}</text>
+							<text class="Coser-Items-text">{{userInfoListWeek[1].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoListWeek[1].energy}}</text>
+						</view>
+						<view class="Coser-Items" @click="gotoCoserHomePage(userInfoListWeek[0].user_id)">
+							<view class="img-wrapper-2">
+								<image mode="aspectFill" class="CoserItem-img-First" :src="userInfoListWeek[0].header_Pic">
+								</image>
 							</view>
-						</uni-list-item>
-					</uni-list>
-					<uni-load-more status="noMore"></uni-load-more>
+							<text class="Coser-Items-text">{{userInfoListWeek[0].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoListWeek[0].energy}}</text>
+						</view>
+						<view class="Coser-Items" @click="gotoCoserHomePage(userInfoListWeek[2].user_id)">
+							<view class="img-wrapper-3">
+								<image mode="aspectFill" class="CoserItem-img-Other" :src="userInfoListWeek[2].header_Pic">
+								</image>
+							</view>
+							<text class="Coser-Items-text">{{userInfoListWeek[2].user_name}}</text>
+							<text class="Coser-Item-Number">{{userInfoListWeek[2].energy}}</text>
+						</view>
+					</view>
+					<view class="CoserListbox-down">
+						<uni-list class="CoserListbox-down-list" :border="false">
+							<uni-list-item v-for="(item,index) in FourToSixWeek" :key="index" direction="row"
+								:title="item.user_name" :ellipsis="1"
+								:to="'../Mypage/homePage/homePage?userid' + item.user_id">
+								<view slot="header" class="CoserListbox-down-header">
+									<text class="CoserListbox-down-header-text">{{index+4}}</text>
+								</view>
+								<view slot="body" class="CoserListbox-down-body">
+									<image :src="item.header_Pic" class="CoserListbox-down-body-avatar"
+										mode="aspectFill">
+									</image>
+									<text class="CoserListbox-down-body-name">{{item.user_name}}</text>
+								</view>
+								<view slot="footer" class="CoserListbox-down-footer">
+									<text class="CoserListbox-down-footer-text">🔥人气值</text>
+									<text class="CoserListbox-down-footer-popNum">{{item.energy}}</text>
+								</view>
+							</uni-list-item>
+						</uni-list>
+						<uni-load-more :status="WeekloadStatus"></uni-load-more>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -89,84 +145,183 @@
 
 <script>
 	export default {
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
+			this.tabIndex = 0;
+			if(this.allinitlist == true){
+				http.get("/Cos/PopCoserList/getAllRank", {
+					params: {
+						pageNum: this.allpageNum,
+						pageSize: 8
+					}
+				}).then(res => {
+					this.userInfoList = res.data.list.sort((a, b) => {
+						return b.energy - a.energy;
+					});
+					this.allpageNum++;
+					this.allinitlist = false;
+					if(res.data.hasNextPage == true){
+						this.allloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.allloadStatus = "noMore";
+						this.allflag = false;
+					}
+				}).catch(err => {
+					console.log(err)
+				});
+			}
 			
-			http.get("/Cos/PopCoserList/getAllRank").then(res=>{
-				this.userInfoList = res.data.sort((a,b)=>{
-					return b.energy - a.energy;
+			if(this.Weekinitlist == true){
+				http.get("/Cos/PopCoserList/getWeekRank", {
+					params: {
+						pageNum: this.WeekpageNum,
+						pageSize: 8
+					}
+				}).then(res => {
+					this.userInfoListWeek = res.data.list.sort((a, b) => {
+						return b.energy - a.energy;
+						// return a.energy - b.energy;
+					});
+					this.WeekpageNum++;
+					this.Weekinitlist = false;
+					if(res.data.hasNextPage == true){
+						this.WeekloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.WeekloadStatus = "noMore";
+						this.Weekflag = false;
+					}
+				}).catch(err => {
+					console.log(err)
+				});
+			}
+			
+		},
+		onShow() {
+			
+		},
+		onHide() {
+			this.allbeforePage = this.allpageNum;
+			this.WeekbeforePage = this.WeekpageNum;
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.tabIndex == 0 && this.allflag == true){
+				this.allloadStatus = "loading";
+				await http.get("/Cos/PopCoserList/getAllRank",{params:{pageNum:this.allpageNum,pageSize:8}}).then(res=>{
+					this.userInfoList = this.userInfoList.concat(res.data.list);
+					this.allpageNum++;
+					if(res.data.hasNextPage == true){
+						this.allloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.allloadStatus = "noMore";
+						this.allflag = false;
+					}
+					
+				}).catch(err=>{
+					console.log(err);
+				});
+				
+			}
+			if(this.tabIndex == 1 && this.Weekflag == true){
+				this.WeekloadStatus = "loading";
+				await http.get("/Cos/PopCoserList/getWeekRank", {params:{pageNum:this.WeekpageNum, pageSize:8}}).then(res=>{
+					this.userInfoListWeek = this.userInfoListWeek.concat(res.data.list);
+					this.WeekpageNum++;
+					if(res.data.hasNextPage == true){
+						this.WeekloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.WeekloadStatus = "noMore";
+						this.Weekflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
 				})
-			}).catch(err=>{
-				console.log(err)
-			});
-			console.log(this.userInfoList);
+			}
 		},
 		data() {
 			return {
+				WeekloadStatus:"noMore",
+				Weekinitlist:true,
+				Weekflag:true,
+				WeekpageNum:1,
+				WeekpageSize:0,
+				WeekbeforePage:0,
+				allloadStatus:"noMore",
+				allinitlist:true,
+				allflag:true,
+				allpageNum:1,
+				allpageSize:0,
+				allbeforePage:0,
+				
 				listTabsType: ['总榜', '周榜'],
 				tabIndex: 0,
 				userInfoList: [
-					// {
-					// 	user_id: 1,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
-					// 	user_name: '嘉Sama',
-					// 	energy: 5947
-					// },
-					// {
-					// 	user_id: 2,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
-					// 	user_name: '夜呀_mm',
-					// 	energy: 4747
-					// },
-					// {
-					// 	user_id: 3,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
-					// 	user_name: '青玉子sei',
-					// 	energy: 3947
-					// },
-					// {
-					// 	user_id: 4,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
-					// 	user_name: '小娜',
-					// 	energy: 3256
-					// },
-					// {
-					// 	user_id: 5,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
-					// 	user_name: '奈奈喵',
-					// 	energy: 2756
-					// },
-					// {
-					// 	user_id: 6,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
-					// 	user_name: '国际巨星',
-					// 	energy: 2733
-					// },
-					// {
-					// 	user_id: 7,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: 'abcde',
-					// 	energy: 1236
-					// },
-					// {
-					// 	user_id: 8,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: 'roserrrr',
-					// 	energy: 1235
-					// },
-					// {
-					// 	user_id: 9,
-					// 	header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
-					// 	user_name: '12344',
-					// 	energy: 1234
-					// }
-				]
+					{
+						user_id: 1,
+						header_Pic: '../../static/CoserlistSource/userheadimg1.jpg',
+						user_name: '嘉Sama',
+						energy: 5947
+					},
+					{
+						user_id: 2,
+						header_Pic: '../../static/CoserlistSource/userheadimg2.jpg',
+						user_name: '夜呀_mm',
+						energy: 4747
+					},
+					{
+						user_id: 3,
+						header_Pic: '../../static/CoserlistSource/userheadimg3.jpg',
+						user_name: '青玉子sei',
+						energy: 3947
+					},
+					{
+						user_id: 4,
+						header_Pic: '../../static/CoserlistSource/userheadimg4.jpg',
+						user_name: '小娜',
+						energy: 3256
+					},
+					{
+						user_id: 5,
+						header_Pic: '../../static/CoserlistSource/userheadimg5.jpg',
+						user_name: '奈奈喵',
+						energy: 2756
+					},
+					{
+						user_id: 6,
+						header_Pic: '../../static/CoserlistSource/userheadimg6.jpg',
+						user_name: '国际巨星',
+						energy: 2733
+					},
+					{
+						user_id: 7,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'abcde',
+						energy: 1236
+					},
+					{
+						user_id: 8,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: 'roserrrr',
+						energy: 1235
+					},
+					{
+						user_id: 9,
+						header_Pic: '../../static/CoserlistSource/userheadimg7.jpg',
+						user_name: '12344',
+						energy: 1234
+					}
+				],
+				userInfoListWeek:[]
 			}
 		},
 		methods: {
 			popcoserSearch() {
 				uni.navigateTo({
-					url: '../search/search'
+					url: '../search/searchCoser'
 				})
 			},
 			tabTap(e) {
@@ -183,9 +338,9 @@
 					url: '../Mypage/identificationPage/coserIdenticate'
 				})
 			},
-			gotoCoserHomePage(){
+			gotoCoserHomePage(userid) {
 				uni.navigateTo({
-					url:"../Mypage/homePage/homePage"
+					url: "../Mypage/homePage/homePage?userid=" + userid
 				})
 			}
 		},
@@ -199,20 +354,26 @@
 				return this.userInfoList.filter((data, index) => {
 					return index >= 3;
 				})
+			},
+			FourToSixWeek(){
+				return this.userInfoListWeek.filter((data, index) => {
+					return index >= 3;
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	/deep/ .uni-list-item{
+	/deep/ .uni-list-item {
 		// padding-top: 15rpx;
 		// padding-bottom: 15rpx;
 		// border-bottom: 1rpx solid #e9e9e9;
 		width: 88%;
-		margin: 0 auto ;
+		margin: 0 auto;
 	}
-	/deep/ .uni-list-item__container{
+
+	/deep/ .uni-list-item__container {
 		// padding-top: 15rpx;
 		// padding-bottom: 15rpx;
 		// border-bottom: 1rpx solid #e9e9e9;
@@ -255,7 +416,7 @@
 
 	.popcoser-search-fs {
 		font-size: 25rpx;
-		color: rgba(16,16,16,0.33);
+		color: rgba(16, 16, 16, 0.33);
 		margin-right: auto;
 		width: auto;
 	}
@@ -267,7 +428,7 @@
 	}
 
 	.searchIcon-style {
-		color: rgba(16,16,16,0.33);
+		color: rgba(16, 16, 16, 0.33);
 		font-size: 25rpx;
 
 	}
@@ -353,15 +514,16 @@
 
 	.user-info-box-name {
 		font-size: 20rpx;
-		color: rgba(51,51,51,0.42);
+		color: rgba(51, 51, 51, 0.42);
 		text-align: center;
 		margin-top: 5rpx;
 		line-height: 50rpx;
-		color: rgba(51,51,51,0.42);
+		color: rgba(51, 51, 51, 0.42);
 	}
-	.user-info-box-more{
+
+	.user-info-box-more {
 		font-size: 15rpx;
-		color: rgba(51,51,51,0.42);
+		color: rgba(51, 51, 51, 0.42);
 	}
 
 	.moreCoser-Icon {
@@ -408,7 +570,7 @@
 		font-size: 42rpx;
 		font-weight: bold;
 		color: #080808;
-		
+
 	}
 
 	.CoserListbox-mid {
@@ -427,16 +589,18 @@
 		text-align: center;
 		font-size: 30rpx;
 	}
-	.Coser-Items-text{
+
+	.Coser-Items-text {
 		font-size: 28rpx;
 		font-weight: bold;
 		line-height: 48rpx;
-		color: rgba(32,30,30,0.88);
+		color: rgba(32, 30, 30, 0.88);
 	}
-	.Coser-Item-Number{
+
+	.Coser-Item-Number {
 		font-size: 26rpx;
 		font-weight: bold;
-		color: rgba(32,30,30,0.88);
+		color: rgba(32, 30, 30, 0.88);
 	}
 
 	.CoserItem-img-Other {
@@ -508,12 +672,15 @@
 		font-size: 30rpx;
 		margin-left: 40rpx;
 	}
-	.uni-list::before{
+
+	.uni-list::before {
 		display: none;
 	}
-	.uni-list::after{
+
+	.uni-list::after {
 		display: none;
 	}
+
 	.uni-list--border {
 		position: absolute;
 		top: 0;
@@ -525,6 +692,7 @@
 		border-top-width: 0.5px;
 		/* #endif */
 	}
+
 	.uni-list--border:after {
 		position: absolute;
 		top: 0;

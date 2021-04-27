@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<view class="CosumeMakeup-wrapper">
-			<mingpop ref="mingpop" direction="center" :is_close="false" :width="80">
+			<mingpop ref="mingpop" direction="center" :is_close="false" :width="50">
 				<view class="fullTopic" v-for="(item,index) in MakeuptopicContent" :key="index">
-					<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
-					<text class="topic-lable-mid-content-title">{{item.title}}</text>
+					<text class="topic-lable-mid-content-label">#{{item.mark}}#</text>
+					<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 				</view>
 			</mingpop>
 			<view class="top-tab-bar">
@@ -14,7 +14,7 @@
 			<view  class="Makeup-wrapper">
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
-						<swiper-item v-for="(item,index) in MakeupswiperImgs" :key="index" @click="gotoWorksPage">
+						<swiper-item v-for="(item,index) in MakeupswiperImgs" :key="index" @click="gotoWorksPage(item.opus_id)">
 							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
 						</swiper-item>
 					</swiper>
@@ -24,9 +24,9 @@
 						<text>话题</text>
 					</view>
 					<view class="topic-lable-mid">
-						<view class="topic-lable-mid-content" v-for="(item,index) in TwoMakeupTopic" :key="index">
-							<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
-							<text class="topic-lable-mid-content-title">{{item.title}}</text>
+						<view class="topic-lable-mid-content" >
+							<text class="topic-lable-mid-content-label">#{{MakeUpTopic}}#</text>
+							<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 						</view>
 					</view>
 					<view class="topic-lable-right" @click="viewMoreTopic">
@@ -52,7 +52,7 @@
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPage">
+					<waterfallsFlow :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPageWaterFall($event)">
 						<template v-slot:default="item" class="content-box-item">
 							<view class="cnt">
 								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
@@ -73,7 +73,7 @@
 	import mingpop from "@/components/ming-pop/ming-pop.vue";
 	export default {
 		components:{waterfallsFlow,msDropdownMenu,msDropdownItem,mingpop},
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
 			
 			http.get("/MakeUp/getSlide",{params:{type:3}}).then(res=>{
@@ -98,7 +98,29 @@
 				this.MakeupWorkslist = res.data;
 			}).catch(err=>{
 				console.log(err);
-			})
+			});
+			
+			//获取Topic
+			await http.get("/MakeUp/getTopic",{params:{type:1}}).then(res=>{
+				this.MakeuptopicContent = res.data;
+				this.MakeUpTopic = this.MakeuptopicContent[0].mark;
+			}).catch(err=>{
+				console.log(err);
+			});
+			this.timeid = setInterval(()=>{
+				this.MakeUpTopicIndex = (this.MakeUpTopicIndex + 1) % (this.MakeuptopicContent.length);
+				// console.log(this.MakeUpTopicIndex)
+				this.MakeUpTopic = this.MakeuptopicContent[this.MakeUpTopicIndex].mark;
+			}, 3000);
+		},
+		onShow() {
+			
+		},
+		onHide() {
+			
+		},
+		onUnload() {
+			clearInterval(this.timeId);
 		},
 		data() {
 			return {
@@ -113,6 +135,9 @@
 					// 	url: "../../static/swiperImg/6.png"
 					// }
 				],
+				MakeUpTopic:"",
+				MakeUpTopicIndex:0,
+				timeid:0,
 				MakeuptopicContent:[
 					{
 						id:0,
@@ -163,9 +188,16 @@
 			viewMoreTopic(){
 				this.$refs.mingpop.show();
 			},
-			gotoWorksPage(){
+			gotoWorksPage(id){
+				console.log(id);
 				uni.navigateTo({
-					url:"../works/works"
+					url:"../works/works?workId=" + id
+				})
+			},
+			gotoWorksPageWaterFall(event){
+				console.log(event.opus_id);
+				uni.navigateTo({
+					url:"../works/works?workId=" + event.opus_id
 				})
 			},
 			gotoSearchPage(){

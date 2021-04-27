@@ -43,6 +43,9 @@
 
 <script>
 	export default {
+		onLoad(options) {
+			console.log(options.activity_id);
+		},
 		data() {
 			return {
 				tabIndex:0,

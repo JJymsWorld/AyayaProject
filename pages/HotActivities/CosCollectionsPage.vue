@@ -16,7 +16,7 @@
 			<view class="Events-list">
 				<uni-list class="Events-list-list" :border="false">
 					<uni-list-item :border="false" class="Events-list-item" v-for="(item,index) in EventsList"
-						:key="index" direction="column" :title="item.content" :ellipsis="2" to="CoserHirePage">
+						:key="index" direction="column" :title="item.content" :ellipsis="2" :to="'CoserHirePage?activity_id=' + item.activity_id">
 						<view slot="header" class="Events-list-item-header">
 							<image :src="item.photo" mode="aspectFill"></image>
 						</view>

@@ -117,3 +117,71 @@ ul,li{
 	margin-top: 23rpx;
 	vertical-align: top;
 }
+
+.lastBox{
+	width: 100%;
+	height: 100rpx;
+	/* background-color: #007AFF; */
+	box-shadow:2px 2px 5px 5px rgba(221, 221, 221, 0.2);
+	position:fixed;
+	bottom:0;
+	background-color: #FFFFFF;
+}
+.lastBox ul{
+	margin-top: 30rpx;
+}
+.lastBox ul li{
+	padding-left: 10rpx;
+	width: 136rpx;
+	height: 100rpx;
+}
+.lastBox ul li:first-child{
+	width: 285rpx;
+	height: 46rpx;
+	background-color: #F3F3F3;
+	vertical-align: top;
+	border-radius: 20rpx;
+	margin-left: 15rpx;
+}
+.lastBox ul li input{
+	font-size: 25rpx;
+	color: rgba(9,9,9,0.3);
+/* 	margin-left: 20rpx; */
+	margin-top: 8rpx;
+	text-align: center;
+	line-height: 46rpx;
+}
+
+.lastBox ul li span:last-child{
+	font-size: 20rpx;
+	color: rgba(9,9,9,0.5);
+}
+.lastblank{
+	width: 100%;
+	height: 100rpx;
+	/* background-color: #007AFF; */
+	background-color: #FFFFFF;
+}
+
+.iconfont_NoSelect{
+	opacity: 0.4;
+	font-family: "iconfont" !important;
+	font-size: 42rpx;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.iconfont_select{
+	opacity: 0.4;
+	font-family: "iconfont" !important;
+	color: #EC808D;
+	font-size: 42rpx;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	
+}
+.icon_number{
+	font-size: 30rpx;
+	color: #EC808D;
+}
