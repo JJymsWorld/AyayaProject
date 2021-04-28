@@ -20,7 +20,7 @@
 
 		},
 		props: {
-			//txtStyle:'',初始化这个字段
+			// txtStyle:'',初始化这个字段
 			item: {
 				type: Object,
 				default () {

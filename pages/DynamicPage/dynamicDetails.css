@@ -245,7 +245,7 @@ ul,li{
 	height: 100rpx;
 }
 .lastBox ul li:first-child{
-	width: 285rpx;
+	width: 240rpx;
 	height: 66rpx;
 	background-color: #F3F3F3;
 	vertical-align: middle;

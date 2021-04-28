@@ -5,7 +5,7 @@
 				<view class="goback-box" @click="gotoMyPage">
 					<image src="../../../static/goback.png" mode=""></image>
 				</view>
-				<view class="search-box">
+				<view class="search-box" @click="onSearch">
 					<image src="../../../static/search-icon.png" mode=""></image>
 					<input type="text" value="" confirm-type="search" placeholder="搜索我的订单" />
 				</view>
@@ -26,9 +26,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -61,9 +61,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -96,9 +96,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -130,9 +130,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -145,7 +145,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button class="pinkbutton">查看作品</button>
+						<button class="pinkbutton" @click="gotoWorkPage()">查看作品</button>
 					</view>
 				</uni-list-item>
 			</uni-list>
@@ -156,9 +156,6 @@
 <script>
 	import ssnavbar from '../../../components/ss-navbar/ss-navbar.vue'
 	export default {
-		onLoad(option) {
-			this.currentIndex=option.currentIndex || 0
-		},
 		data() {
 			return {
 				currentIndex: 0,
@@ -198,6 +195,7 @@
 			ssnavbar
 		},
 		methods: {
+			// 改变导航栏状态
 			navbarTapHandler: function(index) {
 				this.currentIndex = index;
 				var obj = this.navArr[index];
@@ -207,11 +205,35 @@
 				uni.switchTab({
 					url:'../../Mypage/mypage'
 				})
+			},
+			// 搜索我的订单
+			onSearch: function(){
+				uni.navigateTo({
+					url: '../searchorder'
+				})
+			},
+			// 进入用户个人主页
+			gotoUserHomePage: function(){
+				uni.navigateTo({
+					url: '../../Mypage/homePage/homePage'
+				})
+			},
+			// 进入作品详情页面
+			gotoWorkPage: function(){
+				uni.navigateTo({
+					url: '../../works/works'
+				})
+			},
+			// 进入动态详情页面
+			gotoDynamicPage: function(){
+				uni.navigateTo({
+					url: '../../DynamicPage/dynamicDetails'
+				})
 			}
 		}
 	}
 </script>
 
 <style>
-	@import url("myorder.css");
+	@import url("../coser/myorder.css");
 </style>

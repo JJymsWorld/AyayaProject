@@ -1,14 +1,14 @@
 	.login-title{
-		height: 50px;
+		height: 100rpx;
 		width: 50%;
 		margin: 0 auto;
-		padding: 70px 0 30px;
+		padding: 140rpx 0 60rpx;
 	}
 	.login-img{
 		height: 100%;
-		border-radius: 5px;
-		box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.35);
-		margin-right: 10px;
+		border-radius: 10rpx;
+		box-shadow: 6rpx 6rpx 6rpx 0rpx rgba(0, 0, 0, 0.35);
+		margin-right: 20rpx;
 	}
 	.app-name{
 		font-size: 70rpx;
@@ -19,7 +19,7 @@
 	.row-box{
 		width: 75%;
 		margin: 0 auto;
-		padding: 20px 0;
+		padding: 40rpx 0;
 		/* 使每行分开布局 */
 		overflow: hidden;
 	}

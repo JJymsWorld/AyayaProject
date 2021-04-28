@@ -5,7 +5,7 @@
 				<view class="goback-box" @click="gotoMyPage">
 					<image src="../../../static/goback.png" mode=""></image>
 				</view>
-				<view class="search-box">
+				<view class="search-box" @click="onSearch">
 					<image src="../../../static/search-icon.png" mode=""></image>
 					<input type="text" value="" confirm-type="search" placeholder="搜索我的订单" />
 				</view>
@@ -26,9 +26,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -41,7 +41,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button>取消订单</button>
+						<button @click="onCancelOrder()">取消订单</button>
 						<button>修改订单信息</button>
 					</view>
 				</uni-list-item>
@@ -61,9 +61,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -76,7 +76,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button>取消订单</button>
+						<button @click="onCancelOrder()">取消订单</button>
 						<button>修改订单信息</button>
 					</view>
 				</uni-list-item>
@@ -96,9 +96,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -111,7 +111,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button class="pinkbutton">确认支付</button>
+						<button class="pinkbutton" @click="onPay">确认支付</button>
 					</view>
 				</uni-list-item>
 			</uni-list>
@@ -130,9 +130,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode=""></image>
+						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
-							<view class="">
+							<view class="" @click="gotoUserHomePage()">
 								摄影师：{{item.usernamB}}
 							</view>
 							<view class="">
@@ -145,16 +145,24 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button class="pinkbutton">查看成片</button>
+						<button class="pinkbutton" @click="gotoWorkPage()">查看成片</button>
 					</view>
 				</uni-list-item>
 			</uni-list>
 		</view>
+		<!-- 输入支付密码 -->
+		<jpPwd ref="jpPwds" contents="" @completed="completed"></jpPwd>
+		<!-- 是否取消订单 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="是否取消该订单" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import ssnavbar from '../../../components/ss-navbar/ss-navbar.vue'
+	import jpPwd from '@/components/jp-pwd/jp-pwd.vue';
 	export default {
 		data() {
 			return {
@@ -192,9 +200,11 @@
 			}
 		},
 		components: {
-			ssnavbar
+			ssnavbar,
+			jpPwd
 		},
 		methods: {
+			// 改变导航栏状态
 			navbarTapHandler: function(index) {
 				this.currentIndex = index;
 				var obj = this.navArr[index];
@@ -203,6 +213,55 @@
 			gotoMyPage: function(){
 				uni.switchTab({
 					url:'../../Mypage/mypage'
+				})
+			},
+			// 搜索我的订单
+			onSearch: function(){
+				uni.navigateTo({
+					url: '../searchorder'
+				})
+			},
+			// 进入用户个人主页
+			gotoUserHomePage: function(){
+				uni.navigateTo({
+					url: '../../Mypage/homePage/homePage'
+				})
+			},
+			// 进入作品详情页面
+			gotoWorkPage: function(){
+				uni.navigateTo({
+					url: '../../works/works'
+				})
+			},
+			// 进入动态详情页面
+			gotoDynamicPage: function(){
+				uni.navigateTo({
+					url: '../../DynamicPage/dynamicDetails'
+				})
+			},
+			// 取消订单
+			onCancelOrder: function(){
+				this.$refs.popup1.open()
+			},
+			// 确认支付
+			onPay: function(){
+				this.$refs.jpPwds.toOpen()
+			},
+			// 输入密码完成
+			completed: function(e){
+				// 密码输入正确
+				this.$refs.jpPwds.toCancel()
+				// 密码输入错误
+				// this.$refs.jpPwds.backs()
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确认取消订单
+			confirm: function() {
+				uni.showToast({
+					title: '取消成功'
 				})
 			}
 		}

@@ -4,7 +4,7 @@
 
 		</view>
 		<view class="search-box">
-			<uni-search-bar @confirm="" :radius="30" @cancel="onGoBack" value="coser"></uni-search-bar>
+			<uni-search-bar @confirm="" :radius="30" @cancel="onGoBack" :value="searchLabel"></uni-search-bar>
 		</view>
 		<!-- 动态内容 -->
 		<view class="dynamicBox">
@@ -15,22 +15,14 @@
 						  <view class="dynamnicHead">
 							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
 							<view class="dynamicUserDate">
-								<view class="dynamicUsername">{{item.userName}}</view>
+								<view class="dynamicUsername" @click.stop="homePageNavi(item.accountB)">{{item.userName}}</view>
 							    <view class="dynamicDate">{{item.uploadTime}}</view>
 							</view>
-							
+							<view class="cancelButtonNot"  @click.stop=""><text>关注</text></view>
 						</view>
 						<!-- 正文 -->
 						<view class="dynamicText">{{item.mainBody}}</view>
-						<!-- 内容不为作品 -->
-						<!-- <image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image> -->
-					<!-- 	
-						<view v-if="item.opusId ==''" class="dynamicGridBox">
-							<gridBox :picture="item.dynamicPhotos"></gridBox>
-						</view> -->
-						<!-- 内容不为作品 end-->
 						
-						<!-- 内容不为为作品 -->
 						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
 							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
 							<view class="dynamicTitle">{{item.title}}</view>
@@ -69,30 +61,7 @@
 		
 		<uni-load-more status="noMore"></uni-load-more>
 		</view>
-		<!-- 
-		 <view v-if="recommendTag==1" class="recommendBox">
-			 <view class="recommendHead">10 条评论
-			 <span class="iconfont1" @click='recoomendExit'>&#xe623;</span>
-			 </view>
-			 
-			<view>
-				 <view>
-		        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-		        @scroll="scroll" >
-		            <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
-						<image :src="item.avatarR" mode="aspectFill"></image>
-						<view class="recomendItemT">
-						<view>{{item.usernameR}}</view>
-						<view>{{item.text}}</view>
-						<view>{{item.date}}</view>
-						
-						</view>
-						<span :class="item.recLike==1?'iconfont2':'iconfont'" @click='recomendLike(index)'>&#xe608;</span>
-					</view>
-		        </scroll-view>
-		    </view>
-			 </view>
-		 </view> -->
+		
 		</view>
 		
 	</view>
@@ -101,24 +70,24 @@
 </template>
 
 <script>
-	// var dynamicIt = document.getElementById("dynamicIt");
-	// dynamicIt.onclick = function(e) {
-	// 	e = e || window.event;
-	// 	e.preventDefault();
-	// 	console.log(e.target.innerHTML)
-	// }
+	
 	import gridBox from '../../components/gridImage/gridImage.vue'
 	export default{
-		onLoad() {
+		onLoad(option) {
+			// 接收传入的搜索话题
+			this.searchLabel = option.label
+			
 			this.userId = getApp().globalData.global_userId
 			console.log(this.userId)
 			this.LoadDynamic(1,1,10)
 		},
+		
 		components: {
 			gridBox
 		},
 		data(){
 			return{
+				searchLabel: '',
 				userId:'',
 				recommendTag:0,
 				scrollTop: 0,
@@ -163,111 +132,7 @@
 					}
 				],
 				dynamicItem:[
-					// {
-					// 	Id:'1',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'1',
-					// 		titleW:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
-					// 		firstImage:'../../static/iconn/d1.jpg'
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'2',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'3',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'4',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// }
+					
 				],
 			    recomendList:[
 					{
@@ -330,13 +195,6 @@
 			}
 		},
 		methods:{
-			// 返回前一页面
-			onGoBack: function(){
-				console.log('cancel')
-				uni.navigateBack({
-					
-				})
-			},
 			searchNavi(){
 				uni.navigateTo({
 					url:'../search/search'
@@ -353,6 +211,13 @@
 					this.$data.dynamicItem[i].isInterest=0;
 				}
 				
+			},
+			// 返回前一页面
+			onGoBack: function(){
+				console.log('cancel')
+				uni.navigateBack({
+					
+				})
 			},
 			scroll: function(e) {
 			    console.log(e)
@@ -438,6 +303,21 @@
 <style>
 	@import url("../DynamicPage/dynamic.css");
 	@import url("./searchRes.css");
+	.cancelButtonNot{
+		position: absolute;
+		top: 40rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 45rpx;
+		border: 1rpx solid #EC808D;
+		border-radius: 30rpx;
+		text-align: center;
+		line-height: 35rpx;
+	}
+	.cancelButtonNot text{
+		font-size: 23rpx;
+		color: #EC808D;
+	}
 </style>
 
 

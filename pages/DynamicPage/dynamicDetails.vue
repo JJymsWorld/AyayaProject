@@ -60,7 +60,7 @@
 									<span class="iconfont1"@click="open(true,index)">&#xe6b3;</span>
 									<!-- 回复该条评论end -->
 								</view>
-								<view class="commentedBox">
+								<view class="commentedBox" v-if="item.commentN!='0'">
 									<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
 										<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
 										{{item.commented[0].textD}}
@@ -285,7 +285,7 @@
 				],
 				commentText:'',
 				isCommented:false,
-				commentedIndex:''
+				commentedIndex:'0'
 			}
 		},
 	    methods:{
@@ -359,7 +359,7 @@
 				var t={}
 				if(this.isCommented==false){
 					 t={
-						commentId:'',
+						commentId:'8',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
 						userId:'',
@@ -373,7 +373,12 @@
 					var time = new Date()
 					t.timeC=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
 					t.textC=this.commentText
-					this.comment.unshift(t)
+					 this.comment.unshift(t)
+					 // 填写更新评论接口
+					 // 
+					 // 
+					 // 
+					 
 				}
 				else{
 					t={
@@ -382,6 +387,7 @@
 						textD:''
 					}
 					t.textD=this.commentText
+					this.comment[this.commentedIndex].commentN++;
 					this.comment[this.commentedIndex].commented.unshift(t)
 				}
 				this.$refs.popup.close()

@@ -60,7 +60,8 @@
 }
 
 .icon-shanchu:before {
-  content: "\e615";
+  /* content: "\e615"; */
+  content: "\e6ba";
 }
 
 .icon-more:before {

@@ -34,7 +34,7 @@
 					</uni-list>
 				</view>
 			</view>
-			<view class="CosCollections-allButton" :class="isallButtonStatus == true ?'CosCollections-allButton-active':''">
+			<view class="CosCollections-allButton" :class="isallButtonStatus == true ?'CosCollections-allButton-active':''" @click="gotoCollectionContentPage()">
 				<view class="CosCollections-Button" :class="isallButtonStatus == true ?'CosCollections-Button-active':''">查看合集活动</view>
 			</view>
 		</view>
@@ -43,6 +43,9 @@
 
 <script>
 	export default {
+		onLoad(options) {
+			console.log(options.activity_id);
+		},
 		data() {
 			return {
 				tabIndex:0,
@@ -100,6 +103,12 @@
 			gotoEventDetailPage(){
 				uni.navigateTo({
 					url:"./EventDetailPage"
+				})
+			},
+			// 跳转至线下合集活动页面
+			gotoCollectionContentPage(){
+				uni.navigateTo({
+					url:"./CollectionContentPage"
 				})
 			}
 		},

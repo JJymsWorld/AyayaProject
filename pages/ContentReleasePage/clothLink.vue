@@ -36,7 +36,6 @@
 		},
 		data() {
 			return {
-				
 				// 服饰链接列表
 				clothList: [{
                     name: '',

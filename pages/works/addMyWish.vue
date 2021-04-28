@@ -72,7 +72,7 @@
 				<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill"></image>
 				
 		</view>
-		<view class="finalButton" @click="releaseWork()"><text>发布作品</text></view>
+		<view class="finalButton" @click="releaseWork()"><text>加入心愿单</text></view>
 	</view>
 	
 </template>
@@ -153,9 +153,10 @@
 				})
 			},
 			releaseWork(){
-				uni.navigateTo({
-					url:'../ContentReleasePage/postDynamic'
-				})
+				// uni.navigateTo({
+				// 	url:'../ContentReleasePage/postDynamic'
+				// })
+				uni.navigateBack({})
 			},
 			changePhotographer(){
 				uni.navigateTo({

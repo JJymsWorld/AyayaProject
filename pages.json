@@ -115,13 +115,21 @@
 					}
 				
 			}
-		},
+		},	
 		{
 			"path":"pages/Mypage/myStarList/myStarListDetail",
 			"style":{
-				"navigationBarTitleText":"我的收藏"
+				"navigationBarTitleText":"我的收藏夹",
+				"navigationBarBackgroundColor":"#F2A3C3",
+				"app-plus":
+					{
+						"titleNView":{
+							"titleColor":"#272727"
+						}
+					}
+				
 			}
-		},
+		},	
 		{
 			"path":"pages/Mypage/myPic/myPic",
 			"style":{
@@ -196,7 +204,17 @@
 		{
 			"path":"pages/Mypage/myWishList/myClothLink",
 			"style":{
-				"navigationBarTitleText":"编辑服饰链接"
+				"navigationBarTitleText":"编辑服饰链接",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "保存",
+							"fontSize":"16px"
+						}]
+					}
+				}
 			}
 		}
 		,{
@@ -234,6 +252,26 @@
         }
 		,{
 		    "path" : "pages/search/searchLabel",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/search/searchCoser",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/search/searchCoserRes",
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "",
@@ -595,7 +633,26 @@
 				"navigationStyle":"custom"
 			}
 		}
-		
+        ,{
+            "path" : "pages/pictureOrder/searchorder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/pictureOrder/searchorderRes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"navigationStyle":"custom"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

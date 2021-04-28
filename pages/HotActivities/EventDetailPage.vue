@@ -46,13 +46,13 @@
 				</view>
 				<view class="EventDetail-bottom-works-list">
 					<view class="content-box">
-						<waterfallsFlow :list="AttendWorksList" @wapper-lick="">
+						<waterfallsFlow :list="AttendWorksList" @wapper-lick="gotoWorksPage()" >
 							<template v-slot:default="item" class="content-box-item">
 								<view class="cnt">
 									<view class="title">{{item.title}}</view>
 									<view class="user-info-box">
-										<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
-										<view class="user-name">{{item.userName}}</view>
+										<image class="user-head-img" :src="item.headImg" mode="aspectFill" @click.stop="gotoUserHomePage()"></image>
+										<view class="user-name" @click.stop="gotoUserHomePage()">{{item.userName}}</view>
 										<!-- <view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.supportNum}}
 										</view> -->
 										<view class="view-num" >应援值: {{item.supportNum}}
@@ -76,6 +76,9 @@
 		components: {
 			xwCountDown,
 			waterfallsFlow
+		},
+		onLoad(options) {
+			console.log(options.activity_id);
 		},
 		data() {
 			return {
@@ -161,9 +164,16 @@
 				this.tabIndex = 2
 				console.log(this.tabIndex)
 			},
-			gotoWorksPage(){
+			// 进入用户个人主页
+			gotoUserHomePage: function(){
 				uni.navigateTo({
-					url:"../works/works"
+					url: '../Mypage/homePage/homePage'
+				})
+			},
+			// 进入作品详情页面
+			gotoWorksPage: function(){
+				uni.navigateTo({
+					url: '../works/works'
 				})
 			},
 			gotoPostWorksPage(){

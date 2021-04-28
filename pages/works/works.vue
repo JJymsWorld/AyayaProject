@@ -47,14 +47,14 @@
 				<td>服饰：<text @click="clothingClick(clothingLink)">#{{clothingName}}#</text></td>
 			</tr> -->
 			<tr>
-				<td>服饰：<text v-for="(item,index) in clothList" :key="index" @click="clothingClick(item.link)">#{{item.name}}#</text></td>
+				<td>服饰：<text v-for="(item,index) in clothList" :key="index" @click="clothingClickOpen(item.link)">#{{item.name}}#</text></td>
 			</tr>
 		</table>
 	</view>
 	<!-- 正文 -->
 	<view class="textBox">
 		<view class="otherLabel">
-			<span v-for="(item,index) in label" :key="index" @click="searchLabelNavi">
+			<span v-for="(item,index) in label" :key="index" @click="searchLabelNavi(item)">
 			#{{item}}#
 		    </span>
 		</view>
@@ -105,10 +105,10 @@
 							<!-- <span class="iconfont3">&#xe659;</span> -->
 							
 							<!-- 回复该条评论 -->
-							<span class="iconfont1"@click="open(0)">&#xe6b3;</span>
+							<span class="iconfont1"@click="open(0,true,index)">&#xe6b3;</span>
 							<!-- 回复该条评论end -->
 						</view>
-						<view class="commentedBox">
+						<view class="commentedBox" v-if="item.commentN!='0'">
 							<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
 								<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
 								{{item.commented[0].textD}}
@@ -157,7 +157,7 @@
 			<!-- 收藏end -->
 			
 			<li>
-				<span class="iconfont2" @click="open(0)">&#xe600;</span>
+				<span class="iconfont2" @click="open(0,false)">&#xe600;</span>
 				<span>{{commentNum}}</span>
 			</li>
 			<li>
@@ -166,7 +166,7 @@
 			</li>
 			<!-- 应援 -->
 			<li>
-				<span class="iconfont2">&#xe615;</span>
+				<span class="iconfont2" @click="starAdd">&#xe615;</span>
 				<span>{{starNum}}</span>
 			</li>
 			<!-- 应援end -->
@@ -177,7 +177,10 @@
 	<view v-if="popTag==0">
 		<uni-popup ref="popup" type="bottom">
 			<view class="commentPop">
-				<view class="commentPopBox"><input placeholder="说点啥"/>  </view>
+				<view class="commentPopBox"><input placeholder="说点啥" @input="commentInput($event)"@confirm="commentConfirm($event)"/>
+				
+				</view>
+				<view class="commentPopSend" @click="sendComment()">发送</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -219,12 +222,12 @@
 			   <view class="collectPopBox">
 				   <view class="collectPopBoxTitle">添加收藏</view>
 				   <view class="collectPopBoxAddList">
-					   <view>
-						   <span class="iconfont_dy">&#xe623;</span>
+					   <view @click="addCollectList">
+						   <span class="iconfont_dy"style="font-size: 25rpx;opacity: 0.5;padding-right: 10rpx;">&#xe64f;</span>
 						   新建收藏夹
 						</view>
 				   </view>
-				   <view v-for="(item,index) in collectList" :key="index" class="collectPopBoxDetail">
+				   <view v-for="(item,index) in collectList" :key="index" class="collectPopBoxDetail" @click="addToCollectList(item.collectListId)">
 					   <image src="../../static/iconn/iconn/4.jpg" mode="aspectFill"></image>
 					   <view>{{item.collectListTitle}}</view>
 				   </view>
@@ -233,6 +236,48 @@
 		</uni-popup>
 	</view>
 	<!-- 收藏pop end -->
+	
+	<!-- 收藏成功提示 -->
+	<view  v-if="popTag==3">
+		<uni-popup ref="popup" type="dialog">
+		    <!-- <uni-popup-message type="info" mode="base" content="加入收藏夹成功" title="提示" message="成功加入收藏夹!" :duration="2000":before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-message> -->
+			<uni-popup-dialog type="info" mode="base" content="加入收藏夹成功!"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-dialog>
+		</uni-popup>
+	</view>
+	
+	<!-- 收藏成功end -->
+	
+	<!-- 收藏成功提示 -->
+	<view  v-if="popTag==4">
+		<uni-popup ref="popup" type="dialog">
+		    <!-- <uni-popup-message type="info" mode="base" content="加入收藏夹成功" title="提示" message="成功加入收藏夹!" :duration="2000":before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-message> -->
+			<uni-popup-dialog type="info" mode="input" placeholder="请输入收藏夹名称" title="收藏夹" content="加入收藏夹成功!"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-dialog>
+		</uni-popup>
+	</view>
+	
+	<!-- 收藏成功end -->
+	
+	<!-- 收藏成功提示 -->
+	<view  v-if="popTag==5">
+		<uni-popup ref="popup" type="center">
+		    <view class="clothLinkPopBox">
+				<view class="clothLink">{{currentClothLink}}</view>
+				<view class="copyLink" @click="copyClothLink()">复制链接</view>
+			</view>
+		</uni-popup>
+	</view>
+	
+	<!-- 收藏成功提示end -->
+	
+	<!-- 复制链接成功提示 -->
+	<view  v-if="popTag==6">
+		<uni-popup ref="popup" type="dialog">
+		    <!-- <uni-popup-message type="info" mode="base" content="加入收藏夹成功" title="提示" message="成功加入收藏夹!" :duration="2000":before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-message> -->
+			<uni-popup-dialog type="info" mode="base" content="复制服饰链接成功!"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-dialog>
+		</uni-popup>
+	</view>
+	
+	<!-- 复制链接成功end -->
 	
 	<view class="lastblank"></view>
 </view>
@@ -435,18 +480,27 @@
 						collectListId:'9',
 						collectListTitle:'国风'
 					}
-				]
+				],
+				commentText:'',
+				isCommented:false,
+				commentedIndex:'0',
+				currentClothLink:''
 			}
 		},
 		onLoad:function(option){
 			console.log(option.workId);
 		},
 		methods:{
-			open(i){
+			open(i,n,index){
 				this.popTag=i
+				this.isCommented = n
+				this.commentedIndex = index
 				this.$refs.popup.open()
 			},
 			close(){
+				this.$refs.popup.close()
+			},
+			confirm(){
 				this.$refs.popup.close()
 			},
 			focusButton(i){
@@ -482,9 +536,25 @@
 					
 				})
 			},
-			searchLabelNavi(){
+			clothingClickOpen(link){
+				this.popTag = 5
+				this.currentClothLink = link
+				this.$refs.popup.open()
+			},
+			copyClothLink(){
+				uni.setClipboardData({
+					data:this.currentClothLink,
+					success:function(){
+						uni.hideToast();
+					}
+					
+				}),
+				this.popTag = 6
+				this.$refs.popup.open()
+			},
+			searchLabelNavi(label){
 				uni.navigateTo({
-					url:'../search/searchLabel'
+					url:"../search/searchLabel?label=" + label
 				})
 			},
 			homePageNavi(i){
@@ -532,8 +602,69 @@
 					//
 				}
 			},
+			starAdd(){
+				this.starNum++
+			},
 			isExtendFunc(i){
 				this.comment[i].isCommentExtend=!this.comment[i].isCommentExtend
+			},
+			addCollectList(){
+				this.popTag = 4
+			},
+			addToCollectList(id){
+				// 填写加入收藏夹接口
+				// 
+				// 
+				// 
+				this.popTag = 3
+				
+			},
+			commentInput(event){
+				console.log(event.detail)
+				this.commentText=event.detail.value
+			},
+			commentConfirm(event){
+				this.commentText=event.detail.value
+				this.sendComment()
+			},
+			sendComment(){
+				console.log(this.isCommented)
+				var t={}
+				if(this.isCommented==false){
+					 t={
+						commentId:'8',
+						avatarC:'../../static/iconn/p2.jpg',
+						usernameC:'蒲儿姓蒲',
+						userId:'',
+						timeC:'',
+						textC:'',
+						commentN:'0',
+						isCommentExtend:false,
+						commented:[],
+						isInterestC:''
+					}
+					var time = new Date()
+					t.timeC=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
+					t.textC=this.commentText
+					 this.comment.unshift(t)
+					 // 填写更新评论接口
+					 // 
+					 // 
+					 // 
+					 
+				}
+				else{
+					t={
+						userId:'',
+						usernameD:'国际巨星',
+						textD:''
+					}
+					t.textD=this.commentText
+					this.comment[this.commentedIndex].commentN++;
+					this.comment[this.commentedIndex].commented.unshift(t)
+				}
+				this.$refs.popup.close()
+				
 			}
 		},
 		

@@ -407,19 +407,29 @@ ul,li{
 	padding-top: 5rpx;
 }
 .commentPopBox{
+	display: inline-block;
+	width: 85%;
 	height: 70rpx;
 	margin-top: 15rpx;
+	
 }
 .commentPopBox input{
-	width: 90%;
 	height: 70rpx;
 	background-color: rgba(221,221,221,0.3);
 	font-size: 25rpx;
-	margin: 0rpx auto;
+	/* margin: 0rpx auto; */
+	margin-left: 20rpx;
 	border-radius: 90rpx;
 	color: rgba(9,9,9,0.5);
 	padding-left: 40rpx;
 	padding-bottom: 5rpx;
+}
+.commentPopSend{
+	display: inline-block;
+	margin-left: 20rpx;
+	line-height: 90rpx;
+	vertical-align: top;
+	
 }
 
 
@@ -518,4 +528,24 @@ ul,li{
 	border-top: 2rpx solid #f7f7f7;
 	
 	margin-top: 40rpx;
+}
+.clothLinkPopBox{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 500rpx;
+	height: 350rpx;
+	background-color: #FFFFFF;
+	border-radius: 20rpx;
+}
+.clothLink{
+	padding-left: 20rpx;
+	line-height: 70rpx;
+}
+.copyLink{
+	position: absolute;
+	left: 20rpx;
+	bottom: 20rpx;
+	font-size: 25rpx;
+	color: #0086B3;
 }
