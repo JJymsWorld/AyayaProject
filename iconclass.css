@@ -1,4 +1,5 @@
 /* 字体声明 */
+
 @font-face {
   font-family: 'iconfont';
   
@@ -19,7 +20,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.iconfontx {
+  /* opacity: 0.4; */
+  font-family: "iconfont" !important;
+  font-size: 35rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .icon-ziyuan:before {
   content: "\e609";
 }

@@ -5,18 +5,20 @@
 				<view :class="['fas','fa-edit']"></view>
 			</view>
 		</view>
-		<view v-for="(item,index) in clothList" :key="index">
+		<view class="" v-for="(item,index) in clothList" :key="index">
 			<delSlideLeft :item="item" :data_transit="{index:index,item:item}" @delItem="delItem">
-				<view class="form-item">
-					<text>标签:</text>
-					<view class="form-item-input">
-						<input type="text" :value="item.name" placeholder="" @input="editClothLabel($event, index)"/>
+				<view class="link-box">
+					<view class="form-item">
+						<text>标签:</text>
+						<view class="form-item-input">
+							<input type="text" :value="item.name" placeholder="" @input="editClothLabel($event, index)"/>
+						</view>
 					</view>
-				</view>
-				<view class="form-item form-item1">
-					<text>服饰链接:</text>
-					<view class="form-item-input form-item-teatarea">
-						<textarea :value="item.link" placeholder="在此处粘贴服饰链接" @input="editClothLink($event, index)"/>
+					<view class="form-item form-item1">
+						<text>服饰链接:</text>
+						<view class="form-item-input form-item-teatarea">
+							<textarea :value="item.link" placeholder="在此处粘贴服饰链接" @input="editClothLink($event, index)"/>
+						</view>
 					</view>
 				</view>
 			</delSlideLeft>
@@ -27,18 +29,18 @@
 
 
 <script>
-	import delSlideLeft from '@/components/ay-operate/del_slideLeft.vue'
+	import delSlideLeft from '@/components/ay-operate/mydel_slideLeft.vue'
 	export default {
 		components: {
 			delSlideLeft,
 		},
 		data() {
 			return {
+				
 				// 服饰链接列表
 				clothList: [{
                     name: '',
 					link: '',
-                    txtStyle:'',//该字段必须初始化传入
                 }],
 				clothLabels: ''
 			};
@@ -53,7 +55,6 @@
 				this.clothList.push({
 					name: '',
 					link: '',
-					txtStyle:'',//该字段必须初始化传入
 				})
 				console.log(this.clothList)
 			},
@@ -77,16 +78,26 @@
 			}
 			// 传回@用户name及index到发布页面
 			uni.$emit("emitClothLabels", {
+				clothList: this.clothList,
 				clothLabels: this.clothLabels,
 			});
 
 			uni.navigateBack()
 		},
 		onLoad: function(option) {
-			this.index = option.index
-			const eventChannel = this.getOpenerEventChannel()
-			// 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
-
+			const that = this
+			that.index = option.index
+			const eventChannel = that.getOpenerEventChannel()
+			// 监听emitClothLink事件，获取上一页面通过eventChannel传送到当前页面的数据
+			eventChannel.on('emitClothLink', function(data) {
+			    that.clothList = data.clothList
+				// 初始化服饰链接为空时添加一个空编辑框
+				if(that.clothList.length == 0){
+					that.clothList.push({
+						name: '',
+						link: '',})
+				}
+			})
 		}
 	}
 </script>

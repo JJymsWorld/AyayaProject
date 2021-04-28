@@ -156,6 +156,9 @@
 <script>
 	import ssnavbar from '../../../components/ss-navbar/ss-navbar.vue'
 	export default {
+		onLoad(option) {
+			this.currentIndex=option.currentIndex || 0
+		},
 		data() {
 			return {
 				currentIndex: 0,

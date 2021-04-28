@@ -41,10 +41,13 @@
 				<td>摄影：<text @click="homePageNavi(photographyId)">@{{photography}}</text></td>
 			</tr>
 			<tr>
-				<td>妆容：<text>#{{makeupLook}}#</text></td>
+				<td>妆容：<text @click="workNavi">#{{makeupLook}}#</text></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td>服饰：<text @click="clothingClick(clothingLink)">#{{clothingName}}#</text></td>
+			</tr> -->
+			<tr>
+				<td>服饰：<text v-for="(item,index) in clothList" :key="index" @click="clothingClick(item.link)">#{{item.name}}#</text></td>
 			</tr>
 		</table>
 	</view>
@@ -95,16 +98,29 @@
 						</view>
 						<view class="commentTextC">{{item.textC}}</view>
 						<view class="commentIconBox">
-						<span class="iconfont1">&#xe60b;</span>
-						<span class="iconfont3">&#xe659;</span>
-						<span class="iconfont1">&#xe6b3;</span>
+							<!-- 给评论点赞 -->
+							<span v-if="item.isInterestC==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
+							<span v-if="item.isInterestC==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
+							<!-- 给评论点赞end -->
+							<!-- <span class="iconfont3">&#xe659;</span> -->
+							
+							<!-- 回复该条评论 -->
+							<span class="iconfont1"@click="open(0)">&#xe6b3;</span>
+							<!-- 回复该条评论end -->
 						</view>
 						<view class="commentedBox">
-							<view class="commentedBoxv1">
-								<text @click="homePageNavi(item.userId)">国际巨星：</text>
-								少女的恬静 夫人的端庄 书生的洒脱少女的恬静 夫人的端庄 书生的洒脱
+							<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
+								<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
+								{{item.commented[0].textD}}
 							</view>
-							<view class="commentBoxv2">共{{item.commentN}}条回复 ></view>
+							<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
+						
+							<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="a">
+								<text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
+								{{a.textD}}
+							</view>
+							<view class="commentBoxv2" v-if="item.isCommentExtend==true"@click="isExtendFunc(index)">共{{item.commentN}}条回复--收起 ></view>
+						
 						</view>
 						
 					</view>
@@ -118,28 +134,106 @@
 	<view class="lastBox">
 		<ul>
 			<li><input value="说点啥..."> </li>
-			<li>
-				<span class="iconfont2">&#xe785;</span>
+			<!-- 点赞 -->
+			<li v-if="isInterest==0">
+				<span class="iconfont2" @click="interestFunc(1)">&#xe785;</span>
 				<span>{{interestNum}}</span>
 			</li>
-			<li>
-				<span class="iconfont2">&#xe609;</span>
+			<li v-if="isInterest==1">
+				<span class="iconfont2" @click="interestFunc(0)" style="color:#EC808D;opacity: 1;">&#xe60f;</span>
+				<span style="color:#EC808D;opacity: 1;">{{interestNum}}</span>
+			</li>
+			<!-- 点赞end -->
+			
+			<!-- 收藏 -->
+			<li v-if="isCollect==0">
+				<span class="iconfont2" @click="collectFunc">&#xe609;</span>
 				<span >{{collectNum}}</span>
 			</li>
+			<li v-if="isCollect==1">
+				<span class="iconfont2" @click="collectFunc"style="color:#EC808D;opacity: 1;">&#xe609;</span>
+				<span style="color:#EC808D;opacity: 1;">{{collectNum}}</span>
+			</li>
+			<!-- 收藏end -->
+			
 			<li>
-				<span class="iconfont2">&#xe600;</span>
+				<span class="iconfont2" @click="open(0)">&#xe600;</span>
 				<span>{{commentNum}}</span>
 			</li>
 			<li>
-				<span class="iconfont2">&#xe65f;</span>
+				<span class="iconfont2" @click="open(1)">&#xe65f;</span>
 				<span>{{relayNum}}</span>
 			</li>
+			<!-- 应援 -->
 			<li>
 				<span class="iconfont2">&#xe615;</span>
 				<span>{{starNum}}</span>
 			</li>
+			<!-- 应援end -->
 		</ul>
 	</view>
+	
+	<!-- 评论pop -->
+	<view v-if="popTag==0">
+		<uni-popup ref="popup" type="bottom">
+			<view class="commentPop">
+				<view class="commentPopBox"><input placeholder="说点啥"/>  </view>
+			</view>
+		</uni-popup>
+	</view>
+	<!-- 评论pop end -->
+	
+	<!-- 分享pop -->
+	<view v-if="popTag==1">
+		<uni-popup ref="popup" type="bottom">
+			   <view class="relayPopBox">
+				   <view class="relayPopBoxTitle">分享至</view>
+				   <view class="relayPopBoxButtonBox">
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe61a;</span>
+						   <view class="relayText">微信</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe65b;</span>
+					   	   <view class="relayText">朋友圈</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe73c;</span>
+					   	   <view class="relayText">微博</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe60c;</span>
+					   	   <view class="relayText">QQ</view>
+					   </view>
+				   </view>
+				   
+				   <view class="relayPopBoxExit" @click.stop="close()">取消</view>
+			   </view>
+		</uni-popup>
+	</view>
+	<!-- 分享pop end -->
+	
+	<!-- 收藏pop -->
+	<view v-if="popTag==2">
+		<uni-popup ref="popup" type="bottom">
+			   <view class="collectPopBox">
+				   <view class="collectPopBoxTitle">添加收藏</view>
+				   <view class="collectPopBoxAddList">
+					   <view>
+						   <span class="iconfont_dy">&#xe623;</span>
+						   新建收藏夹
+						</view>
+				   </view>
+				   <view v-for="(item,index) in collectList" :key="index" class="collectPopBoxDetail">
+					   <image src="../../static/iconn/iconn/4.jpg" mode="aspectFill"></image>
+					   <view>{{item.collectListTitle}}</view>
+				   </view>
+				   <view class="collectPopBoxExit" @click.stop="close()">取消</view>
+			   </view>
+		</uni-popup>
+	</view>
+	<!-- 收藏pop end -->
+	
 	<view class="lastblank"></view>
 </view>
 </template>
@@ -148,6 +242,7 @@
 	export default{
 		data(){
 			return{
+				popTag:'0',
 				isFocus:'0',
 				workId:'',
 				userId:'',
@@ -160,6 +255,7 @@
 				commentNum:'2310',
 				relayNum:'2310',
 				starNum:'2310',
+				isStar:'0',
 				pic:[
 					'../../static/contentImg/3.jpg',
 					'../../static/CoserlistSource/userheadimg7.jpg',
@@ -173,6 +269,17 @@
 				makeupLook:'江南美人妆',
 				clothingName:'汉服',
 				clothingLink:'hfeuigywbqbfiu',
+				clothList: [
+					{
+				    name: '中牌',
+					link: 'hwfeihwfowieh',
+					},
+					{
+					name: '梗豆',
+					link: 'whifeuowieiow',
+					}
+					
+				],
 				label:[
 					'汉服',
 					'约拍广场'
@@ -211,13 +318,23 @@
 						userId:'',
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
-						commentN:'10',
+						commentN:'3',
+						isCommentExtend:false,
 						commented:[
 							{
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							}
-						]
+						],
+						isInterestC:''
 					},
 					{
 						commentId:'3',
@@ -227,13 +344,24 @@
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
+						isCommentExtend:false,
 						commented:[
 							{
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							}
-						]
-					},{
+						],
+						isInterestC:''
+					},
+					{
 						commentId:'4',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
@@ -241,13 +369,24 @@
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
+						isCommentExtend:false,
 						commented:[
 							{
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							}
-						]
-					},{
+						],
+						isInterestC:''
+					},
+					{
 						commentId:'55',
 						avatarC:'../../static/iconn/p2.jpg',
 						usernameC:'蒲儿姓蒲',
@@ -255,12 +394,22 @@
 						timeC:'2020-12-08      ',
 						textC:'春水碧于天，画船听雨眠',
 						commentN:'10',
+						isCommentExtend:false,
 						commented:[
 							{
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
+							},
+							{
+								usernameD:'国际巨星',
+								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							}
-						]
+						],
+						isInterestC:''
 					}
 				],
 				scrollTop: 0,
@@ -268,18 +417,38 @@
 				    scrollTop: 0
 				},
 				
-				
 				background: ['color1', 'color2', 'color3'],
-				            indicatorDots: true,
-				        
-				            interval: 2000,
-				            duration: 500
+				indicatorDots: true,
+								        
+				interval: 2000,
+				duration: 500,
+				collectList:[
+					{
+						collectListId:'9',
+						collectListTitle:'国风'
+					},
+					{
+						collectListId:'9',
+						collectListTitle:'国风'
+					},
+					{
+						collectListId:'9',
+						collectListTitle:'国风'
+					}
+				]
 			}
 		},
 		onLoad:function(option){
 			console.log(option.workId);
 		},
 		methods:{
+			open(i){
+				this.popTag=i
+				this.$refs.popup.open()
+			},
+			close(){
+				this.$refs.popup.close()
+			},
 			focusButton(i){
 				this.$data.isFocus=i
 			},
@@ -297,8 +466,10 @@
 				uni.navigateBack()
 			},
 			makeTheSameNavi:function(){
+				var t=JSON.stringify(this.clothList)
+				//console.log(t )
 				uni.navigateTo({
-					url:'myWish'
+					url:'addMyWish?workId='+this.workId+'&workTitle='+this.title+'&photographerId='+this.photographyId+'&clothingLink='+this.clothingLink+'&madeupId='+this.workId+'&clothList='+t
 				})
 			},
 			clothingClick(i){
@@ -325,6 +496,44 @@
 				uni.navigateTo({
 					url:'works?workId='+i
 				})
+			},
+			interestFunc(i){
+				this.isInterest=i;
+				if(i==0){
+					this.interestNum--;
+					// 填写取消点赞接口
+					// 
+					// 
+				}
+				else if(i==1){
+					this.interestNum++;
+					// 填写点赞接口
+					// 
+					// 
+				}
+			},
+			interestCFunc(index,i){
+				this.comment[index].isInterestC=i;
+			},
+			collectFunc(){
+				this.popTag=2;
+				this.$refs.popup.open()
+				// this.isCollect==0时处于未收藏的状态
+				if(this.isCollect==2){
+					this.collectNum--;
+					// 填写取消收藏接口
+					// 
+					// 
+				}
+				else if(this.isCollect==1){
+					this.collectNum++;
+					// 填写添加收藏接口
+					// 
+					//
+				}
+			},
+			isExtendFunc(i){
+				this.comment[i].isCommentExtend=!this.comment[i].isCommentExtend
 			}
 		},
 		

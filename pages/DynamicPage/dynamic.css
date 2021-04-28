@@ -162,7 +162,7 @@
 	line-height: 40rpx;
 }
 .littleIconTable{
-	margin-left: 85rpx;
+	margin-left: 125rpx;
 	margin-top: 0rpx;
 	margin-bottom: 20rpx;
 }
@@ -309,4 +309,53 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
    vertical-align: middle;
+}
+
+.relayPopBox{
+	width: 100%;
+	height: 480rpx;
+	background-color: #FFFFFF;
+	border-top-left-radius: 40rpx;
+	border-top-right-radius: 40rpx;
+}
+.relayPopBoxTitle{
+	text-align: center;
+	font-size: 25rpx;
+	line-height: 60rpx;
+}
+.relayPopBoxButtonBox{
+	margin-top: 40rpx;
+	overflow: hidden;
+}
+.relayPopBoxButton{
+	float: left;
+	margin-left: 80rpx;
+	text-align: center;
+}
+.relayPopBoxButton span{
+	font-size: 90rpx;
+}
+.relayPopBoxButton:nth-child(1) span{
+	color: rgb(70, 187, 54);
+}
+.relayPopBoxButton:nth-child(2) span{
+	color: #07c160;
+}
+.relayPopBoxButton:nth-child(3) span{
+	color: #ea5d5c;
+}
+.relayPopBoxButton:nth-child(4) span{
+	color: #23a0f0;
+}
+.relayText{
+	font-size: 23rpx;
+	line-height: 46rpx;
+}
+
+.relayPopBoxExit{
+	text-align: center;
+	line-height: 100rpx;
+	border-top: 2rpx solid #f7f7f7;
+	
+	margin-top: 40rpx;
 }
