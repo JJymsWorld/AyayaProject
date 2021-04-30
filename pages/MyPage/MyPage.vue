@@ -86,17 +86,13 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
-				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;" @click="getAllOrder">查看全部订单 ></text>
+				<text @click="lookUpOrder(0)" style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
-					<td>
-						<navigator url="myPic/myPic" open-type="navigate">
-							<image class="sevenlinepic" src="../../static/icon/waiting.png"></image>
-						</navigator>
-					</td>
-					<td><image class="sevenlinepic" src="../../static/icon/doing.png"></image></td>
-					<td><image class="sevenlinepic" src="../../static/icon/complete.png"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/waiting.png"  @click="lookUpOrder(1)"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/doing.png" @click="lookUpOrder(2)"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/complete.png" @click="lookUpOrder(3)"></image></td>
 				</tr>
 				<tr>
 					<td style="font-size: 8pt;line-height: 30rpx;">待处理</td>
@@ -170,10 +166,9 @@
 					url:'myWishList/myWishList'
 				})
 			},
-			// 查看全部订单
-			getAllOrder(){
+			lookUpOrder(i){
 				uni.navigateTo({
-					url:'../pictureOrder/coser/cosorder'
+					url:'../pictureOrder/coser/cosorder?currentIndex='+i
 				})
 			}
 		}

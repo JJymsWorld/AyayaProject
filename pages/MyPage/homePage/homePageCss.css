@@ -231,12 +231,15 @@ ul,li{
 }
 .dynamicImage{
 	/* width: 670rpx; */
-	width: 90%;
+	width: 100%;
 	height: 340rpx;
 	border-radius: 20rpx;
-	margin-top: 20rpx;
-	margin-left: 5%;
+	margin-top: 10rpx;
 	/* margin-left: 2rpx; */
+}
+.dynamicGridBox{
+  width: 90%;
+  margin: 20rpx auto;
 }
 .dynamicTitle{
 	width: 90%;
@@ -246,8 +249,8 @@ ul,li{
 	line-height: 58rpx;
 }
 .littleIconTable{
-	margin-left: 85rpx;
-	margin-top: 10rpx;
+	margin-left: 125rpx;
+	margin-top: 0rpx;
 	margin-bottom: 20rpx;
 }
 .littleIconTable tr td{
@@ -457,4 +460,106 @@ ul,li{
 		font-size: 30rpx;
 		padding: 30rpx 0;
 		margin-top: 20rpx;
+	}
+	
+	
+	.relayPopBox{
+		width: 100%;
+		height: 380rpx;
+		background-color: #FFFFFF;
+		border-top-left-radius: 40rpx;
+		border-top-right-radius: 40rpx;
+	}
+	.relayPopBoxTitle{
+		text-align: center;
+		font-size: 25rpx;
+		line-height: 60rpx;
+	}
+	.relayPopBoxButtonBox{
+		margin-top: 40rpx;
+		overflow: hidden;
+	}
+	.relayPopBoxButton{
+		float: left;
+		margin-left: 80rpx;
+		text-align: center;
+	}
+	.relayPopBoxButton span{
+		font-size: 90rpx;
+	}
+	.relayPopBoxButton:nth-child(1) span{
+		color: rgb(70, 187, 54);
+	}
+	.relayPopBoxButton:nth-child(2) span{
+		color: #07c160;
+	}
+	.relayPopBoxButton:nth-child(3) span{
+		color: #ea5d5c;
+	}
+	.relayPopBoxButton:nth-child(4) span{
+		color: #23a0f0;
+	}
+	.relayText{
+		font-size: 23rpx;
+		line-height: 46rpx;
+	}
+	
+	.relayPopBoxExit{
+		text-align: center;
+		line-height: 100rpx;
+		border-top: 2rpx solid #f7f7f7;
+		
+		margin-top: 40rpx;
+	}
+	
+	/* 收藏夹 */
+	.collectListBox{
+		width: 100%;
+		overflow: hidden;
+		margin-left: 20rpx;
+	}
+	.addPic{
+		float: left;
+		width: 321rpx;
+		height: 321rpx;
+		border-radius: 18rpx;
+		margin-left: 20rpx;
+		margin-top: 20rpx;
+		box-shadow:4px 4px 10px 10px rgba(221, 221, 221, 0.1);
+	}
+	.collectBox{
+		float: left;
+		width: 321rpx;
+		height: 321rpx;
+		
+		border-radius: 18rpx;
+		background-color: #FFFFFF;
+		margin-left: 20rpx;
+		margin-top: 20rpx;
+		box-shadow:4px 4px 10px 10px rgba(221, 221, 221, 0.1);
+	}
+	.collectBoxImage{
+		width: 250rpx;
+		height: 230rpx;
+		margin-left: 35rpx;
+		margin-top: 35rpx;
+	}
+	.textBox{
+		position: relative;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		height: 56rpx;
+	}
+	.collectTitle{
+		position: absolute;
+		top: 0;
+		left: 35rpx;
+		font-size: 28rpx;
+	}
+	.collectNumber{
+		position: absolute;
+		top: 5rpx;
+		right: 35rpx;
+		font-size: 20rpx;
 	}

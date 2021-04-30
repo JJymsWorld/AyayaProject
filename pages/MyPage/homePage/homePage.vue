@@ -38,122 +38,79 @@
 	
 	<!-- 动态列表 -->
 	<view class="dynamicBox" v-if="tabIndex==0">
+		<!-- 动态 -->
 		<uni-list :border="false" >
-		<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.Id">
-			<template v-slot:body>
-				<view class="dynamicIt" @click="dynamicNavi(item.Id)">
-					  <view class="dynamnicHead">
-						<image class="dynamicAvatar" :src='item.avatarD'@click.stop="homePageNavi(userId)"></image>
-						<view class="dynamicUserDate">
-							<view class="dynamicUsername">{{item.usernameD}}</view>
-						    <view class="dynamicDate">{{item.date}}</view>
+			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem1" :key="item.dynamicId" >
+				<template v-slot:body>
+					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
+						  <view class="dynamnicHead">
+							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
+							<view class="dynamicUserDate">
+								<view class="dynamicUsername"@click.stop="homePageNavi(item.accountB)">{{item.userName}}</view>
+							    <view class="dynamicDate">{{item.uploadTime}}</view>
+							</view>
+							
+							<view class="dynamicMoreIcon" @click.stop="open(1)">
+								<span class="iconfont_dy">&#xe604;</span>
+							</view>
+							
 						</view>
-						<view class="dynamicMoreIcon" @click.stop="open">
-							<span class="iconfont_dy">&#xe604;</span>
+						<!-- 正文 -->
+						<view class="dynamicText">{{item.mainBody}}</view>
+						<!-- 内容不为作品 -->
+						<view v-if="item.opusId ==''" class="dynamicGridBox">
+							<gridBox :picture="item.dynamicPhotos"></gridBox>
 						</view>
+						<!-- 内容不为作品 end
+						
+						<!-- 内容为作品 -->
+						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
+							<view class="dynamicTitle">{{item.title}}</view>
+						</view>
+						<!-- 内容不为为作品end -->
+						
+						<table class="littleIconTable">
+							<tr>
+								<td>
+									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
+									    <text class="number">{{item.likesNumber}}</text>
+									</view>
+									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
+									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe60f;</span>
+									    <text class="number1">{{item.likesNumber}}</text>
+									</view>
+								</td>
+								<td>
+								    <image class='littleIcon' src="../../../static/icon/chat.png" @click.stop="recommend(item.id)"></image>
+								    <text class="number">{{item.commentedNumber}}</text>
+								</td>
+								<td>
+									<image class='littleIcon2' src="../../../static/icon/relay.png"@click.stop="open(0)"></image>
+									<text class="number">{{item.sharedNumber}}</text>
+								</td>
+							</tr>
+						</table>
 					</view>
-					<!-- 正文 -->
-					<view class="dynamicText">{{item.title}}</view>
-					<!-- 封面 -->
-					<image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image>
-					<!-- 标题 -->
-					<view class="dynamicTitle">{{item.textD}}</view>
-					<table class="littleIconTable">
-						<tr>
-							<td>
-								<view v-if="item.isInterest==0" style="width: 50rpx;height: 50rpx;">
-								<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
-								<text class="number">{{item.interestNum}}</text>
-								</view>
-								<view v-if="item.isInterest==1" style="width: 50rpx;height: 50rpx;">
-								<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
-								<text class="number1">{{item.interestNum}}</text>
-								</view>
-							</td>
-							<td>
-							    <image class='littleIcon' src="../../../static/icon/chat.png"@click="dynamicNavi(item.Id)"></image>
-							    <text class="number">{{item.commentNum}}</text>
-							</td>
-							<td>
-								<image class='littleIcon2' src="../../../static/icon/relay.png"></image>
-								<text class="number">{{item.relayNum}}</text>
-							</td>
-						</tr>
-					</table>
-				</view>
-					    
-			</template>
-			
-		</uni-list-item>
-	</uni-list>
-	<uni-load-more status="noMore"></uni-load-more>
-	
-	<!-- 删除动态pop -->
-	
-	<view>
-		<uni-popup ref="popup" type="bottom">
-		<view class="sexBox">
-			<view class="sexChoose" >删除</view>
-			<view class="sexExitChoose"@click="close">取消</view>
-		</view>
-	</uni-popup>
-	</view>
-	
-	
-<!-- 
-	<uni-popup ref="popup" type="bottom">
+						    
+				</template>
+				
+			</uni-list-item>
+		</uni-list>
+		<uni-load-more status="noMore"></uni-load-more>
+		<!-- 动态end -->
 		
-		<view>
-			 <view  class="recommendBox">
-			 			 <view class="recommendHead">10 条评论
-			 			 <span class="iconfont1" @click='close'>&#xe623;</span>
-			 			 </view>
-			 			 
-			 			 <view>
-			 				 <view>
-			        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-			        @scroll="scroll" >
-			            <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
-			 						<image :src="item.avatarR" mode="aspectFill"></image>
-			 						<view class="recomendItemT">
-			 						<view>{{item.usernameR}}</view>
-			 						<view>{{item.text}}</view>
-			 						<view>{{item.date}}</view>
-			 						
-			 						</view>
-			 						<span :class="item.recLike==1?'iconfont2':'iconfont5'" @click='recomendLike(index)'>&#xe608;</span>
-			 					</view>
-			        </scroll-view>
-			    </view>
-			 			 </view>
-			 </view>
-		 </view>
-	</uni-popup> -->
-	<view>
-		 <view v-if="recommendTag==1" class="recommendBox">
-		 			 <view class="recommendHead">10 条评论
-		 			 <span class="iconfont1" @click='recoomendExit'>&#xe623;</span>
-		 			 </view>
-		 			 
-		 			 <view>
-		 				 <view>
-		        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-		        @scroll="scroll" >
-		            <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
-		 						<image :src="item.avatarR" mode="aspectFill"></image>
-		 						<view class="recomendItemT">
-		 						<view>{{item.usernameR}}</view>
-		 						<view>{{item.text}}</view>
-		 						<view>{{item.date}}</view>
-		 						
-		 						</view>
-		 						<span :class="item.recLike==1?'iconfont2':'iconfont5'" @click='recomendLike(index)'>&#xe608;</span>
-		 					</view>
-		        </scroll-view>
-		    </view>
-		 			 </view>
-		 </view>
-	 </view>
+		<!-- 删除动态pop -->
+	
+		<view v-if="popTag==1">
+			<uni-popup ref="popup" type="bottom">
+				<view class="sexBox">
+					<view class="sexChoose" >删除</view>
+					<view class="sexExitChoose"@click="close">取消</view>
+				</view>
+			</uni-popup>
+		</view>
 	
 	</view>
 	<!-- 动态列表end -->
@@ -182,14 +139,62 @@
 	<!-- 作品列表end -->
 	
 	<!-- 收藏夹列表 -->
-	<view v-if="tabIndex==2"></view>
-	
-	
+	<view v-if="tabIndex==2" class="collectListBox">
+		
+		<image class="addPic" src="../../../static/icon/newlist.png" mode="aspectFill"@click="open"></image>
+		<view v-for="(item,index) in collectList" :key="index" class="collectBox" @click="starListDetailNavi(item.favourId)">
+			<image :src="pic" class="collectBoxImage"></image>
+			<view class="textBox">
+				<view class="collectTitle">{{item.tab}}</view>
+				<view class="collectNumber">{{item.collectNum}}收藏</view>
+			</view>
+		</view>
+		
+		<!-- 新建收藏夹 -->
+		<uni-popup ref="popup" type="dialog">
+			<uni-popup-dialog type="info" mode="input" placeholder="请输入收藏夹名" title="新建收藏夹"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="confirm($event)"></uni-popup-dialog>
+		</uni-popup>
+		<!-- 新建收藏夹 end-->
+		
+	</view>
 	<!-- 收藏夹列表end -->
 	
 	
    <!-- 加载框 -->
    <kModel ref="kModel" />
+   
+   <!-- 转发 -->
+    <view v-if="popTag==0">
+		<uni-popup ref="popup" type="bottom">
+			   <view class="relayPopBox">
+				   <view class="relayPopBoxTitle">分享至</view>
+				   <view class="relayPopBoxButtonBox">
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe61a;</span>
+						   <view class="relayText">微信</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe65b;</span>
+					   	   <view class="relayText">朋友圈</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe73c;</span>
+					   	   <view class="relayText">微博</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe60c;</span>
+					   	   <view class="relayText">QQ</view>
+					   </view>
+				   </view>
+				   
+				   <view class="relayPopBoxExit" @click.stop="close()">取消</view>
+			   </view>
+		</uni-popup>
+		 
+	</view>
+   
+   
+   
    
    </view>
   
@@ -197,11 +202,9 @@
 
 <script>
 	import waterfallsFlow from "../../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+	import gridBox from '../../../components/gridImage/gridImage.vue';
 	import kModel from '@/components/k-model/k-model.vue';
 	export default{
-		// onReady() {
-		// 	document.getElementsByTagName('li')[this.tabIndex].className='navi'
-		// },
 		onReady(option) {
 			// 页面渲染完成后是否显示发布成功模态框
 			if(this.showToast){
@@ -212,26 +215,32 @@
 			// this.userId2=option.userId2
 		},
 		onLoad(option) {
-			this.userId=option.userId // 上个页面传递的用户id
-			this.userId2=getApp().globalData.global_userId
-			this.loadHead()
-			
-			// 标记是否由发布动态页面跳转进入
-			if(option.showToast == '1'){
-				this.showToast = true
-			}
-			// 标记是否由发布作品页面跳转进入
-			if(option.showToast == '2'){
-				this.showToast = true
-				this.tabIndex = 1
-			}
+		    this.userId=option.userId // 上个页面传递的用户id
+		    this.userId2=getApp().globalData.global_userId
+		    this.loadHead()
+		    	
+		    // 标记是否由发布动态页面跳转进入
+		    if(option.showToast == '1'){
+		    	this.showToast = true
+				this.tabIndex = 0
+				this.loadDynamic()
+				
+		    }
+		    // 标记是否由发布作品页面跳转进入
+		    if(option.showToast == '2'){
+		    	this.showToast = true
+		    	this.tabIndex = 1
+				this.loadWork()
+		    }
 		},
 		components: {
 			waterfallsFlow,
-			kModel
+			kModel,
+			gridBox
 		},
 		data(){
 			return{
+				popTag:0,
 				showToast: false,	// 标记是否显示发布成功模态框
 				scrollTop: 0,
 				old: {
@@ -252,7 +261,7 @@
 					'作品',
 					'收藏夹'
 				],
-				tabIndex:0,
+				tabIndex:0,  //标记当前选中的是导航栏的哪一栏
 				dynamicItem:[
 					{
 						Id:'1',
@@ -297,6 +306,65 @@
 						relayNum:'1141'
 					}
 				],
+				dynamicItem1:[
+					{
+						accountB:'4',
+						commentedNumber:0,
+						dynamicId:'1',
+						dynamicPhotos:[
+							"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
+							"../../../static/iconn/d1.jpg",
+							"../../../static/iconn/d1.jpg"
+						],
+						headerPic:"../../../static/iconn/p2.jpg",
+						likesNumber:277,
+						mainBody:"点赞表态!",
+						opusId:'3',
+						opusPhotos:"../../../static/iconn/d1.jpg",
+						sharedNumber:0,
+						title:"蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!",
+						type:1,
+						uploadTime:"2021-04-19T10:17:05.000+00:00",
+						userName:"机智的党妹"
+					},
+					{
+						accountB:'4',
+						commentedNumber:0,
+						dynamicId:'2',
+						dynamicPhotos:[
+							"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
+							"../../../static/iconn/d1.jpg",
+							"../../../static/iconn/d1.jpg"
+						],
+						headerPic:"http://81.68.73.252:8080/picture/微信图片_20201211115432.jpg",
+						likesNumber:277,
+						mainBody:"当不倒翁小姐姐cos楚乔传",
+						opusId:'',
+						opusPhotos:"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
+						sharedNumber:0,
+						title:"楚乔传",
+						type:1,
+						uploadTime:"2021-04-19T10:17:05.000+00:00",
+						userName:"coser_a"
+					},
+					{
+						accountB:'4',
+						commentedNumber:0,
+						dynamicId:'3',
+						dynamicPhotos:"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
+						headerPic:"http://81.68.73.252:8080/picture/微信图片_20201211115432.jpg",
+						likesNumber:277,
+						mainBody:"当不倒翁小姐姐cos楚乔传",
+						opusId:'3',
+						opusPhotos:"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
+						sharedNumber:0,
+						title:"楚乔传",
+						type:1,
+						uploadTime:"2021-04-19T10:17:05.000+00:00",
+						userName:"coser_a"
+					}
+				],
+				pic:'../../../static/icon/collectPic.png',
 				recomendList:[
 					{
 						userIdR:'',
@@ -355,6 +423,24 @@
 						recLike:'0'
 					}
 				],
+				collectList:[
+					{
+						tab:'汉服',
+						collectNum:'12'
+					},
+					{
+						tab:'JK',
+						collectNum:'12'
+					},
+					{
+						tab:'国风',
+						collectNum:'12'
+					}
+				],
+				newList:{
+					tab:'',
+					collectNum:''
+				},
 				 contentList: [//{
 				// 		id: 1,
 				// 		// image_url: "../../static/contentImg/1.jpg",
@@ -402,6 +488,13 @@
 			}
 		},
 		methods:{
+			confirm(value){
+				this.newList.tab = value
+				this.newList.collectNum = '0'
+				console.log(this.newList)
+				this.collectList.push(this.newList)
+				this.$refs.popup.close()
+			},
 			// 显示发布成功加载框
 			startShow: function() {
 				this.$refs['kModel'].showModel({
@@ -429,8 +522,9 @@
 					url:'../reset/edit'
 				})
 			},
-			open(){
+			open(i){
 			         // 通过组件定义的ref调用uni-popup方法
+					 this.popTag=i
 			         this.$refs.popup.open()
 			      },
 			close(){
@@ -448,15 +542,9 @@
 			           console.log(e)
 			       },
 			navigateBack(){
-				if(this.showToast){
-					uni.switchTab({
-						url: '../mypage'
-					})
-				}
-				else{
-					uni.navigateBack({})
-				}
-					
+				uni.switchTab({
+					url: '../mypage'
+				})
 			},
 			changeFun(i){
 				this.tabIndex=i;
@@ -470,14 +558,14 @@
 				else{}
 			},
 			addLike:function(i){
-				var t=this.$data.dynamicItem[i].isInterest;
+				var t=this.$data.dynamicItem1[i].type;
 				if(t==0){
-					this.$data.dynamicItem[i].interestNum++;
-					this.$data.dynamicItem[i].isInterest=1;
+					this.$data.dynamicItem1[i].likesNumber++;
+					this.$data.dynamicItem1[i].type=1;
 				}
 				else{
-					this.$data.dynamicItem[i].interestNum--;
-					this.$data.dynamicItem[i].isInterest=0;
+					this.$data.dynamicItem1[i].likesNumber--;
+					this.$data.dynamicItem1[i].type=0;
 				}
 			},
 			workNavigate(item){
@@ -495,6 +583,21 @@
 				});
 				    console.log(res);
 			},
+			dynamicDetailNavi:function(event,i){
+				uni.navigateTo({
+					url:'../../DynamicPage/dynamicDetails?dynamicId='+i
+				})
+			},
+			workNavi(i){
+				uni.navigateTo({
+					url:'../../works/works?workId='+i
+				})
+			},
+			recommend(i){
+				uni.navigateTo({
+					url:'../../DynamicPage/dynamicDetails?pageScroll=1'
+				})
+			},
 			async loadWork(i){
 				const res=await this.$myRequest({
 					url:'/MyPage/HomePage/getOpusById',
@@ -506,9 +609,6 @@
 				})
 				console.log(res.data)
 				this.contentList=res.data.list
-			},
-			recommend(i){
-			this.recommendTag=1;
 			},
 			recoomendExit(){
 			this.recommendTag=0;	
@@ -532,14 +632,6 @@
 				})
 			},
 			dynamicNavi(event,i){
-				
-				// event = event || window.event;
-				// event.preventDefault()
-				//         if (event && event.stopPropagation) {
-				//             event.stopPropagation();
-				//         } else {
-				//             event.cancelBubble = true;
-				//         }
 				uni.navigateTo({
 					url:'../../DynamicPage/dynamicDetails?dynamicId='+i
 				})
@@ -548,6 +640,11 @@
 			homePageNavi(i){
 				uni.navigateTo({
 					url:'homePage?userId='+i
+				})
+			},
+			starListDetailNavi(i){
+				uni.navigateTo({
+					url:'../myStarList/myStarListDetail?favourId='+i
 				})
 			}
 		}
@@ -575,7 +672,7 @@
 		/deep/ .uni-list-item__container{
 			background-color: #FFFFFF;
 			padding: 0;
-	
+		
 		}
 </style>
 <style>

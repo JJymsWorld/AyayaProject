@@ -35,7 +35,7 @@
 .StayInCoser-item{
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 }
 .StayInCoser-item-avatar{
 	width: 120rpx;
@@ -46,6 +46,7 @@
 .StayInCoser-item-info{
 	display: flex;
 	flex-direction: column;
+	margin-left: 30rpx;
 }
 .StayInCoser-item-nameandlikenum{
 	display: flex;
@@ -69,6 +70,7 @@
 	margin-bottom: auto;
 }
 .StayInCoser-item-likebutton{
+	margin-left: auto;
 	margin-bottom: auto;
 }
 .collapse-item-wrapper{

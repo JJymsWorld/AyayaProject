@@ -61,20 +61,20 @@
 								<td>
 									
 									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
-									    <span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
+									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
 									    <text class="number">{{item.likesNumber}}</text>
 									</view>
 									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
-									    <span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
+									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe608;</span>
 									    <text class="number1">{{item.likesNumber}}</text>
 									</view>
 								</td>
 								<td>
-								    <image class='littleIcon' src="../../static/icon/chat.png" @click="recommend(item.id)"></image>
+								    <image class='littleIcon' src="../../static/icon/chat.png" @click.stop="recommend(item.id)"></image>
 								    <text class="number">{{item.commentedNumber}}</text>
 								</td>
 								<td>
-									<image class='littleIcon2' src="../../static/icon/relay.png"></image>
+									<image class='littleIcon2' src="../../static/icon/relay.png"@click.stop="open"></image>
 									<text class="number">{{item.sharedNumber}}</text>
 								</td>
 							</tr>
@@ -88,33 +88,37 @@
 		
 		<uni-load-more status="noMore"></uni-load-more>
 		</view>
-		<!-- 
-		 <view v-if="recommendTag==1" class="recommendBox">
-			 <view class="recommendHead">10 条评论
-			 <span class="iconfont1" @click='recoomendExit'>&#xe623;</span>
-			 </view>
-			 
-			<view>
-				 <view>
-                <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-                @scroll="scroll" >
-                    <view v-for="(item,index) in recomendList" :key='index' class="recomendItemBox">
-						<image :src="item.avatarR" mode="aspectFill"></image>
-						<view class="recomendItemT">
-						<view>{{item.usernameR}}</view>
-						<view>{{item.text}}</view>
-						<view>{{item.date}}</view>
-						
-						</view>
-						<span :class="item.recLike==1?'iconfont2':'iconfont'" @click='recomendLike(index)'>&#xe608;</span>
-					</view>
-                </scroll-view>
-            </view>
-			 </view>
-		 </view> -->
+
 		
 
    <view class="lastBlank"></view>
+   
+   <!-- 转发 -->
+   <uni-popup ref="popup" type="bottom">
+	   <view class="relayPopBox">
+		   <view class="relayPopBoxTitle">分享至</view>
+		   <view class="relayPopBoxButtonBox">
+			   <view class="relayPopBoxButton">
+				   <span class="iconfontx" >&#xe61a;</span>
+				   <view class="relayText">微信</view>
+			   </view>
+			   <view class="relayPopBoxButton">
+				   <span class="iconfontx" >&#xe65b;</span>
+			   	   <view class="relayText">朋友圈</view>
+			   </view>
+			   <view class="relayPopBoxButton">
+				   <span class="iconfontx" >&#xe73c;</span>
+			   	   <view class="relayText">微博</view>
+			   </view>
+			   <view class="relayPopBoxButton">
+				   <span class="iconfontx" >&#xe60c;</span>
+			   	   <view class="relayText">QQ</view>
+			   </view>
+		   </view>
+		   
+		   <view class="relayPopBoxExit" @click.stop="close()">取消</view>
+	   </view>
+   </uni-popup>
 	</view>
 </template>
 
@@ -349,6 +353,19 @@
 			}
 		},
 		methods:{
+			open(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.open()
+					 // var webView = this.$mp.page.$getAppWebview();  
+					 // let titleNView = webView.getTitleNView();  
+					 // titleNView && titleNView.hide();
+					 // currentWebview.setStyle({
+					 // titleNView:titleNView
+					 // })
+			},
+			close(){
+				this.$refs.popup.close()
+			},
 			searchNavi(){
 				uni.navigateTo({
 					url:'../search/search'
@@ -374,7 +391,10 @@
 				uni.navigateBack()
 			},
 			recommend(i){
-			this.recommendTag=1;
+				this.recommendTag=1;
+				uni.navigateTo({
+					url:'dynamicDetails?pageScroll=1'
+				})
 			},
 			recoomendExit(){
 			this.recommendTag=0;	
@@ -399,13 +419,6 @@
 				})
 			},
 			dynamicDetailNavi:function(event,i){
-				// event = event || window.event;
-				// event.preventDefault()
-				//         if (event && event.stopPropagation) {
-				//             event.stopPropagation();
-				//         } else {
-				//             event.cancelBubble = true;
-				//         }
 				uni.navigateTo({
 					url:'dynamicDetails?dynamicId='+i
 				})

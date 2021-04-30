@@ -9,9 +9,9 @@ export const myRequest = (options)=>{
 			data: options.data || {},
 			sslVerify: false,
 			success: (res)=>{
-				uni.showToast({
-					title: '接口请求成功'
-				})
+				// uni.showToast({
+				// 	title: '接口请求成功'
+				// })
 				resolve(res)
 			},
 			fail: (err)=>{

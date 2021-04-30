@@ -42,7 +42,7 @@
 			},
 			async loadMyWishList (){
 				const res = await this.$myRequest({
-					url:'MyPage/MyWishList/getAll',
+					url:'/MyPage/MyWishList/getAll',
 					data:{
 						user_id: 7
 					}

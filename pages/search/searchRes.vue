@@ -28,7 +28,7 @@
 			<uni-list :border="false">
 				<!-- 作品页面 -->
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"
-					:key="index" :title="item.text">
+					:key="item.id" :title="item.text">
 					<!-- 左边作品图片 -->
 					<template v-slot:body>
 						<view class="Img-In-List" @click="gotoWorkPage">
@@ -168,6 +168,10 @@
 	export default {
 		data() {
 			return {
+				scrollTop: 0,
+				old: {
+				    scrollTop: 0
+				},
 				value: "",
 				tabBars: ["综合", "作品", "用户"],
 				tabIndex: 0,
@@ -223,6 +227,7 @@
 				},
 				SearchWorksList: [
 					{
+						id:'1',
 						image_url: '../../static/HotListImg/2.jpg',
 						text: '江南美人图|奇迹团团环游中华之乌镇',
 						article: '机智的党妹',
@@ -237,6 +242,13 @@
 			this.value = option.label
 		},
 		methods: {
+			scroll: function(e) {
+			    console.log(e)
+			    this.old.scrollTop = e.detail.scrollTop
+			},
+			backlast: function() {
+				uni.navigateBack()
+			},
 			onSearch: function(e) {
 				this.value = e.value
 				console.log(this.value)

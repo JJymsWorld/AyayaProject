@@ -1,5 +1,12 @@
 <template>
 	<view>
+		<!-- 筛选框:全部、摄影师、coser、普通用户 -->
+<!-- 		<ul>
+			<li>全部</li>
+			<li>摄影师</li>
+			<li>coser</li>
+			<li>普通用户</li>
+		</ul> -->
 		<uni-list class="focusBox" :border="false">
 	    <uni-list-item :border="false" v-for="(item,index) in focusPerson" :key="index">
 	        <!-- 自定义 body -->

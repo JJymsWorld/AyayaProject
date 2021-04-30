@@ -60,32 +60,47 @@ ul,li{
 }
 .contenTableLeft{
 	font-size: 30rpx;
+	vertical-align: top;
+	line-height: 50rpx;
 }
 .contenViewT{
 	width: 536rpx;
-	height: 59rpx;
+	/* height: 59rpx; */
 	margin-left: 20rpx;
 	background-color: #F4F4F4;
 	border-radius: 20rpx;
+	padding-top: 10rpx;
+	padding-bottom: 10rpx;
 }
 .contenViewT image{
 	width: 18rpx;
 	height: 20rpx;
 	padding-left: 60rpx;
+
+}
+.contenViewT view{
+	display: inline-block;
+	font-size: 8pt;
+	padding-left: 30rpx;
+	line-height: 30rpx;
+	color: #C3C3C3;
+
+}
+.contenViewT span{
+	opacity: 1;
+	font-size: 28rpx;
+	vertical-align: top;
+	line-height: 20rpx;
+	color: #D9001B;
 }
 .contenViewT text{
 	font-size: 8pt;
 	padding-left: 30rpx;
 	line-height: 30rpx;
 	color: #C3C3C3;
+
 }
-.contenViewT view{
-	display: inline-block;
-	font-size: 8pt;
-	padding-left: 10rpx;
-	line-height: 20rpx;
-	color: #C3C3C3;
-}
+
 .contentMore{
 	display: inline-block;
 	height: 70rpx;
@@ -104,6 +119,18 @@ ul,li{
 	padding-left: 35rpx;
 	padding-bottom: 50rpx;
 }
+.other view{
+	display: inline-block;
+	padding-left: 13rpx;
+	color: #EC808D;
+}
+.other view span{
+	opacity: 1;
+	font-size: 28rpx;
+	vertical-align: top;
+	line-height: 20rpx;
+	color: #D9001B;
+}
 .otherIcon{
 	width: 16rpx;
 	height: 22rpx;
@@ -115,12 +142,13 @@ ul,li{
 	background-color: #F2A9C6;
 	border-radius: 50rpx;
 	margin: 110rpx auto;
+	text-align: center;
 }
 .finalButton text{
 		font-size: 13pt;
 		font-family: "Arial";
 		font-weight: 500;
 		color: #FFFFFF;
-		padding-left: 70rpx;
+		/* padding-left: 70rpx; */
 		line-height: 74rpx;
 }

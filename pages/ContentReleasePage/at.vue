@@ -25,6 +25,7 @@
 				index: 0,
 				userId:'',
 				choosePersonName:'',
+				atPersonList: [],
 				focusPerson:[
 					{
 						userid:'',
@@ -65,20 +66,33 @@
 			}
 		},
 		onNavigationBarButtonTap(){
+			this.atPersonList = []
 			for(var item in this.focusPerson){
-				if(this.focusPerson[item].ifchoose)
+				if(this.focusPerson[item].ifchoose){
 					this.choosePersonName += '@' + this.focusPerson[item].username
+					this.atPersonList.push({index: item, username: this.focusPerson[item].username})
+				}	
 			}
+			console.log(this.atPersonList)
 			// 传回@用户name及index到发布页面
-			uni.$emit("emitChoosePersonName",{choosePersonName: this.choosePersonName, index: this.index});
+			uni.$emit("emitChoosePersonName",{choosePersonName: this.choosePersonName, index: this.index, atPersonList: this.atPersonList});
 			
 			uni.navigateBack()
 		},
 		onLoad: function(option) {
-		  this.index = option.index
 		  // const eventChannel = this.getOpenerEventChannel()
 		  // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
-		  
+		  const that = this
+		  const eventChannel = that.getOpenerEventChannel()
+		  // 监听emitClothLink事件，获取上一页面通过eventChannel传送到当前页面的数据
+		  eventChannel.on('emitAtPersonList', function(data) {
+			   that.atPersonList = data.atPersonList
+			   that.index = data.index
+		  })
+		  for(var item in that.atPersonList){
+			  const i = that.atPersonList[item].index
+			  that.focusPerson[i].ifchoose = true
+		  }
 		}
 	}
 </script>

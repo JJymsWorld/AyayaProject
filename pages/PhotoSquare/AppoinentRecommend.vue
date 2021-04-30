@@ -27,14 +27,14 @@
 				<text >作品展示</text>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage">
+				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage" imageSrcKey="opus_photos" idKey="opus_id">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
 							<view class="user-info-box">
-								<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
-								<view class="user-name">{{item.userName}}</view>
-								<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.viewNum}}
+								<image class="user-head-img" :src="item.header_pic" mode="aspectFill"></image>
+								<view class="user-name">{{item.user_name}}</view>
+								<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.browse_num}}
 								</view>
 							</view>
 						</view>
@@ -59,23 +59,23 @@
 				console.log(err);
 			});
 			
-			//获取所有约拍作品(瀑布流内容)
-			// if(this.initList == true){
-			// 	http.get("/Date/PhotographerList/getAllDataWorks", {params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
-			// 		this.contentList = res.data.list;
-			// 		this.pageNum++;
-			// 		this.initList = false;
-			// 		if(res.data.hasNextPage == true){
-			// 			this.loadStatus = "more";
-			// 		}
-			// 		if(res.data.haxNextPage == false){
-			// 			this.loadStatus = "noMore";
-			// 			this.flag = false;
-			// 		}
-			// 	}).catch(err=>{
-			// 		console.log(err);
-			// 	})
-			// }
+			// 获取所有约拍作品(瀑布流内容)
+			if(this.initList == true){
+				http.get("/Date/PhotographerList/getAllDataWorks", {params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					this.contentList = res.data.list;
+					this.pageNum++;
+					this.initList = false;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.haxNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
 			
 				
 		},
@@ -86,24 +86,24 @@
 			
 		},
 		async onReachBottom() {
-			//触底加载新内容
-			// const http = new this.$Request();
-			// if(this.flag == true){
-			// 	this.loadStatus = "loading";
-			// 	await http.get("/Date/PhotographerList/getAllDataWorks",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
-			// 		this.contentList = this.contentList.concat(res.data.list);
-			// 		this.pageNum++;
-			// 		if(res.data.hasNextPage == true){
-			// 			this.loadStatus = "more";
-			// 		}
-			// 		if(res.data.hasNextPage == false){
-			// 			this.loadStatus = "noMore";
-			// 			this.flag = false;
-			// 		}
-			// 	}).catch(err=>{
-			// 		console.log(err);
-			// 	})
-			// }
+			// 触底加载新内容
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.loadStatus = "loading";
+				await http.get("/Date/PhotographerList/getAllDataWorks",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
 		},
 		data(){
 			return {
@@ -130,102 +130,103 @@
 						pg_name:"摄影师3号"
 					}
 				],
-				contentList: [{
-						id: 1,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 2,
-						image_url: "../../static/contentImg/2.jpg",
-						title: '【Cos正品】楼兰',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 3,
-						image_url: "../../static/contentImg/3.jpg",
-						title: '【汉服】西域美人',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 4,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 5,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 6,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 7,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 8,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 9,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 10,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 11,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					},
-					{
-						id: 12,
-						image_url: "../../static/contentImg/1.jpg",
-						title: '鬼灭之刃',
-						headImg: '../../static/contentImg/headimg1.jpg',
-						userName: 'CN清风',
-						viewNum: 2206
-					}
+				contentList: [
+					// {
+					// 	id: 1,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 2,
+					// 	image_url: "../../static/contentImg/2.jpg",
+					// 	title: '【Cos正品】楼兰',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 3,
+					// 	image_url: "../../static/contentImg/3.jpg",
+					// 	title: '【汉服】西域美人',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 4,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 5,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 6,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 7,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 8,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 9,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 10,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 11,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// },
+					// {
+					// 	id: 12,
+					// 	image_url: "../../static/contentImg/1.jpg",
+					// 	title: '鬼灭之刃',
+					// 	headImg: '../../static/contentImg/headimg1.jpg',
+					// 	userName: 'CN清风',
+					// 	viewNum: 2206
+					// }
 				]
 			}
 		},

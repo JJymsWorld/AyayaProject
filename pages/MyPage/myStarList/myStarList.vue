@@ -6,6 +6,7 @@
 			<view class="textBox">
 				<view class="title">{{item.tab}}</view>
 				<view class="number">{{item.collectNum}}收藏</view>
+				<span class="iconfont_dy">&#xe604;</span>
 			</view>
 		</view>
 		
@@ -25,14 +26,12 @@
 			console.log("list:"+option.myWish)
 			this.mywish = option.myWish || 0
 			this.wishId = option.wishId || ''
-			this.addmakeuplabels = option.addmakeuplabels || 0
 		},
 		data(){
 			return{
-				addmakeuplabels: 0,		//1:存在发布作品的的参数传递
-				mywish:0,   //1:存在加入心愿的的参数传递
+				mywish:0,   //1:存在加入戏院的的参数传递
 				wishId:'',  //用户将作品加入心愿单中妆容板块的参数传递
-				pic:'../../../static/iconn/iconn/collect.png',
+				pic:'../../../static/icon/collectPic.png',
 				list:[  
 					
 				],
@@ -87,7 +86,7 @@
 			starListDetailNavi(i){
 				console.log(i)
 				uni.navigateTo({
-					url:'myStarListDetail?favourId='+i+'&myWish='+this.mywish+'&wishId'+this.wishId+'&addmakeuplabels='+this.addmakeuplabels
+					url:'myStarListDetail?favourId='+i+'&myWish='+this.mywish+'&wishId'+this.wishId
 				})
 			}
 		}
@@ -150,7 +149,14 @@
 	.number{
 		position: absolute;
 		top: 5rpx;
-		right: 35rpx;
+		right: 45rpx;
 		font-size: 20rpx;
+	}
+	.textBox span{
+		position: absolute;
+		top: 7rpx;
+		right: 10rpx;
+		font-size: 28rpx;
+		opacity: 1;
 	}
 </style>

@@ -174,9 +174,47 @@
 			}
 		},
 		{
-			"path":"pages/works/myWish",
+			"path":"pages/works/addMyWish",
 			"style":{
 				"navigationBarTitleText":"我的心愿"
+			}
+		},
+		{
+			"path":"pages/works/myWish",
+			"style":{
+				"navigationBarTitleText":"我的心愿",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "保存",
+							"fontSize":"16px"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path":"pages/Mypage/myWishList/myPhotografy",
+			"style":{
+				"navigationBarTitleText":"关注的摄影师"
+			}
+		},
+		{
+			"path":"pages/Mypage/myWishList/myClothLink",
+			"style":{
+				"navigationBarTitleText":"编辑服饰链接",
+				"app-plus":{
+					"titleNView":{
+						"titleSize":"20px",
+						"buttons":[{
+							"float":"right",
+							"text": "保存",
+							"fontSize":"16px"
+						}]
+					}
+				}
 			}
 		}
 		,{

@@ -2,7 +2,7 @@
 	<view>
 		<view class="CosumeMakeup-wrapper">
 			<mingpop ref="mingpop" direction="center" :is_close="false" :width="50">
-				<view class="fullTopic" v-for="(item,index) in MakeuptopicContent" :key="index">
+				<view class="fullTopic" v-for="(item,index) in MakeuptopicContent" :key="index" @click="TopicClick(item.mark)">
 					<text class="topic-lable-mid-content-label">#{{item.mark}}#</text>
 					<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 				</view>

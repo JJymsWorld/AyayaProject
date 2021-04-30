@@ -302,10 +302,11 @@ ul,li{
 	margin-top: 25rpx;
 	margin-bottom: 20rpx;
 	border-radius: 15rpx;
+	padding-top: 10rpx;
 }
 .commentedBoxv1{
 	margin-left: 35rpx;
-	padding-top: 25rpx;
+	padding-top: 15rpx;
 	width: 90%;
 	font-size: 24rpx;
 	color: rgba(16,16,16,0.7);
@@ -315,7 +316,7 @@ ul,li{
 	color: #62A1EC;
 }
 .commentBoxv2{
-	padding-top: 10rpx;
+	padding-top: 20rpx;
 	margin-left: 35rpx;
 	padding-bottom: 25rpx;
 	font-size: 23rpx;
@@ -397,4 +398,154 @@ ul,li{
 	width: 100%;
 	height: 950rpx;
 	
+}
+
+.commentPop{
+	background-color: #FFFFFF;
+	width: 100%;
+	height: 100rpx;
+	padding-top: 5rpx;
+}
+.commentPopBox{
+	display: inline-block;
+	width: 85%;
+	height: 70rpx;
+	margin-top: 15rpx;
+	
+}
+.commentPopBox input{
+	height: 70rpx;
+	background-color: rgba(221,221,221,0.3);
+	font-size: 25rpx;
+	/* margin: 0rpx auto; */
+	margin-left: 20rpx;
+	border-radius: 90rpx;
+	color: rgba(9,9,9,0.5);
+	padding-left: 40rpx;
+	padding-bottom: 5rpx;
+}
+.commentPopSend{
+	display: inline-block;
+	margin-left: 20rpx;
+	line-height: 90rpx;
+	vertical-align: top;
+	
+}
+
+
+.relayPopBox{
+	width: 100%;
+	height: 380rpx;
+	background-color: #FFFFFF;
+	border-top-left-radius: 40rpx;
+	border-top-right-radius: 40rpx;
+}
+.relayPopBoxTitle{
+	text-align: center;
+	font-size: 25rpx;
+	line-height: 60rpx;
+}
+.relayPopBoxButtonBox{
+	margin-top: 40rpx;
+	overflow: hidden;
+}
+.relayPopBoxButton{
+	float: left;
+	margin-left: 80rpx;
+	text-align: center;
+}
+.relayPopBoxButton span{
+	font-size: 90rpx;
+}
+.relayPopBoxButton:nth-child(1) span{
+	color: rgb(70, 187, 54);
+}
+.relayPopBoxButton:nth-child(2) span{
+	color: #07c160;
+}
+.relayPopBoxButton:nth-child(3) span{
+	color: #ea5d5c;
+}
+.relayPopBoxButton:nth-child(4) span{
+	color: #23a0f0;
+}
+.relayText{
+	font-size: 23rpx;
+	line-height: 46rpx;
+}
+
+.relayPopBoxExit{
+	text-align: center;
+	line-height: 100rpx;
+	border-top: 2rpx solid #f7f7f7;
+	
+	margin-top: 40rpx;
+}
+
+
+.collectPopBox{
+	position: relative;
+	top: 0;
+	left:0;
+	width: 100%;
+	/* height: 380rpx; */
+	background-color: #FFFFFF;
+	border-top-left-radius: 40rpx;
+	border-top-right-radius: 40rpx;
+}
+.collectPopBoxTitle{
+	/* text-align: center; */
+	font-size: 27rpx;
+	line-height: 100rpx;
+	padding-left: 50rpx;
+}
+.collectPopBoxAddList{
+	position: absolute;
+	top:30rpx;
+	right: 50rpx;
+	font-size: 27rpx;
+}
+.collectPopBoxDetail{
+	border-top:  2rpx solid #f7f7f7;
+	border-bottom:  2rpx solid #f7f7f7;
+	margin: 0 0 -1px -1px;
+}
+.collectPopBoxDetail image{
+	width: 100rpx;
+	height: 100rpx;
+	vertical-align: middle;
+	margin-left: 50rpx;
+	margin-top: 30rpx;
+	margin-bottom: 30rpx;
+}
+.collectPopBoxDetail view{
+	display: inline-block;
+	padding-left: 20rpx;
+}
+.collectPopBoxExit{
+	text-align: center;
+	line-height: 100rpx;
+	border-top: 2rpx solid #f7f7f7;
+	
+	margin-top: 40rpx;
+}
+.clothLinkPopBox{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 500rpx;
+	height: 350rpx;
+	background-color: #FFFFFF;
+	border-radius: 20rpx;
+}
+.clothLink{
+	padding-left: 20rpx;
+	line-height: 70rpx;
+}
+.copyLink{
+	position: absolute;
+	left: 20rpx;
+	bottom: 20rpx;
+	font-size: 25rpx;
+	color: #0086B3;
 }
