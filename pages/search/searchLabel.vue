@@ -94,43 +94,6 @@
 				old: {
 				    scrollTop: 0
 				},
-				recentUser:[
-					{
-					avatarT:'../../static/iconn/p2.jpg',
-					usernameT:'蒲儿姓蒲',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p3.jpg',
-						usernameT:'Suzy_Z',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					}
-				],
 				dynamicItem:[
 					
 				],

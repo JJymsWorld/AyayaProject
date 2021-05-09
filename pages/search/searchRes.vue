@@ -18,7 +18,7 @@
 			<!-- 用户头像 -->
 			<view class="recentBox">
 				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="0">
-					<span v-for="(item,index) in recentUser" :key='index' @click='gotoUserHomePage'>
+					<span v-for="(item,index) in searchUser" :key='index' @click='gotoUserHomePage'>
 						<image :src="item.avatarT"></image>
 						<view>{{item.usernameT}}</view>
 					</span>
@@ -28,7 +28,7 @@
 			<uni-list :border="false">
 				<!-- 作品页面 -->
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"
-					:key="index" :title="item.text">
+					:key="item.id" :title="item.text">
 					<!-- 左边作品图片 -->
 					<template v-slot:body>
 						<view class="Img-In-List" @click="gotoWorkPage">
@@ -132,21 +132,21 @@
 					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index"
 						class="StayInCoser-List-item" >
 						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoUserHomePage"></image>
+							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoUserHomePage"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text @click="gotoUserHomePage">{{item.Coser_name}}</text>
+									<text @click="gotoUserHomePage">{{item.user_name}}</text>
 									<view>
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
-										<text>{{item.Coser_likeNum}}</text>
+										<text>{{item.focused_num}}</text>
 									</view>
 								</view>
 								<view class="StayInCoser-item-position" @click="gotoUserHomePage">
 									<uni-icons type="location-filled"></uni-icons>
-									<text>{{item.Coser_city}}</text>
+									<text>{{item.city}}</text>
 								</view>
-								<text @click="gotoUserHomePage" class="StayInCoser-item-intro">个人介绍:{{item.Coser_intro}}</text>
+								<text @click="gotoUserHomePage" class="StayInCoser-item-intro">个人介绍:{{item.autograph}}</text>
 							</view>
 							<view class="StayInCoser-item-likebutton">
 								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
@@ -157,6 +157,7 @@
 						</view>
 					</uni-list-item>
 				</uni-list>
+				<uni-load-more :status="loadStatus" ></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -168,10 +169,16 @@
 	export default {
 		data() {
 			return {
+				loadStatus:"noMore",
+				pageNum: [1, 1, 1], 	// 综合页、作品页、用户页分页标记
+				scrollTop: 0,
+				old: {
+				    scrollTop: 0
+				},
 				value: "",
 				tabBars: ["综合", "作品", "用户"],
 				tabIndex: 0,
-				recentUser: [{
+				searchUser: [{
 						avatarT: '../../static/iconn/p2.jpg',
 						usernameT: '蒲儿姓蒲'
 					},
@@ -192,37 +199,14 @@
 					commentNum: '2145',
 					relayNum: '1141'
 				}],
-				CoserInfoList: [{
-						Coser_id: 1,
-						Coser_name: "Coser1",
-						Coser_avatar: "../../static/CoserlistSource/avatar1.jpg",
-						Coser_intro: "底层泥坑里滚爬的一只小可爱",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					},
-					{
-						Coser_id: 2,
-						Coser_name: "Coser2",
-						Coser_avatar: "../../static/CoserlistSource/avatar2.jpg",
-						Coser_intro: "底层泥坑里滚爬的一只小可爱",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					}
-				],
+				CoserInfoList: [],	// 用户列表
 				contentText: {
 					contentDefault: '关注',
 					contentFav: '已关注'
 				},
 				SearchWorksList: [
 					{
+						id:'1',
 						image_url: '../../static/HotListImg/2.jpg',
 						text: '江南美人图|奇迹团团环游中华之乌镇',
 						article: '机智的党妹',
@@ -233,14 +217,57 @@
 				]
 			}
 		},
-		onLoad(option) {
+		async onLoad(option) {
 			this.value = option.label
+			this.onGetCoserInfoList()
+		},
+		async onReachBottom() {
+			console.log('reach')
+			const i = this.tabIndex
+			this.pageNum[i]++
+			console.log(this.pageNum[i])
+			const res = await this.$myRequest({
+				url: '/Search/getUserByString',
+				data: {
+					pageNum: this.pageNum[i],
+					pageSize: 7,
+					searchStr: this.value
+				}
+			})
+			console.log(res.data.list)
+			this.CoserInfoList = this.CoserInfoList.concat(res.data.list)
+			
 		},
 		methods: {
+			// 获取用户列表
+			
+			async onGetCoserInfoList(i){
+				const res = await this.$myRequest({
+					url: '/Search/getUserByString',
+					data: {
+						pageNum: this.pageNum[i],
+						pageSize: 7,
+						searchStr: this.value
+					}
+				})
+				this.CoserInfoList = res.data.list
+				// for(var j in this.CoserInfoList){
+				// 	this.CoserInfoList[j].checked = false
+				// }
+				console.log(this.CoserInfoList)
+				
+			},
+			scroll: function(e) {
+			    console.log(e)
+			    this.old.scrollTop = e.detail.scrollTop
+			},
+			backlast: function() {
+				uni.navigateBack()
+			},
 			onSearch: function(e) {
 				this.value = e.value
 				console.log(this.value)
-				
+				this.onGetCoserInfoList(2)
 			},
 			// 清空搜索历史
 			delHsty: function() {

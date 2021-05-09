@@ -41,7 +41,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button>取消订单</button>
+						<button @click="onCancelOrder()">取消订单</button>
 						<button>修改订单信息</button>
 					</view>
 				</uni-list-item>
@@ -76,7 +76,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button>取消订单</button>
+						<button @click="onCancelOrder()">取消订单</button>
 						<button>修改订单信息</button>
 					</view>
 				</uni-list-item>
@@ -111,7 +111,7 @@
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button class="pinkbutton">确认支付</button>
+						<button class="pinkbutton" @click="onPay">确认支付</button>
 					</view>
 				</uni-list-item>
 			</uni-list>
@@ -150,11 +150,19 @@
 				</uni-list-item>
 			</uni-list>
 		</view>
+		<!-- 输入支付密码 -->
+		<jpPwd ref="jpPwds" contents="" @completed="completed"></jpPwd>
+		<!-- 是否取消订单 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="是否取消该订单" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import ssnavbar from '../../../components/ss-navbar/ss-navbar.vue'
+	import jpPwd from '@/components/jp-pwd/jp-pwd.vue';
 	export default {
 		data() {
 			return {
@@ -192,7 +200,8 @@
 			}
 		},
 		components: {
-			ssnavbar
+			ssnavbar,
+			jpPwd
 		},
 		methods: {
 			// 改变导航栏状态
@@ -228,6 +237,31 @@
 			gotoDynamicPage: function(){
 				uni.navigateTo({
 					url: '../../DynamicPage/dynamicDetails'
+				})
+			},
+			// 取消订单
+			onCancelOrder: function(){
+				this.$refs.popup1.open()
+			},
+			// 确认支付
+			onPay: function(){
+				this.$refs.jpPwds.toOpen()
+			},
+			// 输入密码完成
+			completed: function(e){
+				// 密码输入正确
+				this.$refs.jpPwds.toCancel()
+				// 密码输入错误
+				// this.$refs.jpPwds.backs()
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确认取消订单
+			confirm: function() {
+				uni.showToast({
+					title: '取消成功'
 				})
 			}
 		}

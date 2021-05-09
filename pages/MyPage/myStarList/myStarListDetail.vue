@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view class="workBoxList">
 		<view class="" v-for="(item,index) in StarWork" :key="index">
 			<delSlideLeft :item="item" :data_transit="{index:index,item:item}" @delItem="delItem">
 				<view class="workBox">
@@ -63,16 +63,14 @@
 				})
 			},
 			myWishNavi(i,n){
-				if(this.myWish==1){
-					uni.navigateTo({
-						url:'../../works/myWish?madeupId='+i+'&madeupTitle='+n+'&wishId='+this.wishId
-					})
-				}
-				else if(this.myWish==2){
-					uni.navigateTo({
-						url:'../../works/addMyWish?madeupId='+i+'&madeupTitle='+n
-					})
-				}	
+				uni.navigateBack({
+					delta:2
+				})
+				uni.$emit('chooseMadeup',{
+					madeupId:i,
+					madeupTitle:n,
+					wishId:this.wishId
+				})
 			},
 			// 在发布界面添加该作品标题
 			onAddMakeupLabels(workId,title){
@@ -100,6 +98,10 @@
 <style lang="scss" scoped>
 	/deep/.box-slideLeft .touch-slideLeft{
 		white-space: normal;
+		padding-bottom: 0;
+	}
+	.workBoxList{
+		padding: 0;
 	}
 	.workBox {
 		position: relative;

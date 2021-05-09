@@ -15,21 +15,21 @@
 				<uni-list :border="false">
 					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index" class="StayInCoser-List-item" >
 						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
+							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
 							<view class="StayInCoser-item-info" @click="gotoCoserHomePage">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text>{{item.Coser_name}}</text>
+									<text>{{item.user_name}}</text>
 									<view>
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
-										<text>{{item.Coser_likeNum}}</text>
+										<text>{{item.focused_num}}</text>
 									</view>
 								</view>
 								<view class="StayInCoser-item-position">
 									<uni-icons type="location-filled"></uni-icons>
-									<text>{{item.Coser_city}}</text>
+									<text>{{item.city}}</text>
 								</view>
-								<text class="StayInCoser-item-intro">个人介绍:{{item.Coser_intro}}</text>
+								<text class="StayInCoser-item-intro">个人介绍:{{item.autograph}}</text>
 							</view>
 							<view class="StayInCoser-item-likebutton">
 								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
@@ -41,15 +41,16 @@
 							<uni-collapse :accordion="true">
 								<uni-collapse-item ref="collapse_item" :showAnimation="true" class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work1" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work2" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.Coser_work3" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3" @click="gotoWorksPage"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
 						</view>
 					</uni-list-item>
 				</uni-list>
+				<uni-load-more :status="LoadStatus"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -59,8 +60,59 @@
 	import comboxSearch from "../../components/cuihai-combox/cuihai-combox.vue"
 	export default{
 		components:{comboxSearch},
+		async onLoad(options) {
+			const http = new this.$Request();			//获取列表数据
+			if(this.initList == true){
+				http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+					this.initList = false;
+					this.CoserInfoList = res.data.list;
+					this.pageNum++;
+					
+					if(res.data.hasNextPage == true){
+						this.LoadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.LoadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+			}
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.LoadStatus = "loading";
+				await http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.haxNextPage == true){
+						this.LoadStatus = "more";
+					}
+					if(res.data.haxNextPage == false){
+						this.LoadStatus = "noMore";
+						this.flag == false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+			}
+		},
+		onShow() {
+			
+		},
+		onHide() {
+			
+		},
 		data(){
 			return{
+				initList:true,
+				pageSize:0,
+				pageNum:1,
+				beforePage:0,
+				LoadStatus:"noMore",
+				flag:true,
 				CityList:["全部","北京","上海","杭州","宁波","深圳","福建","绍兴","合肥","郑州","西安"],
 				ProvinceList:["全国","浙江","广东","山东","福建","河南","河北","陕西","山西","江苏","安徽"],
 				CoserInfoList:[

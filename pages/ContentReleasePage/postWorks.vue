@@ -55,8 +55,8 @@
 					<view class="chooseAt-box">
 						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].makeupLabels.length == 0"
 							@click="onChooseCollection">～仅限收藏列表</text>
-						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delTag"
-							@click="onChooseCollection" :enable-del="enableDel"></robby-tags>
+						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delTag" @click="onChooseCollection"
+							:enable-del="enableDel"></robby-tags>
 					</view>
 				</view>
 				<view class="content-item">
@@ -74,6 +74,14 @@
 					<textarea type="text" :value="this.worksContent[5].article" placeholder="正文和内容一样重要哦！"
 						@input="onArticleInput" />
 				</view>
+				<!-- 显示@用户 -->
+				<view class="atPerson-box" v-if="this.atPersonList.length != 0">
+					<text>{{atPersonLabel}}</text>
+				</view>
+				<!-- 显示标签 -->
+				<view class="markLabel-box" v-if="this.markLabel.length != 0">
+					<robby-tags v-model="markLabel" @delete="delTag" @click="" :enable-del="enableDel"></robby-tags>
+				</view>
 			</view>
 			<!-- 发往圈子 -->
 			<view class="row-box checked-box">
@@ -82,7 +90,7 @@
 				<view class="checked-group">
 					<checkbox-group @change="onGetClass">
 						<label class="checked-item" v-for="(item, index) in myclass" :key="index">
-							<checkbox :value="item.name" />
+							<checkbox :value="item.id" />
 							<text>{{item.name}}</text>
 						</label>
 					</checkbox-group>
@@ -130,6 +138,13 @@
 	export default {
 		data() {
 			return {
+				opus_id: null,		// 发布作品成功后返回的作品id
+				atPersonLabel: '', // 	标记正文中@的对象
+				atPersonList: [],
+				atPersonId: [],
+				markLabel: [], // 标记正文中添加的标签
+				markList: [],
+				markId: [],
 				enableDel: true,
 				enableAdd: false,
 				tagList: ['建筑', '动漫', '艺术'],
@@ -149,47 +164,57 @@
 						name: '出镜',
 						atPersonList: [],
 						atPerson: '',
+						atPersonId: []
 					},
 					{
 						name: '摄影',
 						atPersonList: [],
 						atPerson: '',
+						atPersonId: []
 					},
 					{
 						name: '妆容',
 						makeupList: [],
-						makeupLabels: []
+						makeupLabels: [],
+						makeupId: []
 					},
 					{
 						name: '服饰',
 						clothList: [],
-						clothLabels: ''
+						clothLabels: '',
+						clothingId: []
 					},
 					{
 						name: '正文',
-						article: '',
-						atPerson: '',
+						article: ''
 					}
 				],
 				myclass: [{
+						id: "1",
 						name: "cosplay"
 					},
 					{
+						id: "2",
 						name: "汉服圈"
 					},
 					{
+						id: "3",
 						name: "Lolita"
 					},
 					{
+						id: "4",
 						name: "JK"
 					},
 					{
+						id: "5",
 						name: "妆容"
 					},
 					{
+						id: "6",
 						name: "服装"
 					}
-				]
+				],
+				userId: null // 用户id
 			}
 		},
 		components: {
@@ -218,7 +243,7 @@
 				// });
 				this.images = list.map((value, index) => {
 					return {
-						name: 'img',
+						name: 'files',
 						uri: value
 					}
 				})
@@ -242,6 +267,12 @@
 			onChooseAt: function(i) {
 				this.index = i
 				const that = this
+				var list = []
+				if (i == 5) {
+					list = that.atPersonList
+				} else {
+					list = that.worksContent[i].atPersonList
+				}
 				uni.navigateTo({
 					url: './at',
 					// animationType:'slide-in-right',
@@ -249,7 +280,7 @@
 						// 通过eventChannel向被打开页面传送数据
 						res.eventChannel.emit('emitAtPersonList', {
 							index: that.index,
-							atPersonList: that.worksContent[i].atPersonList
+							atPersonList: list
 						})
 					}
 				})
@@ -274,7 +305,16 @@
 			},
 			// 删除标签事件
 			delTag: function(e) {
-				console.log(e)
+				this.markLabel = e.allTags
+				for(var i in this.markList){
+					const label = '#' + this.markList[i].mark + '#'
+					if(label == e.currentTag){
+						this.markList.splice(i, 1)
+						break;
+					}
+				}
+				console.log(this.markLabel)
+				console.log(this.markList)
 			},
 			// 编辑服饰链接
 			onEditCloth: function() {
@@ -292,7 +332,6 @@
 			},
 			// 编辑正文内容
 			onArticleInput: function(e) {
-
 				this.worksContent[5].article = e.detail.value
 				console.log(this.worksContent[5].article)
 			},
@@ -309,49 +348,73 @@
 			},
 			// 确认发布作品
 			confirm: function() {
-				// uni.uploadFile({
-				//     url: 'http://81.68.73.252:8086/ContentReleasePage/works', 
-				//     files: this.images,
-				// 	formData: {
-				// 		'accountA': 0,	// coserID
-				// 		'accountB': 0,	// 摄影师ID
-				// 		'clothingId': 0,		// 服饰id
-				// 		'mainBody': 'test',	// 正文
-				// 		'makeupId': 0,	// 妆容ID
-				// 		'title': this.worksContent[0].title	// 标题
-				// 		'type': 0, // 发往圈子id
-				// 	},
-				//     success: (uploadFileRes) => {
-				//         console.log(uploadFileRes.data);
-				//     }
-				// });
+				this.markId = []
+				for(var i in this.markList){
+					const item = this.markList[i]
+					this.markId.push(item.mark_id + '，' + item.mark)
+				}
+				console.log(this.markId)
+				// this.onPostWork()
 
+				// 同时发布动态
+				if (this.ifpostdynamic) {
+					this.onPostDynamic()
+				}
 				// 跳转至个人主页
-				uni.redirectTo({
-					url: '../Mypage/homePage/homePage?showToast=2'
-				});
-			}
+				// uni.redirectTo({
+				// 	url: '../Mypage/homePage/homePage?showToast=2'
+				// });
+			},
+			// 发布作品
+			onPostWork: function() {
+				for (var i in this.workClass) {
+					uni.uploadFile({
+					    url: 'http://81.68.73.252:8086/ContentReleasePage/works', 
+					    files: this.images,
+						   formData: {
+							'accountA': this.worksContent[1].atPersonId,	// coserID
+							'accountB': this.worksContent[2].atPersonId,	// 摄影师ID
+							'callUser': this.atPersonId,		// @的人的ID
+							'clothingId': this.worksContent[4].clothingId,		// 服饰id
+							'mainBody': this.worksContent[5].article,	// 正文
+							'makeupId': [],	// 妆容ID
+							'mark_id': this.markId,		// 标签Id
+							'title': this.worksContent[0].title,	// 标题
+							'type': this.workClass[i], // 发往圈子id
+							'user_id': this.userId	//用户id
+						},
+					    success: (uploadFileRes) => {
+					        console.log(uploadFileRes.data);
+					    }
+					});
+				}
+			},
+			// 同时发布动态
+			onPostDynamic: function() {
+
+			},
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap() {
+			
 			// 如果未选择图片
-			if (this.images.length == 0) {
-				this.$refs.popup1.open()
-			}
-			// 如果未勾选任何一个发往圈子
-			else if (this.workClass.length == 0) {
-				this.$refs.popup2.open()
-			}
-			// 如果未同意《用户自制内容协议》
-			else if (!this.ifagree) {
-				this.$refs.popup3.open()
-			} else {
-				this.$refs.popup4.open()
-			}
+			// if (this.images.length == 0) {
+			// 	this.$refs.popup1.open()
+			// }
+			// // 如果未勾选任何一个发往圈子
+			// else if (this.workClass.length == 0) {
+			// 	this.$refs.popup2.open()
+			// }
+			// // 如果未同意《用户自制内容协议》
+			// else if (!this.ifagree) {
+			// 	this.$refs.popup3.open()
+			// } else {
+			// 	this.$refs.popup4.open()
+			// }
+			this.$refs.popup4.open()
 		},
 		onShow() {
-			if(this.worksContent[3].makeupLabels.length != 0){
-				
+			if (this.worksContent[3].makeupLabels.length != 0) {
 				this.enableAdd = true
 				console.log(this.enableAdd)
 			}
@@ -359,10 +422,23 @@
 			uni.$on("emitChoosePersonName", res => {
 				const i = res.index
 				this.index = i
-				this.worksContent[i].atPerson = res.choosePersonName
-				this.worksContent[i].atPersonList = res.atPersonList
+
 				if (i == 5) {
-					this.worksContent[i].article += res.choosePersonName
+					this.atPersonLabel = res.choosePersonName
+					this.atPersonList = res.atPersonList
+					this.atPersonId = []
+					for (var item in res.atPersonList) {
+						this.atPersonId.push(res.atPersonList[item].userId)
+					}
+					console.log(this.atPersonId)
+				} else {
+					this.worksContent[i].atPerson = res.choosePersonName
+					this.worksContent[i].atPersonList = res.atPersonList
+					this.worksContent[i].atPersonId = []
+					for (var item in res.atPersonList) {
+						this.worksContent[i].atPersonId.push(res.atPersonList[item].userId)
+					}
+					console.log(this.worksContent[i].atPersonId)
 				}
 				console.log(this.worksContent[i].atPerson)
 				// 清除监听
@@ -382,20 +458,36 @@
 				console.log(res.clothLabels)
 				this.worksContent[4].clothLabels = res.clothLabels
 				this.worksContent[4].clothList = res.clothList
+				this.worksContent[4].clothingId = []
+				for (var j in this.worksContent[4].clothList) {
+					const item = this.worksContent[4].clothList[j]
+					this.worksContent[4].clothingId.push(item.name + '，' + item.link)
+				}
+				console.log(this.worksContent[4].clothingId)
 				// 清除监听
 				uni.$off("emitClothLabels");
 			})
 
 			// 监听获取热门话题标签事件
 			uni.$on("emitAddHotTopic", res => {
-				this.worksContent[5].article += res.label
-				console.log(this.article)
+				this.markLabel.push(res.label)
+				this.markList.push(res.mark_item)
+				console.log(this.markLabel)
+				console.log(this.markList)
+				
 				// 清除监听
 				uni.$off("emitAddHotTopic");
 			})
 		},
 		onLoad(option) {
 			console.log(option)
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 		}
 	}
 </script>

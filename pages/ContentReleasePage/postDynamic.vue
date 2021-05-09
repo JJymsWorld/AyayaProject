@@ -26,7 +26,17 @@
 				<view class="works-article">
 					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput" />
 				</view>
+				<!-- 显示@用户 -->
+				<view class="atPerson-box" v-if="this.atPersonList.length != 0">
+					<text>{{atPersonLabel}}</text>
+				</view>
+				<!-- 显示标签 -->
+				<view class="markLabel-box" v-if="this.markLabel.length != 0">
+					<robby-tags v-model="markLabel" @delete="delTag"
+						@click="" :enable-del="enableDel"></robby-tags>
+				</view>
 			</view>
+			
 		</view>
 		<view class="line"></view>
 		<!-- 同意用户自制内容协议 -->
@@ -62,23 +72,45 @@
 </template>
 
 <script>
+	import robbyTags from '@/components/robby-tags/myrobby-tags.vue'
 	import gUpload from "@/components/g-upload/g-upload.vue"
 	export default {
 		data() {
 			return {
+				enableDel: true,
 				ifagree: false,
 				ifdownloadimag: false,
 				columnNum: 4, //	上传图片显示几列
 				maxCount: 9, //	最多上传图片数量
 				images: [],
-				article: '',
+				userId: null, 	// 用户id
+				article: '',	// 标记正文内容
+				atPersonLabel: '',
+				atPersonList: [],
+				atPersonId: [],
+				markLabel: [],
+				markList: [],
+				markId: []
 			}
 		},
 		components: {
 			gUpload,
+			robbyTags
 		},
 		methods: {
-			
+			// 删除标签事件
+			delTag: function(e) {
+				this.markLabel = e.allTags
+				for(var i in this.markList){
+					const label = '#' + this.markList[i].mark + '#'
+					if(label == e.currentTag){
+						this.markList.splice(i, 1)
+						break;
+					}
+				}
+				console.log(this.markLabel)
+				console.log(this.markList)
+			},
 			onChangeAgree: function() {
 				this.ifagree = !this.ifagree;
 			},
@@ -115,11 +147,19 @@
 				console.log(this.images)
 			},
 			// 选择@的用户
-			onChooseAt: function(i) {
+			onChooseAt: function() {
 
+				const that = this
+				console.log(that.atPersonList)
 				uni.navigateTo({
 					url: './at',
 					// animationType:'slide-in-right',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('emitAtPersonList', {
+							atPersonList: that.atPersonList
+						})
+					}
 				})
 			},
 			// 选择热门话题
@@ -138,13 +178,20 @@
 			},
 			// 确认发布动态
 			confirm: function() {
+				this.markId = []
+				for(var i in this.markList){
+					const item = this.markList[i]
+					this.markId.push(item.mark_id + '，' + item.mark)
+				}
+				console.log(this.markId)
 				uni.uploadFile({
 					url: 'http://81.68.73.252:8086/ContentReleasePage/dynamic',
 					files: this.images,
 					formData: {
-						'user_id': 4,
-						'callUser': 1,
-						'mainBody': this.article
+						'user_id': this.userId,
+						'mainBody': this.article,
+						'callUser': this.atPersonId,
+						'mark_id': this.markId
 					},
 					success: uploadFileRes => {
 						// console.log(uploadFileRes.data);
@@ -199,26 +246,37 @@
 		onShow() {
 			// 获取@用户名
 			uni.$on("emitChoosePersonName", res => {
-				this.article += res.choosePersonName
+				this.atPersonLabel = res.choosePersonName
+				this.atPersonList = res.atPersonList
+				this.atPersonId = []
+				for(var item in res.atPersonList){
+					this.atPersonId.push(res.atPersonList[item].userId)
+				}
+				console.log(this.atPersonId)
 				console.log(this.article)
 				// 清除监听
 				uni.$off("emitChoosePersonName");
 			})
 			// 获取热门话题标签
 			uni.$on("emitAddHotTopic", res => {
-				this.article += res.label
-				console.log(this.article)
+				this.markLabel.push(res.label)
+				this.markList.push(res.mark_item)
+				console.log(this.markLabel)
+				console.log(this.markList)
 				// 清除监听
 				uni.$off("emitAddHotTopic");
 			})
 		},
-		// // 页面中如果使用了定时器，在离开这个页面的时候一定要记得清除，避免出现bug
-		// onUnload() {
-		// 	if(this.timer) {  
-		// 		clearTimeout(this.timer);  
-		// 		this.timer = null;  
-		// 	}  
-		// }
+		onLoad(){
+			// 获取登录账号userID
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
+		}
 	}
 </script>
 
@@ -233,7 +291,7 @@
 
 	.works-article textarea {
 		width: 100%;
-		height: 450rpx;
+		height: 200rpx;
 		font-size: 14px;
 	}
 </style>

@@ -5,12 +5,12 @@
 			<view class="message-box">
 				<view class="message-item">
 					<view class="message-item-lbox">
-						<image src="../../../../static/image1.png" mode="widthFix"></image>
+						<image :src="headerPic" mode="aspectFill"></image>
 					</view>
 					<view class="message-item-rbox">
 						<view class="message-item-rbox-left">
 							<view class="">
-								<text>机智的党妹</text>
+								<text>{{userName}}</text>
 							</view>
 							<view class="">
 								<text class="text1">[请核对约拍订单信息～]</text>
@@ -44,7 +44,11 @@
 			/**
 			 * 消息文字
 			 */
-			message: {
+			userName: {
+				type: String,
+				default: ''
+			},
+			headerPic: {
 				type: String,
 				default: ''
 			},
@@ -132,6 +136,8 @@
 	}
 	.message-item{
 		margin-bottom: 17px;
+		width: 100%;
+		height: 100rpx;
 	}
 	.message-item-lbox{
 		float: left;
@@ -141,6 +147,7 @@
 	}
 	.message-item-lbox image{
 		width: 100%;
+		height: 100rpx;
 		border-radius: 50%;
 	}
 	.message-item-rbox{

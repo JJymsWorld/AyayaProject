@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<uni-popup ref="popup" type="ordermessage">
-			<uni-popup-ordermessage :duration="2000" :gotoOrderMsgPage="gotoOrderMsgPage"></uni-popup-ordermessage>
+			<uni-popup-ordermessage :duration="2000" :headerPic="headerPic" :userName="userName" :gotoOrderMsgPage="gotoOrderMsgPage"></uni-popup-ordermessage>
 		</uni-popup>
 		<view class="StayInCoser-page-wrapper">
 			<view class="StayInCoser-topBar">
@@ -22,14 +22,15 @@
 					<uni-list-item :title="item.Coser_intro" :ellipsis="1" :border="false" direction="column"
 						v-for="(item,index) in PhotographerInfoList" :key="index" class="StayInCoser-List-item">
 						<view slot="header" class="StayInCoser-item">
-							<image :src="item.Coser_avatar" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
+							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill"
+								@click="gotoCoserHomePage"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text>{{item.Coser_name}}</text>
+									<text>{{item.user_name}}</text>
 									<view class="StayInCoser-item-likenum">
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
-										<text>{{item.Coser_likeNum}}</text>
+										<text>{{item.focused_num}}</text>
 									</view>
 									<view class="StayInCoser-item-likebutton">
 										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
@@ -39,14 +40,15 @@
 											@click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
 										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true"
 											:contentText="contentText2" bgColor="rgba(242,163,195,0.33)"
-											fgColor="#FF5E98" @click="addOrder"></uni-fav>
+											fgColor="#FF5E98" @click="addOrder(item.user_id, index)"></uni-fav>
 									</view>
 								</view>
-								<view class="StayInCoser-item-position"  @click="gotoCoserHomePage">
+								<view class="StayInCoser-item-position" @click="gotoCoserHomePage">
 									<uni-icons type="location-filled" size="14"></uni-icons>
-									<text>{{item.Coser_city}}</text>
+									<text>{{item.city}}</text>
 								</view>
-								<text class="StayInCoser-item-intro"  @click="gotoCoserHomePage">个人介绍:{{item.Coser_intro}}</text >
+								<text class="StayInCoser-item-intro"
+									@click="gotoCoserHomePage">个人介绍:{{item.autograph}}</text>
 							</view>
 
 						</view>
@@ -55,18 +57,19 @@
 								<uni-collapse-item ref="collapse_item" :showAnimation="true"
 									class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
-										<image class="collapse-item-content-img" mode="aspectFill"
-											:src="item.Coser_work1" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill"
-											:src="item.Coser_work2" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill"
-											:src="item.Coser_work3" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1"
+											@click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2"
+											@click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3"
+											@click="gotoWorksPage"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
 						</view>
 					</uni-list-item>
 				</uni-list>
+				<uni-load-more :status="LoadStatus"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -78,35 +81,73 @@
 		components: {
 			comboxSearch
 		},
+		async onLoad(options) {
+			const http = new this.$Request();
+
+			http.get("/Date/PhotographerList/getAllPg", {
+				params: {
+					pageNum: this.pageNum,
+					pageSize: 8
+				}
+			}).then(res => {
+				this.PhotographerInfoList = res.data.list;
+				this.pageNum++;
+				this.initList = false;
+				if (res.data.hasNextPage == true) {
+					this.LoadStatus = "more";
+				}
+				if (res.data.hasNextPage == false) {
+					this.LoadStatus = "noMore";
+					this.flag = false;
+				}
+			}).catch(err => {
+				console.log(err);
+			});
+		},
+		onHide() {
+
+		},
+		onShow() {
+
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if (this.flag == true) {
+				this.LoadStatus = "loading";
+				await http.get("/Date/PhotographerList/getAllPg", {
+					params: {
+						pageNum: this.pageNum,
+						pageSize: 8
+					}
+				}).then(res => {
+					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
+					this.pageNum++;
+					if (res.data.hasNextPage == true) {
+						this.LoadStatus = "more";
+					}
+					if (res.data.hasNextPage == false) {
+						this.LoadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err => {
+					console.log(err);
+				});
+			}
+
+		},
 		data() {
 			return {
+				pageNum: 1,
+				pageSize: 0,
+				beforePage: 0,
+				initList: true,
+				flag: true,
+				LoadStatus: "noMore",
 				CityList: ["全部", "北京", "上海", "杭州", "宁波", "深圳", "福建", "绍兴", "合肥", "郑州", "西安"],
 				ProvinceList: ["全国", "浙江", "广东", "山东", "福建", "河南", "河北", "陕西", "山西", "江苏", "安徽"],
-				PhotographerInfoList: [{
-						Coser_id: 1,
-						Coser_name: "摄影师1",
-						Coser_avatar: "../../static/CoserlistSource/avatar1.jpg",
-						Coser_intro: "底层泥坑里滚爬的一只小可爱",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					},
-					{
-						Coser_id: 2,
-						Coser_name: "摄影师2",
-						Coser_avatar: "../../static/CoserlistSource/avatar2.jpg",
-						Coser_intro: "Lorem ipsum dolor sit amet",
-						Coser_city: "杭州市",
-						Coser_likeNum: 2568,
-						Coser_work1: "../../static/contentImg/2.jpg",
-						Coser_work2: "../../static/contentImg/3.jpg",
-						Coser_work3: "../../static/contentImg/4.jpg",
-						checked: false
-					}
-				],
+				PhotographerInfoList: [],
+				headerPic: "",		// 标记进行约拍的摄影师头像
+				userName: "",		// 标记进行约拍的摄影师昵称
 				contentText: {
 					contentDefault: '关注',
 					contentFav: '已关注'
@@ -134,9 +175,11 @@
 				})
 			},
 			// 发起一个约拍订单
-			addOrder() {
+			addOrder(user_id, i) {
+				this.headerPic = this.PhotographerInfoList[i].header_pic
+				this.userName = this.PhotographerInfoList[i].user_name
 				uni.navigateTo({
-					url: '../pictureOrder/addorder'
+					url: '../pictureOrder/addorder?user_id=' + user_id
 				})
 			},
 			// // 跳转至订单对话框
