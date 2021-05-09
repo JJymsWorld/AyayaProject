@@ -7,8 +7,8 @@
 					<text class="StayInCoser-topBar-left-text">入驻Coser</text>
 				</view>
 				<view class="StayInCoser-topBar-right">
-					<combox-search :isDisabled="true" placeholder="省份" :candidates="ProvinceList" emptyTips="无匹配数据" :value="ProvinceList[0]"></combox-search>
-					<combox-search :isDisabled="true" placeholder="城市" :candidates="CityList" emptyTips="无匹配数据" :value="CityList[0]"></combox-search>
+					<uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"  :value="ProvinceList[0]"></uni-combox>
+					<uni-combox @input="filterbycity" :isDisabled="true" placeholder="城市" :candidates="CityList"  :value="CityList[0]"></uni-combox>
 				</view>
 			</view>
 			<view class="StayInCoser-List">
@@ -18,8 +18,8 @@
 							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
 							<view class="StayInCoser-item-info" @click="gotoCoserHomePage">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text>{{item.user_name}}</text>
-									<view>
+									<text class="StayInCoser-item-name">{{item.user_name}}</text>
+									<view class="StayInCoser-item-likenum">
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
 										<text>{{item.focused_num}}</text>
@@ -82,21 +82,38 @@
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
-			if(this.flag == true){
+			if(this.flag == true && this.valValue == "全部"){
 				this.LoadStatus = "loading";
 				await http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
 					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
 					this.pageNum++;
-					if(res.data.haxNextPage == true){
+					if(res.data.hasNextPage == true){
 						this.LoadStatus = "more";
 					}
-					if(res.data.haxNextPage == false){
+					if(res.data.hasNextPage == false){
 						this.LoadStatus = "noMore";
 						this.flag == false;
 					}
 				}).catch(err=>{
 					console.log(err);
 				});
+			}
+			
+			if(this.flag == true && this.valValue != "全部"){
+				this.LoadStatus = "loading";
+				await http.get("/Cos/StayInCoserList/selectCoserCity",{params:{city:this.valValue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.LoadStatus = "more";
+					}
+					if(res.data.hasNextPage ==false){
+						this.LoadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
 			}
 		},
 		onShow() {
@@ -107,6 +124,7 @@
 		},
 		data(){
 			return{
+				valValue:"全部",
 				initList:true,
 				pageSize:0,
 				pageNum:1,
@@ -118,11 +136,11 @@
 				CoserInfoList:[
 					{
 						Coser_id:1,
-						Coser_name:"Coser1",
+						user_name:"Coser1123",
 						Coser_avatar:"../../static/CoserlistSource/avatar1.jpg",
 						Coser_intro:"底层泥坑里滚爬的一只小可爱",
 						Coser_city:"杭州市",
-						Coser_likeNum:2568,
+						focused_num:2568,
 						Coser_work1:"../../static/contentImg/2.jpg",
 						Coser_work2:"../../static/contentImg/3.jpg",
 						Coser_work3:"../../static/contentImg/4.jpg",
@@ -130,11 +148,11 @@
 					},
 					{
 						Coser_id:2,
-						Coser_name:"Coser2",
+						user_name:"Coser2",
 						Coser_avatar:"../../static/CoserlistSource/avatar2.jpg",
 						Coser_intro:"底层泥坑里滚爬的一只小可爱",
 						Coser_city:"杭州市",
-						Coser_likeNum:2568,
+						focused_num:2568,
 						Coser_work1:"../../static/contentImg/2.jpg",
 						Coser_work2:"../../static/contentImg/3.jpg",
 						Coser_work3:"../../static/contentImg/4.jpg",
@@ -162,6 +180,46 @@
 				uni.navigateTo({
 					url:"../works/works"
 				})
+			},
+			filterbycity(e){
+				const http = new this.$Request();
+				console.log(e);
+				if(this.valValue != e){
+					this.pageNum = 1;
+					this.valValue = e;
+					if(this.valValue == "全部"){
+						http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+							this.CoserInfoList = res.data.list;
+							console.log("获取"+this.valValue+"成功");
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.LoadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.LoadStatus = "noMore";
+								this.flag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					else{
+						http.get("/Cos/StayInCoserList/selectCoserCity",{params:{city:this.valValue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+							this.CoserInfoList = res.data.list;
+							console.log("获取"+this.valValue+"成功");
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.LoadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.LoadStatus = "noMore";
+								this.flag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+				}
 			}
 		}
 	}

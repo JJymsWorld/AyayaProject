@@ -55,11 +55,11 @@
 				</view>
 				<!-- <view :class="['fas','fa-bars']" class="sort-icon"  /> -->
 				<view class="filter-icon">
-					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
+					<uni-combox @input="filterSelect" inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 				</view>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="workNavigateWaterFall($event)" imageSrcKey="imageUrl" idKey="opusId">
+				<waterfallsFlow ref="waterfallsFlow" :list="contentList" @wapper-lick="workNavigateWaterFall($event)" imageSrcKey="imageUrl" idKey="opusId">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -112,7 +112,7 @@
 			})
 			//获取首页瀑布流数据
 			if(this.RecinitList == true){
-				http.get("/Index/Recommend/getWorks",{params:{pageNum:1,pageSize:5,user_id:3}}).then(res=>{
+				http.get("/Index/Recommend/getWorks",{params:{pageNum:this.RecpageNum,pageSize:8,user_id:3}}).then(res=>{
 					console.log(res.data);
 					this.contentList = res.data.list;
 					this.RecpageNum++;
@@ -176,8 +176,101 @@
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
-			if(this.tabIndex == 0){
-				
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "全部"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/getWorks",{params:{pageNum:this.RecpageNum,pageSize:6,user_id:3}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "Cos"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "JK"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "汉服"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:4}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "Lolita"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "妆容"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:6}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
 			}
 			if(this.tabIndex == 1 && this.Hotflag==true){
 				this.HotloadStatus = "loading";
@@ -199,6 +292,7 @@
 		},
 		data() {
 			return {
+				valValue:"全部",
 				HotloadStatus:"noMore",
 				RecloadStatus:"noMore",
 				RecpageNum:1,
@@ -451,6 +545,110 @@
 				uni.navigateTo({
 					url: '../HotActivities/CollectionContentPage'
 				})
+			},
+			filterSelect(e){
+				const http = new this.$Request();
+				if(this.valValue != e){
+					this.RecpageNum = 1;
+					this.valValue = e;
+					if(this.valValue == "全部"){
+						http.get("/Index/Recommend/getWorks",{params:{pageNum:this.RecpageNum,pageSize:8,user_id:3}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Cos"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "JK"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "汉服"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:4}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Lolita"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "妆容"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:6}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					this.$refs.waterfallsFlow.refresh();
+				}
 			}
 		}
 	}

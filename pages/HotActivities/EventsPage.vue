@@ -41,7 +41,7 @@
 						</view>
 					</uni-list-item>
 				</uni-list>
-				<uni-load-more status="noMore"></uni-load-more>
+				<uni-load-more :status="loadStatus"></uni-load-more>
 			</view>
 		</view>
 	</view>
@@ -49,16 +49,52 @@
 
 <script>
 	export default{
-		onLoad() {
+		async onLoad() {
 			const http = new this.$Request();
-			http.get('/Activity/Events/getAllEvents').then(res=>{
-				this.EventsList = res.data;
-			}).catch(err=>{
-				console.log(err);
-			})
+			if(this.initList == true){
+				http.get("/Activity/Events/getAllEvents",{params:{pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.EventsList = res.data.list;
+					this.pageNum++;
+					this.initList = false;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.loadStatus = "loading";
+				await http.get("/Activity/Events/getAllEvents",{params:{pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.EventsList = this.EventsList.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
 		},
 		data(){
 			return {
+				valValue:"全部",
+				pageNum:1,
+				pageSize:0,
+				initList:true,
+				flag:true,
+				loadStatus:"noMore",
 				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
 				EventsList:[
 					// {
