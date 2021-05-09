@@ -385,13 +385,23 @@
 						},
 					    success: (uploadFileRes) => {
 					        console.log(uploadFileRes.data);
+							this.opus_id = uploadFileRes.data.opus_id
 					    }
 					});
 				}
 			},
 			// 同时发布动态
 			onPostDynamic: function() {
-
+				this.$myRequest({
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					url:'/ContentReleasePage/addDynamicRecord',
+					data:{
+						mainBody: '发布了作品',
+						opus_id: this.opus_id,
+						user_id: this.userId
+					}
+				})
 			},
 		},
 		// 页面导航栏按钮点击事件

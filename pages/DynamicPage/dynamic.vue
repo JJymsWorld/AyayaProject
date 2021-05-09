@@ -86,7 +86,7 @@
 			</uni-list-item>
 		</uni-list>
 		
-		<uni-load-more status="noMore"></uni-load-more>
+		<uni-load-more :status="loadMoreStatus" @clickLoadMore="LoadDynamicMore($event)"></uni-load-more>
 		</view>
 
 		
@@ -133,16 +133,25 @@
 	import gridBox from '../../components/gridImage/gridImage.vue'
 	export default{
 		onLoad() {
-			this.userId = getApp().globalData.global_userId
-			console.log(this.userId)
-			this.LoadDynamic(1,1,10)
+			// this.userId = getApp().globalData.global_userId
+			// console.log(this.userId)
+			this.initDynamicList()
 		},
 		components: {
 			gridBox
 		},
 		data(){
 			return{
-				userId:'',
+				pageNum:1,
+				pageSize:10,
+				prePage:0,
+				hasNextPage:true,
+				hasPreviousPage:false,
+				isFirstPage:true,
+				isLastPage:false,
+				isNoMore:true,
+				loadMoreStatus:'more',
+				userId:1,
 				recommendTag:0,
 				scrollTop: 0,
 				old: {
@@ -423,17 +432,50 @@
 					url:'dynamicDetails?dynamicId='+i
 				})
 			},
-			async LoadDynamic(id,pNum,pSize){
+			// 第一次加载
+			async initDynamicList(){ 
+				const that = this
+				that.isFirstPage = true
+				that.pageNum = 1
+				that.pageSize = 2
+				// console.log("userId"+that.userId)
 				const res = await this.$myRequest({
 						url:'/Dynamic/getFocusPersonItems',
 						data:{
-							user_id: id,
-							pageNum: pNum,
-							pageSize: pSize
+							user_id: that.userId,
+							pageNum: that.pageNum,
+							pageSize: that.pageSize
 						}
 					})
+				console.log(res.data)
+				that.dynamicItem=res.data.list
+				that.isLastPage = res.data.isLastPage
+				that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
+				that.hasNextPage = res.data.hasNextPage
+				that.hasPreviousPage = res.data.hasPreviousPage
+			},
+			// 触发loadMore
+			async LoadDynamicMore(e){
+				const that = this
+				if(that.loadMoreStatus == 'more'){
+					that.pageNum++
+					const res = await this.$myRequest({
+							url:'/Dynamic/getFocusPersonItems',
+							data:{
+								user_id: that.userId,
+								pageNum: that.pageNum,
+								pageSize: that.pageSize
+							}
+						})
 					console.log(res.data)
-					this.$data.dynamicItem=res.data.list
+					that.$data.dynamicItem=that.$data.dynamicItem.concat(res.data.list)
+					console.log(that.$data.dynamicItem)
+					that.isLastPage = res.data.isLastPage
+					that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
+					that.hasNextPage = res.data.hasNextPage
+					that.hasPreviousPage = res.data.hasPreviousPage
+				}
+				
 			},
 			homePageNavi(i){
 				uni.navigateTo({
