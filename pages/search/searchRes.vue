@@ -303,21 +303,24 @@
 				uni.navigateBack()
 			},
 			async onSearch(e) {
-				this.value = e.value
-				console.log(this.value)
-				this.pageNum = [1, 1, 1]
+				if(e.value != ''){
+					this.value = e.value
+					console.log(this.value)
+					this.pageNum = [1, 1, 1]
+					
+					const res = await this.onGetDynamicList(0)
+					this.dynamicItem = res.list
+					this.dynamicListTotal = res.total
+					
+					const res1 = await this.onGetSearchWorksList(1)
+					this.SearchWorksList = res1.list
+					this.workListTotal = res1.total
+					
+					const res2 = await this.onGetCoserInfoList(2)
+					this.CoserInfoList = res2.list
+					this.coserListTotal = res2.total
+				}
 				
-				const res = await this.onGetDynamicList(0)
-				this.dynamicItem = res.list
-				this.dynamicListTotal = res.total
-				
-				const res1 = await this.onGetSearchWorksList(1)
-				this.SearchWorksList = res1.list
-				this.workListTotal = res1.total
-				
-				const res2 = await this.onGetCoserInfoList(2)
-				this.CoserInfoList = res2.list
-				this.coserListTotal = res2.total
 			},
 			// 清空搜索历史
 			delHsty: function() {

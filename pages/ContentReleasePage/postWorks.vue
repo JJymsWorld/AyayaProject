@@ -139,6 +139,7 @@
 		data() {
 			return {
 				opus_id: null,		// 发布作品成功后返回的作品id
+				opus_photos: '',	// 发布作品成功后返回的作品封面图片地址
 				atPersonLabel: '', // 	标记正文中@的对象
 				atPersonList: [],
 				atPersonId: [],
@@ -386,6 +387,7 @@
 					    success: (uploadFileRes) => {
 					        console.log(uploadFileRes.data);
 							this.opus_id = uploadFileRes.data.opus_id
+							this.opus_photos = uploadFileRes.data.opus_photos
 					    }
 					});
 				}
@@ -399,7 +401,8 @@
 					data:{
 						mainBody: '发布了作品',
 						opus_id: this.opus_id,
-						user_id: this.userId
+						user_id: this.userId,
+						dynamic_photos: this.opus_photos	
 					}
 				})
 			},
@@ -437,16 +440,18 @@
 					this.atPersonLabel = res.choosePersonName
 					this.atPersonList = res.atPersonList
 					this.atPersonId = []
-					for (var item in res.atPersonList) {
-						this.atPersonId.push(res.atPersonList[item].userId)
+					for (var j in res.atPersonList) {
+						const item = res.atPersonList[j]
+						this.atPersonId.push(item.userId + '，' + item.username)
 					}
 					console.log(this.atPersonId)
 				} else {
 					this.worksContent[i].atPerson = res.choosePersonName
 					this.worksContent[i].atPersonList = res.atPersonList
 					this.worksContent[i].atPersonId = []
-					for (var item in res.atPersonList) {
-						this.worksContent[i].atPersonId.push(res.atPersonList[item].userId)
+					for (var j in res.atPersonList) {
+						const item = res.atPersonList[j]
+						this.worksContent[i].atPersonId.push(item.userId + '，' + item.username)
 					}
 					console.log(this.worksContent[i].atPersonId)
 				}

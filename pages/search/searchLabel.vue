@@ -21,8 +21,8 @@
 									</view>
 									<view class="dynamicDate">{{item.upload_time}}</view>
 								</view>
-								<view class="attentionButton" @click.stop="changeChecked(index)"><text>关注</text></view>
-								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="changeChecked(idex)"><text>已关注</text></view>
+								<view class="attentionButton" v-if='!item.checked' @click.stop="changeChecked(index)"><text>关注</text></view>
+								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="changeChecked(index)"><text>已关注</text></view>
 							</view>
 							<!-- 正文 -->
 							<view class="dynamicText">{{item.main_body}}</view>
@@ -35,22 +35,28 @@
 
 							<table class="littleIconTable">
 								<tr>
-									<td>
-										<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+									<td  @click.stop="addLike()">
+										<!-- <view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
 											<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
 											<text class="number">{{item.likes_number}}</text>
 										</view>
 										<view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
 											<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
 											<text class="number1">{{item.likes_number}}</text>
+										</view> -->
+										
+										<view style="width: 50rpx;height: 50rpx;">
+											<span class="iconfont4" @click=''>&#xe608;</span>
+											<text class="number1">{{item.likes_number}}</text>
 										</view>
+										
 									</td>
 									<td>
 										<image class='littleIcon' src="../../static/icon/chat.png"
 											@click="recommend(item.id)"></image>
 										<text class="number">{{item.commented_num}}</text>
 									</td>
-									<td>
+									<td @click.stop="open">
 										<image class='littleIcon2' src="../../static/icon/relay.png"></image>
 										<text class="number">{{item.shared_num}}</text>
 									</td>
@@ -63,13 +69,35 @@
 				</uni-list-item>
 			</uni-list>
 
-			<uni-load-more status="noMore"></uni-load-more>
+			<uni-load-more :status="loadStatus"></uni-load-more>
 		</view>
+		<!-- 转发 -->
+		<uni-popup ref="popup" type="bottom">
+			   <view class="relayPopBox">
+				   <view class="relayPopBoxTitle">分享至</view>
+				   <view class="relayPopBoxButtonBox">
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe61a;</span>
+						   <view class="relayText">微信</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe65b;</span>
+					   	   <view class="relayText">朋友圈</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe73c;</span>
+					   	   <view class="relayText">微博</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe60c;</span>
+					   	   <view class="relayText">QQ</view>
+					   </view>
+				   </view>
+				   
+				   <view class="relayPopBoxExit" @click.stop="close()">取消</view>
+			   </view>
+		</uni-popup>
 	</view>
-
-	</view>
-	</view>
-
 </template>
 
 <script>
@@ -77,6 +105,7 @@
 	export default {
 		data() {
 			return {
+				loadStatus:	'noMore',
 				searchLabel: '',
 				userId: '',
 				searchWorkList: [],
@@ -113,6 +142,19 @@
 
 		},
 		methods: {
+			open(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.open()
+					 // var webView = this.$mp.page.$getAppWebview();  
+					 // let titleNView = webView.getTitleNView();  
+					 // titleNView && titleNView.hide();
+					 // currentWebview.setStyle({
+					 // titleNView:titleNView
+					 // })
+			},
+			close(){
+				this.$refs.popup.close()
+			},
 			// 获取作品列表
 			async onGetSearchWorksList() {
 				const res = await this.$myRequest({
@@ -127,33 +169,25 @@
 			},
 			// 重新搜索
 			async onSearch(e) {
-				this.searchLabel = e.value
-				console.log(this.searchLabel)
-				this.pageNum = 1
-				
-				const res = await this.onGetSearchWorksList()
-				this.searchWorkList = res.list
-				this.workListTotal = res.total
-				console.log(this.searchWorkList)
-				
-			},
-			addLike(i) {
-				var t = this.$data.dynamicItem[i].isInterest;
-				if (t == 0) {
-					this.$data.dynamicItem[i].interestNum++;
-					this.$data.dynamicItem[i].isInterest = 1;
-				} else {
-					this.$data.dynamicItem[i].interestNum--;
-					this.$data.dynamicItem[i].isInterest = 0;
+				if(e.value != ''){
+					this.searchLabel = e.value
+					console.log(this.searchLabel)
+					this.pageNum = 1
+					
+					const res = await this.onGetSearchWorksList()
+					this.searchWorkList = res.list
+					this.workListTotal = res.total
+					console.log(this.searchWorkList)
 				}
-
+			},
+			// 点赞作品
+			addLike() {
+				
 			},
 			// 返回前一页面
 			onGoBack: function() {
 				console.log('cancel')
-				uni.navigateBack({
-
-				})
+				uni.navigateBack({})
 			},
 			// 改变关注状态
 			changeChecked(i){

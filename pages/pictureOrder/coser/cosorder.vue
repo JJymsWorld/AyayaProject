@@ -14,63 +14,76 @@
 		<ssnavbar :navArr="navArr" :tabCurrentIndex="currentIndex" @navbarTap="navbarTapHandler"></ssnavbar>
 		<!-- 全部 -->
 		<view class="" v-if='currentIndex == 0'>
-			<uni-list v-for='(item, index) in orderlist' :key='index'>
-				<uni-list-item direction="column">
+			<uni-list :border="false">
+				<uni-list-item :border="false" clickable v-for='(item, index) in allOrderList' :key='index' direction="column">
 					<!-- 自定义 header -->
 					<view slot="header" class="slot-header-box">
-						订单编号: {{item.ListNum}}
+						订单编号: {{item.photograph_id}}
 						<view class="money-box">
 							<image src="../../../static/money.png" mode=""></image>
-							{{item.Money}}
+							{{item.money}}
 						</view>
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.userb_header_pic" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
 							<view class="" @click="gotoUserHomePage()">
-								摄影师：{{item.usernamB}}
+								摄影师：{{item.userb_user_name}}
 							</view>
 							<view class="">
-								拍摄时间：{{item.Time}}
+								拍摄时间：{{item.date}}
 							</view>
 							<view class="">
-								拍摄地点：{{item.Area}}
+								拍摄地点：{{item.area}}
 							</view>
 						</view>
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button @click="onCancelOrder()">取消订单</button>
-						<button>修改订单信息</button>
+						<view class="" v-if='item.state == 0'>
+							<button>摄影师拒绝</button>
+						</view>
+						<view class="" v-if='item.state == 1'>
+							<button @click="onCancelOrder()">取消订单</button>
+							<button>修改订单信息</button>
+						</view>
+						<view class="">
+							<button v-if='item.state == 2' class="pinkbutton" @click="onPay">确认支付</button>
+							<button v-if='item.state == 3' class="" @click="onPay">已支付</button>
+						</view>
+						<view class="" v-if='item.state == 4'>
+							<button class="pinkbutton" @click="gotoWorkPage()">查看成片</button>
+						</view>
 					</view>
 				</uni-list-item>
+				
 			</uni-list>
 		</view>
 		<!-- 待处理 -->
 		<view class="" v-if='currentIndex == 1'>
-			<uni-list v-for='(item, index) in orderlist' :key='index'>
-				<uni-list-item direction="column">
+			<uni-list :border="false">
+				<uni-list-item :border="false" clickable v-for='(item, index) in orderList1' :key='index' direction="column">
 					<!-- 自定义 header -->
 					<view slot="header" class="slot-header-box">
-						订单编号: {{item.ListNum}}
+						订单编号: {{item.photograph_id}}
 						<view class="money-box">
 							<image src="../../../static/money.png" mode=""></image>
-							{{item.Money}}
+							{{item.money}}
 						</view>
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.userb_header_pic" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
 							<view class="" @click="gotoUserHomePage()">
-								摄影师：{{item.usernamB}}
+								摄影师：{{item.userb_user_name}}
 							</view>
 							<view class="">
-								拍摄时间：{{item.Time}}
+								拍摄时间：{{item.date}}
 							</view>
 							<view class="">
-								拍摄地点：{{item.Area}}
+								拍摄地点：{{item.area}}
 							</view>
 						</view>
 					</view>
@@ -84,62 +97,63 @@
 		</view>
 		<!-- 进行中 -->
 		<view class="" v-if='currentIndex == 2'>
-			<uni-list v-for='(item, index) in orderlist' :key='index'>
-				<uni-list-item direction="column">
+			<uni-list :border="false">
+				<uni-list-item :border="false" clickable v-for='(item, index) in orderList2' :key='index' direction="column">
 					<!-- 自定义 header -->
 					<view slot="header" class="slot-header-box">
-						订单编号: {{item.ListNum}}
+						订单编号: {{item.photograph_id}}
 						<view class="money-box">
 							<image src="../../../static/money.png" mode=""></image>
-							{{item.Money}}
+							{{item.money}}
 						</view>
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.userb_header_pic" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
 							<view class="" @click="gotoUserHomePage()">
-								摄影师：{{item.usernamB}}
+								摄影师：{{item.userb_user_name}}
 							</view>
 							<view class="">
-								拍摄时间：{{item.Time}}
+								拍摄时间：{{item.date}}
 							</view>
 							<view class="">
-								拍摄地点：{{item.Area}}
+								拍摄地点：{{item.area}}
 							</view>
 						</view>
 					</view>
 					<!-- 自定义 footer-->
 					<view slot="footer" class="slot-footer-box">
-						<button class="pinkbutton" @click="onPay">确认支付</button>
+						<button v-if='item.state == 2' class="pinkbutton" @click="onPay">确认支付</button>
+						<button v-if='item.state == 3' class="" @click="onPay">已支付</button>
 					</view>
 				</uni-list-item>
 			</uni-list>
 		</view>
 		<!-- 已完成 -->
 		<view class="" v-if='currentIndex == 3'>
-			<uni-list v-for='(item, index) in orderlist' :key='index'>
-				<uni-list-item direction="column">
+			<uni-list :border="false">
+				<uni-list-item :border="false" clickable v-for='(item, index) in orderList3' :key='index' direction="column">
 					<!-- 自定义 header -->
 					<view slot="header" class="slot-header-box">
-						订单编号: {{item.ListNum}}
+						订单编号: {{item.photograph_id}}
 						<view class="money-box">
 							<image src="../../../static/money.png" mode=""></image>
-							{{item.Money}}
+							{{item.money}}
 						</view>
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.imageB" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.userb_header_pic" mode="" @click="gotoUserHomePage()"></image>
 						<view class="content-box">
 							<view class="" @click="gotoUserHomePage()">
-								摄影师：{{item.usernamB}}
+								摄影师：{{item.userb_user_name}}
 							</view>
 							<view class="">
-								拍摄时间：{{item.Time}}
+								拍摄时间：{{item.date}}
 							</view>
 							<view class="">
-								拍摄地点：{{item.Area}}
+								拍摄地点：{{item.area}}
 							</view>
 						</view>
 					</view>
@@ -166,6 +180,7 @@
 	export default {
 		data() {
 			return {
+				userId: null,	// 用户Id
 				currentIndex: 0,
 				navArr: [{
 					title: '全部',
@@ -182,7 +197,7 @@
 				}],
 				orderlist: [{
 					ListNum: 'p32769',
-					Statet: '',
+					state: 2,
 					// CoserId
 					AccountA: '',
 					usernamA: '',
@@ -195,8 +210,11 @@
 					Area: '浙江省 杭州市 西湖区',
 					Time: '2020年12月25日',
 					Money: 298
-				}]
-
+				}],
+				allOrderList: [],	// 所有约拍订单信息
+				orderList1: [],		// state=1的订单
+				orderList2: [],		// state=2 3的订单
+				orderList3: [],		// state=4的订单
 			}
 		},
 		components: {
@@ -204,11 +222,58 @@
 			jpPwd
 		},
 		methods: {
+			// 获取不同状态的订单
+			async getOrderByState(s){
+				const res = await this.$myRequest({
+					url: '/Order/getAllOrderByState1',
+					data: {
+						user_id: this.userId,
+						state: s
+					}
+				})
+				return (res.data)
+			},
+			// 获取所有的订单
+			async getAllOrder(){
+				const res = await this.$myRequest({
+					url: '/Order/getAllOrderById1',
+					data: {
+						user_id: this.userId,
+					}
+				})
+				return (res.data)
+			},
+			// state状态加1
+			addState(pho_id){
+				this.$myRequest({
+					url: '/Order/addState',
+					data: {
+						photograph_id: pho_id,
+					}
+				})
+			},
+			// state状态减1
+			subState(pho_id){
+				this.$myRequest({
+					url: '/Order/subState',
+					data: {
+						photograph_id: pho_id,
+					}
+				})
+			},
 			// 改变导航栏状态
-			navbarTapHandler: function(index) {
+			async navbarTapHandler(index) {
 				this.currentIndex = index;
-				var obj = this.navArr[index];
-				console.log('url:' + obj.url);
+				if(index == 1){
+					this.orderList1 = await this.getOrderByState(1)					
+				}
+				if(index == 2){
+					this.orderList2 = await this.getOrderByState(2)		
+					this.orderList2 = this.orderList2.concat(await this.getOrderByState(3))
+				}
+				if(index == 3){
+					this.orderList3 = await this.getOrderByState(4)					
+				}
 			},
 			gotoMyPage: function(){
 				uni.switchTab({
@@ -264,10 +329,23 @@
 					title: '取消成功'
 				})
 			}
+		},
+		async onLoad(){
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
+			
+			const res = await this.getAllOrder()
+			this.allOrderList = res
+			console.log(res)
 		}
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	@import url("myorder.css");
 </style>
