@@ -432,7 +432,16 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+		    "path" : "pages/pictureOrder/reviseorderinfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
 		,{
 		    "path" : "pages/pictureOrder/alterorder",
 		    "style" :                                                                                    

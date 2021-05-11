@@ -138,8 +138,9 @@
 	export default {
 		data() {
 			return {
-				opus_id: null,		// 发布作品成功后返回的作品id
-				opus_photos: '',	// 发布作品成功后返回的作品封面图片地址
+				photograph_id: null, // 约拍广场订单
+				opus_id: null, // 发布作品成功后返回的作品id
+				opus_photos: '', // 发布作品成功后返回的作品封面图片地址
 				atPersonLabel: '', // 	标记正文中@的对象
 				atPersonList: [],
 				atPersonId: [],
@@ -307,9 +308,9 @@
 			// 删除标签事件
 			delTag: function(e) {
 				this.markLabel = e.allTags
-				for(var i in this.markList){
+				for (var i in this.markList) {
 					const label = '#' + this.markList[i].mark + '#'
-					if(label == e.currentTag){
+					if (label == e.currentTag) {
 						this.markList.splice(i, 1)
 						break;
 					}
@@ -350,7 +351,7 @@
 			// 确认发布作品
 			confirm: function() {
 				this.markId = []
-				for(var i in this.markList){
+				for (var i in this.markList) {
 					const item = this.markList[i]
 					this.markId.push(item.mark_id + '，' + item.mark)
 				}
@@ -361,34 +362,54 @@
 				if (this.ifpostdynamic) {
 					this.onPostDynamic()
 				}
-				// 跳转至个人主页
-				// uni.redirectTo({
-				// 	url: '../Mypage/homePage/homePage?showToast=2'
-				// });
+				
+				if(this.photograph_id){
+					console.log('1')
+					this.$myRequest({
+						url: '/Order/setListNum',
+						data: {
+							// list_num: this.opus_id,
+							list_num: 11,
+							photograph_id: this.photograph_id
+						}
+					})
+					uni.$emit('showPostSuccess',{
+						photograph_id: this.photograph_id
+					})
+					uni.navigateBack({})
+				}
+				
+				else{
+					// 跳转至个人主页
+					// uni.redirectTo({
+					// 	url: '../Mypage/homePage/homePage?showToast=2'
+					// });
+				}
+				
 			},
 			// 发布作品
 			onPostWork: function() {
 				for (var i in this.workClass) {
 					uni.uploadFile({
-					    url: 'http://81.68.73.252:8086/ContentReleasePage/works', 
-					    files: this.images,
-						   formData: {
-							'accountA': this.worksContent[1].atPersonId,	// coserID
-							'accountB': this.worksContent[2].atPersonId,	// 摄影师ID
-							'callUser': this.atPersonId,		// @的人的ID
-							'clothingId': this.worksContent[4].clothingId,		// 服饰id
-							'mainBody': this.worksContent[5].article,	// 正文
-							'makeupId': [],	// 妆容ID
-							'mark_id': this.markId,		// 标签Id
-							'title': this.worksContent[0].title,	// 标题
+						url: 'http://81.68.73.252:8086/ContentReleasePage/works',
+						files: this.images,
+						formData: {
+							'accountA': this.worksContent[1].atPersonId, // coserID
+							'accountB': this.worksContent[2].atPersonId, // 摄影师ID
+							'callUser': this.atPersonId, // @的人的ID
+							'clothingId': this.worksContent[4].clothingId, // 服饰id
+							'mainBody': this.worksContent[5].article, // 正文
+							'makeupId': [], // 妆容ID
+							'mark_id': this.markId, // 标签Id
+							'title': this.worksContent[0].title, // 标题
 							'type': this.workClass[i], // 发往圈子id
-							'user_id': this.userId	//用户id
+							'user_id': this.userId //用户id
 						},
-					    success: (uploadFileRes) => {
-					        console.log(uploadFileRes.data);
+						success: (uploadFileRes) => {
+							console.log(uploadFileRes.data);
 							this.opus_id = uploadFileRes.data.opus_id
 							this.opus_photos = uploadFileRes.data.opus_photos
-					    }
+						}
 					});
 				}
 			},
@@ -396,20 +417,22 @@
 			onPostDynamic: function() {
 				this.$myRequest({
 					method: 'POST',
-					header:{'content-type':'application/x-www-form-urlencoded'},
-					url:'/ContentReleasePage/addDynamicRecord',
-					data:{
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					url: '/ContentReleasePage/addDynamicRecord',
+					data: {
 						mainBody: '发布了作品',
 						opus_id: this.opus_id,
 						user_id: this.userId,
-						dynamic_photos: this.opus_photos	
+						dynamic_photos: this.opus_photos
 					}
 				})
 			},
 		},
 		// 页面导航栏按钮点击事件
 		onNavigationBarButtonTap() {
-			
+
 			// 如果未选择图片
 			// if (this.images.length == 0) {
 			// 	this.$refs.popup1.open()
@@ -489,18 +512,27 @@
 				this.markList.push(res.mark_item)
 				console.log(this.markLabel)
 				console.log(this.markList)
-				
+
 				// 清除监听
 				uni.$off("emitAddHotTopic");
 			})
 		},
 		onLoad(option) {
 			console.log(option)
+
+			const that = this
+			const eventChannel = that.getOpenerEventChannel()
+			// 监听emitPictureOrder事件，获取上一页面通过eventChannel传送到当前页面的数据
+			eventChannel.on('emitPictureOrder', function(data) {
+				console.log(data)
+				that.photograph_id = data.id
+			})
+
 			uni.getStorage({
 				key: 'userId',
 				success: res => {
 					console.log(res.data);
-					this.userId = res.data
+					that.userId = res.data
 				}
 			});
 		}

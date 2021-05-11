@@ -108,7 +108,11 @@
 
 		},
 		onShow() {
-
+			uni.$on('showOrderMsg', res => {
+				this.$refs.popup.open()
+				// 清除监听
+				uni.$off("showOrderMsg");
+			})
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
@@ -189,13 +193,7 @@
 				})
 			}
 		},
-		onShow() {
-			uni.$on('showOrderMsg', res => {
-				this.$refs.popup.open()
-				// 清除监听
-				uni.$off("showOrderMsg");
-			})
-		}
+		
 	}
 </script>
 
