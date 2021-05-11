@@ -55,7 +55,17 @@
 	color: #333333;
 	margin-top: auto;
 	margin-bottom: auto;
-	justify-content: space-between;
+	/* justify-content: space-between; */
+	align-items: center;
+}
+.StayInCoser-item-name{
+	width: 120rpx;
+}
+.StayInCoser-item-likenum{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 100rpx;
 }
 .StayInCoser-item-position{
 	font-size: 24rpx;

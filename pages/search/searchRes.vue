@@ -138,7 +138,7 @@
 							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoUserHomePage"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text @click="gotoUserHomePage">{{item.user_name}}</text>
+									<text class="StayInCoser-item-name">{{item.user_name}}</text>
 									<view>
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>

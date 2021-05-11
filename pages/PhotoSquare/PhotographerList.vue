@@ -11,10 +11,10 @@
 					<text class="StayInCoser-topBar-left-text">入驻摄影师</text>
 				</view>
 				<view class="StayInCoser-topBar-right">
-					<combox-search :isDisabled="true" placeholder="省份" :candidates="ProvinceList" emptyTips="无匹配数据"
-						:value="ProvinceList[0]"></combox-search>
-					<combox-search :isDisabled="true" placeholder="城市" :candidates="CityList" emptyTips="无匹配数据"
-						:value="CityList[0]"></combox-search>
+					<uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"
+						:value="ProvinceList[0]"></uni-combox>
+					<uni-combox @input="filterbcity" :isDisabled="true" placeholder="城市" :candidates="CityList" 
+						:value="CityList[0]"></uni-combox>
 				</view>
 			</view>
 			<view class="StayInCoser-List">
@@ -26,7 +26,7 @@
 								@click="gotoCoserHomePage"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text>{{item.user_name}}</text>
+									<text class="StayInCoser-item-name">{{item.user_name}}</text>
 									<view class="StayInCoser-item-likenum">
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
@@ -116,31 +116,44 @@
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
-			if (this.flag == true) {
+			if(this.flag == true && this.valvalue == "全部"){
 				this.LoadStatus = "loading";
-				await http.get("/Date/PhotographerList/getAllPg", {
-					params: {
-						pageNum: this.pageNum,
-						pageSize: 8
-					}
-				}).then(res => {
+				await http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
 					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
 					this.pageNum++;
-					if (res.data.hasNextPage == true) {
+					if(res.data.hasNextPage == true){
 						this.LoadStatus = "more";
 					}
-					if (res.data.hasNextPage == false) {
+					if(res.data.hasNextPage == false){
 						this.LoadStatus = "noMore";
 						this.flag = false;
 					}
-				}).catch(err => {
+				}).catch(err=>{
 					console.log(err);
 				});
 			}
-
+			
+			if(this.flag == true && this.valvalue != "全部"){
+				this.LoadStatus = "loading";
+				await http.get("/Date/StayInPhotographerList/selectPgCity",{params:{city:this.valvalue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.LoadStatus = "more";
+					}
+					if(res.dat.hasNextPage == false){
+						this.LoadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			
 		},
 		data() {
 			return {
+				valvalue:"全部",
 				pageNum: 1,
 				pageSize: 0,
 				beforePage: 0,
@@ -149,7 +162,31 @@
 				LoadStatus: "noMore",
 				CityList: ["全部", "北京", "上海", "杭州", "宁波", "深圳", "福建", "绍兴", "合肥", "郑州", "西安"],
 				ProvinceList: ["全国", "浙江", "广东", "山东", "福建", "河南", "河北", "陕西", "山西", "江苏", "安徽"],
-				PhotographerInfoList: [],
+				PhotographerInfoList: [{
+						Coser_id: 1,
+						user_name: "摄影师11111111",
+						Coser_avatar: "../../static/CoserlistSource/avatar1.jpg",
+						Coser_intro: "底层泥坑里滚爬的一只小可爱",
+						Coser_city: "杭州市",
+						focused_num: 2568,
+						Coser_work1: "../../static/contentImg/2.jpg",
+						Coser_work2: "../../static/contentImg/3.jpg",
+						Coser_work3: "../../static/contentImg/4.jpg",
+						checked: false
+					},
+					{
+						Coser_id: 2,
+						user_name: "摄影师222",
+						Coser_avatar: "../../static/CoserlistSource/avatar2.jpg",
+						Coser_intro: "Lorem ipsum dolor sit amet",
+						Coser_city: "杭州市",
+						focused_num: 7,
+						Coser_work1: "../../static/contentImg/2.jpg",
+						Coser_work2: "../../static/contentImg/3.jpg",
+						Coser_work3: "../../static/contentImg/4.jpg",
+						checked: false
+					}
+				],
 				headerPic: "",		// 标记进行约拍的摄影师头像
 				userName: "",		// 标记进行约拍的摄影师昵称
 				contentText: {
@@ -191,6 +228,46 @@
 				uni.navigateTo({
 					url: '../MessageCenter/cos-dialogpage'
 				})
+			},
+			filterbcity(e){
+				console.log(e);
+				const http = new this.$Request();
+				if(this.valValue != e){
+					this.pageNum = 1;
+					this.valvalue = e;
+					if(this.valvalue == "全部"){
+						http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+							this.PhotographerInfoList = res.data.list;
+							console.log("获取"+this.valvalue+"成功");
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.LoadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.LoadStatus = "noMore";
+								this.flag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					else{
+						http.get("/Date/StayInPhotographerList/selectPgCity",{params:{city:this.valvalue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+							this.PhotographerInfoList = res.data.list;
+							console.log("获取"+this.valvalue+"成功");
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.LoadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.LoadStatus = "noMore";
+								this.flag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+				}
 			}
 		},
 		
