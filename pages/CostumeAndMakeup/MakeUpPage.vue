@@ -37,7 +37,7 @@
 					<view class="function-bar-filter" >
 						<!-- <text>分类</text>
 						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view> -->
-						<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
+						<uni-combox @input="filterSelect" inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 					</view>
 					<view class="function-bar-searchbar" @click="gotoSearchPage">
 						<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
@@ -52,10 +52,16 @@
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPageWaterFall($event)">
+					<waterfallsFlow ref="waterfallsFlow" :list="MakeupWorkslist" class="CostumeOrMakeup-waterfallsflow-style" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPageWaterFall($event)">
 						<template v-slot:default="item" class="content-box-item">
 							<view class="cnt">
 								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
+								<view class="user-info-box">
+									<image class="user-head-img" :src="item.header_pic" mode="aspectFill"></image>
+									<view class="user-name">{{item.user_name}}</view>
+									<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.browse_num}}
+									</view>
+								</view>
 							</view>
 						</template>
 					</waterfallsFlow>
@@ -94,11 +100,27 @@
 					
 			// 	}
 			// })
-			http.get("/MakeUp/getAllWorks",{params:{type:2}}).then(res=>{
-				this.MakeupWorkslist = res.data;
-			}).catch(err=>{
-				console.log(err);
-			});
+			
+			
+			//获取瀑布流内容
+			
+			
+			if(this.initList == true){
+				await http.get("/Costume/getAllWorks", {params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+					this.MakeupWorkslist = res.data.list;
+					this.pageNum++;
+					this.initList = false;
+					if(res.data.hasNextPage == true){
+						this.loadStatus ="more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
 			
 			//获取Topic
 			await http.get("/MakeUp/getTopic",{params:{type:1}}).then(res=>{
@@ -113,6 +135,25 @@
 				this.MakeUpTopic = this.MakeuptopicContent[this.MakeUpTopicIndex].mark;
 			}, 3000);
 		},
+		async onReachBottom(){
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.loadStatus = "loading";
+				await http.get("/Costume/getAllWorks",{params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+		},
 		onShow() {
 			
 		},
@@ -124,6 +165,12 @@
 		},
 		data() {
 			return {
+				valValue:"全部",
+				pageNum:1,
+				pageSize:0,
+				flag:true,
+				initList:true,
+				loadStatus:"noMore",
 				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
 				MakeupswiperImgs: [
 					// {
@@ -214,6 +261,63 @@
 				uni.navigateTo({
 					url:"../search/searchLabel?label=" + e
 				})
+			},
+			filterSelect(e){
+				// console.log(e);
+				const http = new this.$Request();
+				if(this.valValue != e){
+					this.pageNum = 1;
+					this.valValue = e;
+					if(this.valValue == "全部"){
+						http.get("/Costume/selectWorks",{params:{type:1}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Cos"){
+						http.get("/Costume/selectWorks",{params:{type:2}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "JK"){
+						http.get("/Costume/selectWorks",{params:{type:3}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "汉服"){
+						http.get("/Costume/selectWorks",{params:{type:4}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Lolita"){
+						http.get("/Costume/selectWorks",{params:{type:5}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "妆容"){
+						http.get("/Costume/selectWorks",{params:{type:6}}).then(res=>{
+							this.MakeupWorkslist = res.data;
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					this.$refs.waterfallsFlow.refresh();
+				}
 			}
 		},
 		computed:{
@@ -298,5 +402,35 @@
 		font-size: 25rpx;
 		margin-top: 10rpx;
 		margin-bottom: 10rpx;
+	}
+	
+	.user-info-box {
+		display: flex;
+		flex-direction: row;
+		margin: auto;
+	}
+	
+	.user-head-img {
+		width: 35rpx;
+		height: 35rpx;
+		border-style: none;
+		border-radius: 25rpx;
+		margin-right: 10rpx;
+		margin-left: 5rpx;
+	}
+	
+	.user-name {
+		font-size: 8pt;
+		color: #797979;
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: auto;
+	}
+	
+	.view-num {
+		color: #797979;
+		margin-top: auto;
+		margin-bottom: auto;
+		font-size: 8pt;
 	}
 </style>

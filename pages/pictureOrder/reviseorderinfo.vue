@@ -18,7 +18,7 @@
 		<view class="row-box demand-box">
 			<text>要求描述</text>
 			<view class="textarea-box">
-				<textarea placeholder="描述拍摄要求，如拍摄照片的主题、风格等" @input='onGetDemand'></textarea>
+				<textarea :value="demand" placeholder="描述拍摄要求，如拍摄照片的主题、风格等" @input='onGetDemand'></textarea>
 			</view>
 		</view>
 		<view class="row-box picker-box">
@@ -53,7 +53,7 @@
 			</view>
 		</view>
 		<view class="row-box picker-box">
-			<input type="text" @input='onGetMoney' value="" placeholder="可待定，与对方协商后再修改" placeholder-style="font-size: 14px; font-weight: 400;"/>
+			<input type="text" @input='onGetMoney' :value="money" placeholder="可待定，与对方协商后再修改" placeholder-style="font-size: 14px; font-weight: 400;"/>
 		</view>
 		<view class="row-box bottom-box">
 			<button @click="submitData">提交</button>
@@ -71,6 +71,7 @@
 	export default {
 		data() {
 			return {
+				photograph_id: null,
 				demand: '',
 				time: '请选择',
 				city: '请选择',
@@ -81,15 +82,17 @@
 			}
 		},
 		onLoad(Option){
-			console.log(Option.user_id)
-			this.user_b = Option.user_id
-			uni.getStorage({
-			    key: 'userId',
-			    success: res=> {
-			        console.log(res.data);
-					this.user_a = res.data
-			    }
-			});
+			const that = this
+			const eventChannel = that.getOpenerEventChannel()
+			// 监听emitReviseOrderInfo事件，获取上一页面通过eventChannel传送到当前页面的数据
+			eventChannel.on('emitReviseOrderInfo', function(data) {
+				console.log(data)
+				that.photograph_id = data.id
+				that.demand = data.content
+				that.time = data.date
+				that.city = data.area
+				that.money = data.money
+			})
 		},
 		methods: {
 			// 输入要求描述
@@ -136,19 +139,16 @@
 			// 	确认提交订单
 			confirm: function(done){
 				this.$myRequest({
-					url: '/Order/Data/LaunchOrderPage/addOrder',
-					method: 'POST',
-					header:{'content-type':'application/x-www-form-urlencoded'},
+					url: '/Order/changeOrder',
 					data: {
 						area: this.city,
 						date: this.time,
 						content: this.demand,
 						money: this.money,
-						user_a: this.user_a, // coserID
-						user_b: this.user_b, // 摄影师ID
+						photograph_id: this.photograph_id
 					}
 				})
-				uni.$emit('showOrderMsg')
+				uni.$emit('showReviseSuccess')
 				uni.navigateBack({})
 			}
 		},

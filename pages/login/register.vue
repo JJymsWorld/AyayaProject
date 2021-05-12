@@ -1,5 +1,30 @@
 <template>
 	<view class="box">
+		<!-- 请输入正确的手机号码 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请输入正确的手机号码" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 验证码错误 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="error" mode="base" title="错误" content="请输入正确的验证码" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 为自己取一个好听的昵称吧～ -->
+		<uni-popup ref="popup3" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="为自己取一个好听的昵称吧～" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 密码不能为空 -->
+		<uni-popup ref="popup4" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="密码不能为空" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请再次输入密码 -->
+		<uni-popup ref="popup5" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请再次输入密码" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 		<view class="content">
 			<view class="login-title">
 				<image class="login-img" src="../../static/login.png" mode="heightFix"></image>
@@ -14,13 +39,13 @@
 		</view>
 		<view class="content">
 			<view class="row-box getPIN-box">
-				<text class="getPIN-text">获取验证码</text>
+				<text class="getPIN-text" @click="onGetPIN()">获取验证码</text>
 			</view>
 		</view>
 		<view class="content">
 			<view class="row-box">
 				<text class="login-text">验证码</text>
-				<input @input="onPwdInput" class="login-input" placeholder="请输入您的手机验证码" />
+				<input @input="onPINInput" class="login-input" placeholder="请输入您的手机验证码" />
 			</view>
 		</view>
 		<view class="content">
@@ -60,14 +85,18 @@
 				<button class="btn" @click="onRegister">注册</button>
 			</view>
 		</view>
+		<!-- 加载框 -->
+		<kModel ref="kModel" />
 	</view>
 </template>
 
 <script>
+	import kModel from '@/components/k-model/k-model.vue';
 	export default {
 		data() {
 			return {
 				account:"",
+				myPIN:"",
 				password1:"",
 				password2:"",
 				user_name:"",
@@ -75,22 +104,34 @@
 				samePW: true
 			}
 		},
+		components:{
+			kModel
+		},
 		methods: {
+			// 获取输入的手机号码
 			onAccountInput:function(event){
 				this.account = event.target.value;
-				console.log(this.account)
 			},
+			// 获取验证码
+			onGetPIN: function(){
+				// 验证手机号码的正确性
+				if(this.account.length != 11){
+					this.$refs.popup1.open()
+				}
+			},
+			// 输入验证码
+			onPINInput:function(event){
+				this.myPIN = event.target.value;
+			},
+			// 获取输入的昵称
 			onUsernameInput:function(event){
 				this.user_name = event.target.value;
-				console.log(this.user_name)
 			},
 			onPwdInput:function(event){
 				this.password1 = event.target.value;
-				console.log(this.password1);
 			},
 			onPwdInputAgain:function(event){
 				this.password2 = event.target.value;
-				console.log(this.password2);
 				if(this.password1 === this.password2){
 					this.samePW = true;
 				}
@@ -107,12 +148,29 @@
 			},
 			radio: function(e){
 				this.gender = e;
-				console.log(this.gender)
 			},
 			// 注册账号
 			onRegister: function(){
+				if(this.account.length != 11){
+					this.$refs.popup1.open()
+				}
+				else if(this.myPIN != '123456'){
+					this.$refs.popup2.open()
+				}
+				else if(this.user_name.length == 0){
+					this.$refs.popup3.open()
+				}
+				else if(this.user_name.length == 0){
+					this.$refs.popup3.open()
+				}
+				else if(this.password1.length == 0){
+					this.$refs.popup4.open()
+				}
+				else if(this.password2.length == 0){
+					this.$refs.popup5.open()
+				}
 				// 	判断注册条件
-				if(this.samePW){
+				else if(this.samePW){
 					this.$myRequest({
 						method: 'POST',
 						header:{'content-type':'application/x-www-form-urlencoded'},
@@ -124,7 +182,26 @@
 							user_name: this.user_name
 						}
 					})
+					this.startShow()
+					setTimeout(() => {
+						uni.navigateBack({})
+					},1000)
 				}
+			},
+			// 显示账号注册成功加载框
+			startShow: function() {
+				this.$refs['kModel'].showModel({
+					type: 'success',
+					title: '账号注册成功',
+					duration: 3000
+				});
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确定对话框
+			confirm: function(){	
 			}
 		}
 	}

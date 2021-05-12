@@ -6,7 +6,7 @@
 				<text class="search-text">热门话题</text>
 			</view>
 			<view class="hot-topic">
-				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index' @click="addHotTopic(item.mark)">{{item.mark}}</view>
+				<view class="topic-btn" v-for='(item,index) in hotTopic' :key='index' @click="addHotTopic(item)">{{item.mark}}</view>
 			</view>
 		</view>
 	</view>
@@ -22,9 +22,10 @@
 			}
 		},
 	methods:{
-		addHotTopic: function(topic){
-			const label = '#' + topic + '#'
-			uni.$emit('emitAddHotTopic', {label: label})
+		addHotTopic: function(i){
+			const label = '#' + i.mark + '#'
+			
+			uni.$emit('emitAddHotTopic', {label: label, mark_item: i})
 			uni.navigateBack({})
 		}
 	},

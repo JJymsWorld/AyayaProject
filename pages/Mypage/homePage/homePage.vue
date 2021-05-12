@@ -40,13 +40,13 @@
 	<view class="dynamicBox" v-if="tabIndex==0">
 		<!-- 动态 -->
 		<uni-list :border="false" >
-			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem1" :key="item.dynamicId" >
+			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
 				<template v-slot:body>
 					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
 						  <view class="dynamnicHead">
-							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
+							<image class="dynamicAvatar" :src='avatar'@click.stop="homePageNavi(item.accountB)"></image>
 							<view class="dynamicUserDate">
-								<view class="dynamicUsername"@click.stop="homePageNavi(item.accountB)">{{item.userName}}</view>
+								<view class="dynamicUsername"@click.stop="homePageNavi(item.accountB)">{{username}}</view>
 							    <view class="dynamicDate">{{item.uploadTime}}</view>
 							</view>
 							
@@ -58,13 +58,13 @@
 						<!-- 正文 -->
 						<view class="dynamicText">{{item.mainBody}}</view>
 						<!-- 内容不为作品 -->
-						<view v-if="item.opusId ==''" class="dynamicGridBox">
+						<view v-if="item.opusId =='0'" class="dynamicGridBox">
 							<gridBox :picture="item.dynamicPhotos"></gridBox>
 						</view>
 						<!-- 内容不为作品 end
 						
 						<!-- 内容为作品 -->
-						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+						<view v-if="item.opusId!='0'" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
 							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
 							<view class="dynamicTitle">{{item.title}}</view>
 						</view>
@@ -73,11 +73,11 @@
 						<table class="littleIconTable">
 							<tr>
 								<td>
-									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+									<view v-if="item.type==''" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
 									    <text class="number">{{item.likesNumber}}</text>
 									</view>
-									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
+									    <view v-if="item.type!=''" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe60f;</span>
 									    <text class="number1">{{item.likesNumber}}</text>
 									</view>
@@ -98,7 +98,7 @@
 				
 			</uni-list-item>
 		</uni-list>
-		<uni-load-more status="noMore"></uni-load-more>
+		<uni-load-more :status="dynamicLoadMoreStatus"></uni-load-more>
 		<!-- 动态end -->
 		
 		<!-- 删除动态pop -->
@@ -130,7 +130,7 @@
 					</view>
 				</template>
 			</waterfallsFlow>
-			<uni-load-more status="noMore"></uni-load-more>
+			<uni-load-more :status="opusLoadMoreStatus" @clickLoadMore="loadWorkMore"></uni-load-more>
 		</view>
 		
 	</view>
@@ -218,12 +218,12 @@
 		    this.userId=option.userId // 上个页面传递的用户id
 		    this.userId2=getApp().globalData.global_userId
 		    this.loadHead()
-		    	
+		    this.loadDynamic()	
 		    // 标记是否由发布动态页面跳转进入
 		    if(option.showToast == '1'){
 		    	this.showToast = true
 				this.tabIndex = 0
-				this.loadDynamic()
+				//this.initDynamicList()
 				
 		    }
 		    // 标记是否由发布作品页面跳转进入
@@ -240,7 +240,27 @@
 		},
 		data(){
 			return{
-				popTag:0,
+				opusPageNum:1,
+				opusPageSize:10,
+				opusPrePage:0,
+				opusHasNextPage:true,
+				opusHasPreviousPage:false,
+				opusIsFirstPage:true,
+				opusIsLastPage:false,
+				opusLoadMoreStatus:'more',
+				opusHasInit:false,
+				
+				dynamicPageNum:1,
+				dynamicPageSize:10,
+				dynamicPrePage:0,
+				dynamicHasNextPage:true,
+				dynamicHasPreviousPage:false,
+				dynamicIsFirstPage:true,
+				dynamicIsLastPage:false,
+				dynamicLoadMoreStatus:'more',
+				dynamicHasInit:false,
+				
+				popTag:0,  //标记显示哪个弹出框
 				showToast: false,	// 标记是否显示发布成功模态框
 				scrollTop: 0,
 				old: {
@@ -248,9 +268,9 @@
 				},
 				recommendTag:0,
 				
-				userId:'',
+				userId:5,
 				userId2:'',
-				avatar:'',
+				avatar:'../../../static/iconn/2.jpg',
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
@@ -262,50 +282,7 @@
 					'收藏夹'
 				],
 				tabIndex:0,  //标记当前选中的是导航栏的哪一栏
-				dynamicItem:[
-					{
-						Id:'1',
-						userId:'',
-						avatarD:'../../../static/iconn/p2.jpg',
-						usernameD:'机智的党妹',
-						date:'2020-06-25',
-						title:'点赞表态!',
-						imageD:'../../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!蜜瓜JK妆!',
-						interestNum:'5482',
-						isInterest:'0',
-						commentNum:'2145',
-						relayNum:'1141'
-					},
-					{
-						Id:'2',
-						userId:'',
-						avatarD:'../../../static/iconn/p2.jpg',
-						usernameD:'机智的党妹',
-						date:'2020-06-25',
-						title:'点赞表态!',
-						imageD:'../../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
-						interestNum:'5482',
-						isInterest:'0',
-						commentNum:'2145',
-						relayNum:'1141'
-					},
-					{
-						Id:'3',
-						userId:'',
-						avatarD:'../../../static/iconn/p2.jpg',
-						usernameD:'机智的党妹',
-						date:'2020-06-25',
-						title:'点赞表态!',
-						imageD:'../../../static/iconn/d1.jpg',
-						textD:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
-						interestNum:'5482',
-						isInterest:'0',
-						commentNum:'2145',
-						relayNum:'1141'
-					}
-				],
+				dynamicItem:[],
 				dynamicItem1:[
 					{
 						accountB:'4',
@@ -339,7 +316,7 @@
 						headerPic:"http://81.68.73.252:8080/picture/微信图片_20201211115432.jpg",
 						likesNumber:277,
 						mainBody:"当不倒翁小姐姐cos楚乔传",
-						opusId:'',
+						opusId:'0',
 						opusPhotos:"http://81.68.73.252:8080/picture/微信图片_20201224143937.jpg",
 						sharedNumber:0,
 						title:"楚乔传",
@@ -550,22 +527,22 @@
 				this.tabIndex=i;
 				console.log(i);
 				if(i==0){
-					this.loadDynamic(1);
+					this.loadDynamic();
 				}
 				else if(i==1){
-					this.loadWork();
+					this.initWorkList();
 				}
 				else{}
 			},
 			addLike:function(i){
 				var t=this.$data.dynamicItem1[i].type;
-				if(t==0){
+				if(t==null){
 					this.$data.dynamicItem1[i].likesNumber++;
 					this.$data.dynamicItem1[i].type=1;
 				}
 				else{
 					this.$data.dynamicItem1[i].likesNumber--;
-					this.$data.dynamicItem1[i].type=0;
+					this.$data.dynamicItem1[i].type='';
 				}
 			},
 			workNavigate(item){
@@ -573,15 +550,18 @@
 					url:'../../works/works?workId='+item.opus_id
 				})
 			},
-			async loadDynamic(i){
-				console.log(i)
-				const res = await this.$myRequest({
-					url:'/Login/login',
-					data:{
-						account: "17757273698"
-					}
-				});
-				    console.log(res);
+			async loadDynamic(){
+				const that = this
+				if (!that.dynamicHasInit){
+					that.initDynamicList()
+				}
+				
+			},
+			async loadWork(){
+				const that = this
+				if(!that.opusHasInit){
+					that.initWorkList()
+				}
 			},
 			dynamicDetailNavi:function(event,i){
 				uni.navigateTo({
@@ -597,6 +577,119 @@
 				uni.navigateTo({
 					url:'../../DynamicPage/dynamicDetails?pageScroll=1'
 				})
+			},
+			async initDynamicList(){
+				const that = this 
+				that.dynamicIsFirstPage = true
+				that.dynamicPageNum = 1
+				that.dynamicPageSize = 10
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/getDynamicById',
+					data:{
+						pageNum:that.dynamicPageNum,
+						pageSize:that.dynamicPageSize,
+						user_id:12
+					}
+				});
+				console.log(res.data.list)
+				that.dynamicItem=res.data.list
+				//var t=res.data.list
+				for (var i = 0;i< that.dynamicItem.length;i++){
+					var photoes = that.dynamicItem[i].dynamicPhotos
+					var jsonObj = JSON.parse(photoes)
+					var p = []
+					for (var prop in jsonObj)
+					{
+					    //输出 key-value值
+					    //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+						console.log(jsonObj[prop]);
+						p.push(jsonObj[prop])
+					}
+					that.dynamicItem[i].dynamicPhotos = p
+				}
+				console.log(that.dynamicItem)
+				that.dynamicIsLastPage = res.data.isLastPage
+				that.dynamicLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
+				that.dynamicHasNextPage = res.data.hasNextPage
+				that.dynamicHasPreviousPage = res.data.hasPreviousPage
+				that.dynamicHasInit = true
+			},
+			async loadDynamicMore(){
+				// 填写加载更多动态接口
+				const that = this
+				if(that.dynamicLoadMoreStatus == 'more'){
+					that.dynamicPageNum++
+					const res = await this.$myRequest({
+						url:'/MyPage/HomePage/getDynamicById',
+						data:{
+							pageNum:that.dynamicPageNum,
+							pageSize:that.dynamicPageSize,
+							user_id:12
+						}
+					});
+					var t= res.data.list
+					
+					for (var i = 0;i< t.length;i++){
+						var photoes = t[i].dynamicPhotos
+						var jsonObj = JSON.parse(photoes)
+						var p = []
+						for (var prop in jsonObj)
+						{
+						    //输出 key-value值
+						    //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+							console.log(jsonObj[prop]);
+							p.push(jsonObj[prop])
+						}
+						that.t[i].dynamicPhotos = p
+					}
+					that.dynamicItem=that.dynamicItem.concat(t)
+					that.dynamicIsLastPage = res.data.isLastPage
+					that.dynamicLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
+					that.dynamicHasNextPage = res.data.hasNextPage
+					that.dynamicHasPreviousPage = res.data.hasPreviousPage
+				}
+			},
+			async initWorkList(){
+				const that = this
+				that.opusIsFirstPage = true
+				that.opusPageNum = 1
+				that.opusPageSize = 10
+				const res=await this.$myRequest({
+					url:'/MyPage/HomePage/getOpusById',
+					data:{
+						pageNum:that.opusPageNum,
+						pageSize:that.opusPageSize,
+						user_id:5
+					}
+				})
+				console.log(res.data)
+				that.contentList=res.data.list
+				that.opusIsLastPage = res.data.isLastPage
+				that.opusLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
+				that.opusHasNextPage = res.data.hasNextPage
+				that.opusHasPreviousPage = res.data.hasPreviousPage
+				that.opusHasInit = true
+			},
+			async loadWorkMore(e){
+				const that = this
+				if(that.opusLoadMoreStatus == 'more'){
+					that.opusPageNum++
+					const res = await this.$myRequest({
+							url:'/MyPage/HomePage/getOpusById',
+							data:{
+								pageNum:that.opusPageNum,
+								pageSize:that.opusPageSize,
+								user_id:5
+							}
+						})
+					console.log(res.data)
+					that.$data.contentList=that.$data.contentList.concat(res.data.list)
+					console.log(that.contentList)
+					that.opusIsLastPage = res.data.isLastPage
+					that.opusLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
+					that.opusHasNextPage = res.data.hasNextPage
+					that.opusHasPreviousPage = res.data.hasPreviousPage
+				}
 			},
 			async loadWork(i){
 				const res=await this.$myRequest({
