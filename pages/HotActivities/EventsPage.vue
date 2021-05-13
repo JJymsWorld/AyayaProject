@@ -9,7 +9,7 @@
 				<view class="top-function-bar-left" >
 					<!-- <text>筛选</text>
 					<view :class="['fas','fa-bars']" class="top-function-bar-left-icon"></view> -->
-					<uni-combox inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
+					<uni-combox @input="filterSelect" inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 				</view>
 				<view class="top-function-bar-right" @click="gotoSearchPage">
 					<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
@@ -131,6 +131,9 @@
 				uni.navigateTo({
 					url:"../search/search"
 				})
+			},
+			filterSelect(e){
+				console.log(e);
 			}
 		}
 	}

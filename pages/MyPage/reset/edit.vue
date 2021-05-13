@@ -98,19 +98,21 @@
 		},
 		data(){
 			return{
-				userId:'',
+				userId:'12',
 				popTag:'',
 				avatar:'../../../static/iconn/2.jpg',
 				account:'18921969417',
 				username:'jenniee',
 				sex:'女',
+				sexStatus:2,
 				sign:'你还没有个性签名哦！',
 				background:{
 					'background-image': 'url("/../../../static/iconn/back.png")',
 					'background-size': 'cover',
 					'opacity':'0.9'
 				},
-				backgroundImage:'/../../../static/iconn/back.png'
+				backgroundImage:'/../../../static/iconn/back.png',
+				header_picAndBackground:[]
 			}
 		},
 		methods:{
@@ -169,11 +171,11 @@
 					// sizeType:['original','compressed'],
 					success: function(res) {
 						// console.log(JSON.stringify(res.tempFilePaths))
-						uni.previewImage({
-						// 对选中的图片进行预览
-						urls: res.tempFilePaths,
-					 // urls:['','']  图片的地址 是数组形式
-				      })
+						// uni.previewImage({
+						// // 对选中的图片进行预览
+						// urls: res.tempFilePaths,
+					 // // urls:['','']  图片的地址 是数组形式
+				  //     })
 					  console.log(res.tempFilePaths[0])
 					  _self.$data.avatar=res.tempFilePaths[0]
 					 // _self.$data.background["background-image"]='url("'+res.tempFilePaths[0]+'")'
@@ -187,11 +189,11 @@
 					// sizeType:['original','compressed'],
 					success: function(res) {
 						// console.log(JSON.stringify(res.tempFilePaths))
-						uni.previewImage({
-						// 对选中的图片进行预览
-						urls: res.tempFilePaths,
-					 // urls:['','']  图片的地址 是数组形式
-				      })
+						// uni.previewImage({
+						// // 对选中的图片进行预览
+						// urls: res.tempFilePaths,
+					 // // urls:['','']  图片的地址 是数组形式
+				  //     })
 					  console.log(res.tempFilePaths[0])
 					  _self.$data.background["background-image"]='url("'+res.tempFilePaths[0]+'")'
 					  _self.$data.backgroundImage=res.tempFilePaths[0]
@@ -202,23 +204,51 @@
 				// var backgroundImage=this.background[0]
 				var _self=this
 				console.log(_self)
-				const res = await this.$myRequest({
-					url:'/ChangePersonalInformation/changePersonalInformation',
-					header:{
-						'content-type':'application/x-www-form-urlencoded'
+				var item = {
+					name: 'header_picAndBackground',
+					url: ''
+				}
+				item.url = _self.avatar
+				_self.header_picAndBackground.push(item)
+				item.url = _self.backgroundImage
+				_self.header_picAndBackground.push(item)
+				
+				console.log(_self.header_picAndBackground)
+				// var t = JSON.stringify(_self.header_picAndBackground)
+				// const res = await this.$myRequest({
+				// 	url:'/ChangePersonalInformation/changePersonalInformation',
+				// 	header:{
+				// 		'content-type':'application/x-www-form-urlencoded'
+				// 	},
+				// 	method:'PUT',
+				// 	data:{
+				// 		account:_self.account,
+				// 		autograph:_self.sign,
+				// 		gender:2,//_self.sex,
+				// 		header_picAndBackground:_self.header_picAndBackground,
+				// 		user_id: 1,//_self.userId,
+				// 		user_name:_self.username
+				// 	 }
+				// })
+				// console.log(res.data)
+				
+				_self.sexStatus = _self.sex == '女'?2:1
+				uni.uploadFile({
+					url: 'http://81.68.73.252:8086/ChangePersonalInformation/changePersonalInformation',
+					files: _self.header_picAndBackground,
+					formData: {
+						'account':_self.account,
+						'autograph':_self.sign,
+						'gender':_self.sexStatus,
+						'user_id': _self.userId,
+						'user_name':_self.username
 					},
-					method:'PUT',
-					data:{
-						account:_self.account,
-						autograph:_self.sign,
-						background:_self.backgroundImage,
-						gender:0,//_self.sex,
-						header_pic:_self.avatar,
-						user_id: 5,//_self.userId,
-						user_name:_self.username
-					 }
-				})
-				console.log(res.data)
+					_method:'PUT',
+					success: uploadFileRes => {
+						// console.log(uploadFileRes.data);
+						console.log(uploadFileRes)
+					}
+				});
 			}
 		}
 	}

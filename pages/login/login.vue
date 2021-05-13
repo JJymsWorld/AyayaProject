@@ -1,5 +1,15 @@
 <template>
 	<view class="box">
+		<!-- 账号不存在 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="账号不存在" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 密码错误 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="密码错误" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 		<view class="content">
 			<view class="login-title">
 				<image class="login-img" src="../../static/login.png" mode="heightFix"></image>
@@ -59,6 +69,12 @@
 				ifremPwd: false
 			}
 		},
+		// 页面导航栏按钮点击事件
+		onNavigationBarButtonTap() {
+			uni.switchTab({
+				url: '../Mypage/mypage'
+			})
+		},
 		methods: {
 			async getData(){
 				console.log(this.account)
@@ -77,7 +93,8 @@
 				console.log(this.password)
 				// 判断账号不存在
 				if(this.userId == 0){
-					console.log('账号不存在')
+					// 账号不存在
+					this.$refs.popup1.open()
 				}
 				// 账号密码正确跳转
 				else if(this.password === this.realPW){
@@ -111,6 +128,14 @@
 					        console.log('success');
 					    }
 					});
+					// 本地存入userID
+					uni.setStorage({
+					    key: 'userId',
+					    data: this.userId,
+					    success: function () {
+					        console.log('success');
+					    }
+					});
 					//将用户ID存入全局变量
 					getApp().globalData.global_userId = this.userId
 					console.log(getApp().globalData.global_userId)
@@ -119,12 +144,13 @@
 					})
 				}
 				// 判断密码错误
-				else
-					console.log('密码错误')
+				else{	
+					// 密码错误
+					this.$refs.popup2.open()
+				}
 			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
-				console.log(this.account)
 			},
 			onPwdInput:function(event){
 				this.password = event.target.value;
@@ -154,9 +180,23 @@
 				uni.navigateTo({
 					url:'./fogotpw'
 				})
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确定对话框
+			confirm: function(){	
 			}
 		},
 		onLoad(){
+			uni.getStorage({
+			    key: 'userId',
+			    success: res=> {
+			        console.log(res.data);
+					this.userId = res.data
+			    }
+			});
 			uni.getStorage({
 			    key: 'userAccount',
 			    success: res=> {

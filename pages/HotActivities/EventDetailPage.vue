@@ -3,7 +3,7 @@
 		<view class="EventDetailPage-wrapper">
 			<view class="EventDetail-top">
 				<view class="EventDetail-top-cover">
-					<image :src="EventDetailPageInfo.image_url" mode="widthFix" class="EventDetail-top-image"></image>
+					<image :src="EventDetailPageInfo.photo" mode="widthFix" class="EventDetail-top-image"></image>
 				</view>
 				<view class="EventDetail-top-timer">
 					<view :class="['fas','fa-hourglass-half']" class="EventDetail-top-timer-icon"></view>
@@ -13,11 +13,12 @@
 					</view>
 				</view>
 				<view class="EventDetail-top-title">
-					{{EventDetailPageInfo.title}}
+					{{EventDetailPageInfo.tab}}
 				</view>
 				<view class="EventDetail-top-content">
-					<view class="EventDetail-top-content-line" v-for="(item,index) in EventDetailPageInfo.content"
-						:key="index">{{item}}</view>
+					<!-- <view class="EventDetail-top-content-line" v-for="(item,index) in EventDetailPageInfo.content"
+						:key="index">{{item}}</view> -->
+					<view class="EventDetail-top-content-line">{{EventDetailPageInfo.content}}</view>
 				</view>
 				<view class="EventDetail-top-viewButton" @click="gotoPostWorksPage">
 					<view class="EventDetail-top-viewButton-style">我要参加</view>
@@ -77,20 +78,29 @@
 			xwCountDown,
 			waterfallsFlow
 		},
-		onLoad(options) {
+		async onLoad(options) {
 			console.log(options.activity_id);
+			const http = new this.$Request();
+			this.activityid = options.activity_id;
+			await http.get("http://81.68.73.252:8086/Activity/EventDetail/getEventDetail", {params:{activityId:this.activityid}}).then(res=>{
+				this.EventDetailPageInfo = res.data[0];
+			}).catch(err=>{
+				console.log(err);
+			})
 		},
 		data() {
 			return {
+				activityid:1,
 				tabIndex:0,
 				EventDetailPageInfo: {
 					image_url: "../../static/EventsSource/1.jpg",
 					title: "【Cos正片征集】第10-9期",
-					content: [
-						' 本期Cos人物',
-						'《请问您今天要来点兔子吗?》保登 心爱',
-						' 快来晒出你的Cos正片吧!!!'
-					],
+					// content: [
+					// 	' 本期Cos人物',
+					// 	'《请问您今天要来点兔子吗?》保登 心爱',
+					// 	' 快来晒出你的Cos正片吧!!!'
+					// ],
+					content:"本期Cos人物\n《请问您今天要来点兔子吗?》保登 心爱\n快来晒出你的Cos正片吧！！！",
 					deadline: "2021-04-15 20:00:00"
 				},
 				datatime: 0,
@@ -185,7 +195,7 @@
 		},
 		computed: {
 			getDatetime() {
-				let endtime = new Date(this.EventDetailPageInfo.deadline)
+				let endtime = new Date(this.EventDetailPageInfo.activity_time)
 				return endtime.getTime() / 1000
 			}
 		}

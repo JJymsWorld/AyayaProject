@@ -1,257 +1,210 @@
 <template>
 	<view class="box">
 		<view class="navigate-box">
-
 		</view>
 		<view class="search-box">
-			<uni-search-bar @confirm="" :radius="30" @cancel="onGoBack" :value="searchLabel"></uni-search-bar>
+			<uni-search-bar @confirm="onSearch" :radius="30" @cancel="onGoBack" :value="searchLabel" cancelButton="always"></uni-search-bar>
 		</view>
 		<!-- 动态内容 -->
 		<view class="dynamicBox">
-			<uni-list :border="false" >
-			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
-				<template v-slot:body>
-					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
-						  <view class="dynamnicHead">
-							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
-							<view class="dynamicUserDate">
-								<view class="dynamicUsername" @click.stop="homePageNavi(item.accountB)">{{item.userName}}</view>
-							    <view class="dynamicDate">{{item.uploadTime}}</view>
+			<uni-list :border="false">
+				<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in searchWorkList"
+					:key="item.dynamicId">
+					<template v-slot:body>
+						<view class="dynamicIt" @click="">
+							<view class="dynamnicHead">
+								<image class="dynamicAvatar" :src='item.header_pic'
+									@click.stop="homePageNavi(item.user_id)"></image>
+								<view class="dynamicUserDate">
+									<view class="dynamicUsername" @click.stop="homePageNavi(item.user_id)">
+										{{item.user_name}}
+									</view>
+									<view class="dynamicDate">{{item.upload_time}}</view>
+								</view>
+								<view class="attentionButton" v-if='!item.checked' @click.stop="changeChecked(index)"><text>关注</text></view>
+								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="changeChecked(index)"><text>已关注</text></view>
 							</view>
-							<view class="cancelButtonNot"  @click.stop=""><text>关注</text></view>
-						</view>
-						<!-- 正文 -->
-						<view class="dynamicText">{{item.mainBody}}</view>
-						
-						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
-							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
-							<view class="dynamicTitle">{{item.title}}</view>
-						</view>
-						<!-- 内容不为为作品end -->
-						
-						<table class="littleIconTable">
-							<tr>
-								<td>
-									
-									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
-									    <span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
-									    <text class="number">{{item.likesNumber}}</text>
-									</view>
-									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
-									    <span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
-									    <text class="number1">{{item.likesNumber}}</text>
-									</view>
-								</td>
-								<td>
-								    <image class='littleIcon' src="../../static/icon/chat.png" @click="recommend(item.id)"></image>
-								    <text class="number">{{item.commentedNumber}}</text>
-								</td>
-								<td>
-									<image class='littleIcon2' src="../../static/icon/relay.png"></image>
-									<text class="number">{{item.sharedNumber}}</text>
-								</td>
-							</tr>
-						</table>
-					</view>
-						    
-				</template>
-				
-			</uni-list-item>
-		</uni-list>
-		
-		<uni-load-more status="noMore"></uni-load-more>
-		</view>
-		
-		</view>
-		
-	</view>
-	</view>
+							<!-- 正文 -->
+							<view class="dynamicText">{{item.main_body}}</view>
 
+							<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+								<image class="dynamicImage" :src='item.opus_photos' mode="aspectFill"></image>
+								<view class="dynamicTitle">{{item.title}}</view>
+							</view>
+							<!-- 内容不为为作品end -->
+
+							<table class="littleIconTable">
+								<tr>
+									<td  @click.stop="addLike()">
+										<!-- <view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+											<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
+											<text class="number">{{item.likes_number}}</text>
+										</view>
+										<view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
+											<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
+											<text class="number1">{{item.likes_number}}</text>
+										</view> -->
+										
+										<view style="width: 50rpx;height: 50rpx;">
+											<span class="iconfont4" @click=''>&#xe608;</span>
+											<text class="number1">{{item.likes_number}}</text>
+										</view>
+										
+									</td>
+									<td>
+										<image class='littleIcon' src="../../static/icon/chat.png"
+											@click="recommend(item.id)"></image>
+										<text class="number">{{item.commented_num}}</text>
+									</td>
+									<td @click.stop="open">
+										<image class='littleIcon2' src="../../static/icon/relay.png"></image>
+										<text class="number">{{item.shared_num}}</text>
+									</td>
+								</tr>
+							</table>
+						</view>
+
+					</template>
+
+				</uni-list-item>
+			</uni-list>
+
+			<uni-load-more :status="loadStatus"></uni-load-more>
+		</view>
+		<!-- 转发 -->
+		<uni-popup ref="popup" type="bottom">
+			   <view class="relayPopBox">
+				   <view class="relayPopBoxTitle">分享至</view>
+				   <view class="relayPopBoxButtonBox">
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe61a;</span>
+						   <view class="relayText">微信</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe65b;</span>
+					   	   <view class="relayText">朋友圈</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe73c;</span>
+					   	   <view class="relayText">微博</view>
+					   </view>
+					   <view class="relayPopBoxButton">
+						   <span class="iconfontx" >&#xe60c;</span>
+					   	   <view class="relayText">QQ</view>
+					   </view>
+				   </view>
+				   
+				   <view class="relayPopBoxExit" @click.stop="close()">取消</view>
+			   </view>
+		</uni-popup>
+	</view>
 </template>
 
 <script>
-	
 	import gridBox from '../../components/gridImage/gridImage.vue'
-	export default{
-		onLoad(option) {
-			// 接收传入的搜索话题
-			this.searchLabel = option.label
-			
-			this.userId = getApp().globalData.global_userId
-			console.log(this.userId)
-			this.LoadDynamic(1,1,10)
+	export default {
+		data() {
+			return {
+				loadStatus:	'noMore',
+				searchLabel: '',
+				userId: '',
+				searchWorkList: [],
+				workListTotal: null, // 搜索到的作品总数
+				pageNum: 1,
+				pageSize: 5
+			}
 		},
-		
 		components: {
 			gridBox
 		},
-		data(){
-			return{
-				searchLabel: '',
-				userId:'',
-				recommendTag:0,
-				scrollTop: 0,
-				old: {
-				    scrollTop: 0
-				},
-				recentUser:[
-					{
-					avatarT:'../../static/iconn/p2.jpg',
-					usernameT:'蒲儿姓蒲',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p3.jpg',
-						usernameT:'Suzy_Z',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					}
-				],
-				dynamicItem:[
-					
-				],
-			    recomendList:[
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:0
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					}
-				]
-			}
+		async onLoad(option) {
+			// 接收传入的搜索话题
+			this.searchLabel = option.label
+
+			const res = await this.onGetSearchWorksList()
+			this.searchWorkList = res.list
+			this.workListTotal = res.total
+			console.log(this.searchWorkList)
 		},
-		methods:{
-			searchNavi(){
-				uni.navigateTo({
-					url:'../search/search'
-				})
+		async onReachBottom() {
+			console.log('reach')
+			const sum = this.pageNum * this.pageSize
+
+			// 作品加载更多
+			if (this.workListTotal > sum) {
+				this.loadStatus = 'loading'
+				this.pageNum++
+				const res = await this.onGetSearchWorksList()
+				this.searchWorkList = this.searchWorkList.concat(res.list)
+			} else {
+				this.loadStatus = 'noMore'
+			}
+
+		},
+		methods: {
+			open(){
+			         // 通过组件定义的ref调用uni-popup方法
+			         this.$refs.popup.open()
+					 // var webView = this.$mp.page.$getAppWebview();  
+					 // let titleNView = webView.getTitleNView();  
+					 // titleNView && titleNView.hide();
+					 // currentWebview.setStyle({
+					 // titleNView:titleNView
+					 // })
 			},
-			addLike(i){
-				var t=this.$data.dynamicItem[i].isInterest;
-				if(t==0){
-					this.$data.dynamicItem[i].interestNum++;
-					this.$data.dynamicItem[i].isInterest=1;
+			close(){
+				this.$refs.popup.close()
+			},
+			// 获取作品列表
+			async onGetSearchWorksList() {
+				const res = await this.$myRequest({
+					url: '/Search/getOpusByMark',
+					data: {
+						pageNum: this.pageNum,
+						pageSize: this.pageSize,
+						searchStr: this.searchLabel
+					}
+				})
+				return (res.data)
+			},
+			// 重新搜索
+			async onSearch(e) {
+				if(e.value != ''){
+					this.searchLabel = e.value
+					console.log(this.searchLabel)
+					this.pageNum = 1
+					
+					const res = await this.onGetSearchWorksList()
+					this.searchWorkList = res.list
+					this.workListTotal = res.total
+					console.log(this.searchWorkList)
 				}
-				else{
-					this.$data.dynamicItem[i].interestNum--;
-					this.$data.dynamicItem[i].isInterest=0;
-				}
+			},
+			// 点赞作品
+			addLike() {
 				
 			},
 			// 返回前一页面
-			onGoBack: function(){
+			onGoBack: function() {
 				console.log('cancel')
-				uni.navigateBack({
-					
-				})
+				uni.navigateBack({})
 			},
-			scroll: function(e) {
-			    console.log(e)
-			    this.old.scrollTop = e.detail.scrollTop
-			},
-			backlast: function() {
-				uni.navigateBack()
-			},
-			recommend(i){
-			this.recommendTag=1;
-			},
-			recoomendExit(){
-			this.recommendTag=0;	
-			},
-			 upper: function(e) {
-			            console.log(e)
-			        },
-			        lower: function(e) {
-			            console.log(e)
-			        },
-			recomendLike(i){
-				if(this.recomendList[i].recLike==0){
-					this.recomendList[i].recLike=1;
+			// 改变关注状态
+			changeChecked(i){
+				if(this.searchWorkList[i].checked){
+					this.searchWorkList[i].checked = 0
 				}
 				else{
-					this.recomendList[i].recLike=0;
+					this.searchWorkList[i].checked = 1
 				}
+				console.log(i, this.searchWorkList[i].checked)
 			},
-			workNavi(i){
+			workNavi(i) {
 				uni.navigateTo({
-					url:'../works/works?workId='+i
+					url: '../works/works?workId=' + i
 				})
 			},
-			dynamicDetailNavi:function(event,i){
+			dynamicDetailNavi: function(event, i) {
 				// event = event || window.event;
 				// event.preventDefault()
 				//         if (event && event.stopPropagation) {
@@ -260,41 +213,30 @@
 				//             event.cancelBubble = true;
 				//         }
 				uni.navigateTo({
-					url:'../DynamicPage/dynamicDetails?dynamicId='+i
+					url: '../DynamicPage/dynamicDetails?dynamicId=' + i
 				})
 			},
-			async LoadDynamic(id,pNum,pSize){
-				const res = await this.$myRequest({
-						url:'/Dynamic/getFocusPersonItems',
-						data:{
-							user_id: id,
-							pageNum: pNum,
-							pageSize: pSize
-						}
-					})
-					console.log(res.data)
-					this.$data.dynamicItem=res.data.list
-			},
-			homePageNavi(i){
+
+			homePageNavi(i) {
 				uni.navigateTo({
-					url:'../Mypage/homePage/homePage?userId='+i
+					url: '../Mypage/homePage/homePage?userId=' + i
 				})
 			}
 		}
-		
+
 	}
-	
 </script>
 
 
 <style lang="scss" scoped>
-	/deep/ .uni-list-item{
+	/deep/ .uni-list-item {
 		background-color: #FBFBFB;
 		padding: 0;
 		padding-bottom: 0rpx;
 		padding-top: 5rpx;
 	}
-	/deep/ .uni-list-item__container{
+
+	/deep/ .uni-list-item__container {
 		background-color: #FFFFFF;
 		padding: 0;
 
@@ -303,7 +245,8 @@
 <style>
 	@import url("../DynamicPage/dynamic.css");
 	@import url("./searchRes.css");
-	.cancelButtonNot{
+
+	.attentionButton {
 		position: absolute;
 		top: 40rpx;
 		right: 30rpx;
@@ -314,10 +257,17 @@
 		text-align: center;
 		line-height: 35rpx;
 	}
-	.cancelButtonNot text{
+
+	.attentionButton text {
 		font-size: 23rpx;
 		color: #EC808D;
 	}
+	
+	.NotattentionButton {
+		border: 1rpx solid #808080;
+	}
+	
+	.NotattentionButton text {
+		color: #808080;
+	}
 </style>
-
-
