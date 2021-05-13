@@ -70,7 +70,7 @@
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
-			if(this.flag == true){
+			if(this.flag == true && this.valValue == "全部"){
 				this.loadStatus = "loading";
 				await http.get("/Activity/Events/getAllEvents",{params:{pageNum:this.pageNum, pageSize:4}}).then(res=>{
 					this.EventsList = this.EventsList.concat(res.data.list);
@@ -95,7 +95,7 @@
 				initList:true,
 				flag:true,
 				loadStatus:"noMore",
-				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
+				filterList:['全部','进行中','已结束'],
 				EventsList:[
 					// {
 					// 	id:0,
@@ -134,6 +134,43 @@
 			},
 			filterSelect(e){
 				console.log(e);
+				const http = new this.$Request();
+				if(this.valValue != e){
+					this.valValue = e;
+					this.pageNum = 1;
+					if(this.valValue == '全部'){
+						http.get("/Activity/Events/getAllEvents",{params:{pageNum:this.pageNum, pageSize:4}}).then(res=>{
+							this.EventsList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "进行中"){
+						http.get("/Activity/Events/SelectEvents",{params:{state:1}}).then(res=>{
+							this.EventsList = res.data;
+							console.log("获取"+e+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "已结束"){
+						http.get("/Activity/Events/SelectEvents",{params:{state:0}}).then(res=>{
+							this.EventsList = res.data;
+							console.log("获取"+e+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+				}
 			}
 		}
 	}
