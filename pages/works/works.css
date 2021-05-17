@@ -117,6 +117,7 @@ ul,li{
 	/* position: absolute;
 	top: 0;
 	left: 70rpx; */
+	width: 88%;
 	padding-left: 70rpx;
 	font-size: 32rpx;
 	font-weight: bold;

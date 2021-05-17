@@ -82,6 +82,14 @@
 			comboxSearch
 		},
 		async onLoad(options) {
+			// 获取登录者Id
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					this.userId = res.data
+				}
+			});
+			
 			const http = new this.$Request();
 
 			http.get("/Date/PhotographerList/getAllPg", {
@@ -91,6 +99,7 @@
 				}
 			}).then(res => {
 				this.PhotographerInfoList = res.data.list;
+				// console.log(this.PhotographerInfoList)
 				this.pageNum++;
 				this.initList = false;
 				if (res.data.hasNextPage == true) {
@@ -153,6 +162,9 @@
 		},
 		data() {
 			return {
+				dialogId: null,		// 对话框Id
+				userId: null,	// 登录者Id
+				other_userId: null,		// 标记进行约拍的摄影师Id
 				valvalue:"全部",
 				pageNum: 1,
 				pageSize: 0,
@@ -201,6 +213,17 @@
 			}
 		},
 		methods: {
+			// 获取对话框id
+			async onGetDialogBox(){
+				const res = await this.$myRequest({
+					url: '/Contact/getDialogIdByTwoUser',
+					data: {
+						user_a: this.userId,
+						user_b: this.other_userId
+					}
+				})
+				return res.data
+			},
 			LikeBtnClick(e) {
 				this.PhotographerInfoList[e].checked = !this.PhotographerInfoList[e].checked
 				console.log(e, this.PhotographerInfoList[e].checked)
@@ -219,14 +242,27 @@
 			addOrder(user_id, i) {
 				this.headerPic = this.PhotographerInfoList[i].header_pic
 				this.userName = this.PhotographerInfoList[i].user_name
+				this.other_userId = this.PhotographerInfoList[i].user_id
 				uni.navigateTo({
 					url: '../pictureOrder/addorder?user_id=' + user_id
 				})
 			},
-			// // 跳转至订单对话框
-			gotoOrderMsgPage() {
+			// 跳转至订单对话框
+			async gotoOrderMsgPage() {
+				const res = await this.onGetDialogBox()
+				this.dialogId = res
+				
+				const that = this
 				uni.navigateTo({
-					url: '../MessageCenter/cos-dialogpage'
+					url: '../MessageCenter/cos-dialogpage',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('emitDialogMsg', {
+							dialog_id: that.dialogId,
+							user_id: that.other_userId,
+							header_pic: that.headerPic
+						})
+					}
 				})
 			},
 			filterbcity(e){

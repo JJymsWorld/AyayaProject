@@ -30,7 +30,7 @@
 			<uni-list :border="false" >
 			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
 				<template v-slot:body>
-					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
+					<view class="dynamicIt"@click="dynamicDetailNavi(item)">
 						  <view class="dynamnicHead">
 							<image class="dynamicAvatar" :src='item.headerPic'@click.stop="homePageNavi(item.accountB)"></image>
 							<view class="dynamicUserDate">
@@ -43,14 +43,14 @@
 						<view class="dynamicText">{{item.mainBody}}</view>
 						<!-- 内容不为作品 -->
 						<!-- <image class="dynamicImage" :src='item.imageD' mode="aspectFill"></image> -->
-					<!-- 	
-						<view v-if="item.opusId ==''" class="dynamicGridBox">
+						
+						<view v-if="item.opusId =='0'" class="dynamicGridBox">
 							<gridBox :picture="item.dynamicPhotos"></gridBox>
-						</view> -->
+						</view>
 						<!-- 内容不为作品 end-->
 						
 						<!-- 内容不为为作品 -->
-						<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+						<view v-if="item.opusId!='0'" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
 							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
 							<view class="dynamicTitle">{{item.title}}</view>
 						</view>
@@ -427,9 +427,29 @@
 					url:'../works/works?workId='+i
 				})
 			},
-			dynamicDetailNavi:function(event,i){
+			dynamicDetailNavi:function(i){
+				//console.log(i)
 				uni.navigateTo({
-					url:'dynamicDetails?dynamicId='+i
+					url:'dynamicDetails',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('dynamicDetails', {
+							accountB:i.accountB,
+							commentedNumber:i.commentedNumber,
+							dynamicId:i.dynamicId,
+							dynamicPhotos:i.dynamicPhotos,
+							headerPic:i.headerPic,
+							likesNumber:i.likesNumber,
+							mainBody:i.mainBody,
+							opusId:i.opusId,
+							opusPhotos:i.opusPhotos,
+							sharedNumber:i.sharedNumber,
+							title:i.title,
+							type:i.type,
+							uploadTime:i.uploadTime,
+							userName:i.userName
+						})
+					}
 				})
 			},
 			// 第一次加载
@@ -449,6 +469,19 @@
 					})
 				console.log(res.data)
 				that.dynamicItem=res.data.list
+				for (var i = 0;i< that.dynamicItem.length;i++){
+					var photoes = that.dynamicItem[i].dynamicPhotos
+					var jsonObj = JSON.parse(photoes)
+					var p = []
+					for (var prop in jsonObj)
+					{
+					    //输出 key-value值
+					    //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+						console.log(jsonObj[prop]);
+						p.push(jsonObj[prop])
+					}
+					that.dynamicItem[i].dynamicPhotos = p
+				}
 				that.isLastPage = res.data.isLastPage
 				that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
 				that.hasNextPage = res.data.hasNextPage
@@ -468,7 +501,20 @@
 							}
 						})
 					console.log(res.data)
-					that.$data.dynamicItem=that.$data.dynamicItem.concat(res.data.list)
+					var t= res.data.list
+					
+					for (var i = 0;i< t.length;i++){
+						var photoes = t[i].dynamicPhotos
+						var jsonObj = JSON.parse(photoes)
+						var p = []
+						for (var prop in jsonObj)
+						{
+							console.log(jsonObj[prop]);
+							p.push(jsonObj[prop])
+						}
+						t[i].dynamicPhotos = p
+					}
+					that.dynamicItem=that.dynamicItem.concat(t)
 					console.log(that.$data.dynamicItem)
 					that.isLastPage = res.data.isLastPage
 					that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'

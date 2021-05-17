@@ -21,8 +21,13 @@
 		<!-- 正文部分 -->
 		
 		<!-- 内容部分 -->
-		<view class="gridImageBox">
+		<view class="gridImageBox" v-if="work.workid=='0'">
 			<gridBox :picture="image"></gridBox>
+		</view>
+		
+		<view v-if="work.workid!='0'" class="dynamicGridBox">
+			<image class="dynamicImage" :src='work.firstImage' mode="aspectFill"></image>
+			<view class="dynamicTitle">{{work.titleW}}</view>
 		</view>
 		<!-- 内容部分end -->
 		
@@ -141,8 +146,34 @@
 			}
 			
 		},
+		onShow() {
+			// uni.$on("dynamicDetails",res => {
+			// 	console.log(res)
+			// 	// 清除监听
+			// 	uni.$off("dynamicDetails");
+			// })
+		},
 		onLoad(option) {
 			this.pageScroll=option.pageScroll || 0
+			//console.log(this.work.workid)
+			const eventChannel = this.getOpenerEventChannel()
+			eventChannel.on('dynamicDetails', function(data) {
+				console.log(data)
+				this.userId=data.accountB
+				this.commentNum=data.commentedNumber
+				this.dynamicId=data.dynamicId
+				this.image=data.dynamicPhotos
+				this.avatarD=data.headerPic
+				this.interestNum=data.likesNumber
+				this.textD=data.mainBody
+				this.opusId=data.opusId
+				this.opusPic=data.opusPhotos
+				this.relayNum=data.sharedNumber
+				this.opusTitle=data.title
+				//data.type
+				this.date=data.uploadTime
+				this.usernameD=data.userName
+			})
 		},
 		components: {
 			gridBox
@@ -153,6 +184,9 @@
 				pageScroll:0,
 				tag:'0',
 				dynamicId:'1',
+				opusId:'',
+				opusPic:'',
+				opusTitle:'',
 				userId:'',
 				avatarD:'../../static/iconn/p2.jpg',
 				usernameD:'机智的党妹',
@@ -169,7 +203,7 @@
 					'../../static/iconn/d1.jpg'
 				],
 				work:{
-					workid:'1',
+					workid:'0',
 					titleW:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 					firstImage:'../../static/iconn/d1.jpg'
 				},
@@ -190,14 +224,20 @@
 						isCommentExtend:false,
 						commented:[
 							{
+								commentedId:'',
+								userId:'',
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							},
 							{
+								commentedId:'',
+								userId:'',
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							},
 							{
+								commentedId:'',
+								userId:'',
 								usernameD:'国际巨星',
 								textD:'少女的恬静 夫人的端庄 书生的洒脱'
 							}

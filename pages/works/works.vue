@@ -13,40 +13,32 @@
 	<view class="picbox">
 		
 		<view>
-		            <view class="page-section swiper">
-		                <view class="page-section-spacing">
-		                    <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
-								<swiper-item v-for="(item,index) in pic" >
-										<image :src="item" mode="aspectFit" @click="preview(index)"></image>
-								</swiper-item>
-		                    </swiper>
-		                </view>
-		            </view>
+		    <view class="page-section swiper">
+		        <view class="page-section-spacing">
+		            <swiper class="myswiper" :indicator-dots="true" :autoplay="false" :interval="interval" :duration="duration" indicator-active-color='#FF6EA2'>
+		    			<swiper-item v-for="(item,index) in pic" >
+		    					<image :src="item" mode="aspectFit" @click="preview(index)"></image>
+		    			</swiper-item>
+		            </swiper>
 		        </view>
+		    </view>
+		</view>
 				
 	</view>
-<!-- 	<ul class="ull">
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul> -->
+
 	<view class="contentBox">
 		<view>{{title}}</view>
 		<table>
-			<tr>
-				<td>出境：<text @click="homePageNavi(modelId)">@{{model}}</text></td>
+			<tr v-if="model!=''">
+				<td>出境：<text @click="homePageNavi(modelId)" v-for="(item,index) in model">@{{item.model}}</text></td>
 			</tr>
-			<tr>
-				<td>摄影：<text @click="homePageNavi(photographyId)">@{{photography}}</text></td>
+			<tr v-if="photography!=''">
+				<td>摄影：<text @click="homePageNavi(photographyId)" v-for="(item,index) in photography">@{{item.photography}}</text></td>
 			</tr>
-			<tr>
-				<td>妆容：<text @click="workNavi">#{{makeupLook}}#</text></td>
+			<tr v-if="makeupLook!=''">
+				<td>妆容：<text @click="workNavi" v-for="(item,index) in makeupLook">#{{item.makeupLook}}#</text></td>
 			</tr>
-			<!-- <tr>
-				<td>服饰：<text @click="clothingClick(clothingLink)">#{{clothingName}}#</text></td>
-			</tr> -->
-			<tr>
+			<tr v-if="clothList!=''">
 				<td>服饰：<text v-for="(item,index) in clothList" :key="index" @click="clothingClickOpen(item.link)">#{{item.name}}#</text></td>
 			</tr>
 		</table>
@@ -55,7 +47,7 @@
 	<view class="textBox">
 		<view class="otherLabel">
 			<span v-for="(item,index) in label" :key="index" @click="searchLabelNavi(item)">
-			#{{item}}#
+			#{{item.labelname}}#
 		    </span>
 		</view>
 		<view>{{text}}</view>
@@ -86,21 +78,21 @@
 		<!-- 每一条评论 -->
 		
 		<uni-list :border="false" >
-		    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.commentId'>
+		    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.comment_id'>
 		        <template slot="body" class="slot-box slot-text">
 					<view class="commentBox">
-						<view class="commentboxFirst" @click="homePageNavi(item.userId)">
-							<image :src="item.avatarC"></image>
+						<view class="commentboxFirst" @click="homePageNavi(item.user_id)">
+							<image :src="item.header_pic"></image>
 							<span>
-								<view class="commentUserName">{{item.usernameC}}</view>
-								<view class="commentTime">{{item.timeC}}</view>
+								<view class="commentUserName">{{item.comment_name}}</view>
+								<view class="commentTime">{{item.comment_time}}</view>
 							</span>
 						</view>
-						<view class="commentTextC">{{item.textC}}</view>
+						<view class="commentTextC">{{item.item}}</view>
 						<view class="commentIconBox">
 							<!-- 给评论点赞 -->
-							<span v-if="item.isInterestC==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
-							<span v-if="item.isInterestC==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
+							<span v-if="item.isInterest==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
+							<span v-if="item.isInterest==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
 							<!-- 给评论点赞end -->
 							<!-- <span class="iconfont3">&#xe659;</span> -->
 							
@@ -110,14 +102,14 @@
 						</view>
 						<view class="commentedBox" v-if="item.commentN!='0'">
 							<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
-								<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
-								{{item.commented[0].textD}}
+								<!-- <text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
+								{{item.commented[0].textD}} -->
 							</view>
 							<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
 						
-							<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="a">
-								<text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
-								{{a.textD}}
+							<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="b">
+								<!-- <text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
+								{{a.textD}} -->
 							</view>
 							<view class="commentBoxv2" v-if="item.isCommentExtend==true"@click="isExtendFunc(index)">共{{item.commentN}}条回复--收起 ></view>
 						
@@ -227,9 +219,9 @@
 						   新建收藏夹
 						</view>
 				   </view>
-				   <view v-for="(item,index) in collectList" :key="index" class="collectPopBoxDetail" @click="addToCollectList(item.collectListId)">
+				   <view v-for="(item,index) in collectList" :key="index" class="collectPopBoxDetail" @click="addToCollectList(item.favourId)">
 					   <image src="../../static/iconn/iconn/4.jpg" mode="aspectFill"></image>
-					   <view>{{item.collectListTitle}}</view>
+					   <view>{{item.tab}}</view>
 				   </view>
 				   <view class="collectPopBoxExit" @click.stop="close()">取消</view>
 			   </view>
@@ -289,45 +281,53 @@
 			return{
 				popTag:'0',
 				isFocus:'0',
-				workId:'',
-				userId:'',
-				avertar:'../../static/CoserlistSource/userheadimg7.jpg',
-				username:'国际巨星',
-				interestNum:'2310',
+				workId:'34',
+				userId:'12',
+				avertar:'',
+				username:'',
+				interestNum:'',
 				isInterest:'0',
-				collectNum:'2310',
+				collectNum:'',
 				isCollect:'0',
-				commentNum:'2310',
+				commentNum:'',
 				relayNum:'2310',
 				starNum:'2310',
 				isStar:'0',
-				pic:[
-					'../../static/contentImg/3.jpg',
-					'../../static/CoserlistSource/userheadimg7.jpg',
-					'../../static/contentImg/3.jpg',
-					'../../static/contentImg/3.jpg'
+				pic:[],
+				model:[
+					// {
+					// 	modelId:'',
+					// 	model:'国际巨星'
+					// }
 				],
-				modelId:'',
-				model:'国际巨星',
-				photographyId:'',
-				photography:'超级摄影',
-				makeupLook:'江南美人妆',
-				clothingName:'汉服',
-				clothingLink:'hfeuigywbqbfiu',
+				photography:[
+					// {
+					// 	photographyId:'',
+					// 	photography:'超级摄影'
+					// }
+				],
+				makeupLook:[
+					// {
+					// 	makeupId:'',
+					// 	makeupLook:'江南美人妆'
+					// }
+				],
 				clothList: [
-					{
-				    name: '中牌',
-					link: 'hwfeihwfowieh',
-					},
-					{
-					name: '梗豆',
-					link: 'whifeuowieiow',
-					}
+					// {
+				 //    name: '中牌',
+					// link: 'hwfeihwfowieh',
+					// },
+					// {
+					// name: '梗豆',
+					// link: 'whifeuowieiow',
+					// }
 					
 				],
 				label:[
-					'汉服',
-					'约拍广场'
+					// {
+					// 	labelId:'',
+					// 	labelname:''
+					// }
 				],
 				title:'江南美人图|奇迹党党环游中华之江南',
 				text:'谁知江南无醉意，笑看春风十里香。喜欢记得点赞哦！！！',
@@ -356,106 +356,118 @@
 					}
 				],
 				comment:[
-					{
-						commentId:'1',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
-						commentN:'3',
-						isCommentExtend:false,
-						commented:[
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							}
-						],
-						isInterestC:''
-					},
-					{
-						commentId:'3',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠',
-						commentN:'10',
-						isCommentExtend:false,
-						commented:[
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							}
-						],
-						isInterestC:''
-					},
-					{
-						commentId:'4',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠',
-						commentN:'10',
-						isCommentExtend:false,
-						commented:[
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							}
-						],
-						isInterestC:''
-					},
-					{
-						commentId:'55',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'2020-12-08      ',
-						textC:'春水碧于天，画船听雨眠',
-						commentN:'10',
-						isCommentExtend:false,
-						commented:[
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							},
-							{
-								usernameD:'国际巨星',
-								textD:'少女的恬静 夫人的端庄 书生的洒脱'
-							}
-						],
-						isInterestC:''
-					}
+					// {
+					// 	commentId:'1',
+					// 	avatarC:'../../static/iconn/p2.jpg',
+					// 	usernameC:'蒲儿姓蒲',
+					// 	userId:'',
+					// 	timeC:'2020-12-08      ',
+					// 	textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
+					// 	commentN:'3',
+					// 	isCommentExtend:false,
+					// 	commented:[
+					// 		{
+					// 			commentedId:'1',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'2',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'3',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		}
+					// 	],
+					// 	isInterestC:''
+					// },
+					// {
+					// 	commentId:'3',
+					// 	avatarC:'../../static/iconn/p2.jpg',
+					// 	usernameC:'蒲儿姓蒲',
+					// 	userId:'',
+					// 	timeC:'2020-12-08      ',
+					// 	textC:'春水碧于天，画船听雨眠',
+					// 	commentN:'10',
+					// 	isCommentExtend:false,
+					// 	commented:[
+					// 		{
+					// 			commentedId:'1',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'2',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'3',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		}
+					// 	],
+					// 	isInterestC:''
+					// },
+					// {
+					// 	commentId:'4',
+					// 	avatarC:'../../static/iconn/p2.jpg',
+					// 	usernameC:'蒲儿姓蒲',
+					// 	userId:'',
+					// 	timeC:'2020-12-08      ',
+					// 	textC:'春水碧于天，画船听雨眠',
+					// 	commentN:'10',
+					// 	isCommentExtend:false,
+					// 	commented:[
+					// 		{
+					// 			commentedId:'1',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'2',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'3',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		}
+					// 	],
+					// 	isInterestC:''
+					// },
+					// {
+					// 	commentId:'55',
+					// 	avatarC:'../../static/iconn/p2.jpg',
+					// 	usernameC:'蒲儿姓蒲',
+					// 	userId:'',
+					// 	timeC:'2020-12-08      ',
+					// 	textC:'春水碧于天，画船听雨眠',
+					// 	commentN:'10',
+					// 	isCommentExtend:false,
+					// 	commented:[
+					// 		{
+					// 			commentedId:'1',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'2',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		},
+					// 		{
+					// 			commentedId:'3',
+					// 			usernameD:'国际巨星',
+					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
+					// 		}
+					// 	],
+					// 	isInterestC:''
+					// }
 				],
 				scrollTop: 0,
 				old: {
@@ -468,18 +480,18 @@
 				interval: 2000,
 				duration: 500,
 				collectList:[
-					{
-						collectListId:'9',
-						collectListTitle:'国风'
-					},
-					{
-						collectListId:'9',
-						collectListTitle:'国风'
-					},
-					{
-						collectListId:'9',
-						collectListTitle:'国风'
-					}
+					// {
+					// 	collectListId:'9',
+					// 	collectListTitle:'国风'
+					// },
+					// {
+					// 	collectListId:'9',
+					// 	collectListTitle:'国风'
+					// },
+					// {
+					// 	collectListId:'9',
+					// 	collectListTitle:'国风'
+					// }
 				],
 				commentText:'',
 				isCommented:false,
@@ -489,8 +501,159 @@
 		},
 		onLoad:function(option){
 			console.log(option.workId);
+			//this.workId = option.workId;
+			this.loadOpusDetail();
+			this.loadComment();
 		},
 		methods:{
+			async loadOpusDetail(){
+				const res = await this.$myRequest({
+					url:'/Opus/getOpusDetail',
+					data:{
+						opus_id:this.workId,
+						user_id:this.userId
+					}
+				})
+				var t=res.data[0]
+				console.log(t)
+				this.avertar = t.header_pic
+				this.username = t.user_name
+				this.interestNum = t.likes_number
+				this.collectNum = t.collected_number
+				this.commentNum = t.comment_number
+				
+				//作品图片json转化为数组
+				var photoes = t.cover_photo
+				var jsonObj = JSON.parse(photoes)
+				var p = []
+				for (var prop in jsonObj)
+				{
+				    //输出 key-value值
+				    //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+					//console.log(jsonObj[prop]);
+					p.push(jsonObj[prop])
+				}
+				this.pic = p
+				
+				this.title = t.title
+				this.text = t.main_body
+				this.isCollect = t.isCollect
+				this.isFocus = t.isFocus
+				this.isInterest = t.isInterest
+				this.time = t.upload_time
+				this.readN = t.browse_num
+				//分割出境
+				var jsonO = JSON.parse(t.account_a)
+				console.log(jsonO)
+				var modelObj={
+						modelId:'',
+						model:'国际巨星'
+					}
+				var m = []
+				for (var prop in jsonO){
+					m=jsonO[prop].split("，")
+					modelObj.modelId = m[0]
+					modelObj.model = m[1]
+					// console.log(modelObj)
+					this.model.push(modelObj)
+					//console.log(this.model)
+				}
+				
+				//分割摄影师
+				jsonO = JSON.parse(t.account_b)
+				console.log(jsonO)
+				var photographyObj={
+						photographyId:'',
+						photography:'超级摄影'
+					}
+			    m = []
+				for (var prop in jsonO){
+					m=jsonO[prop].split("，")
+					photographyObj.photographyId = m[0]
+					photographyObj.photography = m[1]
+					// console.log(modelObj)
+					this.photography.push(photographyObj)
+					//console.log(this.photography)
+				}
+				
+				//分割妆容
+				jsonO = JSON.parse(t.makeup_id)
+				console.log(jsonO)
+				var makeupObj={
+						makeupId:'',
+						makeupLook:'江南美人妆'
+					}
+				m = []
+				for (var prop in jsonO){
+					m=jsonO[prop].split("，")
+					makeupObj.makeupId = m[0]
+					makeupObj.makeupLook = m[1]
+					// console.log(modelObj)
+					this.makeupLook.push(makeupObj)
+					//console.log(this.makeupLook)
+				}
+				
+				//分割其他标签
+				jsonO = JSON.parse(t.mark_id)
+				console.log(jsonO)
+				var labelObj={
+						labelId:'',
+						labelname:''
+					}
+				m = []
+				for (var prop in jsonO){
+					m=jsonO[prop].split("，")
+					labelObj.labelId = m[0]
+					labelObj.labelname = m[1]
+					// console.log(modelObj)
+					this.label.push(labelObj)
+					//console.log(this.label)
+				}
+				
+				//分割服饰
+				jsonO = JSON.parse(t.clothing_id)
+				//console.log(jsonO)
+				var clothObj={
+						name: '',
+						link: '',
+					}
+				m = []
+				for (var prop in jsonO){
+					//m=jsonO[prop].split("，")
+					var i=0
+					//console.log(jsonO[prop].length)
+					for(i=0;i<jsonO[prop].length;i++){
+						
+						if(jsonO[prop][i]=="，"){
+							break;
+						}
+					}
+					console.log(i)
+					clothObj.name = jsonO[prop].slice(0,i)
+					clothObj.link = jsonO[prop].slice(i+1)
+					//console.log(clothObj)
+					this.clothList.push(clothObj)
+				}
+			},
+			async loadComment(){
+				this.workId=10
+				this.userId=10
+				const res = await this.$myRequest({
+					url:'/Opus/getOpusComments',
+					data:{
+						opus_id:this.workId,
+						user_id:this.userId
+					}
+				})
+				//console.log(res.data)
+				this.comment = res.data
+				for(var item in this.comment){
+					this.comment[item].isCommentExtend=false
+					this.comment[item].commentN='0'
+					console.log(item)
+				}
+				console.log(this.comment)
+			},
 			open(i,n,index){
 				this.popTag=i
 				this.isCommented = n
@@ -572,40 +735,94 @@
 				if(i==0){
 					this.interestNum--;
 					// 填写取消点赞接口
-					// 
-					// 
+					this.disInterestApi();
 				}
 				else if(i==1){
 					this.interestNum++;
 					// 填写点赞接口
-					// 
-					// 
+					this.interestApi();
+					
 				}
+			},
+			async interestApi(){
+				const res = await this.$myRequest({
+					url:'/Opus/addOpusLikeRecord',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					method:'POST',
+					data:{
+						opus_id:this.workId,
+						user_id:this.userId
+					}
+				})
+				console.log(res)
+			},
+			async disInterestApi(){
+				const res = await this.$myRequest({
+					url:'/Opus/deleteOpusLikeRecord',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					method:'DELETE',
+					data:{
+						opus_id:this.workId,
+						user_id:this.userId
+					}
+				})
 			},
 			interestCFunc(index,i){
-				this.comment[index].isInterestC=i;
+				this.comment[index].isInterest=i;
+			},
+			//获取所有收藏夹
+			async getCollectListAll(){
+				this.userId = 1
+				const res = await this.$myRequest({
+					url:'/MyPage/MyStarList/getAllList',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						user_id:this.userId
+					}
+				})
+				//console.log(res.data)
+				this.collectList = res.data
 			},
 			collectFunc(){
-				this.popTag=2;
-				this.$refs.popup.open()
-				// this.isCollect==0时处于未收藏的状态
-				if(this.isCollect==2){
-					this.collectNum--;
-					// 填写取消收藏接口
-					// 
-					// 
+				if(this.isCollect==1){
+					//取消收藏
+					this.collectNum--
+					this.isCollect=0
 				}
-				else if(this.isCollect==1){
-					this.collectNum++;
-					// 填写添加收藏接口
-					// 
-					//
+				else{
+					this.popTag=2;
+					//获取所有收藏夹
+					this.getCollectListAll()
+					this.$refs.popup.open()
 				}
+			},
+			//收藏接口
+			async collectApi(i){
+				const res = await this.$myRequest({
+					url:'/Opus/addOpusFavourRecord',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					method:'POST',
+					data:{
+						favour_id:i,
+						opus_id:this.workId,
+						user_id:this.userId
+					}
+				})
+				console.log(res)
 			},
 			starAdd(){
 				this.starNum++
 			},
 			isExtendFunc(i){
+				
 				this.comment[i].isCommentExtend=!this.comment[i].isCommentExtend
 			},
 			addCollectList(){
@@ -613,11 +830,10 @@
 			},
 			addToCollectList(id){
 				// 填写加入收藏夹接口
-				// 
-				// 
-				// 
+				this.collectApi(id)
 				this.popTag = 3
-				
+				this.isCollect = 1
+				this.collectNum++;
 			},
 			commentInput(event){
 				console.log(event.detail)
@@ -632,20 +848,20 @@
 				var t={}
 				if(this.isCommented==false){
 					 t={
-						commentId:'8',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'',
-						textC:'',
+						comment_id:'8',
+						header_pic:'../../static/iconn/p2.jpg',
+						comment_name:'蒲儿姓蒲',
+						user_id:'',
+						comment_time:'',
+						item:'',
 						commentN:'0',
 						isCommentExtend:false,
 						commented:[],
-						isInterestC:''
+						isInterest:''
 					}
 					var time = new Date()
-					t.timeC=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
-					t.textC=this.commentText
+					t.comment_time=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
+					t.item=this.commentText
 					 this.comment.unshift(t)
 					 // 填写更新评论接口
 					 // 

@@ -1,9 +1,14 @@
 <template>
 	<view>
-		<!-- 是否取消订单 -->
+		<!-- 是否拒绝该订单 -->
 		<uni-popup ref="popup1" type="dialog">
-			<uni-popup-dialog type="info" mode="base" content="是否取消该订单" :before-close="true" @close="close"
-				@confirm="confirmCancel"></uni-popup-dialog>
+			<uni-popup-dialog type="info" mode="base" content="是否拒绝该订单" :before-close="true" @close="close"
+				@confirm="confirmRefuse"></uni-popup-dialog>
+		</uni-popup>
+		<!-- 是否接收该订单 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="是否接受该订单" :before-close="true" @close="close"
+				@confirm="confirmAccept"></uni-popup-dialog>
 		</uni-popup>
 		<!-- 顶部加载提示框 -->
 		<view class="tips color_fff size_12 align_c" :class="{ 'show':ajax.loading }" @tap="getHistoryMsg">
@@ -45,12 +50,8 @@
 									</view>
 									<view class="row-box" v-if='item.state == 1'>
 										<view class="bottom-box">
-											<view class="btn1" @click="editOrderMsg(item.photograph_id, item.content, item.date, item.area, item.money)">
-												修改订单信息
-											</view>
-											<view class="btn2" @click="onCancleOrder(item.photograph_id)">
-												取消订单
-											</view>
+											<button class="btn1" @click="onAcceptOrder(item.photograph_id)">接受</button>				
+											<button class="btn2" @click="onRefuseOrder(item.photograph_id)">拒绝</button>
 										</view>
 									</view>
 								</view>
@@ -79,7 +80,8 @@
 	export default {
 		data() {
 			return {
-				cancelOrderId: null, 	// 取消的订单编号
+				refuseOrderID: null,		// 	拒绝的订单编号
+				acceptOrderID: null,		// 	接受的订单编号
 				ifload: false,	// 刷新时使用
 				timer: null, // 设置计时器
 				other_userId: null, // 对方Id
@@ -128,6 +130,24 @@
 					}
 				})
 			},
+			// state状态加1
+			addState(pho_id){
+				this.$myRequest({
+					url: '/Order/addState',
+					data: {
+						photograph_id: pho_id,
+					}
+				})
+			},
+			// state状态减1
+			minusState(pho_id){
+				this.$myRequest({
+					url: '/Order/minusState',
+					data: {
+						photograph_id: pho_id,
+					}
+				})
+			},
 			// 进入用户个人主页
 			gotoUserHomePage: function(type) {
 				var userId = 0
@@ -138,44 +158,29 @@
 					url: '../Mypage/homePage/homePage?userId=' + userId
 				})
 			},
-			// 修改订单信息
-			editOrderMsg(id, content, date, area, money) {
-				// console.log('edit')
-				// 编辑框
-				uni.navigateTo({
-					url: '../pictureOrder/reviseorderinfo',
-					// animationType:'slide-in-right',
-					success: function(res) {
-						// 通过eventChannel向被打开页面传送数据
-						res.eventChannel.emit('emitReviseOrderInfo', {
-							id: id,
-							content: content,
-							date: date,
-							area: area,
-							money: money
-						})
-					}
-				})
-			},
-			// 取消订单
-			onCancleOrder(id) {
-				// console.log('cancel')
-				this.cancelOrderId = id
+			// 拒绝订单
+			onRefuseOrder: function(id){
 				this.$refs.popup1.open()
+				this.refuseOrderID = id
+				// console.log(this.cancelOrderId)
+			},
+			// 确认取消订单
+			async confirmRefuse() {
+				this.minusState(this.refuseOrderID)
+			},
+			// 接受订单
+			onAcceptOrder: function(id){
+				this.$refs.popup2.open()
+				this.acceptOrderID = id
+				// console.log(this.cancelOrderId)
+			},
+			// 确认接受订单
+			async confirmAccept() {
+				this.addState(this.acceptOrderID)
 			},
 			// 取消对话框
 			close: function(done) {
 				done()
-			},
-			// 确认取消订单
-			async confirmCancel() {
-				console.log(this.cancelOrderId)
-				this.$myRequest({
-					url: '/Order/setState5',
-					data: {
-						photograph_id: this.cancelOrderId,
-					}
-				})
 			},
 			// 获取订单详情
 			async onGetOrderMsg(id) {
@@ -425,6 +430,26 @@
 <style lang="scss">
 	@import "../../lib/global.scss";
 	@import "./dialog.css";
+	
+	.bottom-box button{
+		font-family: 'PingFang SC';
+		font-size: 14px;
+		line-height: 14px;
+		color: #AAAAAA;
+		margin: 10rpx;
+		padding: 10rpx 50rpx;
+		color: #FFFFFF;
+		font-weight: 700;
+	}
+	.bottom-box .btn1{
+		border: none;
+		background-color: #32C8FF;
+		float: left;
+	}
+	.bottom-box .btn2{
+		background-color: #D7D7D7;
+		float: right;
+	}
 	page {
 		background-color: #F3F3F3;
 		font-size: 28rpx;
