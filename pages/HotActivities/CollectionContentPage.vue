@@ -55,42 +55,42 @@
 				},
 				AttendCoserlist:[
 					{
-						id:0,
+						id:1,
 						Character_name:"宇治松 千夜",
 						Coser_name:"小娜",
 						label:"【Cos正品征集】第10-1期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:1,
+						id:2,
 						Character_name:"香风智乃",
 						Coser_name:"奈奈猫",
 						label:"【Cos正品征集】第10-2期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:2,
+						id:3,
 						Character_name:"保登 心爱",
 						Coser_name:"佳佳",
 						label:"【Cos正品征集】第10-3期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:3,
+						id:4,
 						Character_name:"天天座里世",
 						Coser_name:"屿y",
 						label:"【Cos正品征集】第10-4期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:4,
+						id:5,
 						Character_name:"桐间纱路",
 						Coser_name:"夜呀mmm",
 						label:"【Cos正品征集】第10-5期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:5,
+						id:6,
 						Character_name:"香风隆宏",
 						Coser_name:"青玉子",
 						label:"【Cos正品征集】第10-6期",
@@ -109,6 +109,7 @@
 				uni.navigateTo({
 					url:"../Mypage/homePage/homePage?userId=" + e
 				})
+				console.log(e)
 			}
 		},
 		computed:{

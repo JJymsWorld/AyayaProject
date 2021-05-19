@@ -11,8 +11,8 @@
 					<text class="StayInCoser-topBar-left-text">入驻摄影师</text>
 				</view>
 				<view class="StayInCoser-topBar-right">
-					<uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"
-						:value="ProvinceList[0]"></uni-combox>
+					<!-- <uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"
+						:value="ProvinceList[0]"></uni-combox> -->
 					<uni-combox @input="filterbcity" :isDisabled="true" placeholder="城市" :candidates="CityList" 
 						:value="CityList[0]"></uni-combox>
 				</view>
@@ -58,11 +58,11 @@
 									class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>

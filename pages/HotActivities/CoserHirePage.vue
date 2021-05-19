@@ -20,12 +20,12 @@
 				</view>
 				<view class="CosCollections-list-content" v-if="tabIndex==0">
 					<uni-list class="CosCollections-list-content-unilist" :border="false">
-						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row">
+						<uni-list-item :border="false" class="CosCollections-list-content-item" v-for="(item,index) in CoserCollectionList" :key="index" direction="row" :to="'./EventDetailPage?activity_id=' + item.id">
 							<view slot="header" class="CosCollections-list-content-item-header">
 								<image :src="item.image_url" mode="aspectFill" class="CosCollections-list-content-item-image"></image>
 							</view>
 							<view slot="body" class="CosCollections-list-content-item-body">
-								<text class="CosCollections-list-content-item-body-title" @click="gotoEventDetailPage">{{item.title}}</text>
+								<text class="CosCollections-list-content-item-body-title" >{{item.title}}</text>
 								<view class="CosCollections-list-content-item-body-character">Cos人物: <text class="CosCollections-list-content-item-body-character-text">{{item.CosCharacter}}</text></view>
 								<view class="CosCollections-list-content-item-body-activeStatus" v-if="item.isActive==true">进行中</view>
 								<view class="CosCollections-list-content-item-body-notactiveStatus" v-if="item.isActive==false">已结束</view>
@@ -66,35 +66,35 @@
 					time: "12月1日-1月10日"
 				},
 				CoserCollectionList: [{
-						id: 0,
+						id: 2,
 						image_url: "../../static/CollectionSources/6.jpeg",
 						title: "【Cos正品征集】第10-1期",
 						CosCharacter: "宇治松 千夜",
 						isActive: false
 					},
 					{
-						id: 1,
+						id: 3,
 						image_url: "../../static/CollectionSources/7.jpeg",
 						title: "【Cos正品征集】第10-2期",
 						CosCharacter: "香风智乃",
 						isActive: false
 					},
 					{
-						id: 2,
+						id: 1,
 						image_url: "../../static/CollectionSources/8.jpeg",
 						title: "【Cos正品征集】第10-3期",
 						CosCharacter: "保登 心爱",
 						isActive: true
 					},
 					{
-						id: 3,
+						id: 4,
 						image_url: "../../static/CollectionSources/9.jpg",
 						title: "【Cos正品征集】第10-4期",
 						CosCharacter: "天天座理世",
 						isActive: false
 					},
 					{
-						id: 4,
+						id: 5,
 						image_url: "../../static/CollectionSources/10.jpg",
 						title: "【Cos正品征集】第10-5期",
 						CosCharacter: "桐间纱路",
@@ -112,10 +112,11 @@
 				this.tabIndex = 1;
 				console.log(this.tabIndex);
 			},
-			gotoEventDetailPage(){
+			gotoEventDetailPage(e){
 				uni.navigateTo({
-					url:"./EventDetailPage"
+					url:"./EventDetailPage?activity_id=" + e
 				})
+				console.log(e);
 			},
 			// 跳转至线下合集活动页面
 			gotoCollectionContentPage(){

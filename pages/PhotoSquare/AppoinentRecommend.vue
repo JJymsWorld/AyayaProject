@@ -27,7 +27,7 @@
 				<text >作品展示</text>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage($event)" imageSrcKey="opus_photos" idKey="opus_id">
+				<waterfallsFlow ref="waterfallsFlow" :list="contentList" @wapper-lick="gotoWorksPage($event)" imageSrcKey="opus_photos" idKey="opus_id">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -83,7 +83,7 @@
 			
 		},
 		onShow() {
-			
+			// this.$refs.waterfallsFlow.refresh();
 		},
 		async onReachBottom() {
 			// 触底加载新内容
