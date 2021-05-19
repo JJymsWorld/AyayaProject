@@ -7,7 +7,7 @@
 					<text class="StayInCoser-topBar-left-text">入驻Coser</text>
 				</view>
 				<view class="StayInCoser-topBar-right">
-					<uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"  :value="ProvinceList[0]"></uni-combox>
+					<!-- <uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"  :value="ProvinceList[0]"></uni-combox> -->
 					<uni-combox @input="filterbycity" :isDisabled="true" placeholder="城市" :candidates="CityList"  :value="CityList[0]"></uni-combox>
 				</view>
 			</view>
@@ -16,7 +16,7 @@
 					<uni-list-item :border="false" direction="column" v-for="(item,index) in CoserInfoList" :key="index" class="StayInCoser-List-item" >
 						<view slot="header" class="StayInCoser-item">
 							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill" @click="gotoCoserHomePage"></image>
-							<view class="StayInCoser-item-info" @click="gotoCoserHomePage">
+							<view class="StayInCoser-item-info" @click="gotoCoserHomePage(item.user_id)">
 								<view class="StayInCoser-item-nameandlikenum">
 									<text class="StayInCoser-item-name">{{item.user_name}}</text>
 									<view class="StayInCoser-item-likenum">
@@ -33,7 +33,7 @@
 							</view>
 							<view class="StayInCoser-item-likebutton">
 								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
-								<uni-fav :checked="item.checked" star="false" :contentText="contentText" bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#333333"></uni-fav>
+								<uni-fav :checked="item.relation == 1" star="false" :contentText="contentText" bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#333333"></uni-fav>
 								
 							</view>
 						</view>
@@ -41,9 +41,9 @@
 							<uni-collapse :accordion="true">
 								<uni-collapse-item ref="collapse_item" :showAnimation="true" class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2" @click="gotoWorksPage"></image>
-										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3" @click="gotoWorksPage"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1" @click="gotoCoserHomePage(item.user_id)"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2" @click="gotoCoserHomePage(item.user_id)"></image>
+										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3" @click="gotoCoserHomePage(item.user_id)"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
@@ -65,6 +65,7 @@
 			if(this.initList == true){
 				http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
 					this.initList = false;
+					console.log(res.data.list)
 					this.CoserInfoList = res.data.list;
 					this.pageNum++;
 					
@@ -87,6 +88,7 @@
 				await http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
 					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
 					this.pageNum++;
+					
 					if(res.data.hasNextPage == true){
 						this.LoadStatus = "more";
 					}
@@ -104,6 +106,7 @@
 				await http.get("/Cos/StayInCoserList/selectCoserCity",{params:{city:this.valValue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
 					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
 					this.pageNum++;
+					
 					if(res.data.hasNextPage == true){
 						this.LoadStatus = "more";
 					}
@@ -168,13 +171,20 @@
 		},
 		methods:{
 			LikeBtnClick(e) {
-				this.CoserInfoList[e].checked = !this.CoserInfoList[e].checked
-				console.log(e,this.CoserInfoList[e].checked)
+				// if(this.CoserInfoList[e].relation == 1){
+				// 	this.CoserInfoList[e].relation = 0;
+				// }
+				// if(this.CoserInfoList[e].relation == 0){
+				// 	this.CoserInfoList[e].relation = 1;
+				// }
+				this.CoserInfoList[e].relation = !this.CoserInfoList[e].relation
+				console.log(e,this.CoserInfoList[e].relation)
 			},
-			gotoCoserHomePage(){
+			gotoCoserHomePage(e){
 				uni.navigateTo({
-					url:"../Mypage/homePage/homePage"
-				})
+					url:"../Mypage/homePage/homePage?userId=" + e
+				});
+				console.log(e);
 			},
 			gotoWorksPage(){
 				uni.navigateTo({

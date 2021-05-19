@@ -13,7 +13,7 @@
 					<view class="CoserHirePage-top-time">线下活动时间: {{CoserHirePageInfo.time}}</view>
 					<view class="CoserHirePage-top-positon">地址: {{CoserHirePageInfo.position}}</view>
 				</view>
-				<view class="CoserHirePage-viewButton" @click="gotoWorksPage">
+				<view class="CoserHirePage-viewButton" @click="gotoWorksPage(opusid)">
 					<view class="CoserHirePage-viewButton-style">查看正片</view>
 				</view>
 			</view>
@@ -30,7 +30,7 @@
 								<text class="AttendCoserlist-content-listItem-header-Character" >{{item.Character_name}}:</text>
 							</view>
 							<view slot="body" class="AttendCoserlist-content-listItem-body">
-								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage">{{item.Coser_name}}</text>
+								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage(item.id)">{{item.Coser_name}}</text>
 								<text class="AttendCoserlist-content-listItem-body-label">#{{item.label}} #{{item.wardCategory}}</text>
 							</view>
 						</uni-list-item>
@@ -45,6 +45,7 @@
 	export default{
 		data(){
 			return{
+				opusid:1,
 				CoserHirePageInfo: {
 					image_url: "../../static/CollectionSources/1.jpg",
 					title: "【季番线下合集】第10期",
@@ -54,42 +55,42 @@
 				},
 				AttendCoserlist:[
 					{
-						id:0,
+						id:1,
 						Character_name:"宇治松 千夜",
 						Coser_name:"小娜",
 						label:"【Cos正品征集】第10-1期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:1,
+						id:2,
 						Character_name:"香风智乃",
 						Coser_name:"奈奈猫",
 						label:"【Cos正品征集】第10-2期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:2,
+						id:3,
 						Character_name:"保登 心爱",
 						Coser_name:"佳佳",
 						label:"【Cos正品征集】第10-3期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:3,
+						id:4,
 						Character_name:"天天座里世",
 						Coser_name:"屿y",
 						label:"【Cos正品征集】第10-4期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:4,
+						id:5,
 						Character_name:"桐间纱路",
 						Coser_name:"夜呀mmm",
 						label:"【Cos正品征集】第10-5期",
 						wardCategory:"最佳Coser"
 					},
 					{
-						id:5,
+						id:6,
 						Character_name:"香风隆宏",
 						Coser_name:"青玉子",
 						label:"【Cos正品征集】第10-6期",
@@ -99,15 +100,16 @@
 			}
 		},
 		methods:{
-			gotoWorksPage(){
+			gotoWorksPage(e){
 				uni.navigateTo({
-					url:"../works/works"
+					url:"../works/works?workId=" + e
 				})
 			},
-			gotoCoserHomePage(){
+			gotoCoserHomePage(e){
 				uni.navigateTo({
-					url:"../Mypage/homePage/homePage"
+					url:"../Mypage/homePage/homePage?userId=" + e
 				})
+				console.log(e)
 			}
 		},
 		computed:{

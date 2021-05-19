@@ -43,7 +43,7 @@
 				</tr>
 				<tr>
 					<td class="inputBoxName">个性签名</td>
-					<td></td>
+					<td class="signText"><view>{{sign}}</view></td>
 					<td><span class="iconfont_dy"@click="open(3)">&#xe6b2;</span></td>
 				</tr>
 			</table>
@@ -88,13 +88,29 @@
 		<!-- 账号 end-->
 		</view>
 		
+		<!-- 加载框 -->
+		<kModel ref="kModel" />
 	</view>
 </template>
 
 <script>
+	import kModel from '@/components/k-model/k-model.vue';
 	export default{
+		components: {
+			kModel
+		},
 		onLoad() {
-			
+			this.userId=getApp().globalData.global_userId || '4'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     //this.userIdentity = res.data.identity
+				 this.avatar = res.data.header_pic
+				 this.username = res.data.user_name
+				 this.sign = res.data.autograph
+			    }
+			});
 		},
 		data(){
 			return{
@@ -111,8 +127,10 @@
 					'background-size': 'cover',
 					'opacity':'0.9'
 				},
-				backgroundImage:'/../../../static/iconn/back.png',
-				header_picAndBackground:[]
+				backgroundImage:'',
+				header_picAndBackground:[],
+				changeAvatarTag:false,//判断是否修改头像
+				changeBackgroundTag:false//判断是否修改了背景
 			}
 		},
 		methods:{
@@ -170,17 +188,12 @@
 					count: 1,
 					// sizeType:['original','compressed'],
 					success: function(res) {
-						// console.log(JSON.stringify(res.tempFilePaths))
-						// uni.previewImage({
-						// // 对选中的图片进行预览
-						// urls: res.tempFilePaths,
-					 // // urls:['','']  图片的地址 是数组形式
-				  //     })
 					  console.log(res.tempFilePaths[0])
 					  _self.$data.avatar=res.tempFilePaths[0]
 					 // _self.$data.background["background-image"]='url("'+res.tempFilePaths[0]+'")'
 					},
 				})
+				this.changeAvatarTag = true
 			},
 			changeBackground(){
 				var _self=this
@@ -199,6 +212,32 @@
 					  _self.$data.backgroundImage=res.tempFilePaths[0]
 					},
 				})
+				this.changeBackgroundTag = true
+			},
+			// 显示发布成功加载框
+			startShow: function() {
+				this.$refs['kModel'].showModel({
+					type: 'success',
+					title: '发布成功',
+					duration: 3000
+				});
+			},
+			async onGetMainAll(){
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/getMainAll',
+					data:{
+						user_id: this.userId
+					}
+				})
+				// 本地存入账号信息
+				uni.setStorage({
+				    key: 'userInfo',
+				    data: res.data[0],
+				    success: function (res) {
+				        console.log(res);
+				    }
+				});
+				
 			},
 			async saveImformation(){
 				// var backgroundImage=this.background[0]
@@ -208,31 +247,27 @@
 					name: 'header_picAndBackground',
 					url: ''
 				}
-				item.url = _self.avatar
-				_self.header_picAndBackground.push(item)
-				item.url = _self.backgroundImage
-				_self.header_picAndBackground.push(item)
+				console.log("header_back")
+				console.log(_self.avatar)
+				console.log(_self.backgroundImage)
+				// item.url = _self.avatar
+				if(_self.changeAvatarTag){
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: _self.avatar})
+				}
+				else{
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',url:''})
+				}
 				
+				if(_self.changeBackgroundTag){
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: _self.backgroundImage})
+				}
+				else{
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: ''})
+				}
 				console.log(_self.header_picAndBackground)
-				// var t = JSON.stringify(_self.header_picAndBackground)
-				// const res = await this.$myRequest({
-				// 	url:'/ChangePersonalInformation/changePersonalInformation',
-				// 	header:{
-				// 		'content-type':'application/x-www-form-urlencoded'
-				// 	},
-				// 	method:'PUT',
-				// 	data:{
-				// 		account:_self.account,
-				// 		autograph:_self.sign,
-				// 		gender:2,//_self.sex,
-				// 		header_picAndBackground:_self.header_picAndBackground,
-				// 		user_id: 1,//_self.userId,
-				// 		user_name:_self.username
-				// 	 }
-				// })
-				// console.log(res.data)
-				
 				_self.sexStatus = _self.sex == '女'?2:1
+				
+				 console.log(_self.header_picAndBackground)
 				uni.uploadFile({
 					url: 'http://81.68.73.252:8086/ChangePersonalInformation/changePersonalInformation',
 					files: _self.header_picAndBackground,
@@ -243,9 +278,14 @@
 						'user_id': _self.userId,
 						'user_name':_self.username
 					},
-					_method:'PUT',
 					success: uploadFileRes => {
-						// console.log(uploadFileRes.data);
+						if(uploadFileRes.statusCode == 200){
+							_self.startShow()
+							_self.onGetMainAll()
+							_self.changeAvatarTag = false
+							_self.changeBackgroundTag = false
+							_self.header_picAndBackground = []
+						}
 						console.log(uploadFileRes)
 					}
 				});
@@ -420,5 +460,9 @@
 		padding: 30rpx 0;
 		margin-top: 20rpx;
 	}
-
+	.signText{
+		font-size: 26rpx;
+		text-align: right;
+		color: #a5a5aa;
+	}
 </style>

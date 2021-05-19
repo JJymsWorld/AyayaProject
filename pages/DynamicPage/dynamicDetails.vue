@@ -2,7 +2,7 @@
 	<view>
 		<!-- 头像 昵称部分 -->
 		<view class="headBox">
-			<image :src="avatarD"></image>
+			<image :src="avatarD" @click='homePageNavi(userId)'></image>
 			<view class="headBoxText">
 				<view>{{usernameD}}</view>
 				<view>{{date}}</view>
@@ -21,13 +21,13 @@
 		<!-- 正文部分 -->
 		
 		<!-- 内容部分 -->
-		<view class="gridImageBox" v-if="work.workid=='0'">
+		<view class="gridImageBox" v-if="opusId=='0'">
 			<gridBox :picture="image"></gridBox>
 		</view>
 		
-		<view v-if="work.workid!='0'" class="dynamicGridBox">
-			<image class="dynamicImage" :src='work.firstImage' mode="aspectFill"></image>
-			<view class="dynamicTitle">{{work.titleW}}</view>
+		<view v-if="opusId!='0'" class="dynamicGridBox">
+			<image class="dynamicImage" :src='opusPic' mode="aspectFill"></image>
+			<view class="dynamicTitle">{{opusTitle}}</view>
 		</view>
 		<!-- 内容部分end -->
 		
@@ -37,32 +37,32 @@
 		<view class="navi" id="navi1">
 			<!-- 转发 评论导航栏 -->
 			<ul>
-				<li :class="tag=='1'?'naviBoxNo':'naviBox'" @click="tagSelect(1)">转发 <text>{{relayNum}}</text></li>
-				<li :class="tag=='0'?'naviBoxNo':'naviBox'" @click="tagSelect(0)">评论 <text>{{commentNum}}</text> </li>
+				<!-- <li :class="tag=='1'?'naviBoxNo':'naviBox'" @click="tagSelect(1)">转发 <text>{{relayNum}}</text></li> -->
+				<li class="naviBoxNo" @click="tagSelect(0)">全部评论 </li>
 			</ul>
 			<!-- 评论部分 -->
-			<view class="commendbigBox" v-if="tag=='0'">
+			<view class="commendbigBox" v-if="comment!=''">
 				<uni-list :border="false" >
-				    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.commentId'>
+				    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.comment_id'>
 				        <template slot="body" class="slot-box slot-text">
 							<view class="commentBox">
-								<view class="commentboxFirst" @click="homePageNavi(item.userId)">
-									<image :src="item.avatarC"></image>
+								<view class="commentboxFirst" @click="homePageNavi(item.user_id)">
+									<image :src="item.header_pic"></image>
 									<span>
-										<view class="commentUserName">{{item.usernameC}}</view>
-										<view class="commentTime">{{item.timeC}}</view>
+										<view class="commentUserName">{{item.comment_name}}</view>
+										<view class="commentTime">{{item.comment_time}}</view>
 									</span>
 								</view>
-								<view class="commentTextC">{{item.textC}}</view>
+								<view class="commentTextC">{{item.item}}</view>
 								<view class="commentIconBox">
 									<!-- 给评论点赞 -->
-									<span v-if="item.isInterestC==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
-									<span v-if="item.isInterestC==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
+									<span v-if="item.isInterest==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
+									<span v-if="item.isInterest==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
 									<!-- 给评论点赞end -->
 									<!-- <span class="iconfont3">&#xe659;</span> -->
 									
 									<!-- 回复该条评论 -->
-									<span class="iconfont1"@click="open(true,index)">&#xe6b3;</span>
+									<span class="iconfont1"@click="open(0,true,index)">&#xe6b3;</span>
 									<!-- 回复该条评论end -->
 								</view>
 								<view class="commentedBox" v-if="item.commentN!='0'">
@@ -72,7 +72,7 @@
 									</view>
 									<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
 								
-									<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="a">
+									<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="b">
 										<text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
 										{{a.textD}}
 									</view>
@@ -87,6 +87,7 @@
 				</uni-list>
 				
 			</view>
+			<view class="noComment" v-if="comment==''">快来给他评论吧！</view>
 		</view>
 		<!-- 评论转发部分end -->
 		
@@ -154,26 +155,40 @@
 			// })
 		},
 		onLoad(option) {
+			const that = this
 			this.pageScroll=option.pageScroll || 0
 			//console.log(this.work.workid)
+			this.userId2=getApp().globalData.global_userId || '12'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     //this.userIdentity = res.data.identity
+				 this.thisAvatar = res.data.header_pic || '../../static/iconn/avatar.png'
+				 this.thisUsername = res.data.user_name
+			    }
+			});
+			
 			const eventChannel = this.getOpenerEventChannel()
 			eventChannel.on('dynamicDetails', function(data) {
 				console.log(data)
-				this.userId=data.accountB
-				this.commentNum=data.commentedNumber
-				this.dynamicId=data.dynamicId
-				this.image=data.dynamicPhotos
-				this.avatarD=data.headerPic
-				this.interestNum=data.likesNumber
-				this.textD=data.mainBody
-				this.opusId=data.opusId
-				this.opusPic=data.opusPhotos
-				this.relayNum=data.sharedNumber
-				this.opusTitle=data.title
+				console.log(that.usernameD)
+				that.userId=data.accountB
+				that.commentNum=data.commentedNumber
+				that.dynamicId=data.dynamicId
+				that.image=data.dynamicPhotos
+				that.avatarD=data.headerPic
+				that.interestNum=data.likesNumber
+				that.textD=data.mainBody
+				that.opusId=data.opusId
+				that.opusPic=data.opusPhotos
+				that.relayNum=data.sharedNumber
+				that.opusTitle=data.title
 				//data.type
-				this.date=data.uploadTime
-				this.usernameD=data.userName
+				that.date=data.uploadTime
+				that.usernameD=data.userName
 			})
+			that.loadComment()
 		},
 		components: {
 			gridBox
@@ -187,7 +202,10 @@
 				opusId:'',
 				opusPic:'',
 				opusTitle:'',
-				userId:'',
+				userId:'12',//发布该动态的人
+				userId2:'',//登录者
+				thisUsername:'',
+				thisAvatar:'',
 				avatarD:'../../static/iconn/p2.jpg',
 				usernameD:'机智的党妹',
 				date:'2020-06-25',
@@ -325,7 +343,8 @@
 				],
 				commentText:'',
 				isCommented:false,
-				commentedIndex:'0'
+				commentedIndex:'0',
+				currentCommentId:'100000'
 			}
 		},
 	    methods:{
@@ -335,27 +354,64 @@
 				})
 			},
 			interestCFunc(index,i){
-				this.comment[index].isInterestC=i;
+				this.comment[index].isInterest=i;
 			},
 			isExtendFunc(i){
+				console.log('extend:'+this.comment[i].isCommentExtend)
 				this.comment[i].isCommentExtend=!this.comment[i].isCommentExtend
+				//this.comment[i].isCommentExtend = true
+				console.log('after:'+this.comment[i].isCommentExtend)
 			},
 			focusButton(i){
-				// 填写加关注和减关注
-				//
-				//
-				//
+				// 加关注和减关注
 				this.$data.isFocus=i
+				this.isAddFocus(i)
 			},
-			open(i,index){
+			async isAddFocus(i){
+				//关注
+				if(i){
+					const res = await this.$myRequest({
+						url:'/MyPage/HomePage/addFocus',
+						header:{
+							'content-type':'application/x-www-form-urlencoded'
+						},
+						method:'POST',
+						data:{
+							account_a:this.userId,
+							account_b:this.thisUserId
+						}
+					})
+					console.log('关注')
+					console.log(res)
+				}
+				//取消关注
+				else{
+					const res = await this.$myRequest({
+						url:'/MyPage/HomePage/delFocusPersonByBothId',
+						header:{
+							'content-type':'application/x-www-form-urlencoded'
+						},
+						method:'DELETE',
+						data:{
+							account_a:this.userId,
+							account_b:this.thisUserId
+						}
+					})
+					console.log('取消关注')
+					console.log(res)
+				}
+				
+			},
+			open(i,n,index){
 			         // 通过组件定义的ref调用uni-popup方法
-					 this.isCommented = i
+					 this.popTag=i
+					 this.isCommented = n
 					 this.commentedIndex = index
-			         this.$refs.popup.open()
+					 this.$refs.popup.open()
 					 
 			},
 			tagSelect(i){
-				this.tag=i
+				//this.tag=i
 			},
 			homepageNavi(i){
 				uni.navigateTo({
@@ -386,6 +442,30 @@
 							
 							
 			},
+			async loadComment(){
+				const that = this
+				const res = await this.$myRequest({
+					//url:'/Dynamic/getComment',
+					url:'/Opus/getOpusComments',
+					data:{
+						//dynamic_id:that.dynamicId
+						opus_id:that.dynamicId,
+						type:2,
+						user_id:that.userId
+					}
+				})
+				console.log(res.data)
+				this.comment = res.data
+				for(var item in this.comment){
+					this.comment[item].comment_time = this.$Format(this.comment[item].comment_time,"yyyy-MM-dd")
+					this.$set(this.comment[item], 'isCommentExtend', false)
+					this.$set(this.comment[item], 'commentN', '0')
+					// this.comment[item].isCommentExtend=false
+					// this.comment[item].commentN='0'
+					console.log('comment:'+item)
+				}
+				console.log(this.comment)
+			},
 			commentInput(event){
 				console.log(event.detail)
 				this.commentText=event.detail.value
@@ -394,41 +474,64 @@
 				this.commentText=event.detail.value
 				this.sendComment()
 			},
+			async sendCommentFunc(name,id,item,type){
+				const that = this
+				// console.log("name:"+name)
+				// console.log("type:"+type)
+				const res = await this.$myRequest({
+					url:'/Opus/addCommentByType',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					method:'POST',
+					data:{
+						comment_name:name,//用户昵称
+						dynamic_id:id, //动态或作品评论id
+						item:item,//内容
+						type:type,//给作品评论1，给动态评论2.给评论评论3
+						user_id:that.userId2
+					}
+				})
+				console.log(res)
+			},
 			sendComment(){
 				console.log(this.isCommented)
 				var t={}
+				const that = this
+				that.currentCommentId++;
 				if(this.isCommented==false){
 					 t={
-						commentId:'8',
-						avatarC:'../../static/iconn/p2.jpg',
-						usernameC:'蒲儿姓蒲',
-						userId:'',
-						timeC:'',
-						textC:'',
+						comment_id:that.currentCommentId,
+						header_pic:that.thisAvatar,
+						comment_name:that.thisUsername,
+						user_id:that.userId2,
+						comment_time:'',
+						item:'',
 						commentN:'0',
 						isCommentExtend:false,
 						commented:[],
-						isInterestC:''
+						isInterest:''
 					}
 					var time = new Date()
-					t.timeC=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
-					t.textC=this.commentText
+					t.comment_time=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
+					t.item=this.commentText
 					 this.comment.unshift(t)
 					 // 填写更新评论接口
 					 // 
 					 // 
 					 // 
-					 
+					 this.sendCommentFunc(that.thisUsername,this.dynamicId,this.commentText,2)
 				}
 				else{
 					t={
-						userId:'',
-						usernameD:'国际巨星',
+						userId:that.userId2,
+						usernameD:that.thisUsername,
 						textD:''
 					}
 					t.textD=this.commentText
 					this.comment[this.commentedIndex].commentN++;
 					this.comment[this.commentedIndex].commented.unshift(t)
+					this.sendCommentFunc(t.usernameD,this.comment[this.commentedIndex].comment_id,t.textD,3)
 				}
 				this.$refs.popup.close()
 				

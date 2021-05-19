@@ -165,6 +165,10 @@
 						searchStr: this.searchLabel
 					}
 				})
+				for(var item in res.data.list){
+					//  处理Date数据类型
+					res.data.list[item].upload_time = this.$Format(res.data.list[item].upload_time,"yyyy-MM-dd")
+				}
 				return (res.data)
 			},
 			// 重新搜索

@@ -23,129 +23,134 @@
 
 <script>
 	export default{
+		onLoad() {
+			this.loadFocused()
+			//this.userId = ''
+		},
 		data(){
 			return{
+				userId:'1',
 				focusPerson:[
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					},
-					{
-						accountB:'',
-						isFocus:'1',
-						headerPic:'../../../static/iconn/2.jpg',
-						userName:'布兰妮老田田',
-						autograph:'没有个性签名！！！！',
-						ifchoose: false
-					}
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// },
+					// {
+					// 	accountB:'',
+					// 	isFocus:'1',
+					// 	headerPic:'../../../static/iconn/2.jpg',
+					// 	userName:'布兰妮老田田',
+					// 	autograph:'没有个性签名！！！！',
+					// 	ifchoose: false
+					// }
 				]
 				// arr:[],
 				// t:{
@@ -160,21 +165,17 @@
 				var arr=[]
 				var t={
 					photographerId:'',
-					photographerName:''
+					photography:''
 				}
 				for (var i=0;i<that.focusPerson.length;i++){
 					if (that.focusPerson[i].ifchoose==true){
-						t.photographerId=that.focusPerson[i].accountB;
-						t.photographerName=that.focusPerson[i].userName;
-						arr.push(t);
+						arr.push({photographerId:that.focusPerson[i].accountB,photography:that.focusPerson[i].userName})
+						
 					}
 				}
-				//console.log(arr)
+				console.log(arr)
+				console.log(that.focusPerson)
 				var _arr=JSON.stringify(arr)
-				//console.log(_arr)
-				// uni.navigateTo({
-				// 	url:'../../works/myWish?photographerId='+i+'&photographerName='+n
-				// })
 				uni.$emit('choosePhotographer',{photographer:_arr})
 				uni.navigateBack({})
 				
@@ -182,7 +183,22 @@
 			},
 			onChangeChoose: function(i){
 				this.focusPerson[i].ifchoose = !this.focusPerson[i].ifchoose;
-			}
+			},
+			async loadFocused(){
+				const res=await this.$myRequest({
+					url:'/MyPage/HomePage/getFocus',
+					data:{
+						pageNum:1,
+						pageSize:10,
+						user_id:this.userId
+					}
+				})
+				this.focusPerson=res.data.list
+				for (let i=0;i<this.focusPerson.length;i++){
+					this.$set(this.focusPerson[i], 'ifchoose', false)
+				}
+				console.log(this.focusPerson)
+			},
 		}
 	}
 </script>

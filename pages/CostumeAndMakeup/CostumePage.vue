@@ -83,7 +83,7 @@
 			http.get("/Costume/getSlide",{params:{type:2}}).then(res=>{
 				this.CostumeswiperImgs = res.data;
 			}).catch(err=>{
-				
+				console.log(err);
 			})
 			//获取瀑布流内容
 			
@@ -123,9 +123,73 @@
 		},
 		async onReachBottom(){
 			const http = new this.$Request();
-			if(this.flag == true){
+			if(this.flag == true && this.valValue == "全部"){
 				this.loadStatus = "loading";
 				await http.get("/Costume/getAllWorks",{params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "Cos"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:2}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "JK"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:3}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "汉服"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:4}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "Lolita"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:5}}).then(res=>{
 					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
 					this.pageNum++;
 					if(res.data.hasNextPage == true){
@@ -255,40 +319,80 @@
 					this.pageNum = 1;
 					this.valValue = e;
 					if(this.valValue == "全部"){
-						http.get("/Costume/selectWorks",{params:{type:1}}).then(res=>{
-							this.CostumeWorkslist = res.data;
+						http.get("/Costume/getAllWorks",{params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = 'noMore';
+								this.flag = false;
+							}
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{
 							console.log(err);
 						})
 					}
 					if(this.valValue == "Cos"){
-						http.get("/Costume/selectWorks",{params:{type:2}}).then(res=>{
-							this.CostumeWorkslist = res.data;
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:2}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{
 							console.log(err);
 						})
 					}
 					if(this.valValue == "JK"){
-						http.get("/Costume/selectWorks",{params:{type:3}}).then(res=>{
-							this.CostumeWorkslist = res.data;
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:3}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{
 							console.log(err);
 						})
 					}
 					if(this.valValue == "汉服"){
-						http.get("/Costume/selectWorks",{params:{type:4}}).then(res=>{
-							this.CostumeWorkslist = res.data;
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:4}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{
 							console.log(err);
 						})
 					}
 					if(this.valValue == "Lolita"){
-						http.get("/Costume/selectWorks",{params:{type:5}}).then(res=>{
-							this.CostumeWorkslist = res.data;
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:5}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{
 							console.log(err);

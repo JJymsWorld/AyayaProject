@@ -61,7 +61,7 @@
 	export default {
 		data() {
 			return {
-				account:"",	//	测试账号17757273698
+				account:"",	//	测试账号18921969417
 				password:"",
 				userId: 0,
 				realPW:"",
@@ -132,6 +132,15 @@
 					uni.setStorage({
 					    key: 'userId',
 					    data: this.userId,
+					    success: function () {
+					        console.log('success');
+					    }
+					});
+					
+					// 本地存入用户账号
+					uni.setStorage({
+					    key: 'userAccount',
+					    data: this.account,
 					    success: function () {
 					        console.log('success');
 					    }

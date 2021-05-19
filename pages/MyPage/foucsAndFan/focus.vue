@@ -1,69 +1,54 @@
 <template>
 	<view>
-		<!-- 筛选框:全部、摄影师、coser、普通用户 -->
-<!-- 		<ul>
-			<li>全部</li>
-			<li>摄影师</li>
-			<li>coser</li>
-			<li>普通用户</li>
-		</ul> -->
-		<uni-list class="focusBox" :border="false">
-	    <uni-list-item :border="false" v-for="(item,index) in focusPerson" :key="index">
-	        <!-- 自定义 body -->
-	        <view slot="body" class="focusItemBox">
-				<image :src="item.headerPic" mode="aspectFill"@click="homePageNavi(item.accountB)"></image>
-				<view class="focusText">
-				 <view @click="homePageNavi(item.accountB)">{{item.userName}}</view>
-				 <view>{{item.autograph}}</view>
-				</view>
-				<view class="cancelButton" v-if="isFocus[index]==true" @click="isFocusFunc(isFocus[index],index)"><text>已关注</text></view>
-				<view class="cancelButtonNot" v-if="isFocus[index]==false" @click="isFocusFunc(isFocus[index],index)"><text>关注</text></view>
-			</view>
+		<view v-if="focusPerson!=''">
+			<uni-list class="focusBox" :border="false">
+			    <uni-list-item :border="false" v-for="(item,index) in focusPerson" :key="index">
+			        <!-- 自定义 body -->
+			        <view slot="body" class="focusItemBox">
+						<image :src="item.headerPic" mode="aspectFill"@click="homePageNavi(item.accountB)"></image>
+						<view class="focusText">
+						 <view @click="homePageNavi(item.accountB)">{{item.userName}}</view>
+						 <view>{{item.autograph}}</view>
+						</view>
+						<view class="cancelButton" v-if="item.isFocus==true" @click="isFocusFunc(item.isFocus,index)"><text>已关注</text></view>
+						<view class="cancelButtonNot" v-if="item.isFocus==false" @click="isFocusFunc(item.isFocus,index)"><text>关注</text></view>
+					</view>
+			    </uni-list-item>
+			</uni-list>
+			<uni-load-more :status="loadMoreStatus" @clickLoadMore="LoadMore($event)"></uni-load-more>
+		</view>
 
-	    </uni-list-item>
-	</uni-list>
+		<view v-if="focusPerson==''">
+			<view class="noIcon"><span class="iconfont_dy">&#xe73b;</span></view>
+			<view class="noFocus">你还没有关注的人哦！</view>
+		</view>
+	
 	</view>
 	
 </template>
 
 <script>
 	export default{
-		onLoad() {
+		onLoad(option) {
+		  this.userId = option.userId || '1'
 		  this.loadFocused()
 		},
 		data(){
 			return {
+				pageNum:1,
+				pageSize:10,
+				prePage:0,
+				hasNextPage:true,
+				hasPreviousPage:false,
+				isFirstPage:true,
+				isLastPage:false,
+				isNoMore:true,
+				loadMoreStatus:'more',
+				
+				
 				userId:'5',
 				isFocus:[],
 				focusPerson:[
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！'
-					// },
-					// {
-					// 	userid:'',
-					// 	isFocus:'1',
-					// 	avatar:'../../../static/iconn/2.jpg',
-					// 	username:'布兰妮老田田',
-					// 	signature:'没有个性签名！！！！'
-					// },
-					// {
-					// 	userid:'',
-					// 	isFocus:'1',
-					// 	avatar:'../../../static/iconn/2.jpg',
-					// 	username:'布兰妮老田田',
-					// 	signature:'没有个性签名！！！！'
-					// },
-					// {
-					// 	userid:'',
-					// 	isFocus:'1',
-					// 	avatar:'../../../static/iconn/2.jpg',
-					// 	username:'布兰妮老田田',
-					// 	signature:'没有个性签名！！！！'
-					// },
 					// {
 					// 	userid:'',
 					// 	isFocus:'1',
@@ -76,40 +61,57 @@
 		},
 	methods:{
 		isFocusFunc(i,index){
-			//console.log(i)
 			if(i == false){
-				//this.$data.focusPerson[index].isFocus=1;
-				
-				this.$data.isFocus[index]=true
-				console.log(this.$data.isFocus)
+				this.focusPerson[index].isFocus=true
 			}
 			else{
-				//this.$data.focusPerson[index].isFocus=0;
-				// console.log(this.$data.focusPerson[index].isFocus)
-				// this.deleteFocused(this.userId,this.$data.focusPerson[index].accountB)
-				this.$data.isFocus[index]=false
-				console.log(this.$data.isFocus)
+				this.focusPerson[index].isFocus=false
 			}
 		},
 		async loadFocused(){
+			this.isFirstPage = true
 			const res=await this.$myRequest({
 				url:'/MyPage/HomePage/getFocus',
 				data:{
-					pageNum:1,
-					pageSize:10,
-					user_id:1
+					pageNum:this.pageNum,
+					pageSize:this.pageSize,
+					user_id:this.userId
 				}
 			})
-			// console.log(res.data)
-			
+			console.log(res.data)
 			this.focusPerson=res.data.list
-			// for (let i = 0;i<this.focusPerson.length; i++){
-			// 	this.focusPerson[i]['isFocus']=1
-			// }
 			for (let i=0;i<this.focusPerson.length;i++){
-				this.isFocus.push(true)
+				this.$set(this.focusPerson[i], 'isFocus', true)
 			}
-			console.log(this.focusPerson)
+			this.isLastPage = res.data.isLastPage
+			this.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
+			this.hasNextPage = res.data.hasNextPage
+			this.hasPreviousPage = res.data.hasPreviousPage
+			//console.log(this.focusPerson)
+		},
+		async LoadMore(){
+			const that = this
+			if(that.loadMoreStatus == 'more'){
+				that.pageNum++
+				const res=await this.$myRequest({
+					url:'/MyPage/HomePage/getFocus',
+					data:{
+						pageNum:that.pageNum,
+						pageSize:that.pageSize,
+						user_id:that.userId
+					}
+				})
+				var t=res.data.list
+				for (let i=0;i<t.length;i++){
+					this.$set(t[i], 'isFocus', true)
+				}
+				this.focusPerson = this.focusPerson.concat(t)
+				that.isLastPage = res.data.isLastPage
+				that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
+				that.hasNextPage = res.data.hasNextPage
+				that.hasPreviousPage = res.data.hasPreviousPage
+			}
+			
 		},
 		async deleteFocused(a,b){
 			const res= await this.$myRequest({

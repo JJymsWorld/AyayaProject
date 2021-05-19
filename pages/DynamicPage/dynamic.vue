@@ -9,15 +9,6 @@
 		</view>
 		<!-- 近期发布动态的用户 -->
 		<view class="recentBox">
-<!-- 			<table class='recentTable'>
-				<tr>
-					<td  v-for="(item,index) in recentUser" :key="index">
-						<image :src='item.avatarT' mode="aspectFill"></image>
-						<view>{{item.usernameT}}</view>
-					</td>
-				</tr>
-				
-			</table> -->
 			<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="0">
 				<span v-for="(item,index) in recentUser" :key='index'>
 				<image :src="item.avatarT" @click="homePageNavi(item.userId)"></image>
@@ -64,7 +55,7 @@
 									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
 									    <text class="number">{{item.likesNumber}}</text>
 									</view>
-									    <view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
+									    <view v-if="item.type!=0" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe608;</span>
 									    <text class="number1">{{item.likesNumber}}</text>
 									</view>
@@ -124,12 +115,6 @@
 
 
 <script>
-	// var dynamicIt = document.getElementById("dynamicIt");
-	// dynamicIt.onclick = function(e) {
-	// 	e = e || window.event;
-	// 	e.preventDefault();
-	// 	console.log(e.target.innerHTML)
-	// }
 	import gridBox from '../../components/gridImage/gridImage.vue'
 	export default{
 		onLoad() {
@@ -151,6 +136,8 @@
 				isLastPage:false,
 				isNoMore:true,
 				loadMoreStatus:'more',
+				
+				
 				userId:1,
 				recommendTag:0,
 				scrollTop: 0,
@@ -158,41 +145,41 @@
 				    scrollTop: 0
 				},
 				recentUser:[
-					{
-					avatarT:'../../static/iconn/p2.jpg',
-					usernameT:'蒲儿姓蒲',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p3.jpg',
-						usernameT:'Suzy_Z',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					},
-					{
-						avatarT:'../../static/iconn/p2.jpg',
-						usernameT:'机智的党妹',
-					userId:''
-					}
+					// {
+					// avatarT:'../../static/iconn/p2.jpg',
+					// usernameT:'蒲儿姓蒲',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p3.jpg',
+					// 	usernameT:'Suzy_Z',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p2.jpg',
+					// 	usernameT:'机智的党妹',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p2.jpg',
+					// 	usernameT:'机智的党妹',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p2.jpg',
+					// 	usernameT:'机智的党妹',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p2.jpg',
+					// 	usernameT:'机智的党妹',
+					// userId:''
+					// },
+					// {
+					// 	avatarT:'../../static/iconn/p2.jpg',
+					// 	usernameT:'机智的党妹',
+					// userId:''
+					// }
 				],
 				dynamicItem:[
 					// {
@@ -209,90 +196,6 @@
 					// 		workid:'1',
 					// 		titleW:'蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
 					// 		firstImage:'../../static/iconn/d1.jpg'
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'2',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'3',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
-					// 	},
-					// 	imageD:'../../static/iconn/d1.jpg',
-					// 	interestNum:'5482',
-					// 	isInterest:'0',
-					// 	commentNum:'2145',
-					// 	relayNum:'1141'
-					// },
-					// {
-					// 	Id:'4',
-					// 	userId:'',
-					// 	avatarD:'../../static/iconn/p2.jpg',
-					// 	usernameD:'机智的党妹',
-					// 	date:'2020-06-25',
-					// 	title:'点赞表态!',
-					// 	image:[
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg',
-					// 		'../../static/iconn/d1.jpg'
-					// 	],
-					// 	work:{
-					// 		workid:'',
-					// 		titleW:''
 					// 	},
 					// 	imageD:'../../static/iconn/d1.jpg',
 					// 	interestNum:'5482',
@@ -364,13 +267,8 @@
 		methods:{
 			open(){
 			         // 通过组件定义的ref调用uni-popup方法
-			         this.$refs.popup.open()
-					 // var webView = this.$mp.page.$getAppWebview();  
-					 // let titleNView = webView.getTitleNView();  
-					 // titleNView && titleNView.hide();
-					 // currentWebview.setStyle({
-					 // titleNView:titleNView
-					 // })
+			    this.$refs.popup.open()
+				
 			},
 			close(){
 				this.$refs.popup.close()
@@ -381,14 +279,14 @@
 				})
 			},
 			addLike(i){
-				var t=this.$data.dynamicItem[i].isInterest;
+				var t=this.$data.dynamicItem[i].type;
 				if(t==0){
-					this.$data.dynamicItem[i].interestNum++;
-					this.$data.dynamicItem[i].isInterest=1;
+					this.$data.dynamicItem[i].likesNumber++;
+					this.$data.dynamicItem[i].type=1;
 				}
 				else{
-					this.$data.dynamicItem[i].interestNum--;
-					this.$data.dynamicItem[i].isInterest=0;
+					this.$data.dynamicItem[i].likesNumber--;
+					this.$data.dynamicItem[i].type=0;
 				}
 				
 			},
@@ -470,6 +368,8 @@
 				console.log(res.data)
 				that.dynamicItem=res.data.list
 				for (var i = 0;i< that.dynamicItem.length;i++){
+					that.dynamicItem[i].uploadTime = this.$Format(that.dynamicItem[i].uploadTime,"yyyy-MM-dd")
+					//console.log(that.dynamicItem[i].uploadTime)
 					var photoes = that.dynamicItem[i].dynamicPhotos
 					var jsonObj = JSON.parse(photoes)
 					var p = []
@@ -481,6 +381,7 @@
 						p.push(jsonObj[prop])
 					}
 					that.dynamicItem[i].dynamicPhotos = p
+					this.recentUser.push({"avatarT":that.dynamicItem[i].headerPic,"usernameT":that.dynamicItem[i].userName,"userId":that.dynamicItem[i].accountB})
 				}
 				that.isLastPage = res.data.isLastPage
 				that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
@@ -504,6 +405,7 @@
 					var t= res.data.list
 					
 					for (var i = 0;i< t.length;i++){
+						t[i].uploadTime = this.$Format(t[i].uploadTime,"yyyy-MM-dd")
 						var photoes = t[i].dynamicPhotos
 						var jsonObj = JSON.parse(photoes)
 						var p = []

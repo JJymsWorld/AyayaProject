@@ -99,14 +99,15 @@
 				res.data.list = res.data.list.concat(res2.data.list)
 				res.data.total = res.data.total + res2.data.total
 				
-				// // 根据时间由大到小排序
-				// res.data.list.sort(function(a,b){
-				//             return b.time-a.time});
+				// 根据时间由大到小排序
+				res.data.list.sort(function(a,b){
+				            return Date.parse(b.time)-Date.parse(a.time)});
 							
-				// for (var item in res.data.list) {
-				// 	//  处理Date数据类型
-				// 	res.data.list[item].time = this.$Format(res.data.list[item].time, "yyyy-MM-dd")
-				// }
+				for (var item in res.data.list) {
+					//  处理Date数据类型
+					res.data.list[item].time = this.$Format(res.data.list[item].time, "yyyy-MM-dd")
+				}
+			
 				return res.data
 			}
 		},
@@ -120,7 +121,7 @@
 				this.pageNum++
 		
 				const res1 = await this.onGetAllList()
-				this.allList = this.allList.concat(res1.list.reverse())
+				this.allList = this.allList.concat(res1.list)
 		
 			} else {
 				this.loadStatus = 'noMore'
@@ -129,7 +130,7 @@
 		},
 		async onShow() {
 			const res = await this.onGetAllList()
-			this.allList = res.list.reverse()
+			this.allList = res.list
 			console.log(this.allList)
 			this.allListTotal = res.total
 			console.log(this.allListTotal)

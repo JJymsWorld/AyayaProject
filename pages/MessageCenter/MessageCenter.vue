@@ -67,6 +67,7 @@
 	export default {
 		data() {
 			return {
+				userIdentity: null,		// 标记用户身份
 				userId: null,	//  用户id
 				dialogList: []
 			}
@@ -92,8 +93,17 @@
 			},
 			// 跳转至对话框页面
 			gotoDialogPage: function(index, dialog_id, user_id, header_pic){
+				var url = ''
+				if(this.userIdentity == 3){
+					// 跳转到摄影师对话框
+					url = './pho-dialogpage'
+				}
+				else{
+					// 跳转到cos/普通用户对话框
+					url = './cos-dialogpage'
+				}
 				uni.navigateTo({
-					url: './cos-dialogpage',
+					url: url,
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
 						res.eventChannel.emit('emitDialogMsg', {
@@ -133,6 +143,13 @@
 				key: 'userId',
 				success: res => {
 					this.userId = res.data
+				}
+			});
+			uni.getStorage({
+				key: 'userInfo',
+				success: res => {
+					// console.log(res.data);
+					this.userIdentity = res.data.identity
 				}
 			});
 		}

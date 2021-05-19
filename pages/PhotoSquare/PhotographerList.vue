@@ -1,7 +1,8 @@
 <template>
 	<view>
 		<uni-popup ref="popup" type="ordermessage">
-			<uni-popup-ordermessage :duration="2000" :headerPic="headerPic" :userName="userName" :gotoOrderMsgPage="gotoOrderMsgPage"></uni-popup-ordermessage>
+			<uni-popup-ordermessage :duration="2000" :headerPic="headerPic" :userName="userName"
+				:gotoOrderMsgPage="gotoOrderMsgPage"></uni-popup-ordermessage>
 		</uni-popup>
 		<view class="StayInCoser-page-wrapper">
 			<view class="StayInCoser-topBar">
@@ -11,9 +12,9 @@
 					<text class="StayInCoser-topBar-left-text">入驻摄影师</text>
 				</view>
 				<view class="StayInCoser-topBar-right">
-					<uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"
-						:value="ProvinceList[0]"></uni-combox>
-					<uni-combox @input="filterbcity" :isDisabled="true" placeholder="城市" :candidates="CityList" 
+					<!-- <uni-combox :isDisabled="true" placeholder="省份" :candidates="ProvinceList"
+											:value="ProvinceList[0]"></uni-combox> -->
+					<uni-combox @input="filterbcity" :isDisabled="true" placeholder="城市" :candidates="CityList"
 						:value="CityList[0]"></uni-combox>
 				</view>
 			</view>
@@ -58,11 +59,11 @@
 									class="collapse-item-wrapper">
 									<view class="collapse-item-content-wrapper">
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic1"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic2"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 										<image class="collapse-item-content-img" mode="aspectFill" :src="item.pic3"
-											@click="gotoWorksPage"></image>
+											@click="gotoCoserHomePage(item.user_id)"></image>
 									</view>
 								</uni-collapse-item>
 							</uni-collapse>
@@ -89,7 +90,7 @@
 					this.userId = res.data
 				}
 			});
-			
+
 			const http = new this.$Request();
 
 			http.get("/Date/PhotographerList/getAllPg", {
@@ -125,47 +126,58 @@
 		},
 		async onReachBottom() {
 			const http = new this.$Request();
-			if(this.flag == true && this.valvalue == "全部"){
+			if (this.flag == true && this.valvalue == "全部") {
 				this.LoadStatus = "loading";
-				await http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+				await http.get("/Date/PhotographerList/getAllPg", {
+					params: {
+						pageNum: this.pageNum,
+						pageSize: 8
+					}
+				}).then(res => {
 					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
 					this.pageNum++;
-					if(res.data.hasNextPage == true){
+					if (res.data.hasNextPage == true) {
 						this.LoadStatus = "more";
 					}
-					if(res.data.hasNextPage == false){
+					if (res.data.hasNextPage == false) {
 						this.LoadStatus = "noMore";
 						this.flag = false;
 					}
-				}).catch(err=>{
+				}).catch(err => {
 					console.log(err);
 				});
 			}
-			
-			if(this.flag == true && this.valvalue != "全部"){
+
+			if (this.flag == true && this.valvalue != "全部") {
 				this.LoadStatus = "loading";
-				await http.get("/Date/StayInPhotographerList/selectPgCity",{params:{city:this.valvalue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+				await http.get("/Date/StayInPhotographerList/selectPgCity", {
+					params: {
+						city: this.valvalue,
+						pageNum: this.pageNum,
+						pageSize: 8
+					}
+				}).then(res => {
 					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
 					this.pageNum++;
-					if(res.data.hasNextPage == true){
+					if (res.data.hasNextPage == true) {
 						this.LoadStatus = "more";
 					}
-					if(res.dat.hasNextPage == false){
+					if (res.dat.hasNextPage == false) {
 						this.LoadStatus = "noMore";
 						this.flag = false;
 					}
-				}).catch(err=>{
+				}).catch(err => {
 					console.log(err);
 				})
 			}
-			
+
 		},
 		data() {
 			return {
-				dialogId: null,		// 对话框Id
-				userId: null,	// 登录者Id
-				other_userId: null,		// 标记进行约拍的摄影师Id
-				valvalue:"全部",
+				dialogId: null, // 对话框Id
+				userId: null, // 登录者Id
+				other_userId: null, // 标记进行约拍的摄影师Id
+				valvalue: "全部",
 				pageNum: 1,
 				pageSize: 0,
 				beforePage: 0,
@@ -199,8 +211,8 @@
 						checked: false
 					}
 				],
-				headerPic: "",		// 标记进行约拍的摄影师头像
-				userName: "",		// 标记进行约拍的摄影师昵称
+				headerPic: "", // 标记进行约拍的摄影师头像
+				userName: "", // 标记进行约拍的摄影师昵称
 				contentText: {
 					contentDefault: '关注',
 					contentFav: '已关注'
@@ -214,7 +226,7 @@
 		},
 		methods: {
 			// 获取对话框id
-			async onGetDialogBox(){
+			async onGetDialogBox() {
 				const res = await this.$myRequest({
 					url: '/Contact/getDialogIdByTwoUser',
 					data: {
@@ -251,7 +263,7 @@
 			async gotoOrderMsgPage() {
 				const res = await this.onGetDialogBox()
 				this.dialogId = res
-				
+
 				const that = this
 				uni.navigateTo({
 					url: '../MessageCenter/cos-dialogpage',
@@ -265,48 +277,58 @@
 					}
 				})
 			},
-			filterbcity(e){
+			filterbcity(e) {
 				console.log(e);
 				const http = new this.$Request();
-				if(this.valValue != e){
+				if (this.valValue != e) {
 					this.pageNum = 1;
 					this.valvalue = e;
-					if(this.valvalue == "全部"){
-						http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					if (this.valvalue == "全部") {
+						http.get("/Date/PhotographerList/getAllPg", {
+							params: {
+								pageNum: this.pageNum,
+								pageSize: 8
+							}
+						}).then(res => {
 							this.PhotographerInfoList = res.data.list;
-							console.log("获取"+this.valvalue+"成功");
+							console.log("获取" + this.valvalue + "成功");
 							this.pageNum++;
-							if(res.data.hasNextPage == true){
+							if (res.data.hasNextPage == true) {
 								this.LoadStatus = "more";
 							}
-							if(res.data.hasNextPage == false){
+							if (res.data.hasNextPage == false) {
 								this.LoadStatus = "noMore";
 								this.flag = false;
 							}
-						}).catch(err=>{
+						}).catch(err => {
 							console.log(err);
 						})
-					}
-					else{
-						http.get("/Date/StayInPhotographerList/selectPgCity",{params:{city:this.valvalue, pageNum:this.pageNum, pageSize:8}}).then(res=>{
+					} else {
+						http.get("/Date/StayInPhotographerList/selectPgCity", {
+							params: {
+								city: this.valvalue,
+								pageNum: this.pageNum,
+								pageSize: 8
+							}
+						}).then(res => {
 							this.PhotographerInfoList = res.data.list;
-							console.log("获取"+this.valvalue+"成功");
+							console.log("获取" + this.valvalue + "成功");
 							this.pageNum++;
-							if(res.data.hasNextPage == true){
+							if (res.data.hasNextPage == true) {
 								this.LoadStatus = "more";
 							}
-							if(res.data.hasNextPage == false){
+							if (res.data.hasNextPage == false) {
 								this.LoadStatus = "noMore";
 								this.flag = false;
 							}
-						}).catch(err=>{
+						}).catch(err => {
 							console.log(err);
 						})
 					}
 				}
 			}
 		},
-		
+
 	}
 </script>
 
