@@ -41,14 +41,36 @@
 			</tr>
 			</table>
 		<view class="loginAndExit"style="margin-top: 20rpx;">切换账号</view>
-		<view class="loginAndExit">退出登录</view>
+		<view class="loginAndExit" @click="open">退出登录</view>
+		
+		<uni-popup ref="popup" type="bottom">
+			<view class="sexBox">
+				<view class="prompt">退出后不会删除任何历史数据，下次登录依然可以使用本账号</view>
+				<view class="sexChoose" @click="exitLogin">退出登录</view>
+				<view class="sexExitChoose"@click="close">取消</view>
+			</view>
+		</uni-popup>
+		
+		
 	</view>
 </template>
 
 <script>
 	export default{
+		onLoad() {
+			this.userId=getApp().globalData.global_userId || '12'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     this.username = res.data.user_name
+				 this.avatarr = res.data.header_pic
+			    }
+			});
+		},
 		data(){
 			return{
+				userId:'',
 				avatarr:'../../../static/iconn/2.jpg',
 				username:'jennieee',
 				account:'17367108604'
@@ -58,6 +80,24 @@
 			editNavi(){
 				uni.navigateTo({
 					url:'edit'
+				})
+			},
+			open(){
+				this.$refs.popup.open()
+			},
+			close(){
+				this.$refs.popup.close()
+			},
+			exitLogin(){
+				uni.setStorage({
+				    key: 'state',
+				    data: 0,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+				uni.navigateTo({
+					url:'../../login/login'
 				})
 			}
 		}
@@ -150,5 +190,32 @@
 		line-height: 90rpx;
 		text-align: center;
 		background-color: #FFFFFF;
+	}
+	.sexBox{
+		background-color: #FBFBFB;
+		border-top-left-radius: 15rpx;
+		border-top-right-radius: 15rpx;
+		overflow: hidden;
+	}
+	.sexChoose{
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		color: #ec0537;
+		background-color: #FFFFFF;
+	}
+	.sexExitChoose{
+		background-color: #FFFFFF;
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		margin-top: 20rpx;
+	}
+	.prompt{
+		font-size: 20rpx;
+		padding-top: 32rpx;
+		padding-left: 30rpx;
+		padding-bottom: 32rpx;
+		color: #565656;
 	}
 </style>

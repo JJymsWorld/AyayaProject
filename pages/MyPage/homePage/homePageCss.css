@@ -428,7 +428,13 @@ ul,li{
 	font-size: 30rpx;
 	margin-right: 5rpx;
 }
-
+.workMore{
+	position: absolute;
+	top: 10rpx;
+	right: 0rpx;
+	color: #000000;
+	font-size: 25rpx;
+}
 
 
 

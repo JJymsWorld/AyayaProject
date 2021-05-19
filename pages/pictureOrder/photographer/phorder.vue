@@ -171,7 +171,7 @@
 			<uni-popup-dialog type="info" mode="base" content="是否拒绝该订单" :before-close="true" @close="close"
 				@confirm="confirmRefuse"></uni-popup-dialog>
 		</uni-popup>
-		<!-- 是否拒绝该订单 -->
+		<!-- 是否接收该订单 -->
 		<uni-popup ref="popup2" type="dialog">
 			<uni-popup-dialog type="info" mode="base" content="是否接受该订单" :before-close="true" @close="close"
 				@confirm="confirmAccept"></uni-popup-dialog>
@@ -203,22 +203,6 @@
 				}, {
 					title: '已完成',
 					url: 'finished'
-				}],
-				orderlist: [{
-					ListNum: 'p32769',
-					state: 2,
-					// CoserId
-					AccountA: '',
-					usernamA: '',
-					imageA: '../../../static/coser.png',
-					// 摄影师Id
-					AccountB: '',
-					usernamB: 'Suzy_Z',
-					imageB: '../../../static/photograph.png',
-					Content: '',
-					Area: '浙江省 杭州市 西湖区',
-					Time: '2020年12月25日',
-					Money: 298
 				}],
 				allOrderList: [],	// 所有约拍订单信息
 				orderList1: [],		// state=1的订单
@@ -279,17 +263,21 @@
 			async onGetOrderList() {
 				console.log(this.currentIndex)
 				if(this.currentIndex == 0){
-					this.allOrderList = await this.getAllOrder()					
+					this.allOrderList = await this.getAllOrder()	
+				    this.allOrderList.reverse()
 				}
 				else if(this.currentIndex == 1){
-					this.orderList1 = await this.getOrderByState(1)					
+					this.orderList1 = await this.getOrderByState(1)		
+				    this.orderList1.reverse()
 				}
 				else if(this.currentIndex == 2){
 					this.orderList2 = await this.getOrderByState(2)		
 					this.orderList2 = this.orderList2.concat(await this.getOrderByState(3))
+					this.orderList2.reverse()
 				}
 				else if(this.currentIndex == 3){
-					this.orderList3 = await this.getOrderByState(4)					
+					this.orderList3 = await this.getOrderByState(4)		
+					this.orderList3.reverse()
 				}
 			},
 			gotoMyPage: function(){

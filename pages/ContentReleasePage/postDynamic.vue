@@ -134,6 +134,7 @@
 						uri: value
 					}
 				})
+				console.log("images:-----------")
 				console.log(this.images)
 			},
 			// 删除图片

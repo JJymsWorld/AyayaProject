@@ -12,11 +12,10 @@
 					<td class="contenTableLeft"><text>摄影:</text></td>
 					<td>
 						<view class="contenViewT">
-							<!-- <text>@</text> -->
-							<!-- <image src="../../static/icon/aite.png"></image> -->
-							<view v-for="(item,index) in photographer" :key="index">@{{item.photographerName}}
+							<view v-if="photographer!=''" v-for="(item,index) in photographer" :key="index">@{{item.photography}}
 							<span class="iconfont_dy" @click="deleteTab(0,index)">&#xe636;</span>
 							</view>
+							<view v-if="photographer==''">点击下方可选择摄影师</view>
 						</view>
 					    
 					</td>
@@ -32,9 +31,10 @@
 					<td>
 						<view class="contenViewT">
 							<!-- <text>@</text> -->
-							<view v-for="(item,index) in clothList" :key="index">#{{item.name}}#
+							<view v-if="clothList!=''" v-for="(item,index) in clothList" :key="index">#{{item.name}}#
 								<span class="iconfont_dy" @click="deleteTab(1,index)">&#xe636;</span>
 							</view>
+							<view v-if="clothList==''">点击下方编辑服饰链接</view>
 						</view>
 						
 					</td>
@@ -42,16 +42,18 @@
 				<tr>
 					<td></td>
 					<td>
-						<image class="moreIcon"src="../../static/icon/find.png" mode="aspectFill"@click="changePhotographer"></image>
-						<view class="contentMore"@click="changePhotographer">编辑服饰链接</view></td>
+						<image class="moreIcon"src="../../static/icon/find.png" mode="aspectFill"@click="clothLinkNavi"></image>
+						<view class="contentMore"@click="clothLinkNavi">编辑服饰链接</view></td>
 					</tr>
 				<tr>
 					<td class="contenTableLeft"><text>妆容:</text></td>
 					<td>
 						<view class="contenViewT">
 							<!-- <text>@</text> -->
-							<view v-for="(item,index) in madeup" :key="index">#{{item.madeupTitle}}#</view>
-							<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+							<view  v-if="madeup!=''" v-for="(item,index) in madeup" :key="index">#{{item.makeupLook}}#
+								<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+							</view>
+							<view v-if="madeup==''">点击下方可选择妆容教程</view>
 						</view>
 					</td>
 				</tr>
@@ -65,11 +67,11 @@
 			</table>
 
 			<view class="other">其他标签:
-				<view v-for="(item,index) in otherTag" :key="index">#{{item.tagName}}#
-					<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+				<view v-for="(item,index) in otherTag" :key="index">#{{item.mark}}#
+					<span class="iconfont_dy" @click="deleteTab(3,index)">&#xe636;</span>
 				</view>
 			</view>
-			<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill"></image>
+			<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill"@click="otherTagNavi"></image>
 			
 	</view>
 	<view class="finalButton" @click="releaseWork()"><text>发布作品</text></view>
@@ -87,7 +89,7 @@
 				uni.$off("choosePhotographer");
 			})
 			uni.$on("chooseMadeup",res => {
-				this.madeup.push({madeupId:res.madeupId,madeupTitle:res.madeupTitle})
+				this.madeup.push({makeupId:res.madeupId,makeupLook:res.madeupTitle})
 				// 清除监听
 				uni.$off("chooseMadeup");
 			})
@@ -95,11 +97,17 @@
 				this.clothList = JSON.parse(res.clothList)
 				uni.$off("editClothLink");
 			})
+			uni.$on("emitAddHotTopic",res => {
+				console.log(res)
+				this.otherTag.push(res.mark_item) 
+				uni.$off("emitAddHotTopic");
+			})
 		},
 		onLoad(option) {
+			this.loadAll()
 		},
 		onNavigationBarButtonTap() {
-			// 填写修改我的心愿内容接口
+			// 填写保存我的心愿内容接口
 			// 
 			// 
 			// 
@@ -118,19 +126,19 @@
 				photographer:[
 					{
 						photographerId:'1',
-						photographerName:'布兰妮',
+						photography:'布兰妮',
 					},
 					{
 						photographerId:'2',
-						photographerName:'琪',
+						photography:'琪',
 					},
 				],
 				clothingId:'',
 				clothingTitle:'',
 				madeup:[
 					{
-						madeupId:'',
-						madeupTitle:'...',
+						makeupId:'',
+						makeupLook:'...',
 					}
 				],
 				
@@ -145,16 +153,21 @@
 					}
 				],
 				otherTag:[
-					{
-						tagId:'',
-						tagName:'汉服'
-					}
+					// {
+					// 	tagId:'',
+					// 	tagName:'汉服'
+					// }
 				]
 				
 				
 			}
 		},
 		methods:{
+			async loadAll(){
+				//填写获取详细信息
+				// 
+				// 
+			},
 			workNavi(){
 				uni.navigateTo({
 					url:'works'
@@ -176,12 +189,17 @@
 				})
 			},
 			clothLinkNavi(){
+				var t=''
+				const that=this
+				if (that.clothList){
+					t=JSON.stringify(that.clothList)
+				}
 				uni.navigateTo({
-					// url:'../ContentReleasePage/clothLink?wishId='+this.wishId
-					url:'../Mypage/myWishList/myClothLink?wishId='+this.wishId+'&myWish=1'
+					url:'../Mypage/myWishList/myClothLink?clothList='+t+'&myWish=1'
 				})
 			},
 			deleteTab(i,index){
+				console.log("i:"+i)
 				if(i==0){
 					this.photographer.splice(index,1)
 				}
@@ -191,6 +209,14 @@
 				else if(i==2){
 					this.madeup.splice(index,1)
 				}
+				else if(i==3){
+					this.otherTag.splice(index,1)
+				}
+			},
+			otherTagNavi(){
+				uni.navigateTo({
+					url:'../ContentReleasePage/label'
+				})
 			}
 		}
 	}

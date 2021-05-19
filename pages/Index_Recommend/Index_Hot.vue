@@ -164,7 +164,7 @@
 			
 		},
 		onShow() {
-			
+			// this.$refs.waterfallsFlow.refresh();
 		},
 		onHide() {
 			

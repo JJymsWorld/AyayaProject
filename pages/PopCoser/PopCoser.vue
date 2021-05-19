@@ -69,7 +69,7 @@
 						<uni-list class="CoserListbox-down-list" :border="false">
 							<uni-list-item v-for="(item,index) in FourToSix" :key="index" direction="row"
 								:title="item.user_name" :ellipsis="1"
-								:to="'../Mypage/homePage/homePage?userid' + item.user_id">
+								:to="'../Mypage/homePage/homePage?userId=' + item.user_id">
 								<view slot="header" class="CoserListbox-down-header">
 									<text class="CoserListbox-down-header-text">{{index+4}}</text>
 								</view>
@@ -119,7 +119,7 @@
 						<uni-list class="CoserListbox-down-list" :border="false">
 							<uni-list-item v-for="(item,index) in FourToSixWeek" :key="index" direction="row"
 								:title="item.user_name" :ellipsis="1"
-								:to="'../Mypage/homePage/homePage?userId' + item.user_id">
+								:to="'../Mypage/homePage/homePage?userId=' + item.user_id">
 								<view slot="header" class="CoserListbox-down-header">
 									<text class="CoserListbox-down-header-text">{{index+4}}</text>
 								</view>

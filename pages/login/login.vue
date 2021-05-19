@@ -61,7 +61,7 @@
 	export default {
 		data() {
 			return {
-				account:"",	//	测试账号17757273698
+				account:"",	//	测试账号18921969417
 				password:"",
 				userId: 0,
 				realPW:"",
@@ -120,10 +120,10 @@
 						    }
 						});
 					}
-					// 本地存入账号
+					//  改变状态 0 退出登录 1 已登录
 					uni.setStorage({
-					    key: 'userAccount',
-					    data: this.account,
+					    key: 'state',
+					    data: 1,
 					    success: function () {
 					        console.log('success');
 					    }
@@ -136,6 +136,18 @@
 					        console.log('success');
 					    }
 					});
+					
+					// 本地存入用户账号
+					uni.setStorage({
+					    key: 'userAccount',
+					    data: this.account,
+					    success: function () {
+					        console.log('success');
+					    }
+					});
+					// 获取用户所有信息
+					this.onGetMainAll()
+					
 					//将用户ID存入全局变量
 					getApp().globalData.global_userId = this.userId
 					console.log(getApp().globalData.global_userId)
@@ -148,6 +160,24 @@
 					// 密码错误
 					this.$refs.popup2.open()
 				}
+			},
+			// 获取用户所有信息
+			async onGetMainAll(){
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/getMainAll',
+					data:{
+						user_id: this.userId
+					}
+				})
+				// 本地存入账号信息
+				uni.setStorage({
+				    key: 'userInfo',
+				    data: res.data[0],
+				    success: function (res) {
+				        console.log(res);
+				    }
+				});
+				
 			},
 			onAccountInput:function(event){
 				this.account = event.target.value;

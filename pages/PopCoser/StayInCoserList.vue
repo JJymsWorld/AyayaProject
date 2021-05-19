@@ -61,9 +61,20 @@
 	export default{
 		components:{comboxSearch},
 		async onLoad(options) {
+			// 获取登录者Id
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					this.userId = res.data
+				},
+				fail: () => {
+					console.log("获取失败")
+				}
+			});
+			console.log(this.userId)
 			const http = new this.$Request();			//获取列表数据
 			if(this.initList == true){
-				http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+				http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:this.userId}}).then(res=>{
 					this.initList = false;
 					console.log(res.data.list)
 					this.CoserInfoList = res.data.list;
@@ -85,7 +96,7 @@
 			const http = new this.$Request();
 			if(this.flag == true && this.valValue == "全部"){
 				this.LoadStatus = "loading";
-				await http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+				await http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:this.userId}}).then(res=>{
 					this.CoserInfoList = this.CoserInfoList.concat(res.data.list);
 					this.pageNum++;
 					
@@ -127,6 +138,7 @@
 		},
 		data(){
 			return{
+				userId:1,
 				valValue:"全部",
 				initList:true,
 				pageSize:0,
@@ -198,7 +210,7 @@
 					this.pageNum = 1;
 					this.valValue = e;
 					if(this.valValue == "全部"){
-						http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
+						http.get("/Cos/PopCoserList/getAllCoser",{params:{pageNum:this.pageNum, pageSize:8, user_id:this.userId}}).then(res=>{
 							this.CoserInfoList = res.data.list;
 							console.log("获取"+this.valValue+"成功");
 							this.pageNum++;

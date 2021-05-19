@@ -78,6 +78,7 @@
 				datetime: '',
 				user_a: null, 		// coserID
 				user_b: null, 	// 摄影师ID
+				photograph_id: null		// 生成的约拍订单id
 			}
 		},
 		onLoad(Option){
@@ -134,8 +135,9 @@
 				done()
 			},
 			// 	确认提交订单
-			confirm: function(done){
-				this.$myRequest({
+			async confirm(done){
+				
+				const res = await this.$myRequest({
 					url: '/Order/Data/LaunchOrderPage/addOrder',
 					method: 'POST',
 					header:{'content-type':'application/x-www-form-urlencoded'},
@@ -144,6 +146,19 @@
 						date: this.time,
 						content: this.demand,
 						money: this.money,
+						user_a: this.user_a, // coserID
+						user_b: this.user_b, // 摄影师ID
+					}
+				})
+				console.log(res.data[0].photograph_id)
+				this.photograph_id = res.data[0].photograph_id
+				
+				this.$myRequest({
+					url: '/Contact/addPhotographMessage',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data: {
+						photograph_id: this.photograph_id,
 						user_a: this.user_a, // coserID
 						user_b: this.user_b, // 摄影师ID
 					}

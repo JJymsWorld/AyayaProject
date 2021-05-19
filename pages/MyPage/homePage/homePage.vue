@@ -4,7 +4,7 @@
 		<span class="iconfont" @tap="navigateBack">&#xe6b0;</span>
 		<view class="backBoxButtom"></view>
 		<view class="backBoxMain">
-			<image src="../../../static/iconn/2.jpg" mode="aspectFill"></image>
+			<image :src="avatar" mode="aspectFill"></image>
 			<text class="backBoxUsername">{{username}}</text>
 			<text class="backBoxSign">{{sign}}</text>
 			<view v-if="userId==userId2" class="backBoxEdit" @click="editNavi"><text>编辑资料</text></view>
@@ -42,7 +42,7 @@
 		<uni-list :border="false" >
 			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
 				<template v-slot:body>
-					<view class="dynamicIt"@click="dynamicDetailNavi(item.dynamicId)">
+					<view class="dynamicIt"@click="dynamicDetailNavi(item)">
 						  <view class="dynamnicHead">
 							<image class="dynamicAvatar" :src='avatar'@click.stop="homePageNavi(item.accountB)"></image>
 							<view class="dynamicUserDate">
@@ -50,10 +50,9 @@
 							    <view class="dynamicDate">{{item.uploadTime}}</view>
 							</view>
 							
-							<view class="dynamicMoreIcon" @click.stop="open(1)">
+							<view class="dynamicMoreIcon" @click.stop="open(1,index)" v-if="userId==userId2">
 								<span class="iconfont_dy">&#xe604;</span>
 							</view>
-							
 						</view>
 						<!-- 正文 -->
 						<view class="dynamicText">{{item.mainBody}}</view>
@@ -68,22 +67,22 @@
 							<image class="dynamicImage" :src='item.opusPhotos' mode="aspectFill"></image>
 							<view class="dynamicTitle">{{item.title}}</view>
 						</view>
-						<!-- 内容不为为作品end -->
+						<!-- 内容为作品end -->
 						
 						<table class="littleIconTable">
 							<tr>
 								<td>
-									<view v-if="item.type==''" style="width: 50rpx;height: 50rpx;">
+									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
 									    <text class="number">{{item.likesNumber}}</text>
 									</view>
-									    <view v-if="item.type!=''" style="width: 50rpx;height: 50rpx;">
+									    <view v-if="item.type!=0" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe60f;</span>
 									    <text class="number1">{{item.likesNumber}}</text>
 									</view>
 								</td>
 								<td>
-								    <image class='littleIcon' src="../../../static/icon/chat.png" @click.stop="recommend(item.id)"></image>
+								    <image class='littleIcon' src="../../../static/icon/chat.png" @click.stop="recommend(item)"></image>
 								    <text class="number">{{item.commentedNumber}}</text>
 								</td>
 								<td>
@@ -106,9 +105,14 @@
 		<view v-if="popTag==1">
 			<uni-popup ref="popup" type="bottom">
 				<view class="sexBox">
-					<view class="sexChoose" >删除</view>
+					<view class="sexChoose" @click="open(2)">删除</view>
 					<view class="sexExitChoose"@click="close">取消</view>
 				</view>
+			</uni-popup>
+		</view>
+		<view v-if="popTag==2">
+			<uni-popup ref="popup" type="dialog">
+				<uni-popup-dialog type="info" mode="base" placeholder="请输入收藏夹名" title="确认删除这条动态么？"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="deleteDynamic"></uni-popup-dialog>
 			</uni-popup>
 		</view>
 	
@@ -127,12 +131,26 @@
 							<span class="iconfont_dy">&#xe785;</span>
 							<text>{{item.likes_number}}</text>
 						</view>
+						<view class="workMore"  v-if="userId==userId2"><span class="iconfont_dy" @click.stop="openWork(1,item.opus_id)">&#xe604;</span></view>
+						
 					</view>
 				</template>
 			</waterfallsFlow>
 			<uni-load-more :status="opusLoadMoreStatus" @clickLoadMore="loadWorkMore"></uni-load-more>
 		</view>
-		
+		<view v-if="workPop==1">
+			<uni-popup ref="popup" type="bottom">
+				<view class="sexBox">
+					<view class="sexChoose" @click="openWork(2)">删除</view>
+					<view class="sexExitChoose"@click="close">取消</view>
+				</view>
+			</uni-popup>
+		</view>
+		<view v-if="workPop==2">
+			<uni-popup ref="popup" type="dialog">
+				<uni-popup-dialog type="info" mode="base" placeholder="请输入收藏夹名" title="确认删除这个作品么？"  message="成功消息" :duration="2000" :before-close="true" @close="close" @confirm="deleteWork"></uni-popup-dialog>
+			</uni-popup>
+		</view>
 	</view>
 	
 	
@@ -141,7 +159,7 @@
 	<!-- 收藏夹列表 -->
 	<view v-if="tabIndex==2" class="collectListBox">
 		
-		<image class="addPic" src="../../../static/icon/newlist.png" mode="aspectFill"@click="open"></image>
+		<image v-if="userId==userId2" class="addPic" src="../../../static/icon/newlist.png" mode="aspectFill"@click="open"></image>
 		<view v-for="(item,index) in collectList" :key="index" class="collectBox" @click="starListDetailNavi(item.favourId)">
 			<image :src="pic" class="collectBoxImage"></image>
 			<view class="textBox">
@@ -192,10 +210,6 @@
 		</uni-popup>
 		 
 	</view>
-   
-   
-   
-   
    </view>
   
 </template>
@@ -210,13 +224,11 @@
 			if(this.showToast){
 				this.startShow()
 			}
-			
-			// this.userId=option.userId
-			// this.userId2=option.userId2
 		},
 		onLoad(option) {
-		    this.userId=option.userId // 上个页面传递的用户id
-		    this.userId2=getApp().globalData.global_userId
+		    this.userId=option.userId || '5' // 上个页面传递的用户id
+			console.log(option.userId);
+		    this.userId2=getApp().globalData.global_userId || '12'
 		    this.loadHead()
 		    this.loadDynamic()	
 		    // 标记是否由发布动态页面跳转进入
@@ -249,6 +261,7 @@
 				opusIsLastPage:false,
 				opusLoadMoreStatus:'more',
 				opusHasInit:false,
+				selectOpus:'',
 				
 				dynamicPageNum:1,
 				dynamicPageSize:10,
@@ -259,7 +272,9 @@
 				dynamicIsLastPage:false,
 				dynamicLoadMoreStatus:'more',
 				dynamicHasInit:false,
+				selectDynamic:'',
 				
+				workPop:0,
 				popTag:0,  //标记显示哪个弹出框
 				showToast: false,	// 标记是否显示发布成功模态框
 				scrollTop: 0,
@@ -268,8 +283,8 @@
 				},
 				recommendTag:0,
 				
-				userId:5,
-				userId2:'',
+				userId:5,//用户
+				userId2:'',//登录者
 				avatar:'../../../static/iconn/2.jpg',
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
@@ -418,42 +433,7 @@
 					tab:'',
 					collectNum:''
 				},
-				 contentList: [//{
-				// 		id: 1,
-				// 		// image_url: "../../static/contentImg/1.jpg",
-				// 		image_url:"../../../static/contentImg/1.jpg",
-				// 		title: '鬼灭之刃',
-				// 		viewNum: 2206
-				// 	},
-				// 	{
-				// 		id: 2,
-				// 		image_url: "../../../static/contentImg/3.jpg",
-				// 		title: '【汉服】西域美人',
-				// 		viewNum: 2206
-				// 	},{
-				// 		id: 3,
-				// 		image_url: "../../../static/contentImg/2.jpg",
-				// 		title: '【Cos正品】楼兰',
-				// 		viewNum: 2206
-				// 	},
-				// 	{
-				// 		id: 4,
-				// 		image_url: "../../../static/contentImg/1.jpg",
-				// 		title: '鬼灭之刃',
-				// 		viewNum: 2206
-				// 	},
-				// 	{
-				// 		id: 5,
-				// 		image_url: "../../../static/contentImg/1.jpg",
-				// 		title: '鬼灭之刃',
-				// 		viewNum: 2206
-				// 	},
-				// 	{
-				// 		id: 6,
-				// 		image_url: "../../../static/contentImg/1.jpg",
-				// 		title: '鬼灭之刃',
-				// 		viewNum: 2206
-				// 	},
+				 contentList: [
 				// 	{
 				// 		id: 7,
 				// 		image_url: "../../../static/contentImg/1.jpg",
@@ -484,7 +464,7 @@
 				const res = await this.$myRequest({
 					url:'/MyPage/HomePage/getMainAll',
 					data:{
-						user_id:5
+						user_id:this.userId
 					}
 				})
 				console.log(res)
@@ -499,15 +479,32 @@
 					url:'../reset/edit'
 				})
 			},
-			open(i){
-			         // 通过组件定义的ref调用uni-popup方法
-					 this.popTag=i
-			         this.$refs.popup.open()
-			      },
+			open(i,index){
+			    // 通过组件定义的ref调用uni-popup方法
+				console.log('i:'+i)
+				console.log('i:'+index)
+				if(index >= 0){
+					this.selectDynamic = index
+					//console.log(this.selectDynamic)
+				}
+				console.log("delete:")
+				console.log(this.selectDynamic)
+				this.popTag=i
+			    this.$refs.popup.open()
+			},
 			close(){
 			         // 通过组件定义的ref调用uni-popup方法
-			         this.$refs.popup.close()
-			      },
+			    this.$refs.popup.close()
+			 },
+			 openWork(i,index){
+				 if(index >= 0){
+				 	this.selectOpus = index
+				 	//console.log(this.selectDynamic)
+				 }
+				 this.workPop=i
+				 this.popTag = 7
+				 this.$refs.popup.open()
+			 },
 			scroll: function(e) {
 			    console.log(e)
 			    this.old.scrollTop = e.detail.scrollTop
@@ -519,9 +516,15 @@
 			           console.log(e)
 			       },
 			navigateBack(){
-				uni.switchTab({
-					url: '../mypage'
-				})
+				if(this.showToast){
+					uni.switchTab({
+						url: '../mypage'
+					})
+				}
+				else{
+					uni.navigateBack({})
+				}
+				
 			},
 			changeFun(i){
 				this.tabIndex=i;
@@ -532,23 +535,65 @@
 				else if(i==1){
 					this.initWorkList();
 				}
-				else{}
+				else{
+					this.loadCollectList();
+				}
 			},
 			addLike:function(i){
-				var t=this.$data.dynamicItem1[i].type;
-				if(t==null){
-					this.$data.dynamicItem1[i].likesNumber++;
-					this.$data.dynamicItem1[i].type=1;
+				var t=this.$data.dynamicItem[i].type;
+				if(t==0){
+					this.$data.dynamicItem[i].likesNumber++;
+					this.$data.dynamicItem[i].type=1;
 				}
 				else{
-					this.$data.dynamicItem1[i].likesNumber--;
-					this.$data.dynamicItem1[i].type='';
+					this.$data.dynamicItem[i].likesNumber--;
+					this.$data.dynamicItem[i].type=0;
 				}
 			},
 			workNavigate(item){
+				//console.log(item)
 				uni.navigateTo({
 					url:'../../works/works?workId='+item.opus_id
 				})
+			},
+			async deleteWork(){
+				var index
+				for(var i=0;i<this.contentList.length;i++){
+					if(this.contentList[i].opus_id == this.selectOpus){
+						index = i
+						break;
+					}
+				}
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/delOpusById',
+					method:'DELETE',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						opus_id:this.contentList[index].opus_id
+					}
+				});
+				console.log("delete:")
+				console.log(index)
+				this.contentList.splice(index,1)
+				
+			},
+			async deleteDynamic(){
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/delDynamicById',
+					method:'DELETE',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						dynamic_id:this.dynamicItem[this.selectDynamic].dynamicId
+					}
+				});
+				console.log("delete:")
+				console.log(this.selectDynamic)
+				this.dynamicItem.splice(this.selectDynamic,1)
+				
 			},
 			async loadDynamic(){
 				const that = this
@@ -563,9 +608,29 @@
 					that.initWorkList()
 				}
 			},
-			dynamicDetailNavi:function(event,i){
+			dynamicDetailNavi:function(i){
+				const that = this
 				uni.navigateTo({
-					url:'../../DynamicPage/dynamicDetails?dynamicId='+i
+					url:'../../DynamicPage/dynamicDetails',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('dynamicDetails', {
+							accountB:that.userId,
+							commentedNumber:i.commentedNumber,
+							dynamicId:i.dynamicId,
+							dynamicPhotos:i.dynamicPhotos,
+							headerPic:that.avatar,
+							likesNumber:i.likesNumber,
+							mainBody:i.mainBody,
+							opusId:i.opusId,
+							opusPhotos:i.opusPhotos,
+							sharedNumber:i.sharedNumber,
+							title:i.title,
+							type:i.type,
+							uploadTime:i.uploadTime,
+							userName:that.username
+						})
+					}
 				})
 			},
 			workNavi(i){
@@ -574,8 +639,28 @@
 				})
 			},
 			recommend(i){
+				const that = this
 				uni.navigateTo({
-					url:'../../DynamicPage/dynamicDetails?pageScroll=1'
+					url:'../../DynamicPage/dynamicDetails?pageScroll=1',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('dynamicDetails', {
+							accountB:that.userId,
+							commentedNumber:i.commentedNumber,
+							dynamicId:i.dynamicId,
+							dynamicPhotos:i.dynamicPhotos,
+							headerPic:that.avatar,
+							likesNumber:i.likesNumber,
+							mainBody:i.mainBody,
+							opusId:i.opusId,
+							opusPhotos:i.opusPhotos,
+							sharedNumber:i.sharedNumber,
+							title:i.title,
+							type:i.type,
+							uploadTime:i.uploadTime,
+							userName:that.username
+						})
+					}
 				})
 			},
 			async initDynamicList(){
@@ -588,13 +673,14 @@
 					data:{
 						pageNum:that.dynamicPageNum,
 						pageSize:that.dynamicPageSize,
-						user_id:12
+						user_id:that.userId
 					}
 				});
 				console.log(res.data.list)
 				that.dynamicItem=res.data.list
 				//var t=res.data.list
 				for (var i = 0;i< that.dynamicItem.length;i++){
+					that.dynamicItem[i].uploadTime = this.$Format(that.dynamicItem[i].uploadTime,"yyyy-MM-dd")
 					var photoes = that.dynamicItem[i].dynamicPhotos
 					var jsonObj = JSON.parse(photoes)
 					var p = []
@@ -624,12 +710,13 @@
 						data:{
 							pageNum:that.dynamicPageNum,
 							pageSize:that.dynamicPageSize,
-							user_id:12
+							user_id:that.userId
 						}
 					});
 					var t= res.data.list
 					
 					for (var i = 0;i< t.length;i++){
+						t[i].uploadTime = this.$Format(t[i].uploadTime,"yyyy-MM-dd")
 						var photoes = t[i].dynamicPhotos
 						var jsonObj = JSON.parse(photoes)
 						var p = []
@@ -659,7 +746,7 @@
 					data:{
 						pageNum:that.opusPageNum,
 						pageSize:that.opusPageSize,
-						user_id:5
+						user_id:that.userId
 					}
 				})
 				console.log(res.data)
@@ -679,7 +766,7 @@
 							data:{
 								pageNum:that.opusPageNum,
 								pageSize:that.opusPageSize,
-								user_id:5
+								user_id:that.userId
 							}
 						})
 					console.log(res.data)
@@ -691,17 +778,29 @@
 					that.opusHasPreviousPage = res.data.hasPreviousPage
 				}
 			},
-			async loadWork(i){
-				const res=await this.$myRequest({
-					url:'/MyPage/HomePage/getOpusById',
+			// async loadWork(i){
+			// 	const res=await this.$myRequest({
+			// 		url:'/MyPage/HomePage/getOpusById',
+			// 		data:{
+			// 			pageNum:1,
+			// 			pageSize:10,
+			// 			user_id:5
+			// 		}
+			// 	})
+			// 	console.log(res.data)
+			// 	this.contentList=res.data.list
+			// },
+			//获取收藏夹
+			async loadCollectList(){
+				const res = await this.$myRequest({
+					url:'/MyPage/MyStarList/getAllList',
 					data:{
-						pageNum:1,
-						pageSize:10,
-						user_id:5
+						user_id: 1
 					}
 				})
-				console.log(res.data)
-				this.contentList=res.data.list
+				console.log("collectList:")
+				console.log(res)
+				this.collectList = res.data
 			},
 			recoomendExit(){
 			this.recommendTag=0;	
