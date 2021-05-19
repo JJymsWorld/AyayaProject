@@ -4,8 +4,8 @@
 		<!-- 顶部导航栏 -->
 	<view class="head">
 		<span class="iconfont" @click='backlast'>&#xe6b0;</span>
-		<image :src="avertar" mode="aspectFill"@click="homePageNavi(userId)"></image>
-		<text class="hText"@click="homePageNavi(userId)">{{username}}</text>
+		<image :src="avertar" mode="aspectFill"@click="homePageNavi(thisUserId)"></image>
+		<text class="hText"@click="homePageNavi(thisUserId)">{{username}}</text>
 		<view class="contentIcon" v-if="isFocus==0"@click="focusButton(1)"><text>关注</text></view>
 		<view class="contentIconY" v-if="isFocus==1"@click="focusButton(0)"><text>已关注</text></view>
 	</view>
@@ -30,10 +30,10 @@
 		<view>{{title}}</view>
 		<table>
 			<tr v-if="model!=''">
-				<td>出境：<text @click="homePageNavi(modelId)" v-for="(item,index) in model">@{{item.model}}</text></td>
+				<td>出境：<text @click="homePageNavi(item.modelId)" v-for="(item,index) in model">@{{item.model}}</text></td>
 			</tr>
 			<tr v-if="photography!=''">
-				<td>摄影：<text @click="homePageNavi(photographyId)" v-for="(item,index) in photography">@{{item.photography}}</text></td>
+				<td>摄影：<text @click="homePageNavi(item.photographyId)" v-for="(item,index) in photography">@{{item.photography}}</text></td>
 			</tr>
 			<tr v-if="makeupLook!=''">
 				<td>妆容：<text @click="workNavi" v-for="(item,index) in makeupLook">#{{item.makeupLook}}#</text></td>
@@ -76,50 +76,52 @@
 	<view class="commendbigBox">
 		<view class="commendT">全部评论</view>
 		<!-- 每一条评论 -->
-		
-		<uni-list :border="false" >
-		    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.comment_id'>
-		        <template slot="body" class="slot-box slot-text">
-					<view class="commentBox">
-						<view class="commentboxFirst" @click="homePageNavi(item.user_id)">
-							<image :src="item.header_pic"></image>
-							<span>
-								<view class="commentUserName">{{item.comment_name}}</view>
-								<view class="commentTime">{{item.comment_time}}</view>
-							</span>
-						</view>
-						<view class="commentTextC">{{item.item}}</view>
-						<view class="commentIconBox">
-							<!-- 给评论点赞 -->
-							<span v-if="item.isInterest==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
-							<span v-if="item.isInterest==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
-							<!-- 给评论点赞end -->
-							<!-- <span class="iconfont3">&#xe659;</span> -->
+		<view v-if="comment!=''">
+			<uni-list :border="false" >
+			    <uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in comment" :key='item.comment_id'>
+			        <template slot="body" class="slot-box slot-text">
+						<view class="commentBox">
+							<view class="commentboxFirst" @click="homePageNavi(item.user_id)">
+								<image :src="item.header_pic"></image>
+								<span>
+									<view class="commentUserName">{{item.comment_name}}</view>
+									<view class="commentTime">{{item.comment_time}}</view>
+								</span>
+							</view>
+							<view class="commentTextC">{{item.item}}</view>
+							<view class="commentIconBox">
+								<!-- 给评论点赞 -->
+								<span v-if="item.isInterest==0" class="iconfont1"@click="interestCFunc(index,1)">&#xe60b;</span>
+								<span v-if="item.isInterest==1" class="iconfont1"@click="interestCFunc(index,0)"style="color:#ff8000;opacity: 1;font-size: 32rpx;">&#xe610;</span>
+								<!-- 给评论点赞end -->
+								<!-- <span class="iconfont3">&#xe659;</span> -->
+								
+								<!-- 回复该条评论 -->
+								<span class="iconfont1"@click="open(0,true,index)">&#xe6b3;</span>
+								<!-- 回复该条评论end -->
+							</view>
+							<view class="commentedBox" v-if="item.commentN!='0'">
+								<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
+									<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
+									{{item.commented[0].textD}}
+								</view>
+								<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
 							
-							<!-- 回复该条评论 -->
-							<span class="iconfont1"@click="open(0,true,index)">&#xe6b3;</span>
-							<!-- 回复该条评论end -->
-						</view>
-						<view class="commentedBox" v-if="item.commentN!='0'">
-							<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
-								<!-- <text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
-								{{item.commented[0].textD}} -->
+								<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="b">
+									<text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
+									{{a.textD}}
+								</view>
+								<view class="commentBoxv2" v-if="item.isCommentExtend==true"@click="isExtendFunc(index)">共{{item.commentN}}条回复--收起 ></view>
+							
 							</view>
-							<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
-						
-							<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="b">
-								<!-- <text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
-								{{a.textD}} -->
-							</view>
-							<view class="commentBoxv2" v-if="item.isCommentExtend==true"@click="isExtendFunc(index)">共{{item.commentN}}条回复--收起 ></view>
-						
+							
 						</view>
-						
-					</view>
-				</template>
-		        
-		    </uni-list-item>
-		</uni-list>
+					</template>
+			        
+			    </uni-list-item>
+			</uni-list>
+		</view>
+		<view v-if="comment==''" class="noComment">快来给他评论吧！</view>
 		
 		
 	</view>
@@ -249,7 +251,7 @@
 	
 	<!-- 收藏成功end -->
 	
-	<!-- 收藏成功提示 -->
+	<!-- 服饰pop -->
 	<view  v-if="popTag==5">
 		<uni-popup ref="popup" type="center">
 		    <view class="clothLinkPopBox">
@@ -259,7 +261,7 @@
 		</uni-popup>
 	</view>
 	
-	<!-- 收藏成功提示end -->
+	<!-- 服饰pop end -->
 	
 	<!-- 复制链接成功提示 -->
 	<view  v-if="popTag==6">
@@ -282,7 +284,8 @@
 				popTag:'0',
 				isFocus:'0',
 				workId:'34',
-				userId:'12',
+				userId:'12',//发布该作品的用户的id
+				thisUserId:'12',//登录者id
 				avertar:'',
 				username:'',
 				interestNum:'',
@@ -356,90 +359,7 @@
 					}
 				],
 				comment:[
-					// {
-					// 	commentId:'1',
-					// 	avatarC:'../../static/iconn/p2.jpg',
-					// 	usernameC:'蒲儿姓蒲',
-					// 	userId:'',
-					// 	timeC:'2020-12-08      ',
-					// 	textC:'春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠春水碧于天，画船听雨眠',
-					// 	commentN:'3',
-					// 	isCommentExtend:false,
-					// 	commented:[
-					// 		{
-					// 			commentedId:'1',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'2',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'3',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		}
-					// 	],
-					// 	isInterestC:''
-					// },
-					// {
-					// 	commentId:'3',
-					// 	avatarC:'../../static/iconn/p2.jpg',
-					// 	usernameC:'蒲儿姓蒲',
-					// 	userId:'',
-					// 	timeC:'2020-12-08      ',
-					// 	textC:'春水碧于天，画船听雨眠',
-					// 	commentN:'10',
-					// 	isCommentExtend:false,
-					// 	commented:[
-					// 		{
-					// 			commentedId:'1',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'2',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'3',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		}
-					// 	],
-					// 	isInterestC:''
-					// },
-					// {
-					// 	commentId:'4',
-					// 	avatarC:'../../static/iconn/p2.jpg',
-					// 	usernameC:'蒲儿姓蒲',
-					// 	userId:'',
-					// 	timeC:'2020-12-08      ',
-					// 	textC:'春水碧于天，画船听雨眠',
-					// 	commentN:'10',
-					// 	isCommentExtend:false,
-					// 	commented:[
-					// 		{
-					// 			commentedId:'1',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'2',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		},
-					// 		{
-					// 			commentedId:'3',
-					// 			usernameD:'国际巨星',
-					// 			textD:'少女的恬静 夫人的端庄 书生的洒脱'
-					// 		}
-					// 	],
-					// 	isInterestC:''
-					// },
+					
 					// {
 					// 	commentId:'55',
 					// 	avatarC:'../../static/iconn/p2.jpg',
@@ -496,12 +416,13 @@
 				commentText:'',
 				isCommented:false,
 				commentedIndex:'0',
-				currentClothLink:''
+				currentClothLink:'',
+				currentCommentId:'100000',
 			}
 		},
 		onLoad:function(option){
 			console.log(option.workId);
-			//this.workId = option.workId;
+			this.workId = option.workId || '34' ;
 			this.loadOpusDetail();
 			this.loadComment();
 		},
@@ -518,6 +439,7 @@
 				console.log(t)
 				this.avertar = t.header_pic
 				this.username = t.user_name
+				this.thisUserId = t.user_id
 				this.interestNum = t.likes_number
 				this.collectNum = t.collected_number
 				this.commentNum = t.comment_number
@@ -528,9 +450,6 @@
 				var p = []
 				for (var prop in jsonObj)
 				{
-				    //输出 key-value值
-				    //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
-					//console.log(jsonObj[prop]);
 					p.push(jsonObj[prop])
 				}
 				this.pic = p
@@ -540,7 +459,7 @@
 				this.isCollect = t.isCollect
 				this.isFocus = t.isFocus
 				this.isInterest = t.isInterest
-				this.time = t.upload_time
+				this.time = this.$Format(t.upload_time,"yyyy-MM-dd")
 				this.readN = t.browse_num
 				//分割出境
 				var jsonO = JSON.parse(t.account_a)
@@ -636,23 +555,28 @@
 				}
 			},
 			async loadComment(){
-				this.workId=10
-				this.userId=10
+				//this.workId=10
+				//this.userId=10
 				const res = await this.$myRequest({
 					url:'/Opus/getOpusComments',
 					data:{
 						opus_id:this.workId,
+						type:1,
 						user_id:this.userId
 					}
 				})
-				//console.log(res.data)
+				console.log(res.data)
 				this.comment = res.data
+				//console.log(this.comment)
 				for(var item in this.comment){
-					this.comment[item].isCommentExtend=false
-					this.comment[item].commentN='0'
-					console.log(item)
+					console.log("this.comment")
+					console.log(this.comment[item].comment_time)
+					this.comment[item].comment_time = this.$Format(this.comment[item].comment_time,"yyyy-MM-dd")
+					this.$set(this.comment[item], 'isCommentExtend', false)
+					this.$set(this.comment[item], 'commentN', '0')
+					//console.log(item)
 				}
-				console.log(this.comment)
+				
 			},
 			open(i,n,index){
 				this.popTag=i
@@ -668,6 +592,43 @@
 			},
 			focusButton(i){
 				this.$data.isFocus=i
+				this.isAddFocus(i)
+			},
+			//关注用户
+			async isAddFocus(i){
+				//关注
+				if(i){
+					const res = await this.$myRequest({
+						url:'/MyPage/HomePage/addFocus',
+						header:{
+							'content-type':'application/x-www-form-urlencoded'
+						},
+						method:'POST',
+						data:{
+							account_a:this.userId,
+							account_b:this.thisUserId
+						}
+					})
+					console.log('关注')
+					console.log(res)
+				}
+				//取消关注
+				else{
+					const res = await this.$myRequest({
+						url:'/MyPage/HomePage/delFocusPersonByBothId',
+						header:{
+							'content-type':'application/x-www-form-urlencoded'
+						},
+						method:'DELETE',
+						data:{
+							account_a:this.userId,
+							account_b:this.thisUserId
+						}
+					})
+					console.log('取消关注')
+					console.log(res)
+				}
+				
 			},
 			preview(i){
 				uni.previewImage({
@@ -684,9 +645,12 @@
 			},
 			makeTheSameNavi:function(){
 				var t=JSON.stringify(this.clothList)
+				var p=JSON.stringify(this.photography)
+				var m=JSON.stringify(this.makeupLook)
+				var l=JSON.stringify(this.label)
 				//console.log(t )
 				uni.navigateTo({
-					url:'addMyWish?workId='+this.workId+'&workTitle='+this.title+'&photographerId='+this.photographyId+'&clothingLink='+this.clothingLink+'&madeupId='+this.workId+'&clothList='+t
+					url:'addMyWish?workId='+this.workId+'&workTitle='+this.title+'&photographer='+p+'&madeup='+m+'&clothList='+t+'&firstPic='+this.pic[0]+'&otherLabel='+l
 				})
 			},
 			clothingClick(i){
@@ -716,11 +680,14 @@
 				this.$refs.popup.open()
 			},
 			searchLabelNavi(label){
+				// console.log("label:")
+				// console.log(label)
 				uni.navigateTo({
-					url:"../search/searchLabel?label=" + label
+					url:"../search/searchLabel?label=" + label.labelname
 				})
 			},
 			homePageNavi(i){
+				console.log(i)
 				uni.navigateTo({
 					url:'../Mypage/homePage/homePage?userId='+i
 				})
@@ -753,7 +720,7 @@
 					method:'POST',
 					data:{
 						opus_id:this.workId,
-						user_id:this.userId
+						user_id:this.thisUserId
 					}
 				})
 				console.log(res)
@@ -767,7 +734,7 @@
 					method:'DELETE',
 					data:{
 						opus_id:this.workId,
-						user_id:this.userId
+						user_id:this.thisUserId
 					}
 				})
 			},
@@ -783,7 +750,7 @@
 						'content-type':'application/x-www-form-urlencoded'
 					},
 					data:{
-						user_id:this.userId
+						user_id:this.thisUserId
 					}
 				})
 				//console.log(res.data)
@@ -813,7 +780,7 @@
 					data:{
 						favour_id:i,
 						opus_id:this.workId,
-						user_id:this.userId
+						user_id:this.thisUserId
 					}
 				})
 				console.log(res)
@@ -846,9 +813,11 @@
 			sendComment(){
 				console.log(this.isCommented)
 				var t={}
+				const that = this
+				that.currentCommentId++;
 				if(this.isCommented==false){
 					 t={
-						comment_id:'8',
+						comment_id:that.currentCommentId,
 						header_pic:'../../static/iconn/p2.jpg',
 						comment_name:'蒲儿姓蒲',
 						user_id:'',
@@ -863,10 +832,8 @@
 					t.comment_time=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
 					t.item=this.commentText
 					 this.comment.unshift(t)
-					 // 填写更新评论接口
-					 // 
-					 // 
-					 // 
+					 // 填写回复评论接口
+					this.sendCommentFunc(t.comment_name,this.workId,t.item,1)
 					 
 				}
 				else{
@@ -878,9 +845,30 @@
 					t.textD=this.commentText
 					this.comment[this.commentedIndex].commentN++;
 					this.comment[this.commentedIndex].commented.unshift(t)
+					this.sendCommentFunc(t.usernameD,this.comment[this.commentedIndex].comment_id,t.textD,3)
 				}
 				this.$refs.popup.close()
 				
+			},
+			async sendCommentFunc(name,id,item,type){
+				const that = this
+				// console.log("name:"+name)
+				// console.log("type:"+type)
+				const res = await this.$myRequest({
+					url:'/Opus/addCommentByType',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					method:'POST',
+					data:{
+						comment_name:name,//用户昵称
+						dynamic_id:id, //动态或作品评论id
+						item:item,//内容
+						type:type,//给作品评论1，给动态评论2.给评论评论3
+						user_id:that.thisUserId
+					}
+				})
+				console.log(res)
 			}
 		},
 		

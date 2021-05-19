@@ -194,7 +194,7 @@
 			}
 			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "Cos"){
 				this.RecloadStatus = "loading";
-				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:1}}).then(res=>{
 					this.contentList = this.contentList.concat(res.data.list);
 					this.RecpageNum++;
 					if(res.data.hasNextPage == true){
@@ -210,7 +210,7 @@
 			}
 			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "JK"){
 				this.RecloadStatus = "loading";
-				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:4}}).then(res=>{
 					this.contentList = this.contentList.concat(res.data.list);
 					this.RecpageNum++;
 					if(res.data.hasNextPage == true){
@@ -226,7 +226,7 @@
 			}
 			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "汉服"){
 				this.RecloadStatus = "loading";
-				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:4}}).then(res=>{
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
 					this.contentList = this.contentList.concat(res.data.list);
 					this.RecpageNum++;
 					if(res.data.hasNextPage == true){
@@ -242,7 +242,7 @@
 			}
 			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "Lolita"){
 				this.RecloadStatus = "loading";
-				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
 					this.contentList = this.contentList.concat(res.data.list);
 					this.RecpageNum++;
 					if(res.data.hasNextPage == true){
@@ -257,6 +257,22 @@
 				})
 			}
 			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "妆容"){
+				this.RecloadStatus = "loading";
+				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+					this.contentList = this.contentList.concat(res.data.list);
+					this.RecpageNum++;
+					if(res.data.hasNextPage == true){
+						this.RecloadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.RecloadStatus = "noMore";
+						this.Recflag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.tabIndex == 0 && this.Recflag == true && this.valValue == "服装"){
 				this.RecloadStatus = "loading";
 				await http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:6}}).then(res=>{
 					this.contentList = this.contentList.concat(res.data.list);
@@ -308,7 +324,7 @@
 				value: "",
 				index_tabs: ["推荐", "热门"],
 				tabIndex: 0,
-				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
+				filterList:['全部','Cos','JK','汉服','Lolita','妆容','服装'],
 				swiperimgs: [
 					// {
 					// 	imgId: 0,
@@ -568,7 +584,7 @@
 						})
 					}
 					if(this.valValue == "Cos"){
-						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:1}}).then(res=>{
 							this.contentList = res.data.list;
 							console.log("获取"+e+"成功");
 							this.RecpageNum++;
@@ -584,22 +600,6 @@
 						})
 					}
 					if(this.valValue == "JK"){
-						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
-							this.contentList = res.data.list;
-							console.log("获取"+e+"成功");
-							this.RecpageNum++;
-							if(res.data.hasNextPage == true){
-								this.RecloadStatus = "more";
-							}
-							if(res.data.hasNextPage == false){
-								this.RecloadStatus = "noMore";
-								this.Recflag = false;
-							}
-						}).catch(err=>{
-							console.log(err);
-						})
-					}
-					if(this.valValue == "汉服"){
 						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:4}}).then(res=>{
 							this.contentList = res.data.list;
 							console.log("获取"+e+"成功");
@@ -615,8 +615,24 @@
 							console.log(err);
 						})
 					}
+					if(this.valValue == "汉服"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:2}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
 					if(this.valValue == "Lolita"){
-						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:3}}).then(res=>{
 							this.contentList = res.data.list;
 							console.log("获取"+e+"成功");
 							this.RecpageNum++;
@@ -632,6 +648,22 @@
 						})
 					}
 					if(this.valValue == "妆容"){
+						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:5}}).then(res=>{
+							this.contentList = res.data.list;
+							console.log("获取"+e+"成功");
+							this.RecpageNum++;
+							if(res.data.hasNextPage == true){
+								this.RecloadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.RecloadStatus = "noMore";
+								this.Recflag = false;
+							}
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "服装"){
 						http.get("/Index/Recommend/SelectWorks",{params:{pageNum:this.RecpageNum, pageSize:8, type:6}}).then(res=>{
 							this.contentList = res.data.list;
 							console.log("获取"+e+"成功");

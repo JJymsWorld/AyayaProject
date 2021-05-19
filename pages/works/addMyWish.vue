@@ -14,9 +14,10 @@
 							<view class="contenViewT">
 								<!-- <text>@</text> -->
 								<!-- <image src="../../static/icon/aite.png"></image> -->
-								<view v-for="(item,index) in photographer" :key="index">@{{item.photographerName}}
+								<view v-if="photographer!=''" v-for="(item,index) in photographer" :key="index">@{{item.photography}}
 								<span class="iconfont_dy" @click="deleteTab(0,index)">&#xe636;</span>
 								</view>
+								<view v-if="photographer==''">点击下方可选择摄影师</view>
 							</view>
 						    
 						</td>
@@ -32,9 +33,10 @@
 						<td>
 							<view class="contenViewT">
 								<!-- <text>@</text> -->
-								<view v-for="(item,index) in clothList" :key="index">#{{item.name}}#
+								<view v-if="clothList!=''" v-for="(item,index) in clothList" :key="index">#{{item.name}}#
 									<span class="iconfont_dy" @click="deleteTab(1,index)">&#xe636;</span>
 								</view>
+								<view v-if="clothList==''">点击下方编辑服饰链接</view>
 							</view>
 							
 						</td>
@@ -42,7 +44,7 @@
 					<tr>
 						<td></td>
 						<td>
-							<image class="moreIcon"src="../../static/icon/find.png" mode="aspectFill"@click="changePhotographer"></image>
+							<image class="moreIcon"src="../../static/icon/find.png" mode="aspectFill"@click="clothLinkNavi"></image>
 							<view class="contentMore"@click="clothLinkNavi">编辑服饰链接</view></td>
 						</tr>
 					<tr>
@@ -50,8 +52,10 @@
 						<td>
 							<view class="contenViewT">
 								<!-- <text>@</text> -->
-								<view v-for="(item,index) in madeup" :key="index">#{{item.madeupTitle}}#</view>
-								<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+								<view  v-if="madeup!=''" v-for="(item,index) in madeup" :key="index">#{{item.makeupLook}}#
+									<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+								</view>
+								<view v-if="madeup==''">点击下方可选择妆容教程</view>
 							</view>
 						</td>
 					</tr>
@@ -65,11 +69,11 @@
 				</table>
 	
 				<view class="other">其他标签:
-					<view v-for="(item,index) in otherTag" :key="index">#{{item.tagName}}#
-						<span class="iconfont_dy" @click="deleteTab(2,index)">&#xe636;</span>
+					<view v-for="(item,index) in otherTag" :key="index">#{{item.mark}}#
+						<span class="iconfont_dy" @click="deleteTab(3,index)">&#xe636;</span>
 					</view>
 				</view>
-				<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill"></image>
+				<image src="../../static/icon/other.png" class="otherIcon" mode="aspectFill" @click="otherTagNavi"></image>
 				
 		</view>
 		<view class="finalButton" @click="releaseWork()"><text>加入心愿单</text></view>
@@ -87,7 +91,7 @@
 				uni.$off("choosePhotographer");
 			})
 			uni.$on("chooseMadeup",res => {
-				this.madeup.push({madeupId:res.madeupId,madeupTitle:res.madeupTitle})
+				this.madeup.push({makeupId:res.madeupId,makeupLook:res.madeupTitle})
 				// 清除监听
 				uni.$off("chooseMadeup");
 			})
@@ -95,8 +99,22 @@
 				this.clothList = JSON.parse(res.clothList)
 				uni.$off("editClothLink");
 			})
+			uni.$on("emitAddHotTopic",res => {
+				//this.clothList = JSON.parse(res.clothList)
+				console.log(res)
+				this.otherTag.push(res.mark_item) 
+				uni.$off("emitAddHotTopic");
+			})
 		},
 		onLoad(option) {
+			console.log(option)
+			this.work.workId = option.workId
+			this.work.covers = option.firstPic
+			this.work.head = option.workTitle
+			this.clothList = JSON.parse(option.clothList)
+			this.madeup = JSON.parse(option.madeup)
+			this.photographer = JSON.parse(option.photographer)
+			this.otherTag = JSON.parse(option.otherLabel)
 		},
 		data(){
 			return{
@@ -111,11 +129,11 @@
 				photographer:[
 					{
 						photographerId:'1',
-						photographerName:'布兰妮',
+						photographer:'布兰妮',
 					},
 					{
 						photographerId:'2',
-						photographerName:'琪',
+						photographer:'琪',
 					},
 				],
 				clothingId:'',
@@ -148,14 +166,12 @@
 		},
 		methods:{
 			workNavi(){
+				console.log(this.work.workId)
 				uni.navigateTo({
-					url:'works'
+					url:'works?workId='+this.work.workId
 				})
 			},
 			releaseWork(){
-				// uni.navigateTo({
-				// 	url:'../ContentReleasePage/postDynamic'
-				// })
 				uni.navigateBack({})
 			},
 			changePhotographer(){
@@ -178,6 +194,11 @@
 					url:'../Mypage/myWishList/myClothLink?clothList='+t+'&myWish=2'
 				})
 			},
+			otherTagNavi(){
+				uni.navigateTo({
+					url:'../ContentReleasePage/label'
+				})
+			},
 			addWish(){
 				//填写加入心愿单接口
 				// 
@@ -195,6 +216,9 @@
 				}
 				else if(i==2){
 					this.madeup.splice(index,1)
+				}
+				else if(i==3){
+					this.otherTag.splice(index,1)
 				}
 			}
 		}

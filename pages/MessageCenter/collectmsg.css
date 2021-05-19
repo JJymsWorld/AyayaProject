@@ -7,11 +7,12 @@
 
 /deep/ .uni-list-item__container {
 	background-color: #FFFFFF;
-	padding: 40rpx 0;
+	padding: 0;
+	padding-top: 40rpx;
 }
 
 .message-item {
-	margin-bottom: 17px;
+	/* margin-bottom: 17px; */
 }
 
 .message-item-lbox {
@@ -21,6 +22,7 @@
 
 .message-item-lbox image {
 	width: 100%;
+	height: 85%;
 	border-radius: 50%;
 }
 
@@ -67,6 +69,7 @@
 
 .message-item-rbox-right image {
 	height: 100%;
+	width: 100%;
 	border-radius: 10px;
 }
 

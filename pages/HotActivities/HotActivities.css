@@ -403,6 +403,7 @@
 .EventDetail-top-content-line{
     margin-top: 5rpx;
     margin-bottom: 5rpx;
+	white-space: pre;
 }
 .EventDetail-top-viewButton{
     display: flex;

@@ -24,36 +24,36 @@
 		<view class="line"></view>
 		<view class="row-box message-box">
 			<view class="message-item">
-				<image src="../../static/systemmsg.png" mode="widthFix"></image>
+				<image src="../../static/systemmsg.png" mode="aspectFill"></image>
 				<view class="message-item-rbox">
 					系统消息
 				</view>
 			</view>
 			<view class="message-item">
-				<image src="../../static/officialmsg.png" mode="widthFix"></image>
+				<image src="../../static/officialmsg.png" mode="aspectFill"></image>
 				<view class="message-item-rbox">
 					官方公告
 				</view>
 			</view>
 			<!-- 消息列表 -->
 			<uni-list :border="false">
-				<uni-list-item clickable @click="gotoDialogPage(index)" class="message-item" :border="false" :ellipsis='2' direction="row" v-for="(item, index) in MessageList" :key="index">
+				<uni-list-item clickable @click="gotoDialogPage(index, item.dialog_id, item.other_user_id, item.header_pic)" class="message-item" :border="false" :ellipsis='2' direction="row" v-for="(item, index) in dialogList" :key="index">
 					<!-- 左边头像 -->
 					<template v-slot:body>
 						<view class="message-item-lbox list-item-lbox">
-							<image src="../../static/image1.png" mode="widthFix"></image>
+							<image :src="item.header_pic" mode="aspectFill"></image>
 						</view>
 					</template>
 					<!-- 右边信息 -->
 					<template v-slot:footer>
 						<view class="message-item-rbox list-item-rbox">
 							<view class="list-item-rbox-top">
-								<text class="text1">{{item.name}}</text>
+								<text class="text1">{{item.user_name}}</text>
 								<text class="text2">{{item.time}}</text>
 							</view>
 							<view class="list-item-rbox-buttom">
-								<text class="text3">{{item.body}}</text>
-								<uni-badge type="error" :text="item.msgNum" size="small" style="float: right;"></uni-badge>
+								<text class="text3">{{item.content}}</text>
+								<uni-badge type="error" :text="item.unRead" size="small" style="float: right;"></uni-badge>
 							</view>
 						</view>
 					</template>
@@ -67,13 +67,9 @@
 	export default {
 		data() {
 			return {
-				MessageList: [{
-					image: '../../static/image1.png',
-					name: '机智的党妹',
-					time: '2020-12-08',
-					body: '看来又有一个小可爱关注我了~',
-					msgNum: 1
-				}],
+				userIdentity: null,		// 标记用户身份
+				userId: null,	//  用户id
+				dialogList: []
 			}
 		},
 		methods: {
@@ -96,14 +92,66 @@
 				})
 			},
 			// 跳转至对话框页面
-			gotoDialogPage: function(index){
-				console.log(index)
+			gotoDialogPage: function(index, dialog_id, user_id, header_pic){
+				var url = ''
+				if(this.userIdentity == 3){
+					// 跳转到摄影师对话框
+					url = './pho-dialogpage'
+				}
+				else{
+					// 跳转到cos/普通用户对话框
+					url = './cos-dialogpage'
+				}
 				uni.navigateTo({
-					url: './cos-dialogpage'
+					url: url,
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('emitDialogMsg', {
+							dialog_id: dialog_id,
+							user_id: user_id,
+							header_pic: header_pic
+						})
+					}
 				})
 				// 查看消息后右侧角标消失
-				this.MessageList[index].msgNum = 0
+				this.dialogList[index].unRead = 0
+			},
+			// 获取对话框数据
+			async onGetDialogList(){
+				const res = await this.$myRequest({
+					url: '/Contact/getContactPersonById',
+					data: {
+						user_id: this.userId
+					}
+				})
+				for(var item in res.data){
+					//  处理Date数据类型
+					res.data[item].time = this.$Format(res.data[item].time,"yyyy-MM-dd")
+				}
+				this.dialogList = res.data
+				console.log(this.dialogList)
 			}
+		},
+		async onShow(){
+			// this.dialogList = await this.onGetDialogList()
+			// console.log(this.dialogList)
+			this.onGetDialogList()
+			
+		},
+		onLoad(option) {
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					this.userId = res.data
+				}
+			});
+			uni.getStorage({
+				key: 'userInfo',
+				success: res => {
+					// console.log(res.data);
+					this.userIdentity = res.data.identity
+				}
+			});
 		}
 	}
 </script>
@@ -142,7 +190,8 @@
 		margin-bottom: 17px;
 	}
 	.message-item image{
-		width: 12%;
+		width: 90rpx;
+		height: 90rpx;
 		border-radius: 50%;
 	}
 	.message-item-rbox{
@@ -173,6 +222,7 @@
 	}
 	.list-item-lbox image{
 		width: 90rpx;
+		height: 90rpx;
 		border-radius: 50%;
 	}
 	.list-item-rbox{

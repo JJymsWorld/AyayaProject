@@ -157,7 +157,7 @@
 				flag:true,
 				initList:true,
 				loadStatus:"noMore",
-				filterList:['全部','Cos','JK','汉服','Lolita','妆容'],
+				filterList:['全部','Cos','JK','汉服','Lolita'],
 				CostumeswiperImgs: [
 					// {
 					// 	img_id: 0,
@@ -288,14 +288,6 @@
 					}
 					if(this.valValue == "Lolita"){
 						http.get("/Costume/selectWorks",{params:{type:5}}).then(res=>{
-							this.CostumeWorkslist = res.data;
-							console.log("获取"+this.valValue+"成功");
-						}).catch(err=>{
-							console.log(err);
-						})
-					}
-					if(this.valValue == "妆容"){
-						http.get("/Costume/selectWorks",{params:{type:6}}).then(res=>{
 							this.CostumeWorkslist = res.data;
 							console.log("获取"+this.valValue+"成功");
 						}).catch(err=>{

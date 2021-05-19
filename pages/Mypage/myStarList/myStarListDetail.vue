@@ -3,10 +3,10 @@
 		<view class="" v-for="(item,index) in StarWork" :key="index">
 			<delSlideLeft :item="item" :data_transit="{index:index,item:item}" @delItem="delItem">
 				<view class="workBox">
-					<image :src="item.first_pic" mode="aspectFill" @click.stop="workNavi(item.workId)"></image>
-					<text @click.stop="workNavi(item.workId)">{{item.title}}</text>
-					<view v-if="myWish!=0" class="edit" @click="myWishNavi(item.workId,item.title)"><view>加入心愿单</view></view>
-					<view v-if="addmakeuplabels!=0" class="edit" @click="onAddMakeupLabels(item.workId,item.title)"><view>选择该收藏</view></view>
+					<image :src="item.firstPic" mode="aspectFill" @click.stop="workNavi(item.collectedId)"></image>
+					<text @click.stop="workNavi(item.collectedId)">{{item.title}}</text>
+					<view v-if="myWish!=0" class="edit" @click="myWishNavi(item.collectedId,item.title)"><view>加入心愿单</view></view>
+					<view v-if="addmakeuplabels!=0" class="edit" @click="onAddMakeupLabels(item.collectedId,item.title)"><view>选择该收藏</view></view>
 				</view>
 			</delSlideLeft>
 		</view>
@@ -17,12 +17,13 @@
 	import delSlideLeft from '@/components/ay-operate/mydel_slideLeft.vue'
 	export default {
 		onLoad(option) {
-			this.starListId=option.favourId
+			this.starListId=option.favourId || '1'
 			console.log(this.starListId)
 			console.log(option.myWish)
 			this.myWish = option.myWish || 0
 			this.wishId = option.wishId || ''
 			this.addmakeuplabels = option.addmakeuplabels || 0
+			this.getAll()
 		},
 		components: {
 			delSlideLeft,
@@ -54,8 +55,16 @@
 		methods: {
 			async getAll() {
 				// 填写获取该收藏夹中的所有收藏
-				// 
-				// 
+				const res = await this.$myRequest({
+					url:'/MyPage/MyStarList/getListWorks',
+					data:{
+						favour_id:this.starListId
+					}
+				}) 
+				console.log("starList")
+				//console.log(res.data[0].firstPic)
+				this.StarWork = res.data
+				console.log(res.data)
 			},
 			workNavi(i) {
 				uni.navigateTo({ // 传递作品id

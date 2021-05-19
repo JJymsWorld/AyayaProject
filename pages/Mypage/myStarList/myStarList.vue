@@ -1,7 +1,7 @@
 <template>
 	<view class="backBox">
 		<image src="../../../static/icon/newlist.png" class="pic" mode="aspectFill"@click="open"></image>
-		<view v-for="(item,index) in list" :key="index" class="collectBox" @click="starListDetailNavi(item.favourId)">
+		<view v-for="(item,index) in list" :key="index" class="collectBox" @click="starListDetailNavi(item.favour_id)">
 			<image :src="pic" class="collectBoxImage"></image>
 			<view class="textBox">
 				<view class="title">{{item.tab}}</view>
@@ -26,9 +26,11 @@
 			console.log("list:"+option.myWish)
 			this.mywish = option.myWish || 0
 			this.wishId = option.wishId || ''
+			this.addmakeuplabels = option.addmakeuplabels || 0
 		},
 		data(){
 			return{
+				addmakeuplabels: 0,  //1:存在发布作品的的参数传递
 				mywish:0,   //1:存在加入戏院的的参数传递
 				wishId:'',  //用户将作品加入心愿单中妆容板块的参数传递
 				pic:'../../../static/icon/collectPic.png',
@@ -84,10 +86,10 @@
 				// console.log(res)
 			},
 			starListDetailNavi(i){
-				console.log(i)
-				uni.navigateTo({
-					url:'myStarListDetail?favourId='+i+'&myWish='+this.mywish+'&wishId'+this.wishId
-				})
+			    console.log(i)
+			    uni.navigateTo({
+			     url:'myStarListDetail?favourId='+i+'&myWish='+this.mywish+'&wishId'+this.wishId+'&addmakeuplabels='+this.addmakeuplabels
+			    })
 			}
 		}
 	}

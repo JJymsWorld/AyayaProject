@@ -55,7 +55,7 @@
 					<view class="chooseAt-box">
 						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].makeupLabels.length == 0"
 							@click="onChooseCollection">～仅限收藏列表</text>
-						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delTag" @click="onChooseCollection"
+						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delMakeupTag" @click="onChooseCollection"
 							:enable-del="enableDel"></robby-tags>
 					</view>
 				</view>
@@ -305,6 +305,18 @@
 			clickTag: function(e) {
 				console.log(e)
 			},
+			// 删除妆容标签事件
+			delMakeupTag: function(e) {
+				for (var i in this.worksContent[3].makeupList) {
+					const label = this.worksContent[3].makeupList[i].title
+					if (label == e.currentTag) {
+						this.worksContent[3].makeupList.splice(i, 1)
+						break;
+					}
+				}
+				// console.log(this.worksContent[3].makeupLabels)
+				// console.log(this.worksContent[3].makeupList)
+			},
 			// 删除标签事件
 			delTag: function(e) {
 				this.markLabel = e.allTags
@@ -355,8 +367,16 @@
 					const item = this.markList[i]
 					this.markId.push(item.mark_id + '，' + item.mark)
 				}
-				console.log(this.markId)
-				// this.onPostWork()
+				// console.log(this.markId)
+				
+				this.worksContent[3].makeupId = []
+				for (var i in this.worksContent[3].makeupList) {
+					const item = this.worksContent[3].makeupList[i]
+					this.worksContent[3].makeupId.push(item.workId + '，' + item.title)
+				}
+				console.log(this.worksContent[3].makeupId)
+				
+				this.onPostWork()
 
 				// 同时发布动态
 				if (this.ifpostdynamic) {
@@ -369,7 +389,7 @@
 						url: '/Order/setListNum',
 						data: {
 							// list_num: this.opus_id,
-							list_num: 11,
+							list_num: this.opus_id,
 							photograph_id: this.photograph_id
 						}
 					})
@@ -381,9 +401,9 @@
 				
 				else{
 					// 跳转至个人主页
-					// uni.redirectTo({
-					// 	url: '../Mypage/homePage/homePage?showToast=2'
-					// });
+					uni.redirectTo({
+						url: '../Mypage/homePage/homePage?showToast=2'
+					});
 				}
 				
 			},
@@ -399,7 +419,7 @@
 							'callUser': this.atPersonId, // @的人的ID
 							'clothingId': this.worksContent[4].clothingId, // 服饰id
 							'mainBody': this.worksContent[5].article, // 正文
-							'makeupId': [], // 妆容ID
+							'makeupId': this.worksContent[3].makeupId, // 妆容ID
 							'mark_id': this.markId, // 标签Id
 							'title': this.worksContent[0].title, // 标题
 							'type': this.workClass[i], // 发往圈子id
@@ -487,6 +507,10 @@
 			uni.$on("emitmakeuplabels", res => {
 				this.worksContent[3].makeupLabels.push(res.title)
 				console.log(this.worksContent[3].makeupLabels)
+				
+				// this.worksContent[3].makeupId.push(res.workId + '，' + res.title)
+				this.worksContent[3].makeupList.push({workId: res.workId, title: res.title})
+				console.log(this.worksContent[3].makeupList)
 				// 清除监听
 				uni.$off("emitmakeuplabels");
 			})
