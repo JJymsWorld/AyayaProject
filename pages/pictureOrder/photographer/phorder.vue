@@ -26,9 +26,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage(item.user_id)"></image>
 						<view class="content-box">
-							<view class="" @click="gotoUserHomePage()">
+							<view class="" @click="gotoUserHomePage(item.user_id)">
 								Coser：{{item.usera_user_name}}
 							</view>
 							<view class="">
@@ -76,9 +76,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage(item.user_id)"></image>
 						<view class="content-box">
-							<view class="" @click="gotoUserHomePage()">
+							<view class="" @click="gotoUserHomePage(item.user_id)">
 								Coser：{{item.usera_user_name}}
 							</view>
 							<view class="">
@@ -111,9 +111,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage(item.user_id)"></image>
 						<view class="content-box">
-							<view class="" @click="gotoUserHomePage()">
+							<view class="" @click="gotoUserHomePage(item.user_id)">
 								Coser：{{item.usera_user_name}}
 							</view>
 							<view class="">
@@ -146,9 +146,9 @@
 					</view>
 					<!-- 自定义 body -->
 					<view slot="body" class="slot-body-box">
-						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage()"></image>
+						<image :src="item.usera_header_pic" mode="" @click="gotoUserHomePage(item.user_id)"></image>
 						<view class="content-box">
-							<view class="" @click="gotoUserHomePage()">
+							<view class="" @click="gotoUserHomePage(item.user_id)">
 								Coser：{{item.usera_user_name}}
 							</view>
 							<view class="">
@@ -292,9 +292,9 @@
 				})
 			},
 			// 进入用户个人主页
-			gotoUserHomePage: function(){
+			gotoUserHomePage: function(id){
 				uni.navigateTo({
-					url: '../../Mypage/homePage/homePage'
+					url: '../../Mypage/homePage/homePage?userId=' + id
 				})
 			},
 			// 进入作品详情页面

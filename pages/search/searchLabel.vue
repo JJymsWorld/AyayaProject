@@ -27,7 +27,7 @@
 							<!-- 正文 -->
 							<view class="dynamicText">{{item.main_body}}</view>
 
-							<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opusId)">
+							<view v-if="item.opusId!=''" class="dynamicGridBox" @click.stop="workNavi(item.opus_id)">
 								<image class="dynamicImage" :src='item.opus_photos' mode="aspectFill"></image>
 								<view class="dynamicTitle">{{item.title}}</view>
 							</view>
@@ -204,6 +204,7 @@
 				console.log(i, this.searchWorkList[i].checked)
 			},
 			workNavi(i) {
+				// console.log(i)
 				uni.navigateTo({
 					url: '../works/works?workId=' + i
 				})

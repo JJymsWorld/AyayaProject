@@ -24,11 +24,11 @@
 						v-for="(item,index) in PhotographerInfoList" :key="index" class="StayInCoser-List-item">
 						<view slot="header" class="StayInCoser-item">
 							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill"
-								@click="gotoCoserHomePage"></image>
+								@click="gotoCoserHomePage(item.user_id)"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
-									<text class="StayInCoser-item-name">{{item.user_name}}</text>
-									<view class="StayInCoser-item-likenum">
+									<text class="StayInCoser-item-name" @click="gotoCoserHomePage(item.user_id)">{{item.user_name}}</text>
+									<view class="StayInCoser-item-likenum" @click="gotoCoserHomePage(item.user_id)">
 										<!-- <image class="StayInCoser-item-info-likenumIcon"></image> -->
 										<uni-icons type="heart-filled" color="red"></uni-icons>
 										<text>{{item.focused_num}}</text>
@@ -36,7 +36,7 @@
 									<view class="StayInCoser-item-likebutton">
 										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
 										<uni-fav class="StayInCoser-item-likebutton-like" circle="true"
-											:checked="item.checked" star="false" :contentText="contentText"
+											:checked="item.relation == 1" star="false" :contentText="contentText"
 											bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979"
 											@click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
 										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true"
@@ -44,12 +44,12 @@
 											fgColor="#FF5E98" @click="addOrder(item.user_id, index)"></uni-fav>
 									</view>
 								</view>
-								<view class="StayInCoser-item-position" @click="gotoCoserHomePage">
+								<view class="StayInCoser-item-position" @click="gotoCoserHomePage(item.user_id)">
 									<uni-icons type="location-filled" size="14"></uni-icons>
 									<text>{{item.city}}</text>
 								</view>
 								<text class="StayInCoser-item-intro"
-									@click="gotoCoserHomePage">个人介绍:{{item.autograph}}</text>
+									@click="gotoCoserHomePage(item.user_id)">个人介绍:{{item.autograph}}</text>
 							</view>
 
 						</view>
@@ -88,15 +88,19 @@
 				key: 'userId',
 				success: res => {
 					this.userId = res.data
+				},
+				fail: () => {
+					console.log("获取失败")
 				}
 			});
-
+			console.log(this.userId)
 			const http = new this.$Request();
 
 			http.get("/Date/PhotographerList/getAllPg", {
 				params: {
 					pageNum: this.pageNum,
-					pageSize: 8
+					pageSize: 8,
+					user_id:this.userId
 				}
 			}).then(res => {
 				this.PhotographerInfoList = res.data.list;
@@ -131,7 +135,8 @@
 				await http.get("/Date/PhotographerList/getAllPg", {
 					params: {
 						pageNum: this.pageNum,
-						pageSize: 8
+						pageSize: 8,
+						user_id:this.userId
 					}
 				}).then(res => {
 					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
@@ -175,7 +180,7 @@
 		data() {
 			return {
 				dialogId: null, // 对话框Id
-				userId: null, // 登录者Id
+				userId: 1, // 登录者Id
 				other_userId: null, // 标记进行约拍的摄影师Id
 				valvalue: "全部",
 				pageNum: 1,
@@ -237,12 +242,12 @@
 				return res.data
 			},
 			LikeBtnClick(e) {
-				this.PhotographerInfoList[e].checked = !this.PhotographerInfoList[e].checked
-				console.log(e, this.PhotographerInfoList[e].checked)
+				this.PhotographerInfoList[e].relation = !this.PhotographerInfoList[e].relation
+				console.log(e, this.PhotographerInfoList[e].relation)
 			},
-			gotoCoserHomePage() {
+			gotoCoserHomePage(e) {
 				uni.navigateTo({
-					url: "../Mypage/homePage/homePage"
+					url: "../Mypage/homePage/homePage?userId=" + e
 				})
 			},
 			gotoWorksPage() {
@@ -287,7 +292,8 @@
 						http.get("/Date/PhotographerList/getAllPg", {
 							params: {
 								pageNum: this.pageNum,
-								pageSize: 8
+								pageSize: 8,
+								user_id:this.userId
 							}
 						}).then(res => {
 							this.PhotographerInfoList = res.data.list;

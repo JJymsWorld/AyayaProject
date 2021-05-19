@@ -227,6 +227,7 @@
 		},
 		onLoad(option) {
 		    this.userId=option.userId || '5' // 上个页面传递的用户id
+			console.log(option.userId);
 		    this.userId2=getApp().globalData.global_userId || '12'
 		    this.loadHead()
 		    this.loadDynamic()	

@@ -14,7 +14,7 @@
 					<view class="message-item-rbox">
 						<view class="message-item-rbox-left">
 							<view class="">
-								<text @click.stop="gotoUserHomePage(item.user_id)">{{item.user_name}}</text>
+								<text @click.stop="gotoUserHomePage(item.account_a)">{{item.user_name}}</text>
 							</view>
 							<view class="">
 								<text class="text2">对方关注了你～</text>
