@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<view class="AppReco-Hot-list">
-				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index" @click="gotoPherHomePage">
+				<view class="AppReco-Hot-pg-list" v-for="(item,index) in showThree" :key="index" @click="gotoPherHomePage(item.user_id)">
 					<image class="AppReco-Hot-pg-list-avatar" mode="aspectFill" :src="item.header_pic"></image>
 					<text class="AppReco-Hot-pg-list-name">{{item.user_name}}</text>
 				</view>
@@ -27,7 +27,7 @@
 				<text >作品展示</text>
 			</view>
 			<view class="content-box">
-				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage" imageSrcKey="opus_photos" idKey="opus_id">
+				<waterfallsFlow :list="contentList" @wapper-lick="gotoWorksPage($event)" imageSrcKey="opus_photos" idKey="opus_id">
 					<template v-slot:default="item" class="content-box-item">
 						<view class="cnt">
 							<view class="title">{{item.title}}</view>
@@ -53,7 +53,7 @@
 		async onLoad() {
 			const http = new this.$Request();
 			//获取所有摄影师列表
-			http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:1, pageSize:3}}).then(res=>{
+			http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:1, pageSize:3, user_id:1}}).then(res=>{
 				this.PhotographerList = res.data.list;
 			}).catch(err=>{
 				console.log(err);
@@ -241,15 +241,17 @@
 					url: './PhotographerList'
 				})
 			},
-			gotoWorksPage(){
+			gotoWorksPage(e){
 				uni.navigateTo({
-					url:"../works/works"
+					url:"../works/works?workId=" + e.opus_id
 				})
+				console.log(e.opus_id)
 			},
-			gotoPherHomePage(){
+			gotoPherHomePage(e){
 				uni.navigateTo({
-					url:"../Mypage/homePage/homePage"
+					url:"../Mypage/homePage/homePage?userId=" + e
 				})
+				console.log(e);
 			}
 		},
 		computed:{

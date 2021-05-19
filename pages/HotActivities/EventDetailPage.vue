@@ -47,22 +47,22 @@
 				</view>
 				<view class="EventDetail-bottom-works-list">
 					<view class="content-box">
-						<waterfallsFlow :list="AttendWorksList" @wapper-lick="gotoWorksPage()" >
+						<waterfallsFlow ref="waterfallsFlow" :list="AttendWorksList" @wapper-lick="gotoWorksPage()" imageSrcKey="opus_photos" idKey="opus_id">
 							<template v-slot:default="item" class="content-box-item">
 								<view class="cnt">
 									<view class="title">{{item.title}}</view>
 									<view class="user-info-box">
-										<image class="user-head-img" :src="item.headImg" mode="aspectFill" @click.stop="gotoUserHomePage()"></image>
-										<view class="user-name" @click.stop="gotoUserHomePage()">{{item.userName}}</view>
+										<image class="user-head-img" :src="item.header_pic" mode="aspectFill" @click.stop="gotoUserHomePage()"></image>
+										<view class="user-name" @click.stop="gotoUserHomePage()">{{item.user_name}}</view>
 										<!-- <view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.supportNum}}
 										</view> -->
-										<view class="view-num" >应援值: {{item.supportNum}}
+										<view class="view-num" >应援值: {{item.raised_money}}
 										</view>
 									</view>
 								</view>
 							</template>
 						</waterfallsFlow>
-						<uni-load-more status="noMore"></uni-load-more>
+						<uni-load-more :status="loadStatus"></uni-load-more>
 					</view>
 				</view>
 			</view>
@@ -86,12 +86,55 @@
 				this.EventDetailPageInfo = res.data[0];
 			}).catch(err=>{
 				console.log(err);
-			})
+			});
+			
+			if(this.initList == true){
+				await http.get("/Activity/getJoiningOpus",{params:{activity_id:this.activityid, pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.initList = false;
+					this.pageNum++;
+					this.AttendWorksList = res.data.list;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = 'more';
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore"
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+				this.$refs.waterfallsFlow.refresh();
+			}
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.loadStatus = "loading";
+				await http.get("/Activity/getJoiningOpus",{params:{activity_id:this.activityid, pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.pageNum++;
+					this.AttendWorksList = this.AttendWorksList.concat(res.data.list);
+					if(res.data.hasNextPage == true){
+						this.loadStatus = 'more';
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+				this.$refs.waterfallsFlow.refresh();
+			}
 		},
 		data() {
 			return {
 				activityid:1,
 				tabIndex:0,
+				pageNum:1,
+				pageSize:0,
+				initList:true,
+				flag:true,
+				loadStatus:"noMore",
 				EventDetailPageInfo: {
 					image_url: "../../static/EventsSource/1.jpg",
 					title: "【Cos正片征集】第10-9期",

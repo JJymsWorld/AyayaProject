@@ -340,7 +340,7 @@
 			},
 			gotoCoserHomePage(userid) {
 				uni.navigateTo({
-					url: "../Mypage/homePage/homePage?userid=" + userid
+					url: "../Mypage/homePage/homePage?userId=" + userid
 				})
 			}
 		},

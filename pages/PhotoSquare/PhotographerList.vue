@@ -23,7 +23,7 @@
 						v-for="(item,index) in PhotographerInfoList" :key="index" class="StayInCoser-List-item">
 						<view slot="header" class="StayInCoser-item">
 							<image :src="item.header_pic" class="StayInCoser-item-avatar" mode="aspectFill"
-								@click="gotoCoserHomePage"></image>
+								@click="gotoCoserHomePage(item.user_id)"></image>
 							<view class="StayInCoser-item-info">
 								<view class="StayInCoser-item-nameandlikenum">
 									<text class="StayInCoser-item-name">{{item.user_name}}</text>
@@ -35,7 +35,7 @@
 									<view class="StayInCoser-item-likebutton">
 										<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
 										<uni-fav class="StayInCoser-item-likebutton-like" circle="true"
-											:checked="item.checked" star="false" :contentText="contentText"
+											:checked="item.relation == 1" star="false" :contentText="contentText"
 											bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979"
 											@click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
 										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true"
@@ -43,12 +43,12 @@
 											fgColor="#FF5E98" @click="addOrder(item.user_id, index)"></uni-fav>
 									</view>
 								</view>
-								<view class="StayInCoser-item-position" @click="gotoCoserHomePage">
+								<view class="StayInCoser-item-position" @click="gotoCoserHomePage(item.user_id)">
 									<uni-icons type="location-filled" size="14"></uni-icons>
 									<text>{{item.city}}</text>
 								</view>
 								<text class="StayInCoser-item-intro"
-									@click="gotoCoserHomePage">个人介绍:{{item.autograph}}</text>
+									@click="gotoCoserHomePage(item.user_id)">个人介绍:{{item.autograph}}</text>
 							</view>
 
 						</view>
@@ -87,7 +87,8 @@
 			http.get("/Date/PhotographerList/getAllPg", {
 				params: {
 					pageNum: this.pageNum,
-					pageSize: 8
+					pageSize: 8,
+					user_id:1
 				}
 			}).then(res => {
 				this.PhotographerInfoList = res.data.list;
@@ -118,7 +119,7 @@
 			const http = new this.$Request();
 			if(this.flag == true && this.valvalue == "全部"){
 				this.LoadStatus = "loading";
-				await http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+				await http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
 					this.PhotographerInfoList = this.PhotographerInfoList.concat(res.data.list);
 					this.pageNum++;
 					if(res.data.hasNextPage == true){
@@ -202,13 +203,14 @@
 		},
 		methods: {
 			LikeBtnClick(e) {
-				this.PhotographerInfoList[e].checked = !this.PhotographerInfoList[e].checked
-				console.log(e, this.PhotographerInfoList[e].checked)
+				this.PhotographerInfoList[e].relation = !this.PhotographerInfoList[e].relation
+				console.log(e, this.PhotographerInfoList[e].relation)
 			},
-			gotoCoserHomePage() {
+			gotoCoserHomePage(e) {
 				uni.navigateTo({
-					url: "../Mypage/homePage/homePage"
+					url: "../Mypage/homePage/homePage?userId=" + e
 				})
+				console.log(e);
 			},
 			gotoWorksPage() {
 				uni.navigateTo({
@@ -236,7 +238,7 @@
 					this.pageNum = 1;
 					this.valvalue = e;
 					if(this.valvalue == "全部"){
-						http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8}}).then(res=>{
+						http.get("/Date/PhotographerList/getAllPg",{params:{pageNum:this.pageNum, pageSize:8, user_id:1}}).then(res=>{
 							this.PhotographerInfoList = res.data.list;
 							console.log("获取"+this.valvalue+"成功");
 							this.pageNum++;

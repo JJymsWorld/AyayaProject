@@ -83,7 +83,7 @@
 			http.get("/Costume/getSlide",{params:{type:2}}).then(res=>{
 				this.CostumeswiperImgs = res.data;
 			}).catch(err=>{
-				
+				console.log(err);
 			})
 			//获取瀑布流内容
 			

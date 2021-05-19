@@ -546,14 +546,14 @@
 			},
 			workNavigateWaterFall(event) {
 				uni.navigateTo({
-					url: '../works/works?id=' + event.opusId
+					url: '../works/works?workId=' + event.opusId
 				});
 				console.log(event.opusId);
 				
 			},
 			workNavigateSwiper(event){
 				uni.navigateTo({
-					url: '../works/works?id=' + event
+					url: '../works/works?workId=' + event
 				});
 				console.log(event);
 			},

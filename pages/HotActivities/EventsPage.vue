@@ -82,6 +82,43 @@
 						this.loadStatus = "noMore";
 						this.flag = false;
 					}
+					console.log("加载执行成功")
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			
+			if(this.flag == true && this.valValue == '进行中'){
+				this.loadStatus = 'loading';
+				await http.get("/Activity/Events/SelectEvents",{params:{pageNum:this.pageNum, pageSize:4, state:1}}).then(res=>{
+					this.pageNum++;
+					this.EventsList = this.EventsList.concat(res.data.list);
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+					console.log("加载执行成功")
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			
+			if(this.flag == true && this.valValue == '已结束'){
+				this.loadStatus = 'loading';
+				await http.get("/Activity/Events/SelectEvents",{params:{pageNum:this.pageNum, pageSize:4, state:0}}).then(res=>{
+					this.pageNum++;
+					this.EventsList = this.EventsList.concat(res.data.list);
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+					console.log("加载执行成功")
 				}).catch(err=>{
 					console.log(err);
 				})
@@ -155,16 +192,32 @@
 						})
 					}
 					if(this.valValue == "进行中"){
-						http.get("/Activity/Events/SelectEvents",{params:{state:1}}).then(res=>{
-							this.EventsList = res.data;
+						http.get("/Activity/Events/SelectEvents",{params:{pageNum:this.pageNum, pageSize:4, state:1}}).then(res=>{
+							this.EventsList = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+e+"成功");
 						}).catch(err=>{
 							console.log(err);
 						})
 					}
 					if(this.valValue == "已结束"){
-						http.get("/Activity/Events/SelectEvents",{params:{state:0}}).then(res=>{
-							this.EventsList = res.data;
+						http.get("/Activity/Events/SelectEvents",{params:{pageNum:this.pageNum, pageSize:4, state:0}}).then(res=>{
+							this.EventsList = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = "more";
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
 							console.log("获取"+e+"成功");
 						}).catch(err=>{
 							console.log(err);

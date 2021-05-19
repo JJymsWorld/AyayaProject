@@ -13,7 +13,7 @@
 					<view class="CoserHirePage-top-time">线下活动时间: {{CoserHirePageInfo.time}}</view>
 					<view class="CoserHirePage-top-positon">地址: {{CoserHirePageInfo.position}}</view>
 				</view>
-				<view class="CoserHirePage-viewButton" @click="gotoWorksPage">
+				<view class="CoserHirePage-viewButton" @click="gotoWorksPage(opusid)">
 					<view class="CoserHirePage-viewButton-style">查看正片</view>
 				</view>
 			</view>
@@ -30,7 +30,7 @@
 								<text class="AttendCoserlist-content-listItem-header-Character" >{{item.Character_name}}:</text>
 							</view>
 							<view slot="body" class="AttendCoserlist-content-listItem-body">
-								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage">{{item.Coser_name}}</text>
+								<text class="AttendCoserlist-content-listItem-body-Coser" @click="gotoCoserHomePage(item.id)">{{item.Coser_name}}</text>
 								<text class="AttendCoserlist-content-listItem-body-label">#{{item.label}} #{{item.wardCategory}}</text>
 							</view>
 						</uni-list-item>
@@ -45,6 +45,7 @@
 	export default{
 		data(){
 			return{
+				opusid:1,
 				CoserHirePageInfo: {
 					image_url: "../../static/CollectionSources/1.jpg",
 					title: "【季番线下合集】第10期",
@@ -99,14 +100,14 @@
 			}
 		},
 		methods:{
-			gotoWorksPage(){
+			gotoWorksPage(e){
 				uni.navigateTo({
-					url:"../works/works"
+					url:"../works/works?workId=" + e
 				})
 			},
-			gotoCoserHomePage(){
+			gotoCoserHomePage(e){
 				uni.navigateTo({
-					url:"../Mypage/homePage/homePage"
+					url:"../Mypage/homePage/homePage?userId=" + e
 				})
 			}
 		},
