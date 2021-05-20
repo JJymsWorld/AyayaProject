@@ -57,9 +57,12 @@
 						</view>
 					</template>
 				</uni-list-item>
-				<!-- 作品页面 -->
+				
+			</uni-list>
+			<!-- 作品页面 -->
+			<uni-list :border="false">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"
-					:key="item.id" :title="item.text">
+					:key="index" :title="item.text">
 					<!-- 左边作品图片 -->
 					<template v-slot:body>
 						<view class="Img-In-List" @click="gotoWorkPage(item.opus_id)">
@@ -88,7 +91,6 @@
 						</view>
 					</template>
 				</uni-list-item>
-				
 			</uni-list>
 			<uni-load-more :status="loadStatus" ></uni-load-more>
 		</view>

@@ -9,7 +9,7 @@
 		<view class="dynamicBox">
 			<uni-list :border="false">
 				<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in searchWorkList"
-					:key="item.dynamicId">
+					:key="">
 					<template v-slot:body>
 						<view class="dynamicIt" @click="">
 							<view class="dynamnicHead">
