@@ -387,7 +387,7 @@
 
 				if (this.photograph_id) {
 					console.log('1')
-					this.$myRequest({
+					await this.$myRequest({
 						url: '/Order/setListNum',
 						data: {
 							// list_num: this.opus_id,
