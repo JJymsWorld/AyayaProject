@@ -1,10 +1,5 @@
 <template>
 	<view>
-<!-- 		<view style="height: 70rpx;">
-			<navigator url="reset/reset" open-type="navigate">
-				<image src="../../static/icon/设置.png"style="width: 39rpx;height: 39rpx;margin-left:0rpx;margin-top: 40rpx;opacity: 0.5;"mode="aspectFill"></image>
-			</navigator>
-		</view> -->
         <!-- 第一模块：头像、昵称等 -->
 		<view class="head" >
 			<span class="iconfont" @click='resetNavi()'>&#xe60a;</span>
@@ -12,15 +7,20 @@
 		<view class="head1">
 		<table>
 			<tr>
-				<td><image class="avatar" :src="avatar" mode="aspectFill" ></image></td>
-				<td style="vertical-align: top;"><text class="username">{{userName}}</text></td>
+				<td>
+					<image class="avatar" :src="avatar" mode="aspectFill"  v-if="state==1" ></image>
+					<image class="avatar" src="../../static/iconn/avatar.png" mode="aspectFill"  v-if="state==0"></image>
+				</td>
+				<td style="vertical-align: top;"><text  v-if="state==1" class="username">{{userName}}</text>
+					<view class="noLogin" v-if="state==0"@click="loginNavi"><text>点击登录</text></view>
+				</td>
 			</tr>
 		</table>	
 		<view @click="homePageNavi()" style="font-size: 9pt;border: 3rpx solid #797979;opacity: 0.7; border-radius: 9rpx;width: 120rpx;height: 46rpx;position: absolute;top: 30rpx;right: 60rpx;">
 		<text style="line-height: 46rpx;padding-left: 11rpx;color: #797979;">个人主页</text></view>
 		</view>
 		
-		<view style="font-size: 10pt;font-family: Arial;width: 75%;padding-left: 100rpx;margin-top: 20rpx;">
+		<view  v-if="state==1" style="font-size: 10pt;font-family: Arial;width: 75%;padding-left: 100rpx;margin-top: 20rpx;">
 			<text style="line-height: 36rpx;font-size: 9pt;">{{signature}}</text>
 		</view>
 		<!-- 第二模块：关注、粉丝、获应援、获赞与收藏 -->
@@ -86,17 +86,13 @@
 			<view style="border-bottom:1rpx solid #e9e9e9;width: 630rpx;margin-left: 20rpx;height: 60rpx;">
 				<span style="width: 8rpx;height: 25rpx;background-color: #EF89B2;display: inline-block;border-radius: 5rpx;position: absolute;top: 35rpx;left: 20rpx;"></span>
 				<text style="font-size: 13pt;font-weight:500;position: absolute;top: 15rpx;left: 38rpx;">我的约拍</text>
-				<text style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
+				<text @click="lookUpOrder(0)" style="font-size: 9pt;font-weight:500;color: #C0C0C0;position: absolute;top: 30rpx;right: 40rpx;">查看全部订单 ></text>
 			</view>
 			<table style="margin-left: 60rpx;margin-top: 38rpx;width: 380rpx;">
 				<tr>
-					<td>
-						<navigator url="myPic/myPic" open-type="navigate">
-							<image class="sevenlinepic" src="../../static/icon/waiting.png"></image>
-						</navigator>
-					</td>
-					<td><image class="sevenlinepic" src="../../static/icon/doing.png"></image></td>
-					<td><image class="sevenlinepic" src="../../static/icon/complete.png"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/waiting.png"  @click="lookUpOrder(1)"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/doing.png" @click="lookUpOrder(2)"></image></td>
+					<td><image class="sevenlinepic" src="../../static/icon/complete.png" @click="lookUpOrder(3)"></image></td>
 				</tr>
 				<tr>
 					<td style="font-size: 8pt;line-height: 30rpx;">待处理</td>
@@ -110,28 +106,77 @@
 
 <script>
 	export default{
+		onShow() {
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     //this.userIdentity = res.data.identity
+				 this.avatar = res.data.header_pic || '../../static/iconn/avatar.png'
+				 this.userName = res.data.user_name
+				 this.signature = res.data.autograph || '你还没有个性签名哦！'
+				 this.fanN = res.data.focus_num
+				 this.starN = res.data.focused_num
+				 this.praiseN = res.data.raised_num
+			    }
+			});
+			
+			uni.getStorage({
+			    key: 'state',
+			    success: res => {
+			        //console.log('success');
+					this.state = res.data
+					//console.log("state:")
+					//console.log(res.data)
+			    }
+			});
+		},
+		onLoad() {
+			this.userId=getApp().globalData.global_userId || '12'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     //this.userIdentity = res.data.identity
+				 this.avatar = res.data.header_pic || '../../static/iconn/avatar.png'
+				 this.userName = res.data.user_name
+				 this.signature = res.data.autograph || '你还没有个性签名哦！'
+				 this.fanN = res.data.focus_num
+				 this.starN = res.data.focused_num
+				 this.praiseN = res.data.raised_num
+			    }
+			});
+			
+			uni.getStorage({
+			    key: 'state',
+			    success: res => {
+			        //console.log('success');
+					this.state = res.data
+					//console.log("state:")
+					//console.log(res.data)
+			    }
+			});
+		},
 		data(){
-			// userId:'';
-			// userName:'';
-			// avatar:'../../static/iconn/2.jpg';
-			// signature:'你还没有个性签名哦！';
-			// interestN:'2';
-			// fanN:'0';
-			// starN:'0';
-			// praiseN:'23'
 			return{
+				state:'',
 				userId:'1234',
 				userName:'jenniee',
-				avatar:'../../static/iconn/2.jpg',
+				avatar:'../../static/iconn/avatar.png',
 				signature:'你还没有个性签名哦！',
-				interestN:'2',
+				interestN:'0',
 				fanN:'0',
 				starN:'0',
-				praiseN:'33'
+				praiseN:'0'
 			}
 
 		},
 		methods:{
+			loginNavi(){
+				uni.navigateTo({
+					url:'../login/login'
+				})
+			},
 			focusNavi(i){
 				uni.navigateTo({
 					url:'foucsAndFan/focus?userId='+i
@@ -154,7 +199,7 @@
 			},
 			homePageNavi(){
 				uni.navigateTo({
-					url:'homePage/homePage?userId='+this.userId+'&userId2='+this.userId
+					url:'homePage/homePage?userId='+this.userId
 				})
 			},
 			myCollectionNavi(){
@@ -166,6 +211,18 @@
 				uni.navigateTo({
 					url:'myWishList/myWishList'
 				})
+			},
+			lookUpOrder(i){
+			    if(this.userIdentity == 3){
+			     uni.navigateTo({
+			      url:'../pictureOrder/photographer/phorder?currentIndex='+i
+			     })
+			    }
+			    else{
+			     uni.navigateTo({
+			      url:'../pictureOrder/coser/cosorder?currentIndex='+i
+			     })
+			    }
 			}
 		}
 	}
@@ -175,6 +232,14 @@
 	@import url("icon.css");
 	page {
 	background-color:#FBFBFB;
+	}
+	.noLogin{
+		font-size: 28rpx;
+		padding-left: 20rpx;
+		color: #f2a3c3;
+		line-height: 70rpx;
+		/* font-size: 13pt; */
+		/* font-weight: bold; */
 	}
 	.head{
 		position: relative;

@@ -48,16 +48,22 @@
 		color: #65A6FF;
 		font-weight: 700;
 	}
-	.content-item input{
+	.content-item .chooseAt-box-placehold{
 		float: left;
 		width: 70%;
 		font-size: 13px;
 		line-height: 20px;
+		color: #646566;
 	}
 	.works-article textarea{
 		width: 100%;
 		height: 150rpx;
 		font-size: 14px;
+	}
+	.atPerson-box{
+		padding: 15rpx;
+		font-size: 14px;
+		color: #65A6FF;
 	}
 	.line{
 		width: 100%;

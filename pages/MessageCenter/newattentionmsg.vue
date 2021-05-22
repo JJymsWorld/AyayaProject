@@ -1,25 +1,38 @@
 <template>
 	<view>
-		<view class="row-box message-box">
-			<view class="message-item">
-				<view class="message-item-lbox">
-					<image src="../../static/image1.png" mode="widthFix"></image>
-				</view>
-				<view class="message-item-rbox">
-					<view class="message-item-rbox-left">
-						<view class="">
-							<text>机智的党妹</text>
+		<uni-list :border="false">
+			<uni-list-item clickable @click="" class="message-item" :border="false" :ellipsis='2' direction="row"
+				v-for="(item, index) in focusedList" :key="index">
+				<!-- 左边头像 -->
+				<template v-slot:body>
+					<view class="message-item-lbox" @click="gotoUserHomePage(item.account_a)">
+						<image :src="item.header_pic" mode="widthFix"></image>
+					</view>
+				</template>
+				<!-- 右边信息 -->
+				<template v-slot:footer>
+					<view class="message-item-rbox">
+						<view class="message-item-rbox-left">
+							<view class="">
+								<text @click.stop="gotoUserHomePage(item.account_a)">{{item.user_name}}</text>
+							</view>
+							<view class="">
+								<text class="text2">对方关注了你～</text>
+							</view>
+							<view class="">
+								<text class="text2">{{item.date}}</text>
+							</view>
 						</view>
-						<view class="">
-							
-						</view>
-						<view class="">
-							<text class="text2">2020-12-08  21：33</text>
+						<view class="message-item-rbox-right">
+							<uni-fav :checked="item.isFocus == 1" star="false" :contentText="contentText"
+								bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)"
+								fgColor="#333333"></uni-fav>
 						</view>
 					</view>
-				</view>
-			</view>
-		</view>
+				</template>
+			</uni-list-item>
+		</uni-list>
+		<uni-load-more :status="loadStatus"></uni-load-more>
 	</view>
 </template>
 
@@ -27,55 +40,99 @@
 	export default {
 		data() {
 			return {
-				
+				useId: null, // 登录者的Id
+				loadStatus: "onMore",
+				pageNum: 1, // 分页标记
+				pageSize: 10,
+				focusedList: [],
+				focusedListTotal: null, // 搜索到的被关注总数
+				contentText: {
+					contentDefault: '关注',
+					contentFav: '已关注'
+				}
 			}
 		},
 		methods: {
-			
+			// 进入用户个人主页
+			gotoUserHomePage: function(userId) {
+				console.log(userId)
+				uni.navigateTo({
+					url: '../Mypage/homePage/homePage?userId=' + userId
+				})
+			},
+			// 进入作品详情页面
+			gotoWorkPage: function() {
+				uni.navigateTo({
+					url: '../works/works'
+				})
+			},
+			// 进入动态详情页面
+			gotoDynamicPage: function() {
+				uni.navigateTo({
+					url: '../DynamicPage/dynamicDetails'
+				})
+			},
+			// 改变关注状态
+			LikeBtnClick(i) {
+				// 关注
+				if (this.focusedList[i].isFocus == 1) {
+					this.focusedList[i].isFocus = 0
+				} else { // 取消关注
+					this.focusedList[i].isFocus = 1
+				}
+			},
+			// 获取新增关注列表
+			async onGetFocusedList() {
+				const res = await this.$myRequest({
+					url: '/Contact/getFocusedList',
+					data: {
+						pageNum: this.pageNum,
+						pageSize: this.pageSize,
+						user_id: this.userId
+					}
+				})
+				for (var item in res.data.list) {
+					//  处理Date数据类型
+					res.data.list[item].date = this.$Format(res.data.list[item].date, "yyyy-MM-dd")
+				}
+				return res.data
+			}
+		},
+		// 加载更多
+		async onReachBottom() {
+			const sum = this.pageNum * this.pageSize
+			// 加载更多数据
+
+			if (this.focusedListTotal > sum) {
+				this.loadStatus = 'loading'
+				this.pageNum++
+
+				const res1 = await this.onGetFocusedList()
+				this.focusedList = this.focusedList.concat(res1.list.reverse())
+
+			} else {
+				this.loadStatus = 'noMore'
+			}
+
+		},
+		async onShow() {
+			const res = await this.onGetFocusedList()
+			this.focusedList = res.list.reverse()
+			console.log(this.focusedList)
+			this.focusedListTotal = res.total
+			console.log(this.focusedListTotal)
+		},
+		onLoad(option) {
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					this.userId = res.data
+				}
+			});
 		}
 	}
 </script>
-	
-<style>
-	@import url("../../static/css/login.css");
-	.message-box{
-		width: 90%;
-	}
-	.message-item{
-		margin-bottom: 17px;
-	}
-	.message-item-lbox{
-		float: left;
-		width: 15%;
-	}
-	.message-item-lbox image{
-		width: 100%;
-		border-radius: 50%;
-	}
-	.message-item-rbox{
-		float: right;
-		overflow: hidden;
-		width: 80%;
-		height: 50px;
-		font-size: 14px;
-		font-family: 'PingFang SC';
-		padding: 5px 0;
-		border-bottom: solid 1px rgba(121, 121, 121, 0.1);
-	}
-	.message-item-rbox-left{
-		float: left;
-		width: 100%;
-		height: 100%;
-	}
-	.message-item-rbox-left view{
-		height: 33%;
-	}
-	.message-item-rbox-left text{
-		font-size: 14px;
-		font-family: 'PingFang SC';
-	}
-	.message-item-rbox-left .text2{
-		font-size: 12px;
-		color: #797979;
-	}
+
+<style lang="scss" scoped>
+	@import url("./collectmsg.css");
 </style>

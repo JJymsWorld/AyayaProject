@@ -5,27 +5,31 @@
 				我的订单信息
 			</view>
 			<view class="row-box">
-				拍摄要求：{{cosordermsg.demand}}
+				拍摄要求：{{cosordermsg.content}}
 			</view>
 			<view class="row-box">
-				拍摄时间：{{cosordermsg.time}}
+				拍摄时间：{{cosordermsg.date}}
 			</view>
 			<view class="row-box">
-				拍摄地点：{{cosordermsg.city}}
+				拍摄地点：{{cosordermsg.area}}
 			</view>
 			<view class="row-box">
 				拍摄酬劳：{{cosordermsg.money}}
 			</view>
 			<view class="row-box">
 				订单状态：
-				<text>{{cosordermsg.state}}</text>
+				<text v-if='cosordermsg.state == 0'>对方已拒绝</text>
+				<text v-if='cosordermsg.state == 1'>待处理</text>
+				<text v-if='cosordermsg.state == 2 || cosordermsg.state == 3'>进行中</text>
+				<text v-if='cosordermsg.state == 4'>已完成</text>
+				<text v-if='cosordermsg.state == 5'>已取消</text>
 			</view>
-			<view class="row-box">
+			<view class="row-box" v-if='cosordermsg.state == 1'>
 				<view class="bottom-box">
-					<view class="btn1" @click="onCancleOrder">
+					<view class="btn1" @click="editOrderMsg">
 						修改订单信息
 					</view>
-					<view class="btn2" @click="editOrderMsg">
+					<view class="btn2" @click="onCancleOrder()">
 						取消订单
 					</view>
 				</view>
@@ -38,13 +42,19 @@
 	export default {
 		data() {
 			return {
-
+				
 			}
 		},
 		methods: {
-
+			
 		},
 		props: {
+			photograph_id:{
+				type: String,
+				default: function() {
+					return '';
+				}
+			},
 			cosordermsg: {
 				type: Object,
 				default: function() {
@@ -54,13 +64,17 @@
 			onCancleOrder: {
 				type: Function,
 				default: function() {
-					return function() {}
+					return function() {
+						
+					}
 				}
 			},
 			editOrderMsg: {
 				type: Function,
 				default: function() {
-					return function() {}
+					return function() {
+						
+					}
 				}
 			}
 		},

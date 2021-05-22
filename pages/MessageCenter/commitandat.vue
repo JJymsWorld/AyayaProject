@@ -1,28 +1,35 @@
 <template>
 	<view>
-		<view class="row-box message-box">
-			<view class="message-item">
-				<view class="message-item-lbox">
-					<image src="../../static/image1.png" mode="widthFix"></image>
-				</view>
-				<view class="message-item-rbox">
-					<view class="message-item-rbox-left">
-						<view class="">
-							<text>机智的党妹</text>
+		<uni-list :border="false">
+			<uni-list-item clickable @click="" class="message-item" :border="false" :ellipsis='2' direction="row" v-for="(item, index) in commentList" :key="index">
+				<!-- 左边头像 -->
+				<template v-slot:body>
+					<view class="message-item-lbox" @click="gotoUserHomePage(item.user_id)">
+						<image :src="item.header_pic" mode="widthFix"></image>
+					</view>
+				</template>
+				<!-- 右边信息 -->
+				<template v-slot:footer>
+					<view class="message-item-rbox" @click="gotoWorkPage(item.dynamic_id)">
+						<view class="message-item-rbox-left">
+							<view class="">
+								<text @click.stop="gotoUserHomePage(item.user_id)">{{item.user_name}}</text>
+							</view>
+							<view class="">
+								<text class="text2">回复：{{item.item}}</text>
+							</view>
+							<view class="">
+								<text class="text2">{{item.comment_time}}</text>
+							</view>
 						</view>
-						<view class="">
-							<text class="text2">回复：你真好看</text>
-						</view>
-						<view class="">
-							<text class="text2">2020-12-08  21：33</text>
+						<view class="message-item-rbox-right">
+							<image :src="item.opus_photos" mode="aspectFill"></image>
 						</view>
 					</view>
-					<view class="message-item-rbox-right">
-						<image src="../../static/worksimg.png" mode="heightFix"></image>
-					</view>
-				</view>
-			</view>
-		</view>
+				</template>
+			</uni-list-item>
+		</uni-list>
+		<uni-load-more :status="loadStatus"></uni-load-more>
 	</view>
 </template>
 
@@ -30,71 +37,87 @@
 	export default {
 		data() {
 			return {
-				
+				useId: null, // 登录者的Id
+				loadStatus: "onMore",
+				pageNum: 1, // 分页标记
+				pageSize: 10,
+				commentList: [],
+				commentListTotal: null, // 搜索到的被关注总数
 			}
 		},
 		methods: {
-			
+			// 进入用户个人主页
+			gotoUserHomePage: function(userId) {
+				console.log(userId)
+				uni.navigateTo({
+					url: '../Mypage/homePage/homePage?userId=' + userId
+				})
+			},
+			// 进入作品详情页面
+			gotoWorkPage: function(workId) {
+				uni.navigateTo({
+					url: '../works/works?workId=' + workId
+				})
+			},
+			// 进入动态详情页面
+			gotoDynamicPage: function(){
+				uni.navigateTo({
+					url: '../DynamicPage/dynamicDetails'
+				})
+			},
+			// 获取评论列表
+			async onGetCommentList() {
+				const res = await this.$myRequest({
+					url: '/Contact/getCommentList',
+					data: {
+						pageNum: this.pageNum,
+						pageSize: this.pageSize,
+						user_id: this.userId
+					}
+				})
+				for (var item in res.data.list) {
+					//  处理Date数据类型
+					res.data.list[item].comment_time = this.$Format(res.data.list[item].comment_time, "yyyy-MM-dd")
+				}
+				return res.data
+			}
+		},
+		// 加载更多
+		async onReachBottom() {
+			const sum = this.pageNum * this.pageSize
+			// 加载更多数据
+		
+			if (this.commentListTotal > sum) {
+				this.loadStatus = 'loading'
+				this.pageNum++
+		
+				const res1 = await this.onGetCommentList()
+				this.commentList = this.commentList.concat(res1.list.reverse())
+		
+			} else {
+				this.loadStatus = 'noMore'
+			}
+		
+		},
+		async onShow() {
+			const res = await this.onGetCommentList()
+			this.commentList = res.list.reverse()
+			console.log(this.commentList)
+			this.commentListTotal = res.total
+			console.log(this.commentListTotal)
+		},
+		onLoad(option) {
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					this.userId = res.data
+				}
+			});
 		}
 	}
 </script>
-	
-<style>
-	@import url("../../static/css/login.css");
-	.message-box{
-		width: 90%;
-	}
-	.message-item{
-		margin-bottom: 17px;
-	}
-	.message-item-lbox{
-		float: left;
-		width: 15%;
-	}
-	.message-item-lbox image{
-		width: 100%;
-		border-radius: 50%;
-	}
-	.message-item-rbox{
-		float: right;
-		overflow: hidden;
-		width: 80%;
-		height: 50px;
-		font-size: 14px;
-		font-family: 'PingFang SC';
-		padding: 5px 0;
-		border-bottom: solid 1px rgba(121, 121, 121, 0.1);
-	}
-	.message-item-rbox-left{
-		float: left;
-		width: 70%;
-		height: 100%;
-	}
-	.message-item-rbox-left view{
-		height: 33%;
-	}
-	.message-item-rbox-left image{
-		height: 100%;
-	}
-	.message-item-rbox-left text{
-		font-size: 14px;
-		font-family: 'PingFang SC';
-	}
-	.message-item-rbox-left .text2{
-		font-size: 12px;
-		color: #797979;
-	}
-	.message-item-rbox-right{
-		height: 100%;
-		float: right;
-	}
-	.message-item-rbox-right image{
-		height: 100%;
-		border-radius: 10px;
-	}
-	.message-item-rbox .text3{
-		color: #797979;
-		font-size: 12px;
-		line-height: 20px;
-	}
+
+<style lang="scss" scoped>
+	@import url("./collectmsg.css");
 </style>
+

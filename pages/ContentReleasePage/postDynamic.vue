@@ -1,5 +1,20 @@
 <template>
 	<view class="box">
+		<!-- 至少选择一张图片上传 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请至少选择一张图片上传哦～" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请先同意《用户自制内容协议》 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请先同意《用户自制内容协议》" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 是否发布动态 -->
+		<uni-popup ref="popup3" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="确认发布动态吗？" :before-close="true" @close="close"
+				@confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 		<view class="my-content">
 			<!-- 图片 -->
 			<view class="row-box choose-image-box">
@@ -9,9 +24,19 @@
 			<!-- 内容和正文一样重要哦！ -->
 			<view class="row-box">
 				<view class="works-article">
-					<textarea type="text" value="" placeholder="正文和内容一样重要哦！" />
+					<textarea type="text" :value="this.article" placeholder="快来编辑一条动态内容吧!" @input="onArticleInput" />
+				</view>
+				<!-- 显示@用户 -->
+				<view class="atPerson-box" v-if="this.atPersonList.length != 0">
+					<text>{{atPersonLabel}}</text>
+				</view>
+				<!-- 显示标签 -->
+				<view class="markLabel-box" v-if="this.markLabel.length != 0">
+					<robby-tags v-model="markLabel" @delete="delTag"
+						@click="" :enable-del="enableDel"></robby-tags>
 				</view>
 			</view>
+			
 		</view>
 		<view class="line"></view>
 		<!-- 同意用户自制内容协议 -->
@@ -39,35 +64,55 @@
 		<!-- 底部固定栏 -->
 		<view class="fixed-bottom-box">
 			<view class="row-box bottom-box">
-				<image src="@/static/at.png" mode="widthFix"></image>
-				<image src="@/static/addlabel.png" mode="widthFix"></image>
+				<image src="@/static/at.png" mode="widthFix" @click="onChooseAt"></image>
+				<image src="@/static/addlabel.png" mode="widthFix" @click="onChooseLabel"></image>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import robbyTags from '@/components/robby-tags/myrobby-tags.vue'
 	import gUpload from "@/components/g-upload/g-upload.vue"
 	export default {
 		data() {
 			return {
+				enableDel: true,
 				ifagree: false,
-				ifpostdynamic: false,
 				ifdownloadimag: false,
 				columnNum: 4, //	上传图片显示几列
 				maxCount: 9, //	最多上传图片数量
 				images: [],
+				userId: null, 	// 用户id
+				article: '',	// 标记正文内容
+				atPersonLabel: '',
+				atPersonList: [],
+				atPersonId: [],
+				markLabel: [],
+				markList: [],
+				markId: []
 			}
 		},
 		components: {
-			gUpload
+			gUpload,
+			robbyTags
 		},
 		methods: {
+			// 删除标签事件
+			delTag: function(e) {
+				this.markLabel = e.allTags
+				for(var i in this.markList){
+					const label = '#' + this.markList[i].mark + '#'
+					if(label == e.currentTag){
+						this.markList.splice(i, 1)
+						break;
+					}
+				}
+				console.log(this.markLabel)
+				console.log(this.markList)
+			},
 			onChangeAgree: function() {
 				this.ifagree = !this.ifagree;
-			},
-			onChangePostDynamic: function() {
-				this.ifpostdynamic = !this.ifpostdynamic;
 			},
 			onChangeLimit: function() {
 				this.ifdownloadimag = !this.ifdownloadimag;
@@ -89,6 +134,7 @@
 						uri: value
 					}
 				})
+				console.log("images:-----------")
 				console.log(this.images)
 			},
 			// 删除图片
@@ -100,73 +146,137 @@
 					}
 				})
 				console.log(this.images)
-			}
+			},
+			// 选择@的用户
+			onChooseAt: function() {
+
+				const that = this
+				console.log(that.atPersonList)
+				uni.navigateTo({
+					url: './at',
+					// animationType:'slide-in-right',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('emitAtPersonList', {
+							atPersonList: that.atPersonList
+						})
+					}
+				})
+			},
+			// 选择热门话题
+			onChooseLabel: function() {
+				uni.navigateTo({
+					url: './label',
+					// animationType:'slide-in-right',
+				})
+			},
+			onArticleInput: function(e) {
+				this.article = e.detail.value
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确认发布动态
+			confirm: function() {
+				this.markId = []
+				for(var i in this.markList){
+					const item = this.markList[i]
+					this.markId.push(item.mark_id + '，' + item.mark)
+				}
+				console.log(this.markId)
+				uni.uploadFile({
+					url: 'http://81.68.73.252:8086/ContentReleasePage/dynamic',
+					files: this.images,
+					formData: {
+						'user_id': this.userId,
+						'mainBody': this.article,
+						'callUser': this.atPersonId,
+						'mark_id': this.markId
+					},
+					success: uploadFileRes => {
+						// console.log(uploadFileRes.data);
+						console.log(uploadFileRes)
+					}
+				});
+				
+				// 跳转至个人主页
+				uni.redirectTo({
+				    url: '../Mypage/homePage/homePage?showToast=1'
+				});
+			},
 		},
+		
 		// 页面导航栏按钮点击事件
-		async onNavigationBarButtonTap() {
+		onNavigationBarButtonTap() {
 			
-			uni.uploadFile({
-			    url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
-			    files: this.images,
-				formData: {
-					'user_id': 13,
-				    'callUser': 9,
-					'mainBody': 'test'
-				},
-			    success: (uploadFileRes) => {
-			        // console.log(uploadFileRes.data);
-					console.log(uploadFileRes)
-			    }
-			});
+			// 如果未选择图片
+			if (this.images.length == 0) {
+				this.$refs.popup1.open()
+			}
+			// 如果未同意《用户自制内容协议》
+			else if (!this.ifagree) {
+				this.$refs.popup2.open()
+			} else {
+				this.$refs.popup3.open()
+			}
 
-			// uni.uploadFile({
-			//     url: 'http://8.136.216.96:8086/Date/PhotographerList/applyStayInPg', 
-			//     files: this.images,
-			// 	formData: {
-			// 	    'city': '杭州',
-			// 		'nick_name': 'wwweng',
-			// 		'phone_num': 17395710519,
-			// 		'real_name': '翁馨',
-			// 		'user_id': 17395710519
-			// 	},
-			//     success: (uploadFileRes) => {
-			//         // console.log(uploadFileRes.data);
-			// 		console.log(uploadFileRes)
-			//     }
-			// });
-			
-			// uni.request({
-			// 	header: {
-			// 		"Content-Type": "application/x-www-form-urlencoded"
-			// 	},
-			// 	url: "http://8.136.216.96:8086/ContentReleasePage/dynamic", //仅为示例，并非真实接口地址。
-			// 	method: 'POST',
-			// 	data: {
-			// 		callUser: 13,
-			// 		mainBody: 'test',
-			// 		img: this.images[0].uri
-			// 	},
-			// 	dataType: 'json',
-			// 	success: (res) => {
-			// 		//var result = JSON.parse(res.data.projectList);
-			// 		console.log(res)
+			// // 提取json文件键字对
+			// const res = await this.$myRequest({
+			// 	url:'/MyPage/HomePage/dynamic',
+			// 	data:{
+			// 		user_id: 13
 			// 	}
-			// });
+			// })
+			// // 提取json文件键字对
+			// console.log(res.data[0].photos)
 
-			// // 上传图片至服务器
-			// uni.uploadFile({
-			//     url: 'http://8.136.216.96:8086/ContentReleasePage/dynamic', 
-			//     files: this.images,
-			//     success: (uploadFileRes) => {
-			//         console.log(uploadFileRes.data);
-			//     }
-			// });
-			// //上传其他信息
+			// var photoes = res.data[0].photos
+			// console.log(photoes)
+			// var jsonObj = eval('('+photoes+')')
+			// console.log(jsonObj)
+			// for (var prop in jsonObj)
+			// {
+			//     //输出 key-value值
+			//     //console.log("jsonObj[" + prop + "]=" + jsonObj[prop]);
+			// 	console.log(jsonObj[prop]);
+			// 	this.photoes.push(jsonObj[prop])
+			// }   
 
-			// 跳转至首页
-			uni.switchTab({
-				url:"../Index_Recommend/Index_Hot"
+		},
+		onShow() {
+			// 获取@用户名
+			uni.$on("emitChoosePersonName", res => {
+				this.atPersonLabel = res.choosePersonName
+				this.atPersonList = res.atPersonList
+				this.atPersonId = []
+				for(var item in res.atPersonList){
+					this.atPersonId.push(res.atPersonList[item].userId)
+				}
+				console.log(this.atPersonId)
+				console.log(this.article)
+				// 清除监听
+				uni.$off("emitChoosePersonName");
 			})
+			// 获取热门话题标签
+			uni.$on("emitAddHotTopic", res => {
+				this.markLabel.push(res.label)
+				this.markList.push(res.mark_item)
+				console.log(this.markLabel)
+				console.log(this.markList)
+				// 清除监听
+				uni.$off("emitAddHotTopic");
+			})
+		},
+		onLoad(){
+			// 获取登录账号userID
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 		}
 	}
 </script>
@@ -182,7 +292,7 @@
 
 	.works-article textarea {
 		width: 100%;
-		height: 450rpx;
+		height: 200rpx;
 		font-size: 14px;
 	}
 </style>

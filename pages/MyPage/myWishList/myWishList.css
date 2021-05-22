@@ -12,6 +12,7 @@
 	background-color: #FFFFFF;
 	border-radius: 20rpx;
 	box-shadow:4px 4px 4px 4px rgba(221, 221, 221, 0.1);
+	margin-bottom: 20rpx;
 }
 .workBox image{
 	position: absolute;

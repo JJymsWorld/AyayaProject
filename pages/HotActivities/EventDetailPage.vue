@@ -3,7 +3,7 @@
 		<view class="EventDetailPage-wrapper">
 			<view class="EventDetail-top">
 				<view class="EventDetail-top-cover">
-					<image :src="EventDetailPageInfo.image_url" mode="widthFix" class="EventDetail-top-image"></image>
+					<image :src="EventDetailPageInfo.photo" mode="widthFix" class="EventDetail-top-image"></image>
 				</view>
 				<view class="EventDetail-top-timer">
 					<view :class="['fas','fa-hourglass-half']" class="EventDetail-top-timer-icon"></view>
@@ -13,13 +13,14 @@
 					</view>
 				</view>
 				<view class="EventDetail-top-title">
-					{{EventDetailPageInfo.title}}
+					{{EventDetailPageInfo.tab}}
 				</view>
 				<view class="EventDetail-top-content">
-					<view class="EventDetail-top-content-line" v-for="(item,index) in EventDetailPageInfo.content"
-						:key="index">{{item}}</view>
+					<!-- <view class="EventDetail-top-content-line" v-for="(item,index) in EventDetailPageInfo.content"
+						:key="index">{{item}}</view> -->
+					<view class="EventDetail-top-content-line">{{EventDetailPageInfo.content}}</view>
 				</view>
-				<view class="EventDetail-top-viewButton">
+				<view class="EventDetail-top-viewButton" @click="gotoPostWorksPage">
 					<view class="EventDetail-top-viewButton-style">我要参加</view>
 				</view>
 			</view>
@@ -46,22 +47,22 @@
 				</view>
 				<view class="EventDetail-bottom-works-list">
 					<view class="content-box">
-						<waterfallsFlow :list="AttendWorksList">
+						<waterfallsFlow ref="waterfallsFlow" :list="AttendWorksList" @wapper-lick="gotoWorksPage()" imageSrcKey="opus_photos" idKey="opus_id">
 							<template v-slot:default="item" class="content-box-item">
 								<view class="cnt">
 									<view class="title">{{item.title}}</view>
 									<view class="user-info-box">
-										<image class="user-head-img" :src="item.headImg" mode="aspectFill"></image>
-										<view class="user-name">{{item.userName}}</view>
+										<image class="user-head-img" :src="item.header_pic" mode="aspectFill" @click.stop="gotoUserHomePage()"></image>
+										<view class="user-name" @click.stop="gotoUserHomePage()">{{item.user_name}}</view>
 										<!-- <view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.supportNum}}
 										</view> -->
-										<view class="view-num" >应援值: {{item.supportNum}}
+										<view class="view-num" >应援值: {{item.raised_money}}
 										</view>
 									</view>
 								</view>
 							</template>
 						</waterfallsFlow>
-						<uni-load-more status="noMore"></uni-load-more>
+						<uni-load-more :status="loadStatus"></uni-load-more>
 					</view>
 				</view>
 			</view>
@@ -77,17 +78,72 @@
 			xwCountDown,
 			waterfallsFlow
 		},
+		async onLoad(options) {
+			console.log(options.activity_id);
+			const http = new this.$Request();
+			this.activityid = options.activity_id;
+			await http.get("http://81.68.73.252:8086/Activity/EventDetail/getEventDetail", {params:{activityId:this.activityid}}).then(res=>{
+				this.EventDetailPageInfo = res.data[0];
+			}).catch(err=>{
+				console.log(err);
+			});
+			
+			if(this.initList == true){
+				await http.get("/Activity/getJoiningOpus",{params:{activity_id:this.activityid, pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.initList = false;
+					this.pageNum++;
+					this.AttendWorksList = res.data.list;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = 'more';
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore"
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+				this.$refs.waterfallsFlow.refresh();
+			}
+		},
+		async onReachBottom() {
+			const http = new this.$Request();
+			if(this.flag == true){
+				this.loadStatus = "loading";
+				await http.get("/Activity/getJoiningOpus",{params:{activity_id:this.activityid, pageNum:this.pageNum, pageSize:4}}).then(res=>{
+					this.pageNum++;
+					this.AttendWorksList = this.AttendWorksList.concat(res.data.list);
+					if(res.data.hasNextPage == true){
+						this.loadStatus = 'more';
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				});
+				this.$refs.waterfallsFlow.refresh();
+			}
+		},
 		data() {
 			return {
+				activityid:1,
 				tabIndex:0,
+				pageNum:1,
+				pageSize:0,
+				initList:true,
+				flag:true,
+				loadStatus:"noMore",
 				EventDetailPageInfo: {
 					image_url: "../../static/EventsSource/1.jpg",
 					title: "【Cos正片征集】第10-9期",
-					content: [
-						' 本期Cos人物',
-						'《请问您今天要来点兔子吗?》保登 心爱',
-						' 快来晒出你的Cos正片吧!!!'
-					],
+					// content: [
+					// 	' 本期Cos人物',
+					// 	'《请问您今天要来点兔子吗?》保登 心爱',
+					// 	' 快来晒出你的Cos正片吧!!!'
+					// ],
+					content:"本期Cos人物\n《请问您今天要来点兔子吗?》保登 心爱\n快来晒出你的Cos正片吧！！！",
 					deadline: "2021-04-15 20:00:00"
 				},
 				datatime: 0,
@@ -160,12 +216,29 @@
 			tabChangeToTwo(){
 				this.tabIndex = 2
 				console.log(this.tabIndex)
+			},
+			// 进入用户个人主页
+			gotoUserHomePage: function(){
+				uni.navigateTo({
+					url: '../Mypage/homePage/homePage'
+				})
+			},
+			// 进入作品详情页面
+			gotoWorksPage: function(){
+				uni.navigateTo({
+					url: '../works/works'
+				})
+			},
+			gotoPostWorksPage(){
+				uni.navigateTo({
+					url:"../ContentReleasePage/postWorks"
+				})
 			}
 
 		},
 		computed: {
 			getDatetime() {
-				let endtime = new Date(this.EventDetailPageInfo.deadline)
+				let endtime = new Date(this.EventDetailPageInfo.activity_time)
 				return endtime.getTime() / 1000
 			}
 		}

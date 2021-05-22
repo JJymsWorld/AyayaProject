@@ -6,13 +6,13 @@
 		<view class="uni-combox__input-box">
 			<input :disabled="inputDisabled" class="uni-combox__input" type="text" :placeholder="placeholder" v-model="inputVal" @input="onInput"
 			 @focus="onFocus" @blur="onBlur" />
-			<uni-icons class="uni-combox__input-arrow" type="arrowdown" size="14" @click="toggleSelector"></uni-icons>
+			<uni-icons class="uni-combox__input-arrow" :type="iconType" :size="iconSize" @click="toggleSelector"></uni-icons>
 			<view class="uni-combox__selector" v-if="showSelector">
 				<scroll-view scroll-y="true" class="uni-combox__selector-scroll">
 					<view class="uni-combox__selector-empty" v-if="filterCandidatesLength === 0">
 						<text>{{emptyTips}}</text>
 					</view>
-					<view class="uni-combox__selector-item" v-for="(item,index) in filterCandidates" :key="index" @click="onSelectorClick(index)">
+					<view class="uni-combox__selector-item" v-for="(item,index) in candidates" :key="index" @click="onSelectorClick(index)">
 						<text>{{item}}</text>
 					</view>
 				</scroll-view>
@@ -65,6 +65,14 @@
 			value: {
 				type: [String, Number],
 				default: ''
+			},
+			iconType:{
+				type: String,
+				default: 'arrowdown'
+			},
+			iconSize:{
+				type:Number,
+				default:14
 			}
 		},
 		data() {
@@ -112,7 +120,7 @@
 				}, 153)
 			},
 			onSelectorClick(index) {
-				this.inputVal = this.filterCandidates[index]
+				this.inputVal = this.candidates[index]
 				this.showSelector = false
 				this.$emit('input', this.inputVal)
 			},
@@ -161,7 +169,7 @@
 	}
 
 	.uni-combox__input-arrow {
-		padding: 10px;
+		padding: 6rpx;
 	}
 
 	.uni-combox__selector {

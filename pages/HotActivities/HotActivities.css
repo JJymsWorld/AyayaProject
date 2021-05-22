@@ -102,16 +102,22 @@
 }
 
 .Events-list-item-body{
+	width: 90%;
     font-size: 30rpx;
     margin-bottom: 20rpx;
+	margin: 30rpx auto;
 }
-
+.Events-list-item-body-text{
+	padding-left: 20rpx;
+	line-height: 45rpx;
+}
 .Events-list-item-footer{
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 26rpx;
     margin-left: 20rpx;
+	margin-bottom: 15rpx;
 }
 
 .Events-list-item-footer-EventsActive{
@@ -132,6 +138,9 @@
     text-align: center;
     border-style: none;
     border-radius: 20rpx;
+}
+.Events-list-item-footer-left{
+	margin-left: 10rpx;
 }
 .Events-list-item-footer-right{
     color: #797979;
@@ -394,6 +403,7 @@
 .EventDetail-top-content-line{
     margin-top: 5rpx;
     margin-bottom: 5rpx;
+	white-space: pre;
 }
 .EventDetail-top-viewButton{
     display: flex;

@@ -1,3 +1,12 @@
+ul,li{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+li{
+	display: inline-block;
+	width: 100rpx;
+}
 .focusBox{
 	background-color: #FFFFFF;
 }
@@ -34,6 +43,22 @@
 	font-size: 23rpx;
 	line-height: 40rpx;
 }
+.noIcon{
+	width: 100%;
+	text-align: center;
+	padding-top: 200rpx;
+}
+.noIcon span{
+	font-size: 100rpx;
+	text-align: center;
+}
+.noFocus{
+	width: 100%;
+	font-size: 30rpx;
+	color: #aaaaaa;
+	text-align: center;
+	padding-top: 30rpx;
+}
 .cancelButton{
 	position: absolute;
 	top: 40rpx;
@@ -43,7 +68,7 @@
 	border: 1rpx solid rgba(104,104,104,0.3);
 	border-radius: 30rpx;
 	text-align: center;
-	line-height: 40rpx;
+	line-height: 35rpx;
 }
 .cancelButtonNot{
 	position: absolute;
@@ -54,14 +79,14 @@
 	border: 1rpx solid #EC808D;
 	border-radius: 30rpx;
 	text-align: center;
-	line-height: 40rpx;
+	line-height: 35rpx;
 }
 .cancelButton text{
-	font-size: 20rpx;
+	font-size: 23rpx;
 	color: rgba(104,104,104,0.3);
 }
 .cancelButtonNot text{
-	font-size: 20rpx;
+	font-size: 23rpx;
 	color: #EC808D;
 }
 .uni-list::before{

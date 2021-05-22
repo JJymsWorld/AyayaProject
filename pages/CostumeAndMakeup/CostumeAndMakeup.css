@@ -65,15 +65,17 @@
 .topic-lable{
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 40rpx;
-    width: 95%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     border-style: none;
     border-radius: 20rpx;
     background-color: white;
     box-shadow: 2px 2px 10px rgba(134,134,134,0.2);
+    padding: 14rpx;
 }
 
 .topic-lable-left{
@@ -83,10 +85,10 @@
     color: white;
     background-color: #FF6EA2;
     padding: 4rpx 10rpx;
-    margin-right: 20rpx;
+    /* margin-right: 20rpx; */
     text-align: center;
-    margin-top: 10rpx;
-    margin-left: 10rpx;
+    /* margin-top: 10rpx; */
+    /* margin-left: 10rpx; */
 }
 .topic-lable-mid{
     font-size: 25rpx;
@@ -96,15 +98,17 @@
 }
 .topic-lable-mid-content-label{
     color: #428BFF;
-    margin-right: 20rpx;
+    /* margin-right: 20rpx; */
+    margin-left: auto;
+    margin-right: auto;
 }
 .topic-lable-mid-content-title{
     color: #797979;
 }
 .topic-lable-right{
     font-size: 25rpx;
-    margin-left: auto;
-    margin-right: 20rpx;
+    /* margin-left: auto; */
+    /* margin-right: 20rpx; */
     color: #101010;
 }
 

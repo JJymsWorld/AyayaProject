@@ -1,0 +1,88 @@
+/deep/ .uni-list-item {
+	background-color: #FBFBFB;
+	width: 90%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+/deep/ .uni-list-item__container {
+	background-color: #FFFFFF;
+	padding: 0;
+	padding-top: 40rpx;
+}
+
+.message-item {
+	/* margin-bottom: 17px; */
+}
+
+.message-item-lbox {
+	float: left;
+	width: 15%;
+}
+
+.message-item-lbox image {
+	width: 100%;
+	height: 85%;
+	border-radius: 50%;
+}
+
+.message-item-rbox {
+	margin-left: 5%;
+	/* overflow: hidden; */
+	width: 80%;
+	height: 100rpx;
+	font-size: 14px;
+	font-family: 'PingFang SC';
+	padding: 5px 0;
+	border-bottom: solid 1px rgba(121, 121, 121, 0.1);
+}
+
+.message-item-rbox-left {
+	float: left;
+	width: 70%;
+	height: 100%;
+}
+
+.message-item-rbox-left view {
+	height: 33%;
+}
+
+.message-item-rbox-left image {
+	height: 100%;
+}
+
+.message-item-rbox-left text {
+	font-size: 14px;
+	font-family: 'PingFang SC';
+}
+
+.message-item-rbox-left .text2 {
+	font-size: 12px;
+	color: #797979;
+}
+
+.message-item-rbox-right {
+	width: 30%;
+	height: 100%;
+	float: right;
+}
+
+.message-item-rbox-right image {
+	height: 100%;
+	width: 100%;
+	border-radius: 10px;
+}
+
+.message-item-rbox .text3 {
+	color: #797979;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+.uni-list::before {
+	display: none;
+}
+
+.uni-list::after {
+	display: none;
+}

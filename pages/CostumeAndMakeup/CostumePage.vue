@@ -1,6 +1,12 @@
 <template>
 	<view>
 		<view class="CosumeMakeup-wrapper">
+			<mingpop ref="mingpop" direction="center" :is_close="false" :width="50">
+				<view class="fullTopic" v-for="(item,index) in CostumetopicContent" :key="index" @click="TopicClick(item.mark)">
+					<text class="topic-lable-mid-content-label">#{{item.mark}}#</text>
+					<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
+				</view>
+			</mingpop>
 			<view class="top-tab-bar">
 				<view class="top-tab-bar-active">服饰</view>
 				<view class="top-tab-bar-title" @click="tabToMakeup">妆容</view>
@@ -8,8 +14,8 @@
 			<view  class="Costume-wrapper">
 				<view class="CostumeOrMakeup-swiper">
 					<swiper indicator-dots="true" autoplay="true" interval="3000" circular="true">
-						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index">
-							<image :src="item.url" mode="aspectFill" class="swiper-item"></image>
+						<swiper-item v-for="(item,index) in CostumeswiperImgs" :key="index" @click="gotoWorksPage(item.opus_id)">
+							<image :src="item.photo" mode="aspectFill" class="swiper-item"></image>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -18,21 +24,22 @@
 						<text>话题</text>
 					</view>
 					<view class="topic-lable-mid">
-						<view class="topic-lable-mid-content" v-for="(item,index) in TwoCostumeTopic" :key="index">
-							<text class="topic-lable-mid-content-label">#{{item.label}}#</text>
-							<text class="topic-lable-mid-content-title">{{item.title}}</text>
+						<view class="topic-lable-mid-content">
+							<text class="topic-lable-mid-content-label" @click="TopicClick(CostumeTopic)">#{{CostumeTopic}}#</text>
+							<!-- <text class="topic-lable-mid-content-title">{{item.title}}</text> -->
 						</view>
 					</view>
-					<view class="topic-lable-right">
+					<view class="topic-lable-right" @click="viewMoreTopic">
 						查看更多内容
 					</view>
 				</view>
 				<view class="function-bar">
-					<view class="function-bar-filter">
-						<text>分类</text>
-						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view>
+					<view class="function-bar-filter" >
+						<!-- <text>分类</text>
+						<view :class="['fas','fa-bars']" class="function-bar-filter-icon" ></view> -->
+						<uni-combox @input="filterSelect" inputDisabled="true" iconType="bars" :iconSize="20" :value="filterList[0]" :candidates="filterList"></uni-combox>
 					</view>
-					<view class="function-bar-searchbar">
+					<view class="function-bar-searchbar" @click="gotoSearchPage">
 						<input disabled="true" placeholder="搜索" placeholder-class="popcoser-search-fs" />
 						<view class="searchbar-search-Icon">
 							<slot class="search-icon">
@@ -40,19 +47,25 @@
 							</slot>
 						</view>
 					</view>
-					<view class="function-bar-editor">
+					<view class="function-bar-editor" @click="gotoPostWorks">
 						<view :class="['fas','fa-edit']"></view>
 					</view>
 				</view>
 				<view class="CostumeOrMakeup-waterfallsflow">
-					<waterfallsFlow :list="CostumeWorkslist">
-						<template v-slot:default="item" class="content-box-item">
+					<waterfallsFlow ref="waterfallsFlow" :list="CostumeWorkslist" imageSrcKey="opus_photos" idKey="opus_id" @wapper-lick="gotoWorksPageWaterFall($event)">
+						<template v-slot:default="item" class="content-box-item" >
 							<view class="cnt">
-								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.title}}</view>
+								<view class="CostumeOrMakeup-waterfallsflow-title">{{item.main_body}}</view>
+								<view class="user-info-box">
+									<image class="user-head-img" :src="item.header_pic" mode="aspectFill"></image>
+									<view class="user-name">{{item.user_name}}</view>
+									<view class="view-num" :class="['far', 'fa-eye']" aria-hidden="true">{{item.browse_num}}
+									</view>
+								</view>
 							</view>
 						</template>
 					</waterfallsFlow>
-					<uni-load-more status="noMore"></uni-load-more>
+					<uni-load-more :status="loadStatus"></uni-load-more>
 				</view>
 			</view>
 		</view>
@@ -61,57 +74,205 @@
 
 <script>
 	import waterfallsFlow from "../../components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+	import mingpop from "@/components/ming-pop/ming-pop.vue"
 	export default {
-		components:{waterfallsFlow},
+		components:{waterfallsFlow,mingpop},
+		async onLoad() {
+			const http = new this.$Request();
+			//获取轮播图
+			http.get("/Costume/getSlide",{params:{type:2}}).then(res=>{
+				this.CostumeswiperImgs = res.data;
+			}).catch(err=>{
+				console.log(err);
+			})
+			//获取瀑布流内容
+			
+			
+			if(this.initList == true){
+				await http.get("/Costume/getAllWorks", {params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+					this.CostumeWorkslist = res.data.list;
+					this.pageNum++;
+					this.initList = false;
+					if(res.data.hasNextPage == true){
+						this.loadStatus ="more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			
+			
+			
+			//获取Topic并设置定时改变内容
+			await http.get("/Costume/getTopic",{params:{type:1}}).then(res=>{
+				this.CostumetopicContent = res.data;
+				this.CostumeTopic = this.CostumetopicContent[0].mark;
+			}).catch(err=>{
+				consolel.log(err);
+			});
+			this.timeid = setInterval(()=>{
+				this.CostumeTopicIndex = (this.CostumeTopicIndex + 1) % (this.CostumetopicContent.length);
+				// console.log(this.CostumeTopicIndex)
+				this.CostumeTopic = this.CostumetopicContent[this.CostumeTopicIndex].mark;
+			}, 3000);
+			
+		},
+		async onReachBottom(){
+			const http = new this.$Request();
+			if(this.flag == true && this.valValue == "全部"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/getAllWorks",{params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "Cos"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:2}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "JK"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:3}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "汉服"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:4}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+			if(this.flag == true && this.valValue == "Lolita"){
+				this.loadStatus = "loading";
+				await http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:5}}).then(res=>{
+					this.CostumeWorkslist = this.CostumeWorkslist.concat(res.data.list);
+					this.pageNum++;
+					if(res.data.hasNextPage == true){
+						this.loadStatus = "more";
+					}
+					if(res.data.hasNextPage == false){
+						this.loadStatus = "noMore";
+						this.flag = false;
+					}
+				}).catch(err=>{
+					console.log(err);
+				})
+			}
+		},
+		onShow() {
+			
+		},
+		onHide() {
+			
+		},
+		onUnload() {
+			clearInterval(this.timeId);
+		},
 		data() {
 			return {
-				CostumeswiperImgs: [{
-						img_id: 0,
-						url: "../../static/swiperImg/3.jpg"
-					},
-					{
-						img_id: 1,
-						url: "../../static/swiperImg/4.jpg"
-					}
+				valValue:"全部",
+				pageNum:1,
+				pageSize:0,
+				flag:true,
+				initList:true,
+				loadStatus:"noMore",
+				filterList:['全部','Cos','JK','汉服','Lolita'],
+				CostumeswiperImgs: [
+					// {
+					// 	img_id: 0,
+					// 	photo: "http://8.136.216.96:8080/picture/O1CN01zUpm4224kX0ui6XMj_!!830107429.jpg"
+					// },
+					// {
+					// 	img_id: 1,
+					// 	photo: "../../static/swiperImg/4.jpg"
+					// }
 				],
+				CostumeTopic:"",
+				CostumeTopicIndex:0,
+				timeid:0,
 				CostumetopicContent:[
-					{
-						id:0,
-						label:"服装推荐",
-						title:"万圣节Cos服装"
-					},
-					{
-						id:1,
-						label:"12月新品发布",
-						title:"中牌制服馆"
-					},
-					{
-						id:2,
-						label:"约拍广场",
-						title:"谁知江南无醉意，笑看春风。"
-					}
+					// {
+					// 	id:0,
+					// 	label:"服装推荐",
+					// 	title:"万圣节Cos服装"
+					// },
+					// {
+					// 	id:1,
+					// 	label:"12月新品发布",
+					// 	title:"中牌制服馆"
+					// },
+					// {
+					// 	id:2,
+					// 	label:"约拍广场",
+					// 	title:"谁知江南无醉意，笑看春风。"
+					// }
 				],
 				CostumeWorkslist:[
-					{
-						id:0,
-						image_url:"../../static/CostumeAndMakeup/5.jpg",
-						title:"王者荣耀:露娜紫霞仙子Cosplay"
-					},
-					{
-						id:1,
-						image_url:"../../static/CostumeAndMakeup/6.jpg",
-						title:"迪士尼万圣节攻略:装扮白雪公主"
-					},
-					{
-						id:2,
-						image_url:"../../static/CostumeAndMakeup/7.jpg",
-						title:"当不倒翁小姐姐Cosplay楚乔传"
-					},
-					{
-						id:3,
-						image_url:"../../static/CostumeAndMakeup/8.jpg",
-						title:"孙尚香-时之恋人"
-					}
+					// {
+					// 	id:0,
+					// 	opus_photos:"../../static/CostumeAndMakeup/5.jpg",
+					// 	main_body:"王者荣耀:露娜紫霞仙子Cosplay"
+					// },
+					// {
+					// 	id:1,
+					// 	opus_photos:"../../static/CostumeAndMakeup/6.jpg",
+					// 	main_body:"迪士尼万圣节攻略:装扮白雪公主"
+					// },
+					// {
+					// 	id:2,
+					// 	opus_photos:"../../static/CostumeAndMakeup/7.jpg",
+					// 	main_body:"当不倒翁小姐姐Cosplay楚乔传"
+					// },
+					// {
+					// 	id:3,
+					// 	opus_photos:"../../static/CostumeAndMakeup/8.jpg",
+					// 	main_body:"孙尚香-时之恋人"
+					// }
 				]
 			}
 		},
@@ -120,12 +281,131 @@
 				uni.redirectTo({
 					url:'./MakeUpPage'
 				})
+			},
+			viewMoreTopic(){
+				this.$refs.mingpop.show();
+			},
+			gotoWorksPage(id){
+				console.log(id);
+				uni.navigateTo({
+					url:"../works/works?workId=" + id
+				})
+			},
+			gotoWorksPageWaterFall(event){
+				console.log(event.opus_id);
+				uni.navigateTo({
+					url:"../works/works?workId=" + event.opus_id
+				})
+			},
+			gotoSearchPage(){
+				uni.navigateTo({
+					url:"../search/search"
+				})
+			},
+			gotoPostWorks(){
+				uni.navigateTo({
+					url:"../ContentReleasePage/postWorks"
+				})
+			},
+			TopicClick(e){
+				uni.navigateTo({
+					url:"../search/searchLabel?label=" + e
+				})
+			},
+			filterSelect(e){
+				// console.log(e);
+				const http = new this.$Request();
+				if(this.valValue != e){
+					this.pageNum = 1;
+					this.valValue = e;
+					if(this.valValue == "全部"){
+						http.get("/Costume/getAllWorks",{params:{pageNum:this.pageNum, pageSize:8, type:1}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = 'noMore';
+								this.flag = false;
+							}
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Cos"){
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:2}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "JK"){
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:3}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "汉服"){
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:4}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					if(this.valValue == "Lolita"){
+						http.get("/Costume/selectWorks",{params:{pageNum:this.pageNum, pageSize:8, type:5}}).then(res=>{
+							this.CostumeWorkslist = res.data.list;
+							this.pageNum++;
+							if(res.data.hasNextPage == true){
+								this.loadStatus = 'more';
+							}
+							if(res.data.hasNextPage == false){
+								this.loadStatus = "noMore";
+								this.flag = false;
+							}
+							console.log("获取"+this.valValue+"成功");
+						}).catch(err=>{
+							console.log(err);
+						})
+					}
+					this.$refs.waterfallsFlow.refresh();
+				}
 			}
 		},
 		computed:{
-			TwoCostumeTopic() {
+			OneCostumeTopic() {
 				return this.CostumetopicContent.filter((item,index)=>{
-					return index<=1
+					return index<1
 				})
 			}
 		}
@@ -143,6 +423,26 @@
 			padding: 10rpx;
 		}
 	}
+	/deep/ .uni-combox{
+		height:20px;
+		margin-top:auto;
+		margin-bottom:auto;
+		// width:40%;
+	}
+	/deep/ .uni-combox__input{
+		flex:1;
+		font-size:28rpx;
+		height:15px;
+		line-height:15px;
+		text-align: center;
+		width: 80rpx;
+	}
+	/deep/ .uni-combox__input-box{
+		height:20px;		
+	}
+	/deep/ .product-window{
+		background-color: rgba($color: #FFF, $alpha: 0.8);
+	}
 </style>
 <style>
 	@import url("CostumeAndMakeup.css");
@@ -157,5 +457,42 @@
 	.CostumeOrMakeup-waterfallsflow-title{
 		font-size: 26rpx;
 		margin-bottom: 20rpx;
+	}
+	.fullTopic{
+		display: flex;
+		flex-direction: row;
+		font-size: 25rpx;
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	
+	.user-info-box {
+		display: flex;
+		flex-direction: row;
+		margin: auto;
+	}
+	
+	.user-head-img {
+		width: 35rpx;
+		height: 35rpx;
+		border-style: none;
+		border-radius: 25rpx;
+		margin-right: 10rpx;
+		margin-left: 5rpx;
+	}
+	
+	.user-name {
+		font-size: 8pt;
+		color: #797979;
+		margin-top: auto;
+		margin-bottom: auto;
+		margin-right: auto;
+	}
+	
+	.view-num {
+		color: #797979;
+		margin-top: auto;
+		margin-bottom: auto;
+		font-size: 8pt;
 	}
 </style>

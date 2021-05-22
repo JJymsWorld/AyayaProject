@@ -6,52 +6,99 @@
 				<view class="text1">{{username}}</view>
 			    <view class="text2">账号：{{account}}</view>
 			</view>
-			<view class="edit"><text>编辑</text></view>
+			<view class="edit" @click="editNavi"><text>编辑</text></view>
 		</view>
 		<table style="width: 100%;background-color: #FFFFFF;margin-top: 10rpx;">
 			<tr class="blanktd">
 				<td style="width: 680rpx;"><text class="word">账户与安全</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">支付设置</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">地区设置</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">隐私</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">通用</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 		</table>
 		<table style="margin-top: 20rpx;width: 100%;background-color: #FFFFFF;">
 			<tr class="blanktd">
 				<td style="width: 680rpx;"><text class="word">问题反馈</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			<tr class="blanktd">
 				<td><text class="word">关于Ayaya</text></td>
-				<td><image class="extend" src="../../../static/icon/扩展1.png"mode="aspectFill"></image></td>
+				<td><image class="extend" src="../../../static/icon/extend1.png"mode="aspectFill"></image></td>
 			</tr>
 			</table>
 		<view class="loginAndExit"style="margin-top: 20rpx;">切换账号</view>
-		<view class="loginAndExit">退出登录</view>
+		<view class="loginAndExit" @click="open">退出登录</view>
+		
+		<uni-popup ref="popup" type="bottom">
+			<view class="sexBox">
+				<view class="prompt">退出后不会删除任何历史数据，下次登录依然可以使用本账号</view>
+				<view class="sexChoose" @click="exitLogin">退出登录</view>
+				<view class="sexExitChoose"@click="close">取消</view>
+			</view>
+		</uni-popup>
+		
+		
 	</view>
 </template>
 
 <script>
 	export default{
+		onLoad() {
+			this.userId=getApp().globalData.global_userId || '12'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     this.username = res.data.user_name
+				 this.avatarr = res.data.header_pic
+			    }
+			});
+		},
 		data(){
 			return{
+				userId:'',
 				avatarr:'../../../static/iconn/2.jpg',
 				username:'jennieee',
 				account:'17367108604'
+			}
+		},
+		methods:{
+			editNavi(){
+				uni.navigateTo({
+					url:'edit'
+				})
+			},
+			open(){
+				this.$refs.popup.open()
+			},
+			close(){
+				this.$refs.popup.close()
+			},
+			exitLogin(){
+				uni.setStorage({
+				    key: 'state',
+				    data: 0,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+				uni.navigateTo({
+					url:'../../login/login'
+				})
 			}
 		}
 	}
@@ -143,5 +190,32 @@
 		line-height: 90rpx;
 		text-align: center;
 		background-color: #FFFFFF;
+	}
+	.sexBox{
+		background-color: #FBFBFB;
+		border-top-left-radius: 15rpx;
+		border-top-right-radius: 15rpx;
+		overflow: hidden;
+	}
+	.sexChoose{
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		color: #ec0537;
+		background-color: #FFFFFF;
+	}
+	.sexExitChoose{
+		background-color: #FFFFFF;
+		text-align: center;
+		font-size: 30rpx;
+		padding: 30rpx 0;
+		margin-top: 20rpx;
+	}
+	.prompt{
+		font-size: 20rpx;
+		padding-top: 32rpx;
+		padding-left: 30rpx;
+		padding-bottom: 32rpx;
+		color: #565656;
 	}
 </style>

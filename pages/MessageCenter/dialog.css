@@ -1,0 +1,40 @@
+
+	.dialog-box {
+		margin: auto;
+		width: 550rpx;
+	}
+	.row-box {
+		font-family: 'PingFang SC';
+		font-size: 13px;
+		padding: 0 40rpx;
+		padding-bottom: 10rpx;
+		overflow: visible;
+	}
+	.row-box text{
+		background-color: #F2A3C3;
+		border-radius: 10rpx;
+		color: #FFFFFF;
+		padding: 5rpx 50rpx;
+	}
+	.top-box {
+		font-size: 15px;
+		padding-top: 20rpx;
+		font-weight: 700;
+	}
+	.bottom-box{
+		width: 80%;
+		margin: 0 auto;
+	}
+	.bottom-box view{
+		font-family: 'PingFang SC';
+		font-size: 14px;
+		color: #AAAAAA;
+		float: right;
+		margin: 10rpx;
+		padding: 0rpx 10rpx;
+	}
+	.bottom-box .btn1{
+		border: 1px solid #585858;
+		border-radius: 10rpx;
+	}
+

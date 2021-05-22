@@ -1,5 +1,15 @@
 <template>
 	<view class="box">
+		<!-- 密码不能为空 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="密码不能为空" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请再次输入密码 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请再次输入密码" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 		<view class="content">
 			<view class="login-title">
 				<image class="login-img" src="../../static/login.png" mode="heightFix"></image>
@@ -25,16 +35,20 @@
 		</view>
 		<view class="content">
 			<view class="row-box">
-				<button class="btn" @click="getData">修改密码</button>
+				<button class="btn" @click="retrievePw">修改密码</button>
 			</view>
 		</view>
+		<!-- 加载框 -->
+		<kModel ref="kModel" />
 	</view>
 </template>
 
 <script>
+	import kModel from '@/components/k-model/k-model.vue';
 	export default {
 		data() {
 			return {
+				user_id: 0,
 				account:"",
 				password1:"",
 				password2:"",
@@ -42,50 +56,71 @@
 				samePW: true
 			}
 		},
+		components:{
+			kModel
+		},
 		methods: {
-			getData:function(){
-				console.log(this.account);
-				console.log(this.password);
-				uni.request({
-				    url: 'http://192.168.109.1:8086/Login/user', 
-				    data: {
-				        account:"1812190507"
-				    },
-				    success: (res) => {
-				        console.log(res.data);
-				    },
-					fail: (error) => {
-				        console.log(error);
-				    },
-				});
-			},
 			onAccountInput:function(event){
 				this.account = event.target.value;
 			},
 			onPwdInput:function(event){
 				this.password1 = event.target.value;
-				console.log(this.password1);
 			},
 			onPwdInputAgain:function(event){
 				this.password2 = event.target.value;
-				console.log(this.password2);
 				if(this.password1 === this.password2){
 					this.samePW = true;
 				}
 				else this.samePW = false;
 			},
-			localStorage: function(e){
-				var valid = e.detail.value;
-				if(valid[0] == 'rempwd'){
-					// 本地存入账号和密码
-				}
-				else{
-					// 仅在本地存入账号
-				}
-			},
 			radio: function(e){
 				this.gender = e;
+			},
+			// 修改密码
+			retrievePw: function(){
+				if(this.password1.length == 0){
+					this.$refs.popup1.open()
+				}
+				else if(this.password2.length == 0){
+					this.$refs.popup2.open()
+				}
+				else if(this.samePW){
+					this.$myRequest({
+						method: 'PUT',
+						header:{'content-type':'application/x-www-form-urlencoded'},
+						url:'/Login/changePassword',
+						data:{
+							password: this.password1,
+							user_id: this.user_id
+						}
+					})
+					this.startShow()
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 2
+						})
+					},1000)
+					
+				}
+			},
+			// 显示发布成功加载框
+			startShow: function() {
+				this.$refs['kModel'].showModel({
+					type: 'success',
+					title: '密码修改成功',
+					duration: 3000
+				});
+			},
+			// 取消对话框
+			close: function(done) {
+				done()
+			},
+			// 确定对话框
+			confirm: function(){	
 			}
+		},
+		onLoad(option){
+			this.user_id = option.user_id
 		}
 	}
 </script>

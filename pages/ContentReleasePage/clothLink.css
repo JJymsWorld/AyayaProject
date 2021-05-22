@@ -1,0 +1,44 @@
+.link-box{
+	width: 694rpx;
+	height: 200rpx;
+	background-color: #FFFFFF;
+	border-radius: 20rpx;
+	box-shadow: 4px 4px 4px 4px rgba(221, 221, 221, 0.1);
+	margin-bottom: 20rpx;
+}
+.addLink{
+	width: 90%;
+	margin: 0 auto;
+	height: 50rpx;
+}
+.function-bar-editor{
+	float: right;
+}
+.form-item{
+	width: 90%;
+	margin: 0 auto;
+	height: 70rpx;
+}
+.form-item1{
+	height: 150rpx;
+}
+
+.form-item-input{
+	
+	float: right;
+	border: #0086B3 solid 1rpx;
+	width: 70%;
+	border-radius: 10rpx;
+}
+.form-item-input input{
+	width: 90%;
+	margin: 0 auto;
+	line-height: 30rpx;
+	font-size: 30rpx;
+}
+.form-item-teatarea textarea{
+	font-size: 24rpx;
+	margin: 0 auto;
+	width: 90%;
+	height: 120rpx;
+}

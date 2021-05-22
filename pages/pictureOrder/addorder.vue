@@ -1,5 +1,20 @@
 <template>
 	<view>
+		<!-- 请描述您的拍摄要求 -->
+		<uni-popup ref="popup1" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请描述您的拍摄要求" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请选择拍摄时间 -->
+		<uni-popup ref="popup2" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请选择拍摄时间" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
+		<!-- 请选择拍摄地点 -->
+		<uni-popup ref="popup3" type="dialog">
+			<uni-popup-dialog type="info" mode="base" content="请选择拍摄地点" :before-close="true" @close="close"
+				@confirm=""></uni-popup-dialog>
+		</uni-popup>
 		<view class="row-box demand-box">
 			<text>要求描述</text>
 			<view class="textarea-box">
@@ -42,7 +57,12 @@
 		</view>
 		<view class="row-box bottom-box">
 			<button @click="submitData">提交</button>
+			<uni-popup ref="popup" type="dialog">
+			    <uni-popup-dialog type="info" mode="base" content="确认提交该约拍订单？" :before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
+			</uni-popup>
+			
 		</view>
+		
 	</view>
 </template>
 
@@ -54,8 +74,23 @@
 				demand: '',
 				time: '请选择',
 				city: '请选择',
-				money: ''
+				money: '',
+				datetime: '',
+				user_a: null, 		// coserID
+				user_b: null, 	// 摄影师ID
+				photograph_id: null		// 生成的约拍订单id
 			}
+		},
+		onLoad(Option){
+			console.log(Option.user_id)
+			this.user_b = Option.user_id
+			uni.getStorage({
+			    key: 'userId',
+			    success: res=> {
+			        console.log(res.data);
+					this.user_a = res.data
+			    }
+			});
 		},
 		methods: {
 			// 输入要求描述
@@ -78,9 +113,58 @@
 				this.money = e.detail.value
 				console.log(this.money)
 			},
-			//提交订单信息
+			// 提交订单信息
 			submitData: function(){
+				if(this.demand.length == 0){
+					this.$refs.popup1.open()
+				}
+				else if(this.time == '请选择'){
+					this.$refs.popup2.open()
+				}
+				else if(this.city == '请选择'){
+					this.$refs.popup3.open()
+				}
+				else{
+					this.$refs.popup.open()
+				}
 				
+			},
+			// 	取消提交订单
+			close: function(done){
+				console.log('text')
+				done()
+			},
+			// 	确认提交订单
+			async confirm(done){
+				
+				const res = await this.$myRequest({
+					url: '/Order/Data/LaunchOrderPage/addOrder',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data: {
+						area: this.city,
+						date: this.time,
+						content: this.demand,
+						money: this.money,
+						user_a: this.user_a, // coserID
+						user_b: this.user_b, // 摄影师ID
+					}
+				})
+				console.log(res.data[0].photograph_id)
+				this.photograph_id = res.data[0].photograph_id
+				
+				this.$myRequest({
+					url: '/Contact/addPhotographMessage',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data: {
+						photograph_id: this.photograph_id,
+						user_a: this.user_a, // coserID
+						user_b: this.user_b, // 摄影师ID
+					}
+				})
+				uni.$emit('showOrderMsg')
+				uni.navigateBack({})
 			}
 		},
 		components:{
