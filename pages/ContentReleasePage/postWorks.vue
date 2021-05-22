@@ -55,8 +55,8 @@
 					<view class="chooseAt-box">
 						<text class="chooseAt-box-placehold" v-if="this.worksContent[3].makeupLabels.length == 0"
 							@click="onChooseCollection">～仅限收藏列表</text>
-						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delMakeupTag" @click="onChooseCollection"
-							:enable-del="enableDel"></robby-tags>
+						<robby-tags v-model="worksContent[3].makeupLabels" @delete="delMakeupTag"
+							@click="onChooseCollection" :enable-del="enableDel"></robby-tags>
 					</view>
 				</view>
 				<view class="content-item">
@@ -361,60 +361,60 @@
 				done()
 			},
 			// 确认发布作品
-			confirm: function() {
+			async confirm() {
 				this.markId = []
 				for (var i in this.markList) {
 					const item = this.markList[i]
 					this.markId.push(item.mark_id + '，' + item.mark)
 				}
 				// console.log(this.markId)
-				
+
 				this.worksContent[3].makeupId = []
 				for (var i in this.worksContent[3].makeupList) {
 					const item = this.worksContent[3].makeupList[i]
 					this.worksContent[3].makeupId.push(item.workId + '，' + item.title)
 				}
 				console.log(this.worksContent[3].makeupId)
-				
-				this.onPostWork()
 
-				setTimeout(()=>{
-					// 同时发布动态
-					if (this.ifpostdynamic) {
-						this.onPostDynamic()
-					}
-					
-					if(this.photograph_id){
-						console.log('1')
-						this.$myRequest({
-							url: '/Order/setListNum',
-							data: {
-								// list_num: this.opus_id,
-								list_num: this.opus_id,
-								photograph_id: this.photograph_id
-							}
-						})
-						uni.$emit('showPostSuccess',{
+				const res = await this.onPostWork()
+				this.opus_id = res[0].opus_id
+				this.opus_photos = res[0].opus_photos
+
+				// 同时发布动态
+				if (this.ifpostdynamic) {
+					await this.onPostDynamic()
+				}
+
+				if (this.photograph_id) {
+					console.log('1')
+					this.$myRequest({
+						url: '/Order/setListNum',
+						data: {
+							// list_num: this.opus_id,
+							list_num: this.opus_id,
 							photograph_id: this.photograph_id
-						})
-						uni.navigateBack({})
-					}
-					
-					else{
-						// 跳转至个人主页
-						uni.redirectTo({
-							url: '../Mypage/homePage/homePage?showToast=2&userId=' + this.userId
-						});
-					}
-					
-				}, 5000)
+						}
+					})
+					uni.$emit('showPostSuccess', {
+						photograph_id: this.photograph_id
+					})
+					uni.navigateBack({})
+				} else {
+					// 跳转至个人主页
+					uni.redirectTo({
+						url: '../Mypage/homePage/homePage?showToast=2&userId=' + this.userId
+					});
+				}
+
+
 			},
 			// 发布作品
-			onPostWork: function() {
+			async onPostWork() {
 				const that = this
+				var res = null
 				for (var i in that.workClass) {
-					uni.uploadFile({
-						url: 'http://81.68.73.252:8086/ContentReleasePage/works',
+					res = await this.$myuploadFile({
+						url: '/ContentReleasePage/works',
 						files: that.images,
 						formData: {
 							'accountA': that.worksContent[1].atPersonId, // coserID
@@ -427,17 +427,10 @@
 							'title': that.worksContent[0].title, // 标题
 							'type': that.workClass[i], // 发往圈子id
 							'user_id': that.userId //用户id
-						},
-						success: (uploadFileRes) => {
-							console.log(uploadFileRes.data);
-							const resData = JSON.parse(uploadFileRes.data)
-							that.opus_id = resData[0].opus_id
-							that.opus_photos = resData[0].opus_photos
-							// console.log(that.opus_id)
-							// console.log(that.opus_photos)
 						}
 					});
 				}
+				return res
 			},
 			// 同时发布动态
 			async onPostDynamic() {
@@ -514,9 +507,12 @@
 			uni.$on("emitmakeuplabels", res => {
 				this.worksContent[3].makeupLabels.push(res.title)
 				console.log(this.worksContent[3].makeupLabels)
-				
+
 				// this.worksContent[3].makeupId.push(res.workId + '，' + res.title)
-				this.worksContent[3].makeupList.push({workId: res.workId, title: res.title})
+				this.worksContent[3].makeupList.push({
+					workId: res.workId,
+					title: res.title
+				})
 				console.log(this.worksContent[3].makeupList)
 				// 清除监听
 				uni.$off("emitmakeuplabels");

@@ -34,8 +34,8 @@ export const myuploadFile = (options)=>{
 				// uni.showToast({
 				// 	title: '接口请求成功'
 				// })
-				console.log(res)
-				resolve(res)
+				const resData = JSON.parse(res.data)
+				resolve(resData)
 			},
 			fail: (err)=>{
 				uni.showToast({
