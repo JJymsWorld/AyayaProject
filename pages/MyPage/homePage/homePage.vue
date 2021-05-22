@@ -244,6 +244,14 @@
 		    	this.tabIndex = 1
 				this.loadWork()
 		    }
+			
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 		},
 		components: {
 			waterfallsFlow,

@@ -113,6 +113,7 @@
 			},
 			onChangeAgree: function() {
 				this.ifagree = !this.ifagree;
+				console.log(this.ifagree)
 			},
 			onChangeLimit: function() {
 				this.ifdownloadimag = !this.ifdownloadimag;
@@ -202,7 +203,7 @@
 				
 				// 跳转至个人主页
 				uni.redirectTo({
-				    url: '../Mypage/homePage/homePage?showToast=1'
+				    url: '../Mypage/homePage/homePage?showToast=1&userId=' + this.userId
 				});
 			},
 		},

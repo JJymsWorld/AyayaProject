@@ -378,64 +378,72 @@
 				
 				this.onPostWork()
 
-				// 同时发布动态
-				if (this.ifpostdynamic) {
-					this.onPostDynamic()
-				}
-				
-				if(this.photograph_id){
-					console.log('1')
-					this.$myRequest({
-						url: '/Order/setListNum',
-						data: {
-							// list_num: this.opus_id,
-							list_num: this.opus_id,
+				setTimeout(()=>{
+					// 同时发布动态
+					if (this.ifpostdynamic) {
+						this.onPostDynamic()
+					}
+					
+					if(this.photograph_id){
+						console.log('1')
+						this.$myRequest({
+							url: '/Order/setListNum',
+							data: {
+								// list_num: this.opus_id,
+								list_num: this.opus_id,
+								photograph_id: this.photograph_id
+							}
+						})
+						uni.$emit('showPostSuccess',{
 							photograph_id: this.photograph_id
-						}
-					})
-					uni.$emit('showPostSuccess',{
-						photograph_id: this.photograph_id
-					})
-					uni.navigateBack({})
-				}
-				
-				else{
-					// 跳转至个人主页
-					uni.redirectTo({
-						url: '../Mypage/homePage/homePage?showToast=2'
-					});
-				}
-				
+						})
+						uni.navigateBack({})
+					}
+					
+					else{
+						// 跳转至个人主页
+						uni.redirectTo({
+							url: '../Mypage/homePage/homePage?showToast=2&userId=' + this.userId
+						});
+					}
+					
+				}, 5000)
 			},
 			// 发布作品
 			onPostWork: function() {
-				for (var i in this.workClass) {
+				const that = this
+				for (var i in that.workClass) {
 					uni.uploadFile({
 						url: 'http://81.68.73.252:8086/ContentReleasePage/works',
-						files: this.images,
+						files: that.images,
 						formData: {
-							'accountA': this.worksContent[1].atPersonId, // coserID
-							'accountB': this.worksContent[2].atPersonId, // 摄影师ID
-							'callUser': this.atPersonId, // @的人的ID
-							'clothingId': this.worksContent[4].clothingId, // 服饰id
-							'mainBody': this.worksContent[5].article, // 正文
-							'makeupId': this.worksContent[3].makeupId, // 妆容ID
-							'mark_id': this.markId, // 标签Id
-							'title': this.worksContent[0].title, // 标题
-							'type': this.workClass[i], // 发往圈子id
-							'user_id': this.userId //用户id
+							'accountA': that.worksContent[1].atPersonId, // coserID
+							'accountB': that.worksContent[2].atPersonId, // 摄影师ID
+							'callUser': that.atPersonId, // @的人的ID
+							'clothingId': that.worksContent[4].clothingId, // 服饰id
+							'mainBody': that.worksContent[5].article, // 正文
+							'makeupId': that.worksContent[3].makeupId, // 妆容ID
+							'mark_id': that.markId, // 标签Id
+							'title': that.worksContent[0].title, // 标题
+							'type': that.workClass[i], // 发往圈子id
+							'user_id': that.userId //用户id
 						},
 						success: (uploadFileRes) => {
 							console.log(uploadFileRes.data);
-							this.opus_id = uploadFileRes.data.opus_id
-							this.opus_photos = uploadFileRes.data.opus_photos
+							const resData = JSON.parse(uploadFileRes.data)
+							that.opus_id = resData[0].opus_id
+							that.opus_photos = resData[0].opus_photos
+							// console.log(that.opus_id)
+							// console.log(that.opus_photos)
 						}
 					});
 				}
 			},
 			// 同时发布动态
-			onPostDynamic: function() {
-				this.$myRequest({
+			async onPostDynamic() {
+				console.log(this.opus_id)
+				console.log(this.opus_photos)
+				await this.$myRequest({
 					method: 'POST',
 					header: {
 						'content-type': 'application/x-www-form-urlencoded'
@@ -445,7 +453,7 @@
 						mainBody: '发布了作品',
 						opus_id: this.opus_id,
 						user_id: this.userId,
-						dynamic_photos: this.opus_photos
+						img: this.opus_photos
 					}
 				})
 			},
@@ -454,20 +462,19 @@
 		onNavigationBarButtonTap() {
 
 			// 如果未选择图片
-			// if (this.images.length == 0) {
-			// 	this.$refs.popup1.open()
-			// }
-			// // 如果未勾选任何一个发往圈子
-			// else if (this.workClass.length == 0) {
-			// 	this.$refs.popup2.open()
-			// }
-			// // 如果未同意《用户自制内容协议》
-			// else if (!this.ifagree) {
-			// 	this.$refs.popup3.open()
-			// } else {
-			// 	this.$refs.popup4.open()
-			// }
-			this.$refs.popup4.open()
+			if (this.images.length == 0) {
+				this.$refs.popup1.open()
+			}
+			// 如果未勾选任何一个发往圈子
+			else if (this.workClass.length == 0) {
+				this.$refs.popup2.open()
+			}
+			// 如果未同意《用户自制内容协议》
+			else if (!this.ifagree) {
+				this.$refs.popup3.open()
+			} else {
+				this.$refs.popup4.open()
+			}
 		},
 		onShow() {
 			if (this.worksContent[3].makeupLabels.length != 0) {

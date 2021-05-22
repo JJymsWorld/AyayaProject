@@ -23,3 +23,26 @@ export const myRequest = (options)=>{
 		})
 	})
 }
+
+export const myuploadFile = (options)=>{
+	return new Promise((resolve,reject)=>{
+		uni.uploadFile({
+			url:BASE_URL+options.url,
+			files: options.files,
+			formData: options.formData,
+			success: (res)=>{
+				// uni.showToast({
+				// 	title: '接口请求成功'
+				// })
+				console.log(res)
+				resolve(res)
+			},
+			fail: (err)=>{
+				uni.showToast({
+					title: '接口请求失败'
+				})
+				reject(err)
+			}
+		})	
+	})
+}
