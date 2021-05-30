@@ -33,7 +33,7 @@
 							</view>
 							<view class="StayInCoser-item-likebutton">
 								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
-								<uni-fav :checked="item.relation == 1" star="false" :contentText="contentText" bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)" fgColor="#333333"></uni-fav>
+								<uni-fav :checked="item.relation == 1" star="false" :contentText="contentText" bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index, item.user_id)" fgColor="#333333"></uni-fav>
 								
 							</view>
 						</view>
@@ -182,15 +182,33 @@
 			}
 		},
 		methods:{
-			LikeBtnClick(e) {
+			async LikeBtnClick(e,id) {
 				// if(this.CoserInfoList[e].relation == 1){
 				// 	this.CoserInfoList[e].relation = 0;
 				// }
 				// if(this.CoserInfoList[e].relation == 0){
 				// 	this.CoserInfoList[e].relation = 1;
 				// }
+				const http = new this.$Request();
+				console.log("当前用户id" , this.userId);
+				console.log("对象id" , id);
 				this.CoserInfoList[e].relation = !this.CoserInfoList[e].relation
 				console.log(e,this.CoserInfoList[e].relation)
+				if(this.CoserInfoList[e].relation == true){
+					await http.post("/MyPage/HomePage/addFocus", {},{params:{account_a: this.userId, account_b:id}}).then(res=>{
+						console.log("添加关注成功");
+					}).catch(err=>{
+						console.log(err);
+					});
+				}
+				if(this.CoserInfoList[e].relation == false){
+					await http.delete("/MyPage/HomePage/delFocusPersonByBothId",{},{params:{account_a: this.userId, account_b:id}}).then(res=>{
+						console.log("取消关注成功");
+					}).catch(err=>{
+						console.log(err);
+					})
+				}
+				
 			},
 			gotoCoserHomePage(e){
 				uni.navigateTo({

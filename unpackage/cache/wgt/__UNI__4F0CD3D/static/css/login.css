@@ -1,0 +1,25 @@
+	.login-title{
+		height: 100rpx;
+		width: 50%;
+		margin: 0 auto;
+		padding: 140rpx 0 60rpx;
+	}
+	.login-img{
+		height: 100%;
+		border-radius: 10rpx;
+		box-shadow: 6rpx 6rpx 6rpx 0rpx rgba(0, 0, 0, 0.35);
+		margin-right: 20rpx;
+	}
+	.app-name{
+		font-size: 70rpx;
+		color: #EC808D;
+		font-weight: 700;
+		font-family:'Comic Sans MS';
+	}
+	.row-box{
+		width: 75%;
+		margin: 0 auto;
+		padding: 40rpx 0;
+		/* 使每行分开布局 */
+		overflow: hidden;
+	}

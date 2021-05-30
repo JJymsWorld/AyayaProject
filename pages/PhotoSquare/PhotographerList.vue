@@ -38,7 +38,7 @@
 										<uni-fav class="StayInCoser-item-likebutton-like" circle="true"
 											:checked="item.relation == 1" star="false" :contentText="contentText"
 											bgColor="rgba(242,163,195,0.33)" bgColorChecked="#797979"
-											@click="LikeBtnClick(index)" fgColor="#FF5E98"></uni-fav>
+											@click="LikeBtnClick(index, item.user_id)" fgColor="#FF5E98"></uni-fav>
 										<uni-fav class="StayInCoser-item-likebutton-appoint" star="false" circle="true"
 											:contentText="contentText2" bgColor="rgba(242,163,195,0.33)"
 											fgColor="#FF5E98" @click="addOrder(item.user_id, index)"></uni-fav>
@@ -241,9 +241,26 @@
 				})
 				return res.data
 			},
-			LikeBtnClick(e) {
-				this.PhotographerInfoList[e].relation = !this.PhotographerInfoList[e].relation
-				console.log(e, this.PhotographerInfoList[e].relation)
+			async LikeBtnClick(e, id) {
+				const http = new this.$Request();
+				console.log("当前用户ID", this.userId);
+				console.log("对象用户ID", id);
+				this.PhotographerInfoList[e].relation = !this.PhotographerInfoList[e].relation;
+				console.log(e, this.PhotographerInfoList[e].relation);
+				if(this.PhotographerInfoList[e].relation == true){
+					await http.post("/MyPage/HomePage/addFocus", {}, {params:{account_a:this.userId, account_b:id}}).then(res=>{
+						console.log("关注成功");
+					}).catch(err=>{
+						console.log(err);
+					});
+				}
+				if(this.PhotographerInfoList[e].relation == false){
+					await http.delete("/MyPage/HomePage/delFocusPersonByBothId", {}, {params:{account_a:this.userId, account_b:id}}).then(res=>{
+						console.log("取消关注成功");
+					}).catch(err=>{
+						console.log(err);
+					});
+				}
 			},
 			gotoCoserHomePage(e) {
 				uni.navigateTo({
