@@ -292,12 +292,18 @@ ul,li{
 
 .cnt{
 	width: 90%;
+	/* height: 30rpx; */
 	margin: 10rpx auto;
 }
 
 .title{
+	/* width: 95%; */
 	font-size: 25rpx;
 	padding-left: 0rpx;
+	/* white-space: nowrap; */
+	/* overflow: hidden; */
+	/* text-overflow: ellipsis; */
+	/* padding-bottom: 5rpx; */
 }
 .iconfont {
   position: absolute;

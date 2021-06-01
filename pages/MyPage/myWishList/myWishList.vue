@@ -3,7 +3,7 @@
 		<view class="workBox" v-for="(item,index) in wishWork" :key="index">
 				<image :src="item.first_pic" mode="aspectFill" @click="workNavi(item.workId)"></image>
 			    <text>{{item.title}}</text>
-			<view class="edit" @click="myWishItemNavi()">
+			<view class="edit" @click="myWishItemNavi(item.wish_id)">
 					<view>编辑</view>
 			</view>
 		</view>
@@ -14,7 +14,7 @@
 	export default{
 		data(){
 			return{
-				userId:'4',
+				userId:'',
 				// wishWork:[
 				// 	{
 				// 		workId:"000001",
@@ -26,6 +26,8 @@
 			}
 		},
 		onLoad() {
+			this.userId=getApp().globalData.global_userId || '12'
+			
 			this.loadMyWishList()
 		},
 		methods:{
@@ -35,16 +37,17 @@
 					
 				})
 			},
-			myWishItemNavi(){
+			myWishItemNavi(i){
+				//console.log("wishId:"+i)
 				uni.navigateTo({
-					url:'../../works/myWish'
+					url:'../../works/myWish?wishId='+i
 				})
 			},
 			async loadMyWishList (){
 				const res = await this.$myRequest({
 					url:'/MyPage/MyWishList/getAll',
 					data:{
-						user_id: 7
+						user_id: this.userId
 					}
 				})
 				console.log(res)

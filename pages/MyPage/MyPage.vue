@@ -115,12 +115,9 @@
 				 this.avatar = res.data.header_pic || '../../static/iconn/avatar.png'
 				 this.userName = res.data.user_name
 				 this.signature = res.data.autograph || '你还没有个性签名哦！'
-				 this.fanN = res.data.focus_num
-				 this.starN = res.data.focused_num
-				 this.praiseN = res.data.raised_num
 			    }
 			});
-			
+			this.onGetMainAll()
 			uni.getStorage({
 			    key: 'state',
 			    success: res => {
@@ -141,9 +138,6 @@
 				 this.avatar = res.data.header_pic || '../../static/iconn/avatar.png'
 				 this.userName = res.data.user_name
 				 this.signature = res.data.autograph || '你还没有个性签名哦！'
-				 this.fanN = res.data.focus_num
-				 this.starN = res.data.focused_num
-				 this.praiseN = res.data.raised_num
 			    }
 			});
 			
@@ -160,8 +154,8 @@
 		data(){
 			return{
 				state:'',
-				userId:'1234',
-				userName:'jenniee',
+				userId:'',
+				userName:'',
 				avatar:'../../static/iconn/avatar.png',
 				signature:'你还没有个性签名哦！',
 				interestN:'0',
@@ -172,6 +166,20 @@
 
 		},
 		methods:{
+			async onGetMainAll(){
+				console.log(this.userId)
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/getMainAll',
+					data:{
+						user_id: this.userId
+					}
+				})
+				console.log(res.data[0])
+				this.interestN = res.data[0].focus_num
+				this.fanN = res.data[0].focused_num
+				this.starN = res.data[0].raised_num
+				
+			},
 			loginNavi(){
 				uni.navigateTo({
 					url:'../login/login'

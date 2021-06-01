@@ -1,6 +1,12 @@
 <template>
 	<view>
 		<view class="cancelButton"@click="addWish"><text>加入</text></view>
+		<view v-if="focusPerson == '' " class="nothingBox">
+			<view class="noIcon"><span class="iconfont_dy">&#xe73b;</span></view>
+			<view class="nothingBoxFirst">你还没有关注的摄影师哦！</view>
+			<view class="nothingBoxSecond">请前往<text @click="photoSquareNavi()">约拍广场</text>寻找你心仪的摄影师把</view>
+		</view>
+		<view v-if="focusPerson != '' "></view>
 		<uni-list class="focusBox" :border="false">
 		    <uni-list-item :border="false" v-for="(item,index) in focusPerson" :key="index">
 		        <!-- 自定义 body -->
@@ -23,126 +29,17 @@
 
 <script>
 	export default{
+		onShow() {
+			this.loadFocused()
+		},
 		onLoad() {
 			this.loadFocused()
-			//this.userId = ''
+			this.userId=getApp().globalData.global_userId || '12'
 		},
 		data(){
 			return{
 				userId:'1',
 				focusPerson:[
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
-					// {
-					// 	accountB:'',
-					// 	isFocus:'1',
-					// 	headerPic:'../../../static/iconn/2.jpg',
-					// 	userName:'布兰妮老田田',
-					// 	autograph:'没有个性签名！！！！',
-					// 	ifchoose: false
-					// },
 					// {
 					// 	accountB:'',
 					// 	isFocus:'1',
@@ -184,6 +81,11 @@
 			onChangeChoose: function(i){
 				this.focusPerson[i].ifchoose = !this.focusPerson[i].ifchoose;
 			},
+			photoSquareNavi(){
+				uni.navigateTo({
+					url:'../../PhotoSquare/AppoinentRecommend'
+				})
+			},
 			async loadFocused(){
 				const res=await this.$myRequest({
 					url:'/MyPage/HomePage/getFocus',
@@ -221,6 +123,32 @@
 
 
 <style>
+	.nothingBox{
+		width: 100%;
+		text-align: center;
+	}
+	.noIcon{
+		width: 100%;
+		text-align: center;
+		padding-top: 150rpx;
+		padding-bottom: 30rpx;
+	}
+	.noIcon span{
+		font-size: 100rpx;
+		text-align: center;
+	}
+	.nothingBoxFirst{
+		font-size: 33rpx;
+		color: #ACACAC;
+	}
+	.nothingBoxSecond{
+		font-size: 30rpx;
+		color: #ACACAC;
+		line-height: 60rpx;
+	}
+	.nothingBoxSecond text{
+		color: #f37ba6;
+	}
 	.focusBox{
 		background-color: #FFFFFF;
 	}

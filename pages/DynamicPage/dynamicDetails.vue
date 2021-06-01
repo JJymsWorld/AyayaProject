@@ -67,14 +67,14 @@
 								</view>
 								<view class="commentedBox" v-if="item.commentN!='0'">
 									<view class="commentedBoxv1" v-if="item.isCommentExtend==false">
-										<text @click="homePageNavi(item.userId)">{{item.commented[0].usernameD}}:</text>
-										{{item.commented[0].textD}}
+										<text @click="homePageNavi(item.userId)">{{item.commented[0].comment_name}}:</text>
+										{{item.commented[0].item}}
 									</view>
 									<view class="commentBoxv2" v-if="item.isCommentExtend==false" @click="isExtendFunc(index)">共{{item.commentN}}条回复--展开 ></view>
 								
 									<view class="commentedBoxv1" v-if="item.isCommentExtend==true" v-for="(a,b) in item.commented" :key="b">
-										<text @click="homePageNavi(item.userId)">{{a.usernameD}}:</text>
-										{{a.textD}}
+										<text @click="homePageNavi(item.userId)">{{a.comment_name}}:</text>
+										{{a.item}}
 									</view>
 									<view class="commentBoxv2" v-if="item.isCommentExtend==true"@click="isExtendFunc(index)">共{{item.commentN}}条回复--收起 ></view>
 								
@@ -138,6 +138,19 @@
 <script>
 	import gridBox from '../../components/gridImage/gridImage.vue' 
 	export default{
+		//返回按钮点击事件
+		onNavigationBarButtonTap(){
+			console.log("---------onNavigationBarButtonTap---------")
+			const that = this
+			uni.$emit('dynamicDetailsChange',
+			{
+				index:that.listIndex,
+				dynamicId:that.dynamicId,
+				commentNum:that.commentNum,
+				interestNum:that.interestNum
+			})
+			uni.navigateBack({})  
+		},
 		onInit(option) {
 			//this.pageScroll=1
 		},
@@ -153,6 +166,7 @@
 			// 	// 清除监听
 			// 	uni.$off("dynamicDetails");
 			// })
+			this.getIsFocus()
 		},
 		onLoad(option) {
 			const that = this
@@ -173,11 +187,12 @@
 			eventChannel.on('dynamicDetails', function(data) {
 				console.log(data)
 				console.log(that.usernameD)
+				that.listIndex=data.index
 				that.userId=data.accountB
 				that.commentNum=data.commentedNumber
 				that.dynamicId=data.dynamicId
 				that.image=data.dynamicPhotos
-				that.avatarD=data.headerPic
+				that.avatarD=data.headerPic ||  '../../static/iconn/avatar.png' 
 				that.interestNum=data.likesNumber
 				that.textD=data.mainBody
 				that.opusId=data.opusId
@@ -195,6 +210,7 @@
 		},
 		data(){
 			return{
+				listIndex:'',
 				isFocus:0,
 				pageScroll:0,
 				tag:'0',
@@ -206,7 +222,7 @@
 				userId2:'',//登录者
 				thisUsername:'',
 				thisAvatar:'',
-				avatarD:'../../static/iconn/p2.jpg',
+				avatarD:'../../static/iconn/avatar.png',
 				usernameD:'机智的党妹',
 				date:'2020-06-25',
 				textD:'点赞表态!蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!蜜瓜JK妆！毕业要和姐妹去迪士尼拍照呀!',
@@ -348,6 +364,18 @@
 			}
 		},
 	    methods:{
+			async getIsFocus(){
+				const res = await this.$myRequest({
+					url:'/MyPage/HomePage/isFocus',
+					data:{
+						account_a:this.userId2,
+						account_b:this.userId
+					}
+				})
+				console.log("----------------------------")
+				console.log(res.data)
+				this.isFocus = res.data
+			},
 			homePageNavi(i){
 				uni.navigateTo({
 					url:'../Mypage/homePage/homePage?userId='+i
@@ -377,8 +405,8 @@
 						},
 						method:'POST',
 						data:{
-							account_a:this.userId,
-							account_b:this.thisUserId
+							account_a:this.userId2,
+							account_b:this.userId
 						}
 					})
 					console.log('关注')
@@ -393,8 +421,8 @@
 						},
 						method:'DELETE',
 						data:{
-							account_a:this.userId,
-							account_b:this.thisUserId
+							account_a:this.userId2,
+							account_b:this.userId
 						}
 					})
 					console.log('取消关注')
@@ -459,9 +487,8 @@
 				for(var item in this.comment){
 					this.comment[item].comment_time = this.$Format(this.comment[item].comment_time,"yyyy-MM-dd")
 					this.$set(this.comment[item], 'isCommentExtend', false)
-					this.$set(this.comment[item], 'commentN', '0')
-					// this.comment[item].isCommentExtend=false
-					// this.comment[item].commentN='0'
+					this.$set(this.comment[item], 'commentN', this.comment[item].commented.length)
+					
 					console.log('comment:'+item)
 				}
 				console.log(this.comment)
@@ -476,8 +503,6 @@
 			},
 			async sendCommentFunc(name,id,item,type){
 				const that = this
-				// console.log("name:"+name)
-				// console.log("type:"+type)
 				const res = await this.$myRequest({
 					url:'/Opus/addCommentByType',
 					header:{
@@ -521,17 +546,19 @@
 					 // 
 					 // 
 					 this.sendCommentFunc(that.thisUsername,this.dynamicId,this.commentText,2)
+					this.commentNum++;
 				}
 				else{
 					t={
-						userId:that.userId2,
-						usernameD:that.thisUsername,
-						textD:''
+						user_id:that.userId2,
+						comment_name:that.thisUsername,
+						item:''
 					}
-					t.textD=this.commentText
+					t.item=this.commentText
 					this.comment[this.commentedIndex].commentN++;
 					this.comment[this.commentedIndex].commented.unshift(t)
-					this.sendCommentFunc(t.usernameD,this.comment[this.commentedIndex].comment_id,t.textD,3)
+					this.sendCommentFunc(t.comment_name,this.comment[this.commentedIndex].comment_id,t.item,3)
+					this.commentNum++;
 				}
 				this.$refs.popup.close()
 				

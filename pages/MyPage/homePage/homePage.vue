@@ -8,7 +8,7 @@
 			<text class="backBoxUsername">{{username}}</text>
 			<text class="backBoxSign">{{sign}}</text>
 			<view v-if="userId==userId2" class="backBoxEdit" @click="editNavi"><text>编辑资料</text></view>
-			<view class="backBoxCos"><text>cos榜</text></view>
+			<!-- <view class="backBoxCos"><text>cos榜</text></view> -->
 			<table class='backBoxTable'>
 				<tr>
 					<td @click="interestNavi(userId)">
@@ -42,7 +42,7 @@
 		<uni-list :border="false" >
 			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
 				<template v-slot:body>
-					<view class="dynamicIt"@click="dynamicDetailNavi(item)">
+					<view class="dynamicIt"@click="dynamicDetailNavi(item,index)">
 						  <view class="dynamnicHead">
 							<image class="dynamicAvatar" :src='avatar'@click.stop="homePageNavi(item.accountB)"></image>
 							<view class="dynamicUserDate">
@@ -72,11 +72,11 @@
 						<table class="littleIconTable">
 							<tr>
 								<td>
-									<view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
+									<view v-if="item.type!=0" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont3" @click.stop='addLike(index)'>&#xe785;</span>
 									    <text class="number">{{item.likesNumber}}</text>
 									</view>
-									    <view v-if="item.type!=0" style="width: 50rpx;height: 50rpx;">
+									    <view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
 									    <span class="iconfont4" @click.stop='addLike(index)'>&#xe60f;</span>
 									    <text class="number1">{{item.likesNumber}}</text>
 									</view>
@@ -227,7 +227,6 @@
 		},
 		onLoad(option) {
 		    this.userId=option.userId || '5' // 上个页面传递的用户id
-			console.log(option.userId);
 		    this.userId2=getApp().globalData.global_userId || '12'
 		    this.loadHead()
 		    this.loadDynamic()	
@@ -235,23 +234,26 @@
 		    if(option.showToast == '1'){
 		    	this.showToast = true
 				this.tabIndex = 0
-				//this.initDynamicList()
+				this.initDynamicList()
 				
 		    }
 		    // 标记是否由发布作品页面跳转进入
 		    if(option.showToast == '2'){
 		    	this.showToast = true
 		    	this.tabIndex = 1
-				this.loadWork()
+				this.initWorkList()
 		    }
-			
-			uni.getStorage({
-				key: 'userId',
-				success: res => {
-					console.log(res.data);
-					this.userId = res.data
-				}
-			});
+		},
+		onShow() {
+			uni.$on("dynamicDetailsChange",res => {
+				console.log("------------------------------------res")
+				console.log(res)
+				console.log(this.dynamicItem[res.index])
+				this.dynamicItem[res.index].likesNumber = res.interestNum
+				this.dynamicItem[res.index].commentedNumber = res.commentNum
+				//清除监听
+				uni.$off("dynamicDetailsChange");
+			})
 		},
 		components: {
 			waterfallsFlow,
@@ -293,7 +295,7 @@
 				
 				userId:5,//用户
 				userId2:'',//登录者
-				avatar:'../../../static/iconn/2.jpg',
+				avatar:'../../../static/iconn/avatar.png',
 				username:'jennie',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
@@ -477,10 +479,10 @@
 				})
 				console.log(res)
 				this.username=res.data[0].user_name
-				this.avatar=res.data[0].header_pic
-				this.interstNum=res.data[0].focus_num
-				this.fanNum=res.data[0].focused_num
-				this.starNum=res.data[0].raised_num
+				this.avatar=res.data[0].header_pic || '../../../static/iconn/avatar.png'
+				this.interstNum=res.data[0].focus_num ||'0'
+				this.fanNum=res.data[0].focused_num ||'0'
+				this.starNum=res.data[0].raised_num ||'0'
 			},
 			editNavi(){
 				uni.navigateTo({
@@ -504,7 +506,7 @@
 			         // 通过组件定义的ref调用uni-popup方法
 			    this.$refs.popup.close()
 			 },
-			 openWork(i,index){
+			openWork(i,index){
 				 if(index >= 0){
 				 	this.selectOpus = index
 				 	//console.log(this.selectDynamic)
@@ -549,13 +551,13 @@
 			},
 			addLike:function(i){
 				var t=this.$data.dynamicItem[i].type;
-				if(t==0){
+				if(t!=0){
 					this.$data.dynamicItem[i].likesNumber++;
-					this.$data.dynamicItem[i].type=1;
+					this.$data.dynamicItem[i].type=0;
 				}
 				else{
 					this.$data.dynamicItem[i].likesNumber--;
-					this.$data.dynamicItem[i].type=0;
+					this.$data.dynamicItem[i].type=1;
 				}
 			},
 			workNavigate(item){
@@ -616,18 +618,25 @@
 					that.initWorkList()
 				}
 			},
-			dynamicDetailNavi:function(i){
+			dynamicDetailNavi:function(i,index){
+				console.log("indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				console.log(index)
 				const that = this
+				var t = that.avatar
+				if (that.avatar == '../../../static/iconn/avatar.png'){
+					t = ''
+				}
 				uni.navigateTo({
 					url:'../../DynamicPage/dynamicDetails',
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
 						res.eventChannel.emit('dynamicDetails', {
+							index:index,
 							accountB:that.userId,
 							commentedNumber:i.commentedNumber,
 							dynamicId:i.dynamicId,
 							dynamicPhotos:i.dynamicPhotos,
-							headerPic:that.avatar,
+							headerPic:t,
 							likesNumber:i.likesNumber,
 							mainBody:i.mainBody,
 							opusId:i.opusId,
@@ -675,7 +684,7 @@
 				const that = this 
 				that.dynamicIsFirstPage = true
 				that.dynamicPageNum = 1
-				that.dynamicPageSize = 10
+				that.dynamicPageSize = 2
 				const res = await this.$myRequest({
 					url:'/MyPage/HomePage/getDynamicById',
 					data:{
@@ -686,6 +695,7 @@
 				});
 				console.log(res.data.list)
 				that.dynamicItem=res.data.list
+				//that.dynamicItem.reverse()
 				//var t=res.data.list
 				for (var i = 0;i< that.dynamicItem.length;i++){
 					that.dynamicItem[i].uploadTime = this.$Format(that.dynamicItem[i].uploadTime,"yyyy-MM-dd")
@@ -722,7 +732,7 @@
 						}
 					});
 					var t= res.data.list
-					
+					//t.reverse()
 					for (var i = 0;i< t.length;i++){
 						t[i].uploadTime = this.$Format(t[i].uploadTime,"yyyy-MM-dd")
 						var photoes = t[i].dynamicPhotos
@@ -759,6 +769,7 @@
 				})
 				console.log(res.data)
 				that.contentList=res.data.list
+				//that.contentList.reverse()
 				that.opusIsLastPage = res.data.isLastPage
 				that.opusLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
 				that.opusHasNextPage = res.data.hasNextPage
@@ -778,7 +789,7 @@
 							}
 						})
 					console.log(res.data)
-					that.$data.contentList=that.$data.contentList.concat(res.data.list)
+					that.contentList=that.contentList.concat(res.data.list)
 					console.log(that.contentList)
 					that.opusIsLastPage = res.data.isLastPage
 					that.opusLoadMoreStatus = res.data.hasNextPage?'more':'noMore'
@@ -786,24 +797,11 @@
 					that.opusHasPreviousPage = res.data.hasPreviousPage
 				}
 			},
-			// async loadWork(i){
-			// 	const res=await this.$myRequest({
-			// 		url:'/MyPage/HomePage/getOpusById',
-			// 		data:{
-			// 			pageNum:1,
-			// 			pageSize:10,
-			// 			user_id:5
-			// 		}
-			// 	})
-			// 	console.log(res.data)
-			// 	this.contentList=res.data.list
-			// },
-			//获取收藏夹
 			async loadCollectList(){
 				const res = await this.$myRequest({
 					url:'/MyPage/MyStarList/getAllList',
 					data:{
-						user_id: 1
+						user_id: this.userId
 					}
 				})
 				console.log("collectList:")

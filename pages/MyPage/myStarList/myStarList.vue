@@ -22,6 +22,7 @@
 <script>
 	export default{
 		onLoad(option) {
+			this.userId=getApp().globalData.global_userId || '12'
 			this.getAll()
 			console.log("list:"+option.myWish)
 			this.mywish = option.myWish || 0
@@ -30,6 +31,7 @@
 		},
 		data(){
 			return{
+				userId:'',
 				addmakeuplabels: 0,  //1:存在发布作品的的参数传递
 				mywish:0,   //1:存在加入戏院的的参数传递
 				wishId:'',  //用户将作品加入心愿单中妆容板块的参数传递
@@ -62,23 +64,25 @@
 				uni.request({
 					url:'/api/MyPage/MyStarList/getAllList',
 					data:{
-						user_id:i
+						user_id:this.userId
 					},
 					success:(res) => {
 						  // console.log(res);
-						  // 数据操作
+						  
 						  console.log(res)
 						  this.list=res.data
 						  console.log(this.$data.list)
 					}
 				})
+				console.log('------------------------------')
+				console.log(this.userId)
 				
 			},
 			async getAll (){
 				const res = await this.$myRequest({
-					url:'/MyPage/MyStarList/getAllList?',
+					url:'/MyPage/MyStarList/getAllList',
 					data:{
-						user_id: 1
+						user_id: this.userId
 					}
 				})
 				this.list=res.data

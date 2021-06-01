@@ -5,13 +5,13 @@
 			    <uni-list-item :border="false" v-for="(item,index) in focusPerson" :key="index">
 			        <!-- 自定义 body -->
 			        <view slot="body" class="focusItemBox">
-						<image :src="item.headerPic" mode="aspectFill" @click="homePageNavi(item.accountB)"></image>
+						<image :src="item.header_pic" mode="aspectFill" @click="homePageNavi(item.accountB)"></image>
 						<view class="focusText">
-						   <view @click="homePageNavi(item.accountB)" >{{item.userName}}</view>
+						   <view @click="homePageNavi(item.account_a)" >{{item.user_name}}</view>
 						   <view>{{item.autograph}}</view>
 						   <!-- <view @click="addFocus(userId,item.accountB)"><text>+关注</text></view> -->
 						</view>
-						<view class="cancelButton" v-if="item.isFocus==true" @click="isFocusFunc(item.isFocus,index)"><text>已关注</text></view>
+						<view class="cancelButton" v-if="item.isFocus==true" @click="isFocusFunc(item.isFocus,index)"><text>已互关</text></view>
 						<view class="cancelButtonNot" v-if="item.isFocus==false" @click="isFocusFunc(item.isFocus,index)"><text>关注</text></view>
 					</view>
 			
@@ -31,6 +31,9 @@
 
 <script>
 	export default{
+		onShow() {
+			this.loadFan()
+		},
 		onLoad(option) {
 			this.userId = option.userId || '5'
 			this.loadFan()
@@ -62,18 +65,20 @@
 			async loadFan(){
 				this.isFirstPage = true
 				const res = await this.$myRequest({
-					url:'/MyPage/HomePage/getFocused',
+					url:'/Contact/getFocusedList',
 					data:{
 						pageNum:this.pageNum,
 						pageSize:this.pageSize,
 						user_id:this.userId
 					}
 				})
+				console.log("-------------------------------------")
+				console.log(res.data.list)
 				this.focusPerson=res.data.list
-				for (let i=0;i<this.focusPerson.length;i++){
-					//this.isFocus.push(true)
-					this.$set(this.focusPerson[i], 'isFocus', false)
-				}
+				// for (let i=0;i<this.focusPerson.length;i++){
+				// 	//this.isFocus.push(true)
+				// 	this.$set(this.focusPerson[i], 'isFocus', false)
+				// }
 				this.isLastPage = res.data.isLastPage
 				this.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
 				this.hasNextPage = res.data.hasNextPage
@@ -85,7 +90,7 @@
 				if(that.loadMoreStatus == 'more'){
 					that.pageNum++
 					const res=await this.$myRequest({
-						url:'/MyPage/HomePage/getFocused',
+						url:'/Contact/getFocusedList',
 						data:{
 							pageNum:that.pageNum,
 							pageSize:that.pageSize,
@@ -93,9 +98,9 @@
 						}
 					})
 					var t=res.data.list
-					for (let i=0;i<t.length;i++){
-						this.$set(t[i], 'isFocus', true)
-					}
+					// for (let i=0;i<t.length;i++){
+					// 	this.$set(t[i], 'isFocus', true)
+					// }
 					this.focusPerson = this.focusPerson.concat(t)
 					that.isLastPage = res.data.isLastPage
 					that.loadMoreStatus = res.data.hasNextPage?'more':'noMore'
@@ -118,25 +123,32 @@
 				})
 				console.log(res.data)
 			},
+			async deleteFocused(a,b){
+				const res= await this.$myRequest({
+					url:'/MyPage/HomePage/delFocusPersonByBothId',
+					method:'DELETE',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						account_a:a,
+						account_b:b
+					}
+				})
+			},
 			homePageNavi(i){
 				uni.navigateTo({
 					url:'../homePage/homePage?userId='+i
 				})
 			},
 			isFocusFunc(i,index){
-				//console.log(i)
 				if(i == false){
-					//this.$data.focusPerson[index].isFocus=1;
-					
 					this.focusPerson[index].isFocus=true
-					//console.log(this.$data.isFocus)
+					this.addFocus(this.userId,this.focusPerson[index].account_a)
 				}
 				else{
-					//this.$data.focusPerson[index].isFocus=0;
-					// console.log(this.$data.focusPerson[index].isFocus)
-					// this.deleteFocused(this.userId,this.$data.focusPerson[index].accountB)
 					this.focusPerson[index].isFocus=false
-					//console.log(this.$data.isFocus)
+					this.deleteFocused(this.userId,this.focusPerson[index].account_a)
 				}
 			},
 		}

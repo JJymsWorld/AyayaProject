@@ -7,8 +7,13 @@
 			<view class='searchiInput'><input  value="查找精彩动态内容" /></view>
 		   	
 		</view>
+		<view v-if="dynamicItem == ''" class="nothingBox">
+			<view class="noIcon"><span class="iconfont_dy">&#xe73b;</span></view>
+			<view class="nothingBoxFirst">你还没有关注的人哦！</view>
+			<view class="nothingBoxSecond">快去<text @click="indexHotNavi">首页</text>逛逛吧!</view>
+		</view>
 		<!-- 近期发布动态的用户 -->
-		<view class="recentBox">
+		<view class="recentBox" v-if="dynamicItem != ''">
 			<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="0">
 				<span v-for="(item,index) in recentUser" :key='index'>
 				<image :src="item.avatarT" @click="homePageNavi(item.userId)"></image>
@@ -17,7 +22,7 @@
 			</scroll-view>
 		</view>
 		<!-- 动态内容 -->
-		<view class="dynamicBox">
+		<view class="dynamicBox" v-if="dynamicItem != ''">
 			<uni-list :border="false" >
 			<uni-list-item :border="false" :ellipsis='2' direction="column" v-for="(item,index) in dynamicItem" :key="item.dynamicId" >
 				<template v-slot:body>
@@ -113,12 +118,11 @@
 	</view>
 </template>
 
-
 <script>
 	import gridBox from '../../components/gridImage/gridImage.vue'
 	export default{
 		onLoad() {
-			// this.userId = getApp().globalData.global_userId
+			this.userId = getApp().globalData.global_userId || '1'
 			// console.log(this.userId)
 			this.initDynamicList()
 		},
@@ -138,43 +142,13 @@
 				loadMoreStatus:'more',
 				
 				
-				userId:1,
+				userId:'',
 				recommendTag:0,
 				scrollTop: 0,
 				old: {
 				    scrollTop: 0
 				},
 				recentUser:[
-					// {
-					// avatarT:'../../static/iconn/p2.jpg',
-					// usernameT:'蒲儿姓蒲',
-					// userId:''
-					// },
-					// {
-					// 	avatarT:'../../static/iconn/p3.jpg',
-					// 	usernameT:'Suzy_Z',
-					// userId:''
-					// },
-					// {
-					// 	avatarT:'../../static/iconn/p2.jpg',
-					// 	usernameT:'机智的党妹',
-					// userId:''
-					// },
-					// {
-					// 	avatarT:'../../static/iconn/p2.jpg',
-					// 	usernameT:'机智的党妹',
-					// userId:''
-					// },
-					// {
-					// 	avatarT:'../../static/iconn/p2.jpg',
-					// 	usernameT:'机智的党妹',
-					// userId:''
-					// },
-					// {
-					// 	avatarT:'../../static/iconn/p2.jpg',
-					// 	usernameT:'机智的党妹',
-					// userId:''
-					// },
 					// {
 					// 	avatarT:'../../static/iconn/p2.jpg',
 					// 	usernameT:'机智的党妹',
@@ -212,54 +186,6 @@
 						date:'2020-06-25',
 						text:'LILAC热卖！！！！！！！！',
 						recLike:0
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
-					},
-					{
-						userIdR:'',
-						usernameR:'机智的党妹',
-						avatarR:'../../static/iconn/p2.jpg',
-						date:'2020-06-25',
-						text:'LILAC热卖！！！！！！！！',
-						recLike:'0'
 					}
 				]
 			}
@@ -276,6 +202,12 @@
 			searchNavi(){
 				uni.navigateTo({
 					url:'../search/search'
+				})
+			},
+			indexHotNavi(){
+				console.log("111111111111")
+				uni.switchTab({
+					url:'../Index_Recommend/Index_Hot'
 				})
 			},
 			addLike(i){

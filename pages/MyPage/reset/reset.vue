@@ -57,6 +57,24 @@
 
 <script>
 	export default{
+		onShow() {
+			const that = this
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     this.username = res.data.user_name
+				 this.avatarr = res.data.header_pic
+			    }
+			});
+			uni.getStorage({
+			    key: 'userAccount',
+			    success: res => {
+			        console.log(res.data)
+					this.account = res.data
+			    }
+			});
+		},
 		onLoad() {
 			this.userId=getApp().globalData.global_userId || '12'
 			uni.getStorage({
@@ -67,11 +85,18 @@
 				 this.avatarr = res.data.header_pic
 			    }
 			});
+			uni.getStorage({
+			    key: 'userAccount',
+			    success: res => {
+			        console.log(res.data)
+					this.account = res.data
+			    }
+			});
 		},
 		data(){
 			return{
 				userId:'',
-				avatarr:'../../../static/iconn/2.jpg',
+				avatarr:'../../../static/iconn/avatar.png',
 				username:'jennieee',
 				account:'17367108604'
 			}

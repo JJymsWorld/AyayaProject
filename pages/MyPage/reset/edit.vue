@@ -109,6 +109,17 @@
 				 this.avatar = res.data.header_pic
 				 this.username = res.data.user_name
 				 this.sign = res.data.autograph
+				 this.sex = res.data.gender == 1?'男':'女'
+				 if (res.data.background){
+					this.background["background-image"]='url("'+res.data.background+'")'
+				 }
+			    }
+			});
+			uni.getStorage({
+			    key: 'userAccount',
+			    success: res => {
+			        console.log(res.data)
+					this.account = res.data
 			    }
 			});
 		},
@@ -116,7 +127,7 @@
 			return{
 				userId:'12',
 				popTag:'',
-				avatar:'../../../static/iconn/2.jpg',
+				avatar:'../../../static/iconn/avatar.png',
 				account:'18921969417',
 				username:'jenniee',
 				sex:'女',
@@ -218,8 +229,8 @@
 			startShow: function() {
 				this.$refs['kModel'].showModel({
 					type: 'success',
-					title: '发布成功',
-					duration: 3000
+					title: '保存成功',
+					duration: 1000
 				});
 			},
 			async onGetMainAll(){
@@ -252,17 +263,17 @@
 				console.log(_self.backgroundImage)
 				// item.url = _self.avatar
 				if(_self.changeAvatarTag){
-					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: _self.avatar})
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',uri: _self.avatar})
 				}
 				else{
-					_self.header_picAndBackground.push({name: 'header_picAndBackground',url:''})
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',uri:''})
 				}
 				
 				if(_self.changeBackgroundTag){
-					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: _self.backgroundImage})
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',uri: _self.backgroundImage})
 				}
 				else{
-					_self.header_picAndBackground.push({name: 'header_picAndBackground',url: ''})
+					_self.header_picAndBackground.push({name: 'header_picAndBackground',uri: ''})
 				}
 				console.log(_self.header_picAndBackground)
 				_self.sexStatus = _self.sex == '女'?2:1
@@ -285,6 +296,7 @@
 							_self.changeAvatarTag = false
 							_self.changeBackgroundTag = false
 							_self.header_picAndBackground = []
+							this.onGetMainAll()
 						}
 						console.log(uploadFileRes)
 					}

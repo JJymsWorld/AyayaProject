@@ -108,6 +108,7 @@
 		},
 		onLoad(option) {
 			console.log(option)
+			this.userId=getApp().globalData.global_userId || '12'
 			this.work.workId = option.workId
 			this.work.covers = option.firstPic
 			this.work.head = option.workTitle
@@ -118,6 +119,7 @@
 		},
 		data(){
 			return{
+				userId:'',
 				wishId:'1',
 				work:
 					{
@@ -160,8 +162,11 @@
 						tagId:'',
 						tagName:'汉服'
 					}
-				]
-				
+				],
+				photographerList:[],
+				madeupList:[],
+				clothingList:[],
+				otherTagList:[]
 			}
 		},
 		methods:{
@@ -172,7 +177,40 @@
 				})
 			},
 			releaseWork(){
-				uni.navigateBack({})
+				const that = this
+				//摄影师
+				for (var i in that.photographer) {
+					const item = that.photographer[i]
+					console.log(item)
+					that.photographerList.push(item.photographerId+"，"+item.photography)
+				}
+				
+				//服饰
+				for (var i in that.clothList){
+					const item = that.clothList[i]
+					that.clothingList.push(item.name+"，"+item.link)
+				}
+				
+				//妆容
+				for (var i in that.madeup){
+					const item = that.madeup[i]
+					that.madeupList.push(item.madeupId+"，"+item.madeupTitle)
+				}
+				
+				//其他
+				for (var i in that.otherTag){
+					const item = that.otherTag[i]
+					that.otherTagList.push(item.mark_id+"，"+item.mark)
+					console.log(item)
+				}
+				// console.log("--------------------------------------------------")
+				// console.log(that.photographerList)
+				// console.log(that.clothingList)
+				// console.log(that.madeupList)
+				// console.log(that.otherTagList)
+				
+				//uni.navigateBack({})
+				this.addWish()
 			},
 			changePhotographer(){
 				uni.navigateTo({
@@ -199,13 +237,31 @@
 					url:'../ContentReleasePage/label'
 				})
 			},
-			addWish(){
+			async addWish(){
 				//填写加入心愿单接口
-				// 
-				// 
-				// 
+				const res = await this.$myRequest({
+					method: 'POST',
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					url: '/MyPage/MyWishList/addWish',
+					data: {
+						accountB:this.photographerList,
+						clothingId:this.clothingList,
+						firstPic:this.work.covers,
+						makeupId:this.madeupList,
+						markId:this.otherTagList,
+						opusId:this.work.workId,
+						title:this.work.head,
+						user_id:this.userId
+						
+					}
+				})
+				console.log(res)
+				if(res.statusCode == 200){
+					uni.navigateBack({})
+				}
 				
-				uni.navigateBack({})
 			},
 			deleteTab(i,index){
 				if(i==0){

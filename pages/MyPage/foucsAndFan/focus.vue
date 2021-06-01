@@ -63,9 +63,11 @@
 		isFocusFunc(i,index){
 			if(i == false){
 				this.focusPerson[index].isFocus=true
+				this.addFocuser(this.userId,this.focusPerson[index].accountB)
 			}
 			else{
 				this.focusPerson[index].isFocus=false
+				this.deleteFocused(this.userId,this.focusPerson[index].accountB)
 			}
 		},
 		async loadFocused(){
@@ -112,6 +114,19 @@
 				that.hasPreviousPage = res.data.hasPreviousPage
 			}
 			
+		},
+		async addFocuser(a,b){
+			const res = await this.$myRequest({
+				url:'/MyPage/HomePage/addFocus',
+				method:'POST',
+				header:{
+					'content-type':'application/x-www-form-urlencoded'
+				},
+				data:{
+					account_a:a,
+					account_b:b
+				}
+			})
 		},
 		async deleteFocused(a,b){
 			const res= await this.$myRequest({

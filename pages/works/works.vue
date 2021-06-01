@@ -423,6 +423,9 @@
 		onLoad:function(option){
 			console.log(option.workId);
 			this.workId = option.workId || '34' ;
+			this.thisUserId=getApp().globalData.global_userId || '4'
+			console.log("------------global---------")
+			console.log(this.thisUserId)
 			this.loadOpusDetail();
 			this.loadComment();
 		},
@@ -439,7 +442,7 @@
 				console.log(t)
 				this.avertar = t.header_pic
 				this.username = t.user_name
-				this.thisUserId = t.user_id
+				this.userId = t.user_id
 				this.interestNum = t.likes_number
 				this.collectNum = t.collected_number
 				this.commentNum = t.comment_number
@@ -743,7 +746,9 @@
 			},
 			//获取所有收藏夹
 			async getCollectListAll(){
-				this.userId = 1
+				//this.userId = 1
+				console.log("----------thisUserId------------")
+				console.log(this.thisUserId)
 				const res = await this.$myRequest({
 					url:'/MyPage/MyStarList/getAllList',
 					header:{
