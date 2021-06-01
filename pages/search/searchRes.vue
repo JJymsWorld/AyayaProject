@@ -28,17 +28,17 @@
 			<uni-list :border="false">
 				<!-- 动态页面 -->
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in dynamicItem"
-					:key="index" :title="item.text" to='../DynamicPage/dynamicDetails'>
+					:key="index" :title="item.text" to=''>
 					<!-- 左边动态图片 -->
 					<template v-slot:body>
-						<view class="Img-In-List" @click="dynamicDetailNavi(item)">
-							<image class="ListImg-Style" :src="item.dynamicPhotos" mode="aspectFill"></image>
+						<view class="Img-In-List">
+							<image class="ListImg-Style" @click.stop="dynamicDetailNavi(item)" :src="item.dynamicPhotos" mode="aspectFill"></image>
 						</view>
 					</template>
 					<!-- 右边动态信息 -->
 					<template v-slot:footer>
 						<view class="slot-footer-box">
-							<view class="List-text" @click="dynamicDetailNavi(item)">{{item.mainBody}}</view>
+							<view class="List-text" @click.stop="dynamicDetailNavi(item)">{{item.mainBody}}</view>
 							<view class="List-article" @click.stop="gotoUserHomePage(item.accountB)">{{item.userName}}</view>
 							<view class="List-Icon">
 								<view class="like-box">
@@ -405,7 +405,7 @@
 			dynamicDetailNavi:function(i){
 				console.log(i)
 				uni.navigateTo({
-					url:'dynamicDetails',
+					url:'../DynamicPage/dynamicDetails',
 					success: function(res) {
 						// 通过eventChannel向被打开页面传送数据
 						res.eventChannel.emit('dynamicDetails', {
