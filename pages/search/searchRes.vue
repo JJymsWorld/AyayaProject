@@ -24,40 +24,39 @@
 					</span>
 				</scroll-view>
 			</view>
-			<!-- 作品/动态页面 -->
+			<!-- 动态页面 -->
 			<uni-list :border="false">
 				<!-- 动态页面 -->
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in dynamicItem"
 					:key="index" :title="item.text" to='../DynamicPage/dynamicDetails'>
 					<!-- 左边动态图片 -->
 					<template v-slot:body>
-						<view class="Img-In-List" @click="gotoDynamicPage">
-							<image class="ListImg-Style" :src="item.dynamic_photos" mode="aspectFill"></image>
+						<view class="Img-In-List" @click="dynamicDetailNavi(item)">
+							<image class="ListImg-Style" :src="item.dynamicPhotos" mode="aspectFill"></image>
 						</view>
 					</template>
 					<!-- 右边动态信息 -->
 					<template v-slot:footer>
 						<view class="slot-footer-box">
-							<view class="List-text" @click="gotoDynamicPage">{{item.main_body}}</view>
-							<view class="List-article" @click="gotoUserHomePage(item.user_id)">{{item.user_name}}</view>
+							<view class="List-text" @click="dynamicDetailNavi(item)">{{item.mainBody}}</view>
+							<view class="List-article" @click.stop="gotoUserHomePage(item.accountB)">{{item.userName}}</view>
 							<view class="List-Icon">
 								<view class="like-box">
 									<image class='littleIcon' src='../../static/icon/like.png'></image>
-									<text class="number">{{item.likes_number}}</text>
+									<text class="number">{{item.likesNumber}}</text>
 								</view>
 								<view class="chat-box">
 									<image class='littleIcon' src="../../static/icon/chat.png"></image>
-									<text class="number">{{item.commented_num}}</text>
+									<text class="number">{{item.commentedNumber}}</text>
 								</view>
 								<view class="relay-box">
 									<image class='littleIcon' src="../../static/icon/relay.png"></image>
-									<text class="number">{{item.shared_number}}</text>
+									<text class="number">{{item.sharedNumber}}</text>
 								</view>
 							</view>
 						</view>
 					</template>
-				</uni-list-item>
-				
+				</uni-list-item>	
 			</uni-list>
 			<!-- 作品页面 -->
 			<uni-list :border="false">
@@ -155,9 +154,11 @@
 							</view>
 							<view class="StayInCoser-item-likebutton">
 								<!-- <button class="StayInCoser-item-likebutton-btn">关注</button> -->
-								<uni-fav :checked="item.checked" star="false" :contentText="contentText"
-									bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(index)"
-									fgColor="#333333"></uni-fav>
+								<!-- <uni-fav :checked="item.checked" star="false" :contentText="contentText"
+									bgColor="#EC808D" bgColorChecked="#797979" @click="LikeBtnClick(item.user_id, index)"
+									fgColor="#333333"></uni-fav> -->
+								<view class="attentionButton" v-if='!item.checked' @click.stop="LikeBtnClick(item.user_id, index)"><text>关注</text></view>
+								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="LikeBtnClick(item.user_id, index)"><text>已关注</text></view>
 							</view>
 						</view>
 					</uni-list-item>
@@ -174,6 +175,7 @@
 	export default {
 		data() {
 			return {
+				userId: null,	// 用户id
 				loadStatus:"onMore",
 				pageNum: [1, 1, 1], 	// 综合页、作品页、用户页分页标记
 				pageSize: 7,
@@ -198,6 +200,14 @@
 		},
 		async onLoad(option) {
 			this.value = option.label
+			
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 			
 			const res = await this.onGetDynamicList(0)
 			this.dynamicItem = res.list
@@ -295,10 +305,37 @@
 					data: {
 						pageNum: this.pageNum[i],
 						pageSize: this.pageSize,
-						searchStr: this.value
+						searchStr: this.value,
+						user_id: this.userId
 					}
 				})
 				return (res.data)
+			},
+			// 取消关注
+			deleteFocus(b){
+				 this.$myRequest({
+					url:'/MyPage/HomePage/delFocusPersonByBothId',
+					method:'DELETE',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						account_a:this.userId,
+						account_b:b
+					}
+				})
+			},
+			// 关注
+			addFocus(b){
+				 this.$myRequest({
+					url:'/MyPage/HomePage/addFocus',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data:{
+						account_a:this.userId,
+						account_b:b
+					}
+				})
 			},
 			scroll: function(e) {
 			    console.log(e)
@@ -342,12 +379,14 @@
 
 				})
 			},
-			LikeBtnClick: function(e) {
+			LikeBtnClick(userb, e) {
 				if(this.CoserInfoList[e].checked == 0){
 					this.CoserInfoList[e].checked = 1
+					this.addFocus(userb)
 				}
 				else{
 					this.CoserInfoList[e].checked = 0
+					this.deleteFocus(userb)
 				}
 			},
 			// 进入用户个人主页
@@ -363,15 +402,60 @@
 				})
 			},
 			// 进入动态详情页面
-			gotoDynamicPage: function(){
+			dynamicDetailNavi:function(i){
+				console.log(i)
 				uni.navigateTo({
-					url: '../DynamicPage/dynamicDetails'
+					url:'dynamicDetails',
+					success: function(res) {
+						// 通过eventChannel向被打开页面传送数据
+						res.eventChannel.emit('dynamicDetails', {
+							accountB:i.accountB,
+							commentedNumber:i.commentedNumber,
+							dynamicId:i.dynamicId,
+							dynamicPhotos:i.dynamicPhotos,
+							headerPic:i.headerPic,
+							likesNumber:i.likesNumber,
+							mainBody:i.mainBody,
+							opusId:i.opusId,
+							opusPhotos:i.opusPhotos,
+							sharedNumber:i.sharedNumber,
+							title:i.title,
+							type:i.type,
+							uploadTime:i.uploadTime,
+							userName:i.userName
+						})
+					}
 				})
-			}
+			},
 		}
 	}
 </script>
 
 <style>
+	@import url("../DynamicPage/dynamic.css");
 	@import url("./searchRes.css");
+	.attentionButton {
+		position: absolute;
+		top: 40rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 45rpx;
+		border: 1rpx solid #EC808D;
+		border-radius: 30rpx;
+		text-align: center;
+		line-height: 35rpx;
+	}
+	
+	.attentionButton text {
+		font-size: 23rpx;
+		color: #EC808D;
+	}
+	
+	.NotattentionButton {
+		border: 1rpx solid #808080;
+	}
+	
+	.NotattentionButton text {
+		color: #808080;
+	}
 </style>

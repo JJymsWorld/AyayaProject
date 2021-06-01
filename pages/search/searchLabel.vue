@@ -33,18 +33,9 @@
 							</view>
 							<!-- 内容不为为作品end -->
 
-							<table class="littleIconTable">
+							<!-- <table class="littleIconTable">
 								<tr>
 									<td  @click.stop="addLike()">
-										<!-- <view v-if="item.type==0" style="width: 50rpx;height: 50rpx;">
-											<span class="iconfont3" @click='addLike(index)'>&#xe785;</span>
-											<text class="number">{{item.likes_number}}</text>
-										</view>
-										<view v-if="item.type==1" style="width: 50rpx;height: 50rpx;">
-											<span class="iconfont4" @click='addLike(index)'>&#xe608;</span>
-											<text class="number1">{{item.likes_number}}</text>
-										</view> -->
-										
 										<view style="width: 50rpx;height: 50rpx;">
 											<span class="iconfont4" @click=''>&#xe608;</span>
 											<text class="number1">{{item.likes_number}}</text>
@@ -61,7 +52,7 @@
 										<text class="number">{{item.shared_num}}</text>
 									</td>
 								</tr>
-							</table>
+							</table> -->
 						</view>
 
 					</template>
