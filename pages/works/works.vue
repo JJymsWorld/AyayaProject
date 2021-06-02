@@ -286,6 +286,8 @@
 				workId:'34',
 				userId:'12',//发布该作品的用户的id
 				thisUserId:'12',//登录者id
+				thisUsername:'',
+				thisAvatar:'',
 				avertar:'',
 				username:'',
 				interestNum:'',
@@ -420,10 +422,28 @@
 				currentCommentId:'100000',
 			}
 		},
+		onShow() {
+			this.workId = option.workId || '34' ;
+			this.thisUserId=getApp().globalData.global_userId || '4'
+			//console.log("------------global---------")
+			//console.log(this.thisUserId)
+			this.loadOpusDetail();
+			this.loadComment();
+		},
 		onLoad:function(option){
 			console.log(option.workId);
 			this.workId = option.workId || '34' ;
 			this.thisUserId=getApp().globalData.global_userId || '4'
+			uni.getStorage({
+			    key: 'userInfo',
+			    success: res => {
+			     console.log(res.data);
+			     //this.userIdentity = res.data.identity
+				 this.thisAvatar = res.data.header_pic || '../../static/iconn/avatar.png'
+				 this.thisUsername = res.data.user_name
+			    }
+			});
+			
 			console.log("------------global---------")
 			console.log(this.thisUserId)
 			this.loadOpusDetail();
@@ -558,8 +578,6 @@
 				}
 			},
 			async loadComment(){
-				//this.workId=10
-				//this.userId=10
 				const res = await this.$myRequest({
 					url:'/Opus/getOpusComments',
 					data:{
@@ -823,8 +841,8 @@
 				if(this.isCommented==false){
 					 t={
 						comment_id:that.currentCommentId,
-						header_pic:'../../static/iconn/p2.jpg',
-						comment_name:'蒲儿姓蒲',
+						header_pic:that.thisAvatar,
+						comment_name:that.thisUsername,
 						user_id:'',
 						comment_time:'',
 						item:'',
@@ -836,7 +854,7 @@
 					var time = new Date()
 					t.comment_time=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
 					t.item=this.commentText
-					 this.comment.unshift(t)
+					this.comment.unshift(t)
 					 // 填写回复评论接口
 					this.sendCommentFunc(t.comment_name,this.workId,t.item,1)
 					 
@@ -873,6 +891,9 @@
 						user_id:that.thisUserId
 					}
 				})
+				// if(res.statusCode == 200){
+				// 	that.loadComment()
+				// }
 				console.log(res)
 			}
 		},

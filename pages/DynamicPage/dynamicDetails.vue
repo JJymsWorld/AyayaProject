@@ -161,12 +161,8 @@
 			
 		},
 		onShow() {
-			// uni.$on("dynamicDetails",res => {
-			// 	console.log(res)
-			// 	// 清除监听
-			// 	uni.$off("dynamicDetails");
-			// })
 			this.getIsFocus()
+			this.loadComment()
 		},
 		onLoad(option) {
 			const that = this
@@ -541,11 +537,9 @@
 					t.comment_time=time.getFullYear()+'-'+time.getMonth()+'-'+time.getDate()
 					t.item=this.commentText
 					 this.comment.unshift(t)
-					 // 填写更新评论接口
-					 // 
-					 // 
-					 // 
-					 this.sendCommentFunc(that.thisUsername,this.dynamicId,this.commentText,2)
+					 // 更新评论接口
+					  
+					this.sendCommentFunc(that.thisUsername,this.dynamicId,this.commentText,2)
 					this.commentNum++;
 				}
 				else{

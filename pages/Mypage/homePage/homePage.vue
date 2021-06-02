@@ -295,8 +295,8 @@
 				
 				userId:5,//用户
 				userId2:'',//登录者
-				avatar:'../../../static/iconn/avatar.png',
-				username:'jennie',
+				avatar:'',
+				username:'',
 				sign:'你还没有个性签名哦!',
 				interstNum:'2',
 				fanNum:'0',

@@ -36,6 +36,9 @@
 			this.loadFocused()
 			this.userId=getApp().globalData.global_userId || '12'
 		},
+		onNavigationBarButtonTap() {
+			
+		},
 		data(){
 			return{
 				userId:'1',
