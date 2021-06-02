@@ -189,7 +189,7 @@
 			return {
 				refuseOrderID: null,		// 	拒绝的订单编号
 				acceptOrderID: null,		// 	接受的订单编号
-				userId: 1,	// 用户Id
+				userId: null,	// 用户Id
 				currentIndex: 0,
 				navArr: [{
 					title: '全部',
@@ -287,9 +287,9 @@
 			},
 			// 搜索我的订单
 			onSearch: function(){
-				uni.navigateTo({
-					url: '../searchorder'
-				})
+				// uni.navigateTo({
+				// 	url: '../searchorder'
+				// })
 			},
 			// 进入用户个人主页
 			gotoUserHomePage: function(id){
@@ -364,13 +364,13 @@
 			}
 		},
 		async onLoad(){
-			// uni.getStorage({
-			// 	key: 'userId',
-			// 	success: res => {
-			// 		console.log(res.data);
-			// 		this.userId = res.data
-			// 	}
-			// });
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 			this.onGetOrderList()
 		},
 		async onShow(){

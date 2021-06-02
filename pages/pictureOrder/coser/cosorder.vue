@@ -286,9 +286,9 @@
 			},
 			// 搜索我的订单
 			onSearch: function(){
-				uni.navigateTo({
-					url: '../searchorder'
-				})
+				// uni.navigateTo({
+				// 	url: '../searchorder'
+				// })
 			},
 			// 进入用户个人主页
 			gotoUserHomePage: function(id){

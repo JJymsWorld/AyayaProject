@@ -25,17 +25,17 @@
 				</scroll-view>
 			</view>
 			<!-- 动态页面 -->
-			<uni-list :border="false">
-				<!-- 动态页面 -->
+			<!-- <uni-list :border="false">
+
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in dynamicItem"
 					:key="index" :title="item.text" to=''>
-					<!-- 左边动态图片 -->
+		
 					<template v-slot:body>
 						<view class="Img-In-List">
 							<image class="ListImg-Style" @click.stop="dynamicDetailNavi(item)" :src="item.dynamicPhotos" mode="aspectFill"></image>
 						</view>
 					</template>
-					<!-- 右边动态信息 -->
+	
 					<template v-slot:footer>
 						<view class="slot-footer-box">
 							<view class="List-text" @click.stop="dynamicDetailNavi(item)">{{item.mainBody}}</view>
@@ -57,7 +57,7 @@
 						</view>
 					</template>
 				</uni-list-item>	
-			</uni-list>
+			</uni-list> -->
 			<!-- 作品页面 -->
 			<uni-list :border="false">
 				<uni-list-item :border="false" :ellipsis='2' direction="row" v-for="(item, index) in SearchWorksList"

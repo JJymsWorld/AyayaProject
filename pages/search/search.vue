@@ -42,6 +42,7 @@
 				// hotTopic:['#12月份季番活动#','#漫展返图大赛#','#cosplay#','#妆容#'],
 				hotTopic: [],
 				searchHsty: [],
+				userId: null
 			}
 		},
 		methods: {
@@ -71,7 +72,7 @@
 					},
 					data: {
 						content: value,
-						user_id: 4
+						user_id: this.userId
 					}
 				})
 			},
@@ -85,16 +86,16 @@
 			},
 			// 确认清空历史记录
 			confirm: function(done){
-				// this.$myRequest({
-				// 	method: 'DELETE',
-				// 	url: '/Search/deleteRecordById',
-				// 	header: {
-				// 		'content-type': 'application/x-www-form-urlencoded'
-				// 	},
-				// 	data: {
-				// 		user_id: 4
-				// 	}
-				// })
+				this.$myRequest({
+					method: 'DELETE',
+					url: '/Search/deleteRecordById',
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					data: {
+						user_id: this.userId
+					}
+				})
 				console.log('已清空搜索历史')
 				this.searchHsty = []
 			},
@@ -133,12 +134,21 @@
 			const res2 = await this.$myRequest({
 				url: '/Search/Index/Search/getRecordById',
 				data: {
-					'user_id': 4
+					'user_id': this.userId
 				}
 			})
 			this.searchHsty = res2.data
 			console.log(res2.data)
 			// 获取用户历史搜索记录
+		},
+		onLoad(){
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
 		}
 	}
 </script>

@@ -21,8 +21,8 @@
 									</view>
 									<view class="dynamicDate">{{item.upload_time}}</view>
 								</view>
-								<view class="attentionButton" v-if='!item.checked' @click.stop="changeChecked(index)"><text>关注</text></view>
-								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="changeChecked(index)"><text>已关注</text></view>
+								<view class="attentionButton" v-if='!item.checked' @click.stop="changeChecked(item.user_id, index)"><text>关注</text></view>
+								<view class="attentionButton NotattentionButton" v-if='item.checked' @click.stop="changeChecked(item.user_id, index)"><text>已关注</text></view>
 							</view>
 							<!-- 正文 -->
 							<view class="dynamicText">{{item.main_body}}</view>
@@ -98,7 +98,7 @@
 			return {
 				loadStatus:	'noMore',
 				searchLabel: '',
-				userId: '',
+				userId: null,
 				searchWorkList: [],
 				workListTotal: null, // 搜索到的作品总数
 				pageNum: 1,
@@ -109,6 +109,15 @@
 			gridBox
 		},
 		async onLoad(option) {
+			
+			uni.getStorage({
+				key: 'userId',
+				success: res => {
+					console.log(res.data);
+					this.userId = res.data
+				}
+			});
+			
 			// 接收传入的搜索话题
 			this.searchLabel = option.label
 
@@ -153,7 +162,8 @@
 					data: {
 						pageNum: this.pageNum,
 						pageSize: this.pageSize,
-						searchStr: this.searchLabel
+						searchStr: this.searchLabel,
+						user_id: this.userId
 					}
 				})
 				for(var item in res.data.list){
@@ -184,15 +194,42 @@
 				console.log('cancel')
 				uni.navigateBack({})
 			},
+			// 取消关注
+			deleteFocus(b){
+				 this.$myRequest({
+					url:'/MyPage/HomePage/delFocusPersonByBothId',
+					method:'DELETE',
+					header:{
+						'content-type':'application/x-www-form-urlencoded'
+					},
+					data:{
+						account_a:this.userId,
+						account_b:b
+					}
+				})
+			},
+			// 关注
+			addFocus(b){
+				 this.$myRequest({
+					url:'/MyPage/HomePage/addFocus',
+					method: 'POST',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					data:{
+						account_a:this.userId,
+						account_b:b
+					}
+				})
+			},
 			// 改变关注状态
-			changeChecked(i){
-				if(this.searchWorkList[i].checked){
-					this.searchWorkList[i].checked = 0
+			changeChecked(userb, e){
+				if(this.searchWorkList[e].checked == 0){
+					this.searchWorkList[e].checked = 1
+					this.addFocus(userb)
 				}
 				else{
-					this.searchWorkList[i].checked = 1
+					this.searchWorkList[e].checked = 0
+					this.deleteFocus(userb)
 				}
-				console.log(i, this.searchWorkList[i].checked)
 			},
 			workNavi(i) {
 				// console.log(i)
